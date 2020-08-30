@@ -401,10 +401,10 @@ namespace lnd
 
     private:
 
-        buffer_vertex(const buffer_vertex&) = default;
-        buffer_vertex(buffer_vertex&&) = default;
-        buffer_vertex& operator=(const buffer_vertex&) = default;
-        buffer_vertex& operator=(buffer_vertex&&) = default;
+        buffer_vertex(const buffer_vertex&) = delete;
+        buffer_vertex(buffer_vertex&&) = delete;
+        buffer_vertex& operator=(const buffer_vertex&) = delete;
+        buffer_vertex& operator=(buffer_vertex&&) = delete;
     };
 
     class buffer_color
@@ -443,10 +443,10 @@ namespace lnd
 
     private:
 
-        buffer_color(const buffer_color&) = default;
-        buffer_color(buffer_color&&) = default;
-        buffer_color& operator=(const buffer_color&) = default;
-        buffer_color& operator=(buffer_color&&) = default;
+        buffer_color(const buffer_color&) = delete;
+        buffer_color(buffer_color&&) = delete;
+        buffer_color& operator=(const buffer_color&) = delete;
+        buffer_color& operator=(buffer_color&&) = delete;
     };
 
     class buffer_index
@@ -485,10 +485,10 @@ namespace lnd
 
     private:
 
-        buffer_index(const buffer_index&) = default;
-        buffer_index(buffer_index&&) = default;
-        buffer_index& operator=(const buffer_index&) = default;
-        buffer_index& operator=(buffer_index&&) = default;
+        buffer_index(const buffer_index&) = delete;
+        buffer_index(buffer_index&&) = delete;
+        buffer_index& operator=(const buffer_index&) = delete;
+        buffer_index& operator=(buffer_index&&) = delete;
     };
 
     class buffer_texture
@@ -527,10 +527,10 @@ namespace lnd
 
     private:
 
-        buffer_texture(const buffer_texture&) = default;
-        buffer_texture(buffer_texture&&) = default;
-        buffer_texture& operator=(const buffer_texture&) = default;
-        buffer_texture& operator=(buffer_texture&&) = default;
+        buffer_texture(const buffer_texture&) = delete;
+        buffer_texture(buffer_texture&&) = delete;
+        buffer_texture& operator=(const buffer_texture&) = delete;
+        buffer_texture& operator=(buffer_texture&&) = delete;
     };
 
     class shader_vertex
@@ -575,10 +575,10 @@ namespace lnd
 
     private:
 
-        shader_vertex(const shader_vertex&) = default;
-        shader_vertex(shader_vertex&&) = default;
-        shader_vertex& operator=(const shader_vertex&) = default;
-        shader_vertex& operator=(shader_vertex&&) = default;
+        shader_vertex(const shader_vertex&) = delete;
+        shader_vertex(shader_vertex&&) = delete;
+        shader_vertex& operator=(const shader_vertex&) = delete;
+        shader_vertex& operator=(shader_vertex&&) = delete;
     };
 
     class shader_fragment
@@ -623,10 +623,10 @@ namespace lnd
 
     private:
 
-        shader_fragment(const shader_fragment&) = default;
-        shader_fragment(shader_fragment&&) = default;
-        shader_fragment& operator=(const shader_fragment&) = default;
-        shader_fragment& operator=(shader_fragment&&) = default;
+        shader_fragment(const shader_fragment&) = delete;
+        shader_fragment(shader_fragment&&) = delete;
+        shader_fragment& operator=(const shader_fragment&) = delete;
+        shader_fragment& operator=(shader_fragment&&) = delete;
     };
 
     class program_vertex_fragment
@@ -678,10 +678,10 @@ namespace lnd
 
     private:
 
-        program_vertex_fragment(const program_vertex_fragment&) = default;
-        program_vertex_fragment(program_vertex_fragment&&) = default;
-        program_vertex_fragment& operator=(const program_vertex_fragment&) = default;
-        program_vertex_fragment& operator=(program_vertex_fragment&&) = default;
+        program_vertex_fragment(const program_vertex_fragment&) = delete;
+        program_vertex_fragment(program_vertex_fragment&&) = delete;
+        program_vertex_fragment& operator=(const program_vertex_fragment&) = delete;
+        program_vertex_fragment& operator=(program_vertex_fragment&&) = delete;
     };
 
     buffer_vertex __default_vertex_buffer;
