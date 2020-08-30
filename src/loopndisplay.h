@@ -28,12 +28,12 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <functional>
 #include <thread>
 #include <mutex>
 #include <atomic>
 #include <condition_variable>
 #include <iostream>
-#include <functional>
 
 
 ////// IMPLEMENTATION //////
