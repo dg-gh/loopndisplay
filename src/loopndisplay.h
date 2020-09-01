@@ -221,8 +221,8 @@ namespace lnd
 		double X_scale = 1.0;
 		double Y_scale = 1.0;
 
-		float mouse_X = 0.0;
-		float mouse_Y = 0.0;
+		float mouse_X = 0.0f;
+		float mouse_Y = 0.0f;
 	};
 
 
