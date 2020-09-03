@@ -7,7 +7,7 @@ protected:
 
 	void setup() { }
 	inline void loop(float dt) { call_display(); }
-	inline void display() { }
+	inline void display() { clear_screen(); }
 	void exit() { }
 	bool exit_condition() { return key_escape(); }
 };
