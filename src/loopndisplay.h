@@ -1035,14 +1035,23 @@ namespace lnd
 		{
 			display_condition_var.notify_one();
 		}
-
 		inline void clear_window()
 		{
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(_clear_window);
 		}
-		inline void clear_window_3d()
+
+		// set dim
+
+		inline void set_to_2d()
 		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glDisable(GL_DEPTH_TEST);
+			_clear_window = GL_COLOR_BUFFER_BIT;
+		}
+		inline void set_to_3d()
+		{
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+			_clear_window = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 		}
 
 		// pointer to window
@@ -2036,6 +2045,7 @@ namespace lnd
 		float _max_Y = 1.0f;
 		float _pixel_X = 0.01f;
 		float _pixel_Y = 0.01f;
+		GLbitfield _clear_window = GL_COLOR_BUFFER_BIT;
 
 
 		unsigned int tri_hollow_index[6] = { 0, 1, 1, 2, 2, 0 };
