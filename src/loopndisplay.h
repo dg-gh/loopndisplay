@@ -1871,6 +1871,7 @@ namespace lnd
 		const inline lnd::shader_vertex& vertex_shift_scale() const noexcept { return _vertex_shift_scale; } // mutable
 		const inline lnd::shader_vertex& vertex_shift_rotate() const noexcept { return _vertex_shift_rotate; } // mutable
 		const inline lnd::shader_vertex& vertex_affine() const noexcept { return _vertex_affine; } // mutable
+		const inline lnd::shader_vertex& vertex_m44xv3() const noexcept { return _vertex_m44xv3; } // mutable
 		const inline lnd::shader_vertex& vertex_RGB_identity() const noexcept { return _vertex_RGB_identity; }
 		const inline lnd::shader_vertex& vertex_RGB_shift() const noexcept { return _vertex_RGB_shift; } // mutable
 		const inline lnd::shader_vertex& vertex_RGB_shift_scale() const noexcept { return _vertex_RGB_shift_scale; } // mutable
@@ -2030,6 +2031,7 @@ namespace lnd
 		lnd::shader_vertex _vertex_shift_scale; // mutable
 		lnd::shader_vertex _vertex_shift_rotate; // mutable
 		lnd::shader_vertex _vertex_affine; // mutable
+		lnd::shader_vertex _vertex_m44xv3; // mutable
 
 		lnd::shader_vertex _vertex_RGB_identity;
 		lnd::shader_vertex _vertex_RGB_shift; // mutable
@@ -2818,6 +2820,13 @@ namespace lnd
 					"		X[2], X[3]); forward_UV = UV; }											\n"
 				);
 			}
+			
+			_vertex_m44xv3.new_shader(
+				"	#version 330 core									\n"
+				"	layout(location = 0) in vec3 X;						\n"
+				"	uniform mat4 VP;									\n"
+				"	void main() { gl_Position = VP * vec4(X, 1); }		\n"
+			);
 
 			_fragment_black.new_shader(
 				"	#version 330 core									\n"
