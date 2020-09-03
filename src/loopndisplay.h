@@ -974,6 +974,7 @@ namespace lnd
 		~program_vertex_fragment() { delete_program(); }
 
 		inline const unsigned int get() const noexcept { return program_index; }
+		inline void use() const { glUseProgram(program_index); }
 
 		void new_program(const lnd::shader_vertex& vertex_shader, const lnd::shader_fragment& fragment_shader)
 		{
