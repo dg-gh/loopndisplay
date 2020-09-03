@@ -1035,7 +1035,7 @@ namespace lnd
 			display_condition_var.notify_one();
 		}
 
-		inline void clear_screen()
+		inline void clear_window()
 		{
 			glClear(GL_COLOR_BUFFER_BIT);
 		}
