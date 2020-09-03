@@ -1604,7 +1604,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glUseProgram(program_RGBA().get());
+			program_RGBA().use();
 			glDrawArrays(GL_LINES, 0, vertex_count);
 			glBlendFunc(GL_ONE, GL_ZERO);
 			lnd::__default_vertex_buffer.unbind();
