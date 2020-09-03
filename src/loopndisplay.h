@@ -2824,8 +2824,8 @@ namespace lnd
 			_vertex_m44xv3.new_shader(
 				"	#version 330 core									\n"
 				"	layout(location = 0) in vec3 X;						\n"
-				"	uniform mat4 VP;									\n"
-				"	void main() { gl_Position = VP * vec4(X, 1); }		\n"
+				"	uniform mat4 M;										\n"
+				"	void main() { gl_Position = M * vec4(X, 1); }		\n"
 			);
 
 			_fragment_black.new_shader(
