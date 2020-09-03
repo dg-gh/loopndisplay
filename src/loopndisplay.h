@@ -1966,6 +1966,13 @@ namespace lnd
 			glUniform4f(location1, A00, A10, A01, A11);
 			return program;
 		}
+		inline const lnd::program_vertex_fragment& set_vertex_m4xv3(const lnd::program_vertex_fragment& program, const float* const matrix_ptr)
+		{
+			program.use();
+			int location = glGetUniformLocation(program.get(), "M");
+			glUniformMatrix4fv(location, 1, GL_FALSE, matrix_ptr);
+			return program;
+		}
 
 
 		// CONSTRUCTORS AND DESTRUCTORS
