@@ -2814,56 +2814,56 @@ namespace lnd
 
 			_fragment_black.new_shader(
 				"	#version 330 core									\n"
-				"	layout (location = 0) out vec4 C;					\n"
-				"	void main() { C = vec4(0.0, 0.0, 0.0, 1.0); }		\n"
+				"	layout (location = 0) out vec3 C;					\n"
+				"	void main() { C = vec3(0.0, 0.0, 0.0); }			\n"
 			);
 
 			_fragment_red.new_shader(
 				"	#version 330 core									\n"
-				"	layout (location = 0) out vec4 C;					\n"
-				"	void main() { C = vec4(1.0, 0.0, 0.0, 1.0); }		\n"
+				"	layout (location = 0) out vec3 C;					\n"
+				"	void main() { C = vec3(1.0, 0.0, 0.0); }			\n"
 			);
 
 			_fragment_green.new_shader(
 				"	#version 330 core									\n"
-				"	layout (location = 0) out vec4 C;					\n"
-				"	void main() { C = vec4(0.0, 1.0, 0.0, 1.0); }		\n"
+				"	layout (location = 0) out vec3 C;					\n"
+				"	void main() { C = vec3(0.0, 1.0, 0.0); }			\n"
 			);
 
 			_fragment_blue.new_shader(
 				"	#version 330 core									\n"
-				"	layout (location = 0) out vec4 C;					\n"
-				"	void main() { C = vec4(0.0, 0.0, 1.0, 1.0); }		\n"
+				"	layout (location = 0) out vec3 C;					\n"
+				"	void main() { C = vec3(0.0, 0.0, 1.0); }			\n"
 			);
 
 			_fragment_yellow.new_shader(
 				"	#version 330 core									\n"
-				"	layout (location = 0) out vec4 C;					\n"
-				"	void main() { C = vec4(1.0, 1.0, 0.0, 1.0); }		\n"
+				"	layout (location = 0) out vec3 C;					\n"
+				"	void main() { C = vec3(1.0, 1.0, 0.0); }			\n"
 			);
 
 			_fragment_magenta.new_shader(
 				"	#version 330 core									\n"
-				"	layout (location = 0) out vec4 C;					\n"
-				"	void main() { C = vec4(1.0, 0.0, 1.0, 1.0); }		\n"
+				"	layout (location = 0) out vec3 C;					\n"
+				"	void main() { C = vec3(1.0, 0.0, 1.0); }			\n"
 			);
 
 			_fragment_cyan.new_shader(
 				"	#version 330 core									\n"
-				"	layout (location = 0) out vec4 C;					\n"
-				"	void main() { C = vec4(0.0, 1.0, 1.0, 1.0); }		\n"
+				"	layout (location = 0) out vec3 C;					\n"
+				"	void main() { C = vec3(0.0, 1.0, 1.0); }			\n"
 			);
 
 			_fragment_orange.new_shader(
 				"	#version 330 core									\n"
-				"	layout (location = 0) out vec4 C;					\n"
-				"	void main() { C = vec4(1.0, 0.5, 0.0, 1.0); }		\n"
+				"	layout (location = 0) out vec3 C;					\n"
+				"	void main() { C = vec3(1.0, 0.5, 0.0); }			\n"
 			);
 
 			_fragment_white.new_shader(
 				"	#version 330 core									\n"
-				"	layout (location = 0) out vec4 C;					\n"
-				"	void main() { C = vec4(1.0, 1.0, 1.0, 1.0); }		\n"
+				"	layout (location = 0) out vec3 C;					\n"
+				"	void main() { C = vec3(1.0, 1.0, 1.0); }			\n"
 			);
 
 			_fragment_color.new_shader(
@@ -3196,10 +3196,14 @@ namespace lnd
 			if (window_resizable) { glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); }
 			else { glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); }
 
-			if (window_fullscreen) { lnd::__window_ptr = glfwCreateWindow(new_screen_width, new_screen_height,
-				new_title, glfwGetPrimaryMonitor(), nullptr); }
-			else { lnd::__window_ptr = glfwCreateWindow(new_screen_width, new_screen_height,
-				new_title, nullptr, nullptr); }
+			if (window_fullscreen) {
+				lnd::__window_ptr = glfwCreateWindow(new_screen_width, new_screen_height,
+					new_title, glfwGetPrimaryMonitor(), nullptr);
+			}
+			else {
+				lnd::__window_ptr = glfwCreateWindow(new_screen_width, new_screen_height,
+					new_title, nullptr, nullptr);
+			}
 
 			if (lnd::__window_ptr == nullptr)
 			{
