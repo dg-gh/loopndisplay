@@ -6481,29 +6481,30 @@ namespace lnd
 		}
 		inline void compute_vp_matrix() noexcept
 		{
-			float regv0; float regv1;
+			float regv0; float regv1; size_t offset;
 			for (size_t j = 0; j < 4; j++)
 			{
+				offset = 4 * j;
 				regv0 = v_matrix[0 + 4 * j];
-				vp_matrix[0 + 4 * j] = p_matrix[0] * regv0;
-				vp_matrix[1 + 4 * j] = p_matrix[1] * regv0;
-				vp_matrix[2 + 4 * j] = p_matrix[2] * regv0;
-				vp_matrix[3 + 4 * j] = p_matrix[3] * regv0;
+				vp_matrix[offset] = p_matrix[0] * regv0;
+				vp_matrix[offset + 1] = p_matrix[1] * regv0;
+				vp_matrix[offset + 2] = p_matrix[2] * regv0;
+				vp_matrix[offset + 3] = p_matrix[3] * regv0;
 				regv1 = v_matrix[1 + 4 * j];
-				vp_matrix[0 + 4 * j] += p_matrix[4] * regv1;
-				vp_matrix[1 + 4 * j] += p_matrix[5] * regv1;
-				vp_matrix[2 + 4 * j] += p_matrix[6] * regv1;
-				vp_matrix[3 + 4 * j] += p_matrix[7] * regv1;
+				vp_matrix[offset] += p_matrix[4] * regv1;
+				vp_matrix[offset + 1] += p_matrix[5] * regv1;
+				vp_matrix[offset + 2] += p_matrix[6] * regv1;
+				vp_matrix[offset + 3] += p_matrix[7] * regv1;
 				regv0 = v_matrix[2 + 4 * j];
-				vp_matrix[0 + 4 * j] += p_matrix[8] * regv0;
-				vp_matrix[1 + 4 * j] += p_matrix[9] * regv0;
-				vp_matrix[2 + 4 * j] += p_matrix[10] * regv0;
-				vp_matrix[3 + 4 * j] += p_matrix[11] * regv0;
+				vp_matrix[offset] += p_matrix[8] * regv0;
+				vp_matrix[offset + 1] += p_matrix[9] * regv0;
+				vp_matrix[offset + 2] += p_matrix[10] * regv0;
+				vp_matrix[offset + 3] += p_matrix[11] * regv0;
 				regv1 = v_matrix[3 + 4 * j];
-				vp_matrix[0 + 4 * j] += p_matrix[12] * regv1;
-				vp_matrix[1 + 4 * j] += p_matrix[13] * regv1;
-				vp_matrix[2 + 4 * j] += p_matrix[14] * regv1;
-				vp_matrix[3 + 4 * j] += p_matrix[15] * regv1;
+				vp_matrix[offset] += p_matrix[12] * regv1;
+				vp_matrix[offset + 1] += p_matrix[13] * regv1;
+				vp_matrix[offset + 2] += p_matrix[14] * regv1;
+				vp_matrix[offset + 3] += p_matrix[15] * regv1;
 			}
 		}
 
