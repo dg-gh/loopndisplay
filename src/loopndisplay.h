@@ -3013,6 +3013,7 @@ namespace lnd
 			_vertex_shift_scale.delete_shader();
 			_vertex_shift_rotate.delete_shader();
 			_vertex_affine.delete_shader();
+			_vertex_m44xv3.delete_shader();
 
 			_vertex_RGB_identity.delete_shader();
 			_vertex_RGB_shift.delete_shader();
