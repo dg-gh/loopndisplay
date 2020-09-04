@@ -61,6 +61,10 @@
 #include <condition_variable>
 #include <iostream>
 
+#ifdef LND_INCLUDE_AVX
+#include <immintrin.h>
+#endif // LND_INCLUDE_AVX
+
 
 ////// IMPLEMENTATION //////
 
@@ -6411,9 +6415,11 @@ namespace lnd
 
 	private:
 
+		float mvp_matrix[16] = { 0.0f };
 		float vp_matrix[16] = { 0.0f };
 		float p_matrix[16] = { 0.0f };
 		float v_matrix[16] = { 0.0f };
+		float m_matrix[16] = { 0.0f };
 
 	public:
 
@@ -6482,31 +6488,13 @@ namespace lnd
 		}
 		inline void compute_vp_matrix() noexcept
 		{
-			float regv0; float regv1; size_t offset;
-			for (size_t j = 0; j < 4; j++)
-			{
-				offset = 4 * j;
-				regv0 = v_matrix[0 + 4 * j];
-				vp_matrix[offset] = p_matrix[0] * regv0;
-				vp_matrix[offset + 1] = p_matrix[1] * regv0;
-				vp_matrix[offset + 2] = p_matrix[2] * regv0;
-				vp_matrix[offset + 3] = p_matrix[3] * regv0;
-				regv1 = v_matrix[1 + 4 * j];
-				vp_matrix[offset] += p_matrix[4] * regv1;
-				vp_matrix[offset + 1] += p_matrix[5] * regv1;
-				vp_matrix[offset + 2] += p_matrix[6] * regv1;
-				vp_matrix[offset + 3] += p_matrix[7] * regv1;
-				regv0 = v_matrix[2 + 4 * j];
-				vp_matrix[offset] += p_matrix[8] * regv0;
-				vp_matrix[offset + 1] += p_matrix[9] * regv0;
-				vp_matrix[offset + 2] += p_matrix[10] * regv0;
-				vp_matrix[offset + 3] += p_matrix[11] * regv0;
-				regv1 = v_matrix[3 + 4 * j];
-				vp_matrix[offset] += p_matrix[12] * regv1;
-				vp_matrix[offset + 1] += p_matrix[13] * regv1;
-				vp_matrix[offset + 2] += p_matrix[14] * regv1;
-				vp_matrix[offset + 3] += p_matrix[15] * regv1;
-			}
+			m44xm44(static_cast<float*>(vp_matrix), static_cast<const float*>(p_matrix),
+				static_cast<const float*>(v_matrix));
+		}
+		inline void compute_mvp_matrix() noexcept
+		{
+			m44xm44(static_cast<float*>(mvp_matrix), static_cast<const float*>(vp_matrix),
+				static_cast<const float*>(m_matrix));
 		}
 
 		inline const float* position_data() const noexcept
@@ -6602,6 +6590,68 @@ namespace lnd
 		{
 			theta -= angle;
 			if (theta < -lnd::pi) { theta += lnd::pi_m2; }
+		}
+
+	private:
+
+		inline void m44xm44(float* const pC, const float* const pA, const float* const pB) noexcept
+		{
+#ifdef LND_INCLUDE_AVX
+			__m128 vregA0 = _mm_loadu_ps(pA);
+			__m128 vregA1 = _mm_loadu_ps(pA + 4);
+			__m128 vregA2 = _mm_loadu_ps(pA + 8);
+			__m128 vregA3 = _mm_loadu_ps(pA + 12);
+
+			__m128 vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB));
+			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 1), vregC);
+			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 2), vregC);
+			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 3), vregC);
+			_mm_storeu_ps(pC, vregC);
+
+			vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 4));
+			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 5), vregC);
+			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 6), vregC);
+			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 7), vregC);
+			_mm_storeu_ps(pC + 4, vregC);
+
+			vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 8));
+			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 9), vregC);
+			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 10), vregC);
+			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 11), vregC);
+			_mm_storeu_ps(pC + 8, vregC);
+
+			vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 12));
+			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 13), vregC);
+			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 14), vregC);
+			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 15), vregC);
+			_mm_storeu_ps(pC + 12, vregC);
+#else // LND_INCLUDE_AVX
+			float regB0; float regB1; size_t offset;
+			for (size_t j = 0; j < 4; j++)
+			{
+				offset = 4 * j;
+				regB0 = pB[offset];
+				pC[offset] = pA[0] * regB0;
+				pC[offset + 1] = pA[1] * regB0;
+				pC[offset + 2] = pA[2] * regB0;
+				pC[offset + 3] = pA[3] * regB0;
+				regB1 = pB[offset + 1];
+				pC[offset] += p_matrix[4] * regB1;
+				pC[offset + 1] += pA[5] * regB1;
+				pC[offset + 2] += pA[6] * regB1;
+				pC[offset + 3] += pA[7] * regB1;
+				regB0 = pB[offset + 2];
+				pC[offset] += pA[8] * regB0;
+				pC[offset + 1] += pA[9] * regB0;
+				pC[offset + 2] += pA[10] * regB0;
+				pC[offset + 3] += pA[11] * regB0;
+				regB1 = pB[offset + 3];
+				pC[offset] += pA[12] * regB1;
+				pC[offset + 1] += pA[13] * regB1;
+				pC[offset + 2] += pA[14] * regB1;
+				pC[offset + 3] += pA[15] * regB1;
+			}
+#endif // LND_INCLUDE_AVX
 		}
 	};
 }
