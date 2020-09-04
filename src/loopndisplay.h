@@ -6399,6 +6399,212 @@ namespace lnd
 }
 
 
+namespace lnd
+{
+	constexpr float pi = 3.14159265358979f;
+	constexpr float pi_m2 = 2.0f * 3.14159265358979f;
+	constexpr float pi_d2 = 0.5f * 3.14159265358979f;
+
+	class camera_3d
+	{
+
+	private:
+
+		float vp_matrix[16] = { 0.0f };
+		float p_matrix[16] = { 0.0f };
+		float v_matrix[16] = { 0.0f };
+
+	public:
+
+		float position[4] = { 0.0f };
+		float direction[4] = { 1.0f };
+
+		float theta = 0.0f;
+		float phi = 0.0f;
+
+	private:
+
+		float cos_theta = 1.0f;
+		float sin_theta = 0.0f;
+		float cos_phi = 1.0f;
+		float sin_phi = 0.0f;
+
+	public:
+
+		inline void compute_trig() noexcept
+		{
+			cos_theta = std::cosf(theta);
+			sin_theta = std::sinf(theta);
+			cos_phi = std::cosf(phi);
+			sin_phi = std::sinf(phi);
+
+			direction[0] = cos_theta * cos_phi;
+			direction[1] = sin_theta * cos_phi;
+			direction[2] = sin_phi;
+		}
+
+		inline void compute_p_matrix(float screen_ratio, float fov_y, float z_near, float z_far) noexcept
+		{
+			memset(static_cast<float*>(p_matrix), 0, 16 * sizeof(float));
+
+			float tan_half_fov_y = std::tanf(0.5f * fov_y);
+			float dz_inv = 1.0f / (z_far - z_near);
+			p_matrix[0] = 1.0f / (screen_ratio * tan_half_fov_y);
+			p_matrix[5] = 1.0f / (tan_half_fov_y);
+			p_matrix[10] = -(z_far + z_near) * dz_inv;
+			p_matrix[11] = 1.0f;
+			p_matrix[14] = z_far * z_near * dz_inv;
+		}
+		inline void compute_v_matrix() noexcept
+		{
+			memset(static_cast<float*>(v_matrix), 0, 16 * sizeof(float));
+
+			v_matrix[0] = sin_theta;
+			v_matrix[1] = -cos_theta * sin_phi;
+			v_matrix[2] = cos_theta * cos_phi;
+			v_matrix[3] = 0.0f;
+
+			v_matrix[4] = -cos_theta;
+			v_matrix[5] = -sin_theta * sin_phi;
+			v_matrix[6] = sin_theta * cos_phi;
+			v_matrix[7] = 0.0f;
+
+			v_matrix[8] = 0.0f;
+			v_matrix[9] = cos_phi;
+			v_matrix[10] = sin_phi;
+			v_matrix[11] = 0.0f;
+
+			v_matrix[12] = cos_theta * position[1] - sin_theta * position[0];
+			v_matrix[13] = cos_theta * sin_phi * position[0] + sin_theta * sin_phi * position[1] - cos_phi * position[2];
+			v_matrix[14] = -cos_theta * cos_phi * position[0] - sin_theta * cos_phi * position[1] - sin_phi * position[2];
+			v_matrix[15] = 1.0f;
+		}
+		inline void compute_vp_matrix() noexcept
+		{
+			float regv0; float regv1;
+			for (size_t j = 0; j < 4; j++)
+			{
+				regv0 = v_matrix[0 + 4 * j];
+				vp_matrix[0 + 4 * j] = p_matrix[0] * regv0;
+				vp_matrix[1 + 4 * j] = p_matrix[1] * regv0;
+				vp_matrix[2 + 4 * j] = p_matrix[2] * regv0;
+				vp_matrix[3 + 4 * j] = p_matrix[3] * regv0;
+				regv1 = v_matrix[1 + 4 * j];
+				vp_matrix[0 + 4 * j] += p_matrix[4] * regv1;
+				vp_matrix[1 + 4 * j] += p_matrix[5] * regv1;
+				vp_matrix[2 + 4 * j] += p_matrix[6] * regv1;
+				vp_matrix[3 + 4 * j] += p_matrix[7] * regv1;
+				regv0 = v_matrix[2 + 4 * j];
+				vp_matrix[0 + 4 * j] += p_matrix[8] * regv0;
+				vp_matrix[1 + 4 * j] += p_matrix[9] * regv0;
+				vp_matrix[2 + 4 * j] += p_matrix[10] * regv0;
+				vp_matrix[3 + 4 * j] += p_matrix[11] * regv0;
+				regv1 = v_matrix[3 + 4 * j];
+				vp_matrix[0 + 4 * j] += p_matrix[12] * regv1;
+				vp_matrix[1 + 4 * j] += p_matrix[13] * regv1;
+				vp_matrix[2 + 4 * j] += p_matrix[14] * regv1;
+				vp_matrix[3 + 4 * j] += p_matrix[15] * regv1;
+			}
+		}
+
+		inline const float* position_data() const noexcept
+		{
+			return static_cast<const float*>(position);
+		}
+		inline float* position_data() noexcept
+		{
+			return static_cast<float*>(position);
+		}
+
+		inline const float* direction_data() const noexcept
+		{
+			return static_cast<const float*>(direction);
+		}
+		inline float* direction_data() noexcept
+		{
+			return static_cast<float*>(direction);
+		}
+
+		inline const float* v_matrix_data() const noexcept
+		{
+			return static_cast<const float*>(v_matrix);
+		}
+		inline float* v_matrix_data() noexcept
+		{
+			return static_cast<float*>(v_matrix);
+		}
+
+		inline const float* p_matrix_data() const noexcept
+		{
+			return static_cast<const float*>(p_matrix);
+		}
+		inline float* p_matrix_data() noexcept
+		{
+			return static_cast<float*>(p_matrix);
+		}
+
+		inline const float* vp_matrix_data() const noexcept
+		{
+			return static_cast<const float*>(vp_matrix);
+		}
+		inline float* vp_matrix_data() noexcept
+		{
+			return static_cast<float*>(vp_matrix);
+		}
+
+		inline void move_forward(float distance) noexcept
+		{
+			position[0] += distance * cos_theta;
+			position[1] += distance * sin_theta;
+		}
+		inline void move_backward(float distance) noexcept
+		{
+			position[0] -= distance * cos_theta;
+			position[1] -= distance * sin_theta;
+		}
+		inline void move_left(float distance) noexcept
+		{
+			position[0] -= distance * sin_theta;
+			position[1] += distance * cos_theta;
+		}
+		inline void move_right(float distance) noexcept
+		{
+			position[0] += distance * sin_theta;
+			position[1] -= distance * cos_theta;
+		}
+		inline void move_up(float distance) noexcept
+		{
+			position[2] += distance;
+		}
+		inline void move_down(float distance) noexcept
+		{
+			position[2] -= distance;
+		}
+
+		inline void turn_up(float angle) noexcept
+		{
+			phi += angle;
+			if (phi > lnd::pi_d2) { phi = lnd::pi_d2; }
+		}
+		inline void turn_down(float angle) noexcept
+		{
+			phi -= angle;
+			if (phi < -lnd::pi_d2) { phi = -lnd::pi_d2; }
+		}
+		inline void turn_left(float angle) noexcept
+		{
+			theta += angle;
+			if (theta > lnd::pi) { theta -= lnd::pi_m2; }
+		}
+		inline void turn_right(float angle) noexcept
+		{
+			theta -= angle;
+			if (theta < -lnd::pi) { theta += lnd::pi_m2; }
+		}
+	};
+}
+
+
 #endif // LOOPNDISPLAY_H
 
 
