@@ -1522,6 +1522,17 @@ namespace lnd
 			glDrawArrays(GL_LINE_LOOP, 0, 3);
 			lnd::__default_vertex_buffer.bind();
 		}
+		inline void draw_tri_hollow_3d(const float* const ptr, const lnd::program_vertex_fragment& program, const float* const  matrix_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program.use();
+			set_vertex_m44xv3(program, matrix_ptr);
+			glDrawArrays(GL_LINE_LOOP, 0, 3);
+			lnd::__default_vertex_buffer.bind();
+		}
 		inline void draw_tri_RGB(const float* const ptr, const float* const ptr_color)
 		{
 			lnd::__default_vertex_buffer.bind();
