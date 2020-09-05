@@ -1480,7 +1480,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_m44xv3(program, matrix_ptr);
+			set_vertex_3d(program, matrix_ptr);
 			glDrawArrays(GL_LINES, 0, 2);
 			lnd::__default_vertex_buffer.unbind();
 		}
@@ -1533,7 +1533,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_m44xv3(program, matrix_ptr);
+			set_vertex_3d(program, matrix_ptr);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			lnd::__default_vertex_buffer.unbind();
 		}
@@ -1554,7 +1554,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_m44xv3(program, matrix_ptr);
+			set_vertex_3d(program, matrix_ptr);
 			glDrawArrays(GL_LINE_LOOP, 0, 3);
 			lnd::__default_vertex_buffer.bind();
 		}
@@ -1573,6 +1573,22 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
+		inline void draw_tri_RGB_3d(const float* const ptr, const float* const ptr_color, const float* const  matrix_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program_RGB_3d().use();
+			set_vertex_3d(program_RGB_3d(), matrix_ptr);
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
 		inline void draw_tri_RGBA(const float* const ptr, const float* const ptr_color)
 		{
 			lnd::__default_vertex_buffer.bind();
@@ -1585,6 +1601,24 @@ namespace lnd
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			program_RGBA().use();
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+			glBlendFunc(GL_ONE, GL_ZERO);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_tri_RGBA_3d(const float* const ptr, const float* const ptr_color, const float* const  matrix_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			program_RGBA_3d().use();
+			set_vertex_3d(program_RGBA_3d(), matrix_ptr);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			glBlendFunc(GL_ONE, GL_ZERO);
 			lnd::__default_vertex_buffer.unbind();
@@ -1946,17 +1980,20 @@ namespace lnd
 		const inline lnd::shader_vertex& vertex_shift_scale() const noexcept { return _vertex_shift_scale; } // mutable
 		const inline lnd::shader_vertex& vertex_shift_rotate() const noexcept { return _vertex_shift_rotate; } // mutable
 		const inline lnd::shader_vertex& vertex_affine() const noexcept { return _vertex_affine; } // mutable
-		const inline lnd::shader_vertex& vertex_m44xv3() const noexcept { return _vertex_m44xv3; } // mutable
+		const inline lnd::shader_vertex& vertex_3d() const noexcept { return _vertex_3d; } // mutable
 		const inline lnd::shader_vertex& vertex_RGB_identity() const noexcept { return _vertex_RGB_identity; }
 		const inline lnd::shader_vertex& vertex_RGB_shift() const noexcept { return _vertex_RGB_shift; } // mutable
 		const inline lnd::shader_vertex& vertex_RGB_shift_scale() const noexcept { return _vertex_RGB_shift_scale; } // mutable
 		const inline lnd::shader_vertex& vertex_RGB_shift_rotate() const noexcept { return _vertex_RGB_shift_rotate; } // mutable
 		const inline lnd::shader_vertex& vertex_RGB_affine() const noexcept { return _vertex_RGB_affine; } // mutable
+		const inline lnd::shader_vertex& vertex_RGB_3d() const noexcept { return _vertex_RGB_3d; } // mutable
 		const inline lnd::shader_vertex& vertex_RGBA_identity() const noexcept { return _vertex_RGBA_identity; }
 		const inline lnd::shader_vertex& vertex_RGBA_shift() const noexcept { return _vertex_RGBA_shift; } // mutable
 		const inline lnd::shader_vertex& vertex_RGBA_shift_scale() const noexcept { return _vertex_RGBA_shift_scale; } // mutable
 		const inline lnd::shader_vertex& vertex_RGBA_shift_rotate() const noexcept { return _vertex_RGBA_shift_rotate; } // mutable
 		const inline lnd::shader_vertex& vertex_RGBA_affine() const noexcept { return _vertex_RGBA_affine; } // mutable
+		const inline lnd::shader_vertex& vertex_RGBA_3d() const noexcept { return _vertex_RGBA_3d; } // mutable
+		
 		const inline lnd::shader_vertex& vertex_texture_identity() const noexcept { return _vertex_texture_identity; }
 		const inline lnd::shader_vertex& vertex_texture_shift() const noexcept { return _vertex_texture_shift; } // mutable
 		const inline lnd::shader_vertex& vertex_texture_shift_scale() const noexcept { return _vertex_texture_shift_scale; } // mutable
@@ -1988,7 +2025,9 @@ namespace lnd
 		const inline lnd::program_vertex_fragment& program_white() const noexcept { return _program_white; }
 		const inline lnd::program_vertex_fragment& program_color() const noexcept { return _program_color; } // mutable program
 		const inline lnd::program_vertex_fragment& program_RGB() const noexcept { return _program_RGB; }
+		const inline lnd::program_vertex_fragment& program_RGB_3d() const noexcept { return _program_RGB_3d; } // mutable program
 		const inline lnd::program_vertex_fragment& program_RGBA() const noexcept { return _program_RGBA; }
+		const inline lnd::program_vertex_fragment& program_RGBA_3d() const noexcept { return _program_RGBA_3d; } // mutable program
 		const inline lnd::program_vertex_fragment& program_texture() const noexcept { return _program_texture; }
 
 		inline const lnd::program_vertex_fragment& set_fragment_color(const lnd::program_vertex_fragment& program, float c0, float c1, float c2, float c3)
@@ -2042,7 +2081,7 @@ namespace lnd
 			glUniform4f(location1, A00, A10, A01, A11);
 			return program;
 		}
-		inline const lnd::program_vertex_fragment& set_vertex_m44xv3(const lnd::program_vertex_fragment& program, const float* const matrix_ptr)
+		inline const lnd::program_vertex_fragment& set_vertex_3d(const lnd::program_vertex_fragment& program, const float* const matrix_ptr)
 		{
 			program.use();
 			int location = glGetUniformLocation(program.get(), "M");
@@ -2107,19 +2146,21 @@ namespace lnd
 		lnd::shader_vertex _vertex_shift_scale; // mutable
 		lnd::shader_vertex _vertex_shift_rotate; // mutable
 		lnd::shader_vertex _vertex_affine; // mutable
-		lnd::shader_vertex _vertex_m44xv3; // mutable
+		lnd::shader_vertex _vertex_3d; // mutable
 
 		lnd::shader_vertex _vertex_RGB_identity;
 		lnd::shader_vertex _vertex_RGB_shift; // mutable
 		lnd::shader_vertex _vertex_RGB_shift_scale; // mutable
 		lnd::shader_vertex _vertex_RGB_shift_rotate; // mutable
 		lnd::shader_vertex _vertex_RGB_affine; // mutable
+		lnd::shader_vertex _vertex_RGB_3d; // mutable
 
 		lnd::shader_vertex _vertex_RGBA_identity;
 		lnd::shader_vertex _vertex_RGBA_shift; // mutable
 		lnd::shader_vertex _vertex_RGBA_shift_scale; // mutable
 		lnd::shader_vertex _vertex_RGBA_shift_rotate; // mutable
 		lnd::shader_vertex _vertex_RGBA_affine; // mutable
+		lnd::shader_vertex _vertex_RGBA_3d; // mutable
 
 		lnd::shader_vertex _vertex_texture_identity;
 		lnd::shader_vertex _vertex_texture_shift; // mutable
@@ -2152,7 +2193,9 @@ namespace lnd
 		lnd::program_vertex_fragment _program_white;
 		lnd::program_vertex_fragment _program_color;
 		lnd::program_vertex_fragment _program_RGB;
+		lnd::program_vertex_fragment _program_RGB_3d;
 		lnd::program_vertex_fragment _program_RGBA;
+		lnd::program_vertex_fragment _program_RGBA_3d;
 		lnd::program_vertex_fragment _program_texture;
 
 		std::vector<std::thread> auxiliary_threads;
@@ -2897,11 +2940,33 @@ namespace lnd
 				);
 			}
 			
-			_vertex_m44xv3.new_shader(
+			_vertex_3d.new_shader(
 				"	#version 330 core									\n"
 				"	layout (location = 0) in vec3 X;					\n"
 				"	uniform mat4 M;										\n"
 				"	void main() { gl_Position = M * vec4(X, 1); }		\n"
+			);
+			
+			_vertex_RGB_3d.new_shader(
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec3 X;					\n"
+				"	layout (location = 1) in vec3 C;					\n"
+				"	out vec3 forward_C;									\n"
+				"	uniform mat4 M;										\n"
+				"	void main() {										\n"
+				"		gl_Position = M * vec4(X, 1);					\n"
+				"		forward_C = C; }								\n"
+			);
+
+			_vertex_RGBA_3d.new_shader(
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec3 X;					\n"
+				"	layout (location = 1) in vec4 C;					\n"
+				"	out vec4 forward_C;									\n"
+				"	uniform mat4 M;										\n"
+				"	void main() {										\n"
+				"		gl_Position = M * vec4(X, 1);					\n"
+				"		forward_C = C; }								\n"
 			);
 
 			_fragment_black.new_shader(
@@ -2998,7 +3063,9 @@ namespace lnd
 			_program_white.new_program(_vertex_identity, _fragment_white);
 			_program_white.new_program(_vertex_identity, _fragment_color);
 			_program_RGB.new_program(_vertex_RGB_identity, _fragment_RGB);
+			_program_RGB_3d.new_program(_vertex_RGB_3d, _fragment_RGB);
 			_program_RGBA.new_program(_vertex_RGBA_identity, _fragment_RGBA);
+			_program_RGBA_3d.new_program(_vertex_RGBA_3d, _fragment_RGBA);
 			_program_texture.new_program(_vertex_texture_identity, _fragment_texture);
 
 			lnd::__default_vertex_buffer.new_id(1);
@@ -3053,19 +3120,21 @@ namespace lnd
 			_vertex_shift_scale.delete_shader();
 			_vertex_shift_rotate.delete_shader();
 			_vertex_affine.delete_shader();
-			_vertex_m44xv3.delete_shader();
+			_vertex_3d.delete_shader();
 
 			_vertex_RGB_identity.delete_shader();
 			_vertex_RGB_shift.delete_shader();
 			_vertex_RGB_shift_scale.delete_shader();
 			_vertex_RGB_shift_rotate.delete_shader();
 			_vertex_RGB_affine.delete_shader();
+			_vertex_RGB_3d.delete_shader();
 
 			_vertex_RGBA_identity.delete_shader();
 			_vertex_RGBA_shift.delete_shader();
 			_vertex_RGBA_shift_scale.delete_shader();
 			_vertex_RGBA_shift_rotate.delete_shader();
 			_vertex_RGBA_affine.delete_shader();
+			_vertex_RGBA_3d.delete_shader();
 
 			_vertex_texture_identity.delete_shader();
 			_vertex_texture_shift.delete_shader();
