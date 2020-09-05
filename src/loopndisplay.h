@@ -6829,7 +6829,6 @@ namespace lnd
 		float vp_matrix[16] = { 0.0f };
 		float p_matrix[16] = { 0.0f };
 		float v_matrix[16] = { 0.0f };
-		float m_matrix[16] = { 0.0f };
 
 	public:
 
@@ -6864,8 +6863,6 @@ namespace lnd
 		{
 			if (screen_ratio >= 1.0f)
 			{
-				memset(static_cast<float*>(p_matrix), 0, 16 * sizeof(float));
-
 				float tan_half_fov_y = std::tanf(0.5f * fov);
 				float dz_inv = 1.0f / (z_far - z_near);
 				p_matrix[0] = 1.0f / (screen_ratio * tan_half_fov_y);
@@ -6876,8 +6873,6 @@ namespace lnd
 			}
 			else
 			{
-				memset(static_cast<float*>(p_matrix), 0, 16 * sizeof(float));
-
 				float tan_half_fov_x = std::tanf(0.5f * fov);
 				float dz_inv = 1.0f / (z_far - z_near);
 				p_matrix[0] = 1.0f / tan_half_fov_x;
@@ -6916,14 +6911,9 @@ namespace lnd
 			m44xm44(static_cast<float*>(vp_matrix), static_cast<const float*>(p_matrix),
 				static_cast<const float*>(v_matrix));
 		}
-		inline void compute_mvp_matrix() noexcept
+		inline void compute_mvp_matrix(const float* const m_matrix) noexcept
 		{
-			m44xm44(static_cast<float*>(mvp_matrix), static_cast<const float*>(vp_matrix),
-				static_cast<const float*>(m_matrix));
-		}
-		inline void compute_mvp_matrix_from(const float* const _m_matrix) noexcept
-		{
-			m44xm44(static_cast<float*>(mvp_matrix), static_cast<const float*>(vp_matrix), _m_matrix);
+			m44xm44(static_cast<float*>(mvp_matrix), static_cast<const float*>(vp_matrix), m_matrix);
 		}
 
 		inline const float* position_data() const noexcept
