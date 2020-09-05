@@ -18,7 +18,8 @@
 // void exit() { your code here in the derived class ... }
 // inline bool exit_condition() { your code here in the derived class ... }
 
-// the method call_display() runs the method display(), preferably call in the loop(float time_elapsed) method
+// the method call_display() runs the method display(), must be called in the loop(float time_elapsed) method
+// the method clear_window() clears the window, must be called in the display() method
 
 
 // as an example, you can enter the following code in the main:
