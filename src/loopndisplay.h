@@ -6921,6 +6921,10 @@ namespace lnd
 			m44xm44(static_cast<float*>(mvp_matrix), static_cast<const float*>(vp_matrix),
 				static_cast<const float*>(m_matrix));
 		}
+		inline void compute_mvp_matrix_from(const float* const _m_matrix) noexcept
+		{
+			m44xm44(static_cast<float*>(mvp_matrix), static_cast<const float*>(vp_matrix), _m_matrix);
+		}
 
 		inline const float* position_data() const noexcept
 		{
