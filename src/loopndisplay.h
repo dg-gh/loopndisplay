@@ -1473,7 +1473,7 @@ namespace lnd
 			glDrawArrays(GL_LINES, 0, 2);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_line_3d(const float* const ptr, const lnd::program_vertex_fragment& program, const float* const  matrix_ptr)
+		inline void draw_line_3d(const float* const ptr, const lnd::program_vertex_fragment& program, const float* const matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
@@ -1499,7 +1499,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_line_RGB_3d(const float* const ptr, const float* const ptr_color, const float* const  matrix_ptr)
+		inline void draw_line_RGB_3d(const float* const ptr, const float* const ptr_color, const float* const matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
@@ -1532,7 +1532,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_line_RGBA_3d(const float* const ptr, const float* const ptr_color, const float* const  matrix_ptr)
+		inline void draw_line_RGBA_3d(const float* const ptr, const float* const ptr_color, const float* const matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
@@ -1560,7 +1560,7 @@ namespace lnd
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_tri_3d(const float* const ptr, const lnd::program_vertex_fragment& program, const float* const  matrix_ptr)
+		inline void draw_tri_3d(const float* const ptr, const lnd::program_vertex_fragment& program, const float* const matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr, GL_STATIC_DRAW);
@@ -1581,7 +1581,7 @@ namespace lnd
 			glDrawArrays(GL_LINE_LOOP, 0, 3);
 			lnd::__default_vertex_buffer.bind();
 		}
-		inline void draw_tri_hollow_3d(const float* const ptr, const lnd::program_vertex_fragment& program, const float* const  matrix_ptr)
+		inline void draw_tri_hollow_3d(const float* const ptr, const lnd::program_vertex_fragment& program, const float* const matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr, GL_STATIC_DRAW);
@@ -1607,7 +1607,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri_RGB_3d(const float* const ptr, const float* const ptr_color, const float* const  matrix_ptr)
+		inline void draw_tri_RGB_3d(const float* const ptr, const float* const ptr_color, const float* const matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr, GL_STATIC_DRAW);
@@ -1640,7 +1640,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri_RGBA_3d(const float* const ptr, const float* const ptr_color, const float* const  matrix_ptr)
+		inline void draw_tri_RGBA_3d(const float* const ptr, const float* const ptr_color, const float* const matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr, GL_STATIC_DRAW);
