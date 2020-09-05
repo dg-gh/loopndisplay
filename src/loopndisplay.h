@@ -1499,6 +1499,22 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
+		inline void draw_line_RGB_3d(const float* const ptr, const float* const ptr_color, const float* const  matrix_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program_RGB_3d().use();
+			set_vertex_3d(program_RGB_3d(), matrix_ptr);
+			glDrawArrays(GL_LINES, 0, 2);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
 		inline void draw_line_RGBA(const float* const ptr, const float* const ptr_color)
 		{
 			lnd::__default_vertex_buffer.bind();
@@ -1511,6 +1527,24 @@ namespace lnd
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			program_RGBA().use();
+			glDrawArrays(GL_LINES, 0, 2);
+			glBlendFunc(GL_ONE, GL_ZERO);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_line_RGBA_3d(const float* const ptr, const float* const ptr_color, const float* const  matrix_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			program_RGBA_3d().use();
+			set_vertex_3d(program_RGBA_3d(), matrix_ptr);
 			glDrawArrays(GL_LINES, 0, 2);
 			glBlendFunc(GL_ONE, GL_ZERO);
 			lnd::__default_vertex_buffer.unbind();
