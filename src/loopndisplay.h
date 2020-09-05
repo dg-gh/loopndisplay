@@ -6486,17 +6486,32 @@ namespace lnd
 			direction[2] = sin_phi;
 		}
 
-		inline void compute_p_matrix(float screen_ratio, float fov_y, float z_near, float z_far) noexcept
+		inline void compute_p_matrix(float screen_ratio, float fov, float z_near, float z_far) noexcept
 		{
-			memset(static_cast<float*>(p_matrix), 0, 16 * sizeof(float));
+			if (screen_ratio >= 1.0f)
+			{
+				memset(static_cast<float*>(p_matrix), 0, 16 * sizeof(float));
 
-			float tan_half_fov_y = std::tanf(0.5f * fov_y);
-			float dz_inv = 1.0f / (z_far - z_near);
-			p_matrix[0] = 1.0f / (screen_ratio * tan_half_fov_y);
-			p_matrix[5] = 1.0f / (tan_half_fov_y);
-			p_matrix[10] = -(z_far + z_near) * dz_inv;
-			p_matrix[11] = 1.0f;
-			p_matrix[14] = z_far * z_near * dz_inv;
+				float tan_half_fov_y = std::tanf(0.5f * fov);
+				float dz_inv = 1.0f / (z_far - z_near);
+				p_matrix[0] = 1.0f / (screen_ratio * tan_half_fov_y);
+				p_matrix[5] = 1.0f / tan_half_fov_y;
+				p_matrix[10] = -(z_far + z_near) * dz_inv;
+				p_matrix[11] = 1.0f;
+				p_matrix[14] = z_far * z_near * dz_inv;
+			}
+			else
+			{
+				memset(static_cast<float*>(p_matrix), 0, 16 * sizeof(float));
+
+				float tan_half_fov_x = std::tanf(0.5f * fov);
+				float dz_inv = 1.0f / (z_far - z_near);
+				p_matrix[0] = 1.0f / tan_half_fov_x;
+				p_matrix[5] = screen_ratio / tan_half_fov_x;
+				p_matrix[10] = -(z_far + z_near) * dz_inv;
+				p_matrix[11] = 1.0f;
+				p_matrix[14] = z_far * z_near * dz_inv;
+			}
 		}
 		inline void compute_v_matrix() noexcept
 		{
