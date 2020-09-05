@@ -1044,6 +1044,14 @@ namespace lnd
 		{
 			glClear(_clear_window);
 		}
+		
+		// set transparency
+
+		inline void set_transparency(bool transparency)
+		{
+			if (transparency) { glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); }
+			else { glBlendFunc(GL_ONE, GL_ZERO); }
+		}
 
 		// set dim
 
