@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 01 / 09 / 2020
+// loopndisplay.h - last update : 05 / 09 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW installed
@@ -1058,7 +1058,7 @@ namespace lnd
 			glDepthFunc(GL_LESS);
 			_clear_window = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 		}
-		
+
 		// subwindow
 
 		inline void set_subwindow(float X_min, float Y_min, float X_max, float Y_max)
@@ -1463,35 +1463,35 @@ namespace lnd
 
 		// BASIC DRAW CALLS
 
-		inline void draw_line(const float* const ptr, const lnd::program_vertex_fragment& program)
+		inline void draw_line(const float* const vertex_ptr, const lnd::program_vertex_fragment& program)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_LINES, 0, 2);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_line_3d(const float* const ptr, const lnd::program_vertex_fragment& program, const float* const matrix_ptr)
+		inline void draw_line_3d(const float* const vertex_ptr, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, matrix_ptr);
+			set_vertex_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_LINES, 0, 2);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_line_RGB(const float* const ptr, const float* const ptr_color)
+		inline void draw_line_RGB(const float* const vertex_ptr, const float* const color_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB().use();
@@ -1499,30 +1499,30 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_line_RGB_3d(const float* const ptr, const float* const ptr_color, const float* const matrix_ptr)
+		inline void draw_line_RGB_3d(const float* const vertex_ptr, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB_3d().use();
-			set_vertex_3d(program_RGB_3d(), matrix_ptr);
+			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_LINES, 0, 2);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_line_RGBA(const float* const ptr, const float* const ptr_color)
+		inline void draw_line_RGBA(const float* const vertex_ptr, const float* const color_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1532,74 +1532,74 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_line_RGBA_3d(const float* const ptr, const float* const ptr_color, const float* const matrix_ptr)
+		inline void draw_line_RGBA_3d(const float* const vertex_ptr, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			program_RGBA_3d().use();
-			set_vertex_3d(program_RGBA_3d(), matrix_ptr);
+			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_LINES, 0, 2);
 			glBlendFunc(GL_ONE, GL_ZERO);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri(const float* const ptr, const lnd::program_vertex_fragment& program)
+		inline void draw_tri(const float* const vertex_ptr, const lnd::program_vertex_fragment& program)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_tri_3d(const float* const ptr, const lnd::program_vertex_fragment& program, const float* const matrix_ptr)
+		inline void draw_tri_3d(const float* const vertex_ptr, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, matrix_ptr);
+			set_vertex_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_tri_hollow(const float* const ptr, const lnd::program_vertex_fragment& program)
+		inline void draw_tri_hollow(const float* const vertex_ptr, const lnd::program_vertex_fragment& program)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_LOOP, 0, 3);
 			lnd::__default_vertex_buffer.bind();
 		}
-		inline void draw_tri_hollow_3d(const float* const ptr, const lnd::program_vertex_fragment& program, const float* const matrix_ptr)
+		inline void draw_tri_hollow_3d(const float* const vertex_ptr, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, matrix_ptr);
+			set_vertex_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_LINE_LOOP, 0, 3);
 			lnd::__default_vertex_buffer.bind();
 		}
-		inline void draw_tri_RGB(const float* const ptr, const float* const ptr_color)
+		inline void draw_tri_RGB(const float* const vertex_ptr, const float* const color_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB().use();
@@ -1607,30 +1607,30 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri_RGB_3d(const float* const ptr, const float* const ptr_color, const float* const matrix_ptr)
+		inline void draw_tri_RGB_3d(const float* const vertex_ptr, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB_3d().use();
-			set_vertex_3d(program_RGB_3d(), matrix_ptr);
+			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri_RGBA(const float* const ptr, const float* const ptr_color)
+		inline void draw_tri_RGBA(const float* const vertex_ptr, const float* const color_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1640,52 +1640,52 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri_RGBA_3d(const float* const ptr, const float* const ptr_color, const float* const matrix_ptr)
+		inline void draw_tri_RGBA_3d(const float* const vertex_ptr, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			program_RGBA_3d().use();
-			set_vertex_3d(program_RGBA_3d(), matrix_ptr);
+			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			glBlendFunc(GL_ONE, GL_ZERO);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_quad(const float* const ptr, const lnd::program_vertex_fragment& program)
+		inline void draw_quad(const float* const vertex_ptr, const lnd::program_vertex_fragment& program)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_QUADS, 0, 4);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_quad_hollow(const float* const ptr, const lnd::program_vertex_fragment& program)
+		inline void draw_quad_hollow(const float* const vertex_ptr, const lnd::program_vertex_fragment& program)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_LOOP, 0, 4);
 			lnd::__default_vertex_buffer.bind();
 		}
-		inline void draw_quad_RGB(const float* const ptr, const float* const ptr_color)
+		inline void draw_quad_RGB(const float* const vertex_ptr, const float* const color_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB().use();
@@ -1693,14 +1693,14 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_quad_RGBA(const float* const ptr, const float* const ptr_color)
+		inline void draw_quad_RGBA(const float* const vertex_ptr, const float* const color_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(float), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(float), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1711,24 +1711,35 @@ namespace lnd
 			lnd::__default_color_buffer.bind();
 		}
 
-		inline void draw_lines(const float* const ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_lines(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_LINES, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_lines_RGB(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_lines_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program.use();
+			set_vertex_3d(program, mpv_matrix_ptr);
+			glDrawArrays(GL_LINES, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+		}
+		inline void draw_lines_RGB(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB().use();
@@ -1736,14 +1747,30 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_lines_RGBA(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_lines_RGB_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program_RGB_3d().use();
+			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_LINES, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_lines_RGBA(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1753,24 +1780,53 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tris(const float* const ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_lines_RGBA_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			program_RGBA_3d().use();
+			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_LINES, 0, vertex_count);
+			glBlendFunc(GL_ONE, GL_ZERO);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_tris(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_tris_RGB(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_tris_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program.use();
+			set_vertex_3d(program, mpv_matrix_ptr);
+			glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+		}
+		inline void draw_tris_RGB(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB().use();
@@ -1778,14 +1834,30 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tris_RGBA(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_tris_RGB_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program_RGB_3d().use();
+			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_tris_RGBA(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1795,24 +1867,42 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_quads(const float* const ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_tris_RGBA_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			program_RGBA_3d().use();
+			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+			glBlendFunc(GL_ONE, GL_ZERO);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_quads(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_QUADS, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_quads_RGB(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_quads_RGB(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB().use();
@@ -1820,14 +1910,14 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_quads_RGBA(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_quads_RGBA(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1837,24 +1927,36 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_line_strip(const float* const ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_line_strip(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_STRIP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_line_strip_RGB(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_line_strip_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program.use();
+			set_vertex_3d(program, mpv_matrix_ptr);
+			glDrawArrays(GL_LINES, 0, vertex_count);
+			glDrawArrays(GL_LINE_STRIP, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+		}
+		inline void draw_line_strip_RGB(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB().use();
@@ -1862,14 +1964,30 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_line_strip_RGBA(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_line_strip_RGB_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program_RGB_3d().use();
+			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_LINE_STRIP, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_line_strip_RGBA(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1879,24 +1997,53 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_line_loop(const float* const ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_line_strip_RGBA_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			program_RGBA_3d().use();
+			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_LINE_STRIP, 0, vertex_count);
+			glBlendFunc(GL_ONE, GL_ZERO);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_line_loop(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_LOOP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_line_loop_RGB(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_line_loop_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program.use();
+			set_vertex_3d(program, mpv_matrix_ptr);
+			glDrawArrays(GL_LINE_LOOP, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+		}
+		inline void draw_line_loop_RGB(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB().use();
@@ -1904,14 +2051,30 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_line_loop_RGBA(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_line_loop_RGB_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program_RGB_3d().use();
+			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_LINE_LOOP, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_line_loop_RGBA(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1921,24 +2084,53 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri_strip(const float* const ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_line_loop_RGBA_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			program_RGBA_3d().use();
+			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_LINE_LOOP, 0, vertex_count);
+			glBlendFunc(GL_ONE, GL_ZERO);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_tri_strip(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_tri_strip_RGB(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_tri_strip_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program.use();
+			set_vertex_3d(program, mpv_matrix_ptr);
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+		}
+		inline void draw_tri_strip_RGB(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB().use();
@@ -1946,14 +2138,30 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri_strip_RGBA(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_tri_strip_RGB_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program_RGB_3d().use();
+			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_tri_strip_RGBA(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1963,24 +2171,53 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri_fan(const float* const ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_tri_strip_RGBA_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			program_RGBA_3d().use();
+			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
+			glBlendFunc(GL_ONE, GL_ZERO);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_tri_fan(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_tri_fan_RGB(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_tri_fan_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program.use();
+			set_vertex_3d(program, mpv_matrix_ptr);
+			glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+		}
+		inline void draw_tri_fan_RGB(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB().use();
@@ -1988,18 +2225,52 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri_fan_RGBA(const float* const ptr, GLsizei vertex_count, const float* const ptr_color)
+		inline void draw_tri_fan_RGB_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), ptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program_RGB_3d().use();
+			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_tri_fan_RGBA(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			lnd::__default_color_buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), ptr_color, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			program_RGBA().use();
+			glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count);
+			glBlendFunc(GL_ONE, GL_ZERO);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_tri_fan_RGBA_3d(const float* const vertex_ptr, GLsizei vertex_count, const float* const color_ptr, const float* const mpv_matrix_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, vertex_count * (4 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			program_RGBA_3d().use();
+			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count);
 			glBlendFunc(GL_ONE, GL_ZERO);
 			lnd::__default_vertex_buffer.unbind();
@@ -2027,7 +2298,7 @@ namespace lnd
 		const inline lnd::shader_vertex& vertex_RGBA_shift_rotate() const noexcept { return _vertex_RGBA_shift_rotate; } // mutable
 		const inline lnd::shader_vertex& vertex_RGBA_affine() const noexcept { return _vertex_RGBA_affine; } // mutable
 		const inline lnd::shader_vertex& vertex_RGBA_3d() const noexcept { return _vertex_RGBA_3d; } // mutable
-		
+
 		const inline lnd::shader_vertex& vertex_texture_identity() const noexcept { return _vertex_texture_identity; }
 		const inline lnd::shader_vertex& vertex_texture_shift() const noexcept { return _vertex_texture_shift; } // mutable
 		const inline lnd::shader_vertex& vertex_texture_shift_scale() const noexcept { return _vertex_texture_shift_scale; } // mutable
@@ -2973,14 +3244,14 @@ namespace lnd
 					"		X[2], X[3]); forward_UV = UV; }											\n"
 				);
 			}
-			
+
 			_vertex_3d.new_shader(
 				"	#version 330 core									\n"
 				"	layout (location = 0) in vec3 X;					\n"
 				"	uniform mat4 M;										\n"
 				"	void main() { gl_Position = M * vec4(X, 1); }		\n"
 			);
-			
+
 			_vertex_RGB_3d.new_shader(
 				"	#version 330 core									\n"
 				"	layout (location = 0) in vec3 X;					\n"
