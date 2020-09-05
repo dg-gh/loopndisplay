@@ -6869,7 +6869,7 @@ namespace lnd
 				p_matrix[5] = 1.0f / tan_half_fov_y;
 				p_matrix[10] = -(z_far + z_near) * dz_inv;
 				p_matrix[11] = 1.0f;
-				p_matrix[14] = z_far * z_near * dz_inv;
+				p_matrix[14] = (2.0f * z_near) * (z_far * dz_inv);
 			}
 			else
 			{
@@ -6879,7 +6879,7 @@ namespace lnd
 				p_matrix[5] = screen_ratio / tan_half_fov_x;
 				p_matrix[10] = -(z_far + z_near) * dz_inv;
 				p_matrix[11] = 1.0f;
-				p_matrix[14] = z_far * z_near * dz_inv;
+				p_matrix[14] = (2.0f * z_near) * (z_far * dz_inv);
 			}
 		}
 		inline void compute_v_matrix() noexcept
