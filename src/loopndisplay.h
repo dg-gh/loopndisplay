@@ -1058,6 +1058,30 @@ namespace lnd
 			glDepthFunc(GL_LESS);
 			_clear_window = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 		}
+		
+		// subwindow
+
+		inline void set_subwindow(float X_min, float Y_min, float X_max, float Y_max)
+		{
+			if (_screen_width >= _screen_height)
+			{
+				float factor_X = 0.5f * static_cast<float>(_screen_width) * _screen_ratio_inv;
+				float factor_Y = 0.5f * static_cast<float>(_screen_height);
+				glViewport(static_cast<int>(factor_X * (X_min - _min_X)), static_cast<int>(factor_Y * (Y_min - _min_Y)),
+					static_cast<GLsizei>(factor_X * (X_max - X_min)), static_cast<GLsizei>(factor_Y * (Y_max - Y_min)));
+			}
+			else
+			{
+				float factor_X = 0.5f * static_cast<float>(_screen_width);
+				float factor_Y = 0.5f * static_cast<float>(_screen_height) * _screen_ratio;
+				glViewport(static_cast<int>(factor_X * (X_min - _min_X)), static_cast<int>(factor_Y * (Y_min - _min_Y)),
+					static_cast<GLsizei>(factor_X * (X_max - X_min)), static_cast<GLsizei>(factor_Y * (Y_max - Y_min)));
+			}
+		}
+		inline void set_subwindow()
+		{
+			glViewport(0, 0, static_cast<GLsizei>(_screen_width), static_cast<GLsizei>(_screen_height));
+		}
 
 		// pointer to window
 
