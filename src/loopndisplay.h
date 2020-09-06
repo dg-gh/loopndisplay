@@ -1467,10 +1467,6 @@ namespace lnd
 		{
 			glClearColor(R, G, B, 1.0f);
 		}
-		inline void clear_color(float R, float G, float B, float A)
-		{
-			glClearColor(R, G, B, A);
-		}
 
 
 		// BASIC DRAW CALLS
