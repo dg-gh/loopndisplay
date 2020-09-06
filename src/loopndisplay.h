@@ -3480,7 +3480,9 @@ namespace lnd
 			_program_white.delete_program();
 			_program_color.delete_program();
 			_program_RGB.delete_program();
+			_program_RGB_3d.delete_program();
 			_program_RGBA.delete_program();
+			_program_RGBA_3d.delete_program();
 			_program_texture.delete_program();
 
 			lnd::__default_vertex_buffer.delete_id();
