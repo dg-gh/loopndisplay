@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 05 / 09 / 2020
+// loopndisplay.h - last update : 06 / 09 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW installed
@@ -35,7 +35,7 @@
 ////// OPTIONS //////
 
 #ifndef LND_ARRAY
-#define LND_ARRAY std::array
+#define LND_ARRAY(Ty, N) std::array<Ty, N>
 #endif // LND_ARRAY
 
 #ifndef LND_CLOCK
@@ -1044,7 +1044,7 @@ namespace lnd
 		{
 			glClear(_clear_window);
 		}
-		
+
 		// set transparency
 
 		inline void set_transparency(bool transparency)
@@ -4169,7 +4169,7 @@ namespace lnd
 
 	private:
 
-		std::array<LND_ARRAY<float, _dim>, _color_count_pc> m;
+		std::array<LND_ARRAY(float, _dim), _color_count_pc> m;
 
 	public:
 
@@ -4209,21 +4209,21 @@ namespace lnd
 			return *(static_cast<float*>(static_cast<void*>(m.data())) + coord + _dim * color);
 		}
 
-		inline const LND_ARRAY<float, _dim>* data_color() const noexcept
+		inline const LND_ARRAY(float, _dim)* data_color() const noexcept
 		{
-			return static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data()));
+			return static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data()));
 		}
-		inline LND_ARRAY<float, _dim>* data_color() noexcept
+		inline LND_ARRAY(float, _dim)* data_color() noexcept
 		{
-			return static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data()));
+			return static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data()));
 		}
-		inline const LND_ARRAY<float, _dim>& operator()(size_t color) const noexcept
+		inline const LND_ARRAY(float, _dim)& operator()(size_t color) const noexcept
 		{
-			return *(static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data())) + color);
+			return *(static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data())) + color);
 		}
-		inline LND_ARRAY<float, _dim>& operator()(size_t color) noexcept
+		inline LND_ARRAY(float, _dim)& operator()(size_t color) noexcept
 		{
-			return *(static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data())) + color);
+			return *(static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data())) + color);
 		}
 
 		constexpr size_t color_count() const noexcept
@@ -4341,21 +4341,21 @@ namespace lnd
 			return *(static_cast<float*>(static_cast<void*>(m.data())) + coord + _dim * color + n * cluster);
 		}
 
-		inline const LND_ARRAY<float, _dim>* data_color() const noexcept
+		inline const LND_ARRAY(float, _dim)* data_color() const noexcept
 		{
-			return static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data()));
+			return static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data()));
 		}
-		inline LND_ARRAY<float, _dim>* data_color() noexcept
+		inline LND_ARRAY(float, _dim)* data_color() noexcept
 		{
-			return static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data()));
+			return static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data()));
 		}
-		inline const LND_ARRAY<float, _dim>& operator()(size_t cluster, size_t color) const noexcept
+		inline const LND_ARRAY(float, _dim)& operator()(size_t cluster, size_t color) const noexcept
 		{
-			return *(static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data())) + color + _color_count_pc * cluster);
+			return *(static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data())) + color + _color_count_pc * cluster);
 		}
-		inline LND_ARRAY<float, _dim>& operator()(size_t cluster, size_t color) noexcept
+		inline LND_ARRAY(float, _dim)& operator()(size_t cluster, size_t color) noexcept
 		{
-			return *(static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data())) + color + _color_count_pc * cluster);
+			return *(static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data())) + color + _color_count_pc * cluster);
 		}
 
 		inline const lnd::cluster_color<_color_count_pc, _dim>* data_cluster() const noexcept
@@ -4430,12 +4430,12 @@ namespace lnd
 		}
 	};
 
-	template <size_t _dim, class _Allocator = std::allocator<LND_ARRAY<float, _dim>>> class group_color
+	template <size_t _dim, class _Allocator = std::allocator<LND_ARRAY(float, _dim)>> class group_color
 	{
 
 	private:
 
-		std::vector<LND_ARRAY<float, _dim>, _Allocator> m;
+		std::vector<LND_ARRAY(float, _dim), _Allocator> m;
 		lnd::buffer_color buffer;
 
 	public:
@@ -4444,9 +4444,9 @@ namespace lnd
 		~group_color() = default;
 		group_color(size_t n)
 		{
-			m = std::vector<LND_ARRAY<float, _dim>>(n, 0.0f);
+			m = std::vector<LND_ARRAY(float, _dim)>(n, 0.0f);
 		}
-		group_color(size_t n, const LND_ARRAY<float, _dim>& x)
+		group_color(size_t n, const LND_ARRAY(float, _dim)& x)
 		{
 			m = std::vector<unsigned int>(n, x);
 		}
@@ -4471,7 +4471,7 @@ namespace lnd
 
 		group_color(std::initializer_list<float> L)
 		{
-			m = std::vector<LND_ARRAY<float, _dim>, _Allocator>(L.size() / _dim);
+			m = std::vector<LND_ARRAY(float, _dim), _Allocator>(L.size() / _dim);
 			std::copy(L.begin(), L.end(), static_cast<float*>(static_cast<void*>(m.data())));
 		}
 		group_color& operator=(std::initializer_list<float> L)
@@ -4540,21 +4540,21 @@ namespace lnd
 			return *(static_cast<float*>(static_cast<void*>(m.data())) + coord + _dim * color);
 		}
 
-		inline const LND_ARRAY<float, _dim>* data_color() const noexcept
+		inline const LND_ARRAY(float, _dim)* data_color() const noexcept
 		{
-			return static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data()));
+			return static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data()));
 		}
-		inline LND_ARRAY<float, _dim>* data_color() noexcept
+		inline LND_ARRAY(float, _dim)* data_color() noexcept
 		{
-			return static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data()));
+			return static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data()));
 		}
-		inline const LND_ARRAY<float, _dim>& operator()(size_t color) const noexcept
+		inline const LND_ARRAY(float, _dim)& operator()(size_t color) const noexcept
 		{
-			return *(static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data())) + color);
+			return *(static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data())) + color);
 		}
-		inline LND_ARRAY<float, _dim>& operator()(size_t color) noexcept
+		inline LND_ARRAY(float, _dim)& operator()(size_t color) noexcept
 		{
-			return *(static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data())) + color);
+			return *(static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data())) + color);
 		}
 
 		inline void resize_color_count(size_t n)
@@ -4565,11 +4565,11 @@ namespace lnd
 		{
 			m.reserve(n);
 		}
-		inline void push_back_color(const LND_ARRAY<float, _dim>& new_color)
+		inline void push_back_color(const LND_ARRAY(float, _dim)& new_color)
 		{
 			m.push_back(new_color);
 		}
-		inline void push_front_color(const LND_ARRAY<float, _dim>& new_color)
+		inline void push_front_color(const LND_ARRAY(float, _dim)& new_color)
 		{
 			m.push_front(new_color);
 		}
@@ -4606,12 +4606,12 @@ namespace lnd
 
 	// TEXTURE STORAGE CLASSES
 
-	template <size_t _dim, class _texture_Allocator = std::allocator<LND_ARRAY<unsigned char, _dim>>> class texture
+	template <size_t _dim, class _texture_Allocator = std::allocator<LND_ARRAY(unsigned char, _dim)>> class texture
 	{
 
 	private:
 
-		std::vector<LND_ARRAY<unsigned char, _dim>, _texture_Allocator> m;
+		std::vector<LND_ARRAY(unsigned char, _dim), _texture_Allocator> m;
 		size_t _width = 0;
 		size_t _height = 0;
 		lnd::buffer_texture buffer;
@@ -4623,14 +4623,14 @@ namespace lnd
 		~texture() = default;
 		texture(size_t new_width, size_t new_height)
 		{
-			m = std::vector<LND_ARRAY<unsigned char, _dim>>(new_width * new_height,
-				LND_ARRAY<unsigned char, _dim>{ static_cast<unsigned char>(0) });
+			m = std::vector<LND_ARRAY(unsigned char, _dim)>(new_width * new_height,
+				LND_ARRAY(unsigned char, _dim){ static_cast<unsigned char>(0) });
 			_width = new_width;
 			_height = new_height;
 		}
-		texture(size_t new_width, size_t new_height, const LND_ARRAY<float, _dim>& x)
+		texture(size_t new_width, size_t new_height, const LND_ARRAY(float, _dim)& x)
 		{
-			m = std::vector<LND_ARRAY<unsigned char, _dim>>(new_width * new_height, x);
+			m = std::vector<LND_ARRAY(unsigned char, _dim)>(new_width * new_height, x);
 			_width = new_width;
 			_height = new_height;
 		}
@@ -4824,9 +4824,9 @@ namespace lnd
 
 		inline void flip()
 		{
-			LND_ARRAY<unsigned char, _dim> temp;
-			LND_ARRAY<unsigned char, _dim>* p = m.data();
-			LND_ARRAY<unsigned char, _dim>* q = m.data() + _width * (_height - 1);
+			LND_ARRAY(unsigned char, _dim) temp;
+			LND_ARRAY(unsigned char, _dim)* p = m.data();
+			LND_ARRAY(unsigned char, _dim)* q = m.data() + _width * (_height - 1);
 			size_t j;
 			size_t jump = 2 * _width;
 			for (size_t i = _height / 2; i > 0; i--)
@@ -4853,29 +4853,29 @@ namespace lnd
 			return *(static_cast<unsigned char*>(static_cast<void*>(m.data())) + offset);
 		}
 
-		inline const LND_ARRAY<unsigned char, _dim>* data_pixel() const noexcept
+		inline const LND_ARRAY(unsigned char, _dim)* data_pixel() const noexcept
 		{
-			return static_cast<const LND_ARRAY<unsigned char, _dim>*>(static_cast<const void*>(m.data()));
+			return static_cast<const LND_ARRAY(unsigned char, _dim)*>(static_cast<const void*>(m.data()));
 		}
-		inline LND_ARRAY<unsigned char, _dim>* data_pixel() noexcept
+		inline LND_ARRAY(unsigned char, _dim)* data_pixel() noexcept
 		{
-			return static_cast<LND_ARRAY<unsigned char, _dim>*>(static_cast<void*>(m.data()));
+			return static_cast<LND_ARRAY(unsigned char, _dim)*>(static_cast<void*>(m.data()));
 		}
-		inline const LND_ARRAY<unsigned char, _dim>& operator()(size_t position) const noexcept
+		inline const LND_ARRAY(unsigned char, _dim)& operator()(size_t position) const noexcept
 		{
-			return *(static_cast<const LND_ARRAY<unsigned char, _dim>*>(static_cast<const void*>(m.data())) + position);
+			return *(static_cast<const LND_ARRAY(unsigned char, _dim)*>(static_cast<const void*>(m.data())) + position);
 		}
-		inline LND_ARRAY<unsigned char, _dim>& operator()(size_t position) noexcept
+		inline LND_ARRAY(unsigned char, _dim)& operator()(size_t position) noexcept
 		{
-			return *(static_cast<LND_ARRAY<unsigned char, _dim>*>(static_cast<void*>(m.data())) + position);
+			return *(static_cast<LND_ARRAY(unsigned char, _dim)*>(static_cast<void*>(m.data())) + position);
 		}
-		inline const LND_ARRAY<unsigned char, _dim>& operator()(size_t position_X, size_t position_Y) const noexcept
+		inline const LND_ARRAY(unsigned char, _dim)& operator()(size_t position_X, size_t position_Y) const noexcept
 		{
-			return *(static_cast<const LND_ARRAY<unsigned char, _dim>*>(static_cast<const void*>(m.data())) + position_X + _width * position_Y);
+			return *(static_cast<const LND_ARRAY(unsigned char, _dim)*>(static_cast<const void*>(m.data())) + position_X + _width * position_Y);
 		}
-		inline LND_ARRAY<unsigned char, _dim>& operator()(size_t position_X, size_t position_Y) noexcept
+		inline LND_ARRAY(unsigned char, _dim)& operator()(size_t position_X, size_t position_Y) noexcept
 		{
-			return *(static_cast<LND_ARRAY<unsigned char, _dim>*>(static_cast<void*>(m.data())) + position_X + _width * position_Y);
+			return *(static_cast<LND_ARRAY(unsigned char, _dim)*>(static_cast<void*>(m.data())) + position_X + _width * position_Y);
 		}
 
 		inline size_t size() const noexcept
@@ -4914,7 +4914,7 @@ namespace lnd
 
 	private:
 
-		std::array<LND_ARRAY<float, _dim>, _vertex_count_pc> m;
+		std::array<LND_ARRAY(float, _dim), _vertex_count_pc> m;
 
 	public:
 
@@ -4954,21 +4954,21 @@ namespace lnd
 			return *(static_cast<float*>(static_cast<void*>(m.data())) + coord + _dim * vertex);
 		}
 
-		inline const LND_ARRAY<float, _dim>* data_vertex() const noexcept
+		inline const LND_ARRAY(float, _dim)* data_vertex() const noexcept
 		{
-			return static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data()));
+			return static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data()));
 		}
-		inline LND_ARRAY<float, _dim>* data_vertex() noexcept
+		inline LND_ARRAY(float, _dim)* data_vertex() noexcept
 		{
-			return static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data()));
+			return static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data()));
 		}
-		inline const LND_ARRAY<float, _dim>& operator()(size_t vertex) const noexcept
+		inline const LND_ARRAY(float, _dim)& operator()(size_t vertex) const noexcept
 		{
-			return *(static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data())) + vertex);
+			return *(static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data())) + vertex);
 		}
-		inline LND_ARRAY<float, _dim>& operator()(size_t vertex) noexcept
+		inline LND_ARRAY(float, _dim)& operator()(size_t vertex) noexcept
 		{
-			return *(static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data())) + vertex);
+			return *(static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data())) + vertex);
 		}
 
 		constexpr size_t vertex_count() const noexcept
@@ -5086,21 +5086,21 @@ namespace lnd
 			return *(static_cast<float*>(static_cast<void*>(m.data())) + coord + _dim * vertex + n * cluster);
 		}
 
-		inline const LND_ARRAY<float, _dim>* data_vertex() const noexcept
+		inline const LND_ARRAY(float, _dim)* data_vertex() const noexcept
 		{
-			return static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data()));
+			return static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data()));
 		}
-		inline LND_ARRAY<float, _dim>* data_vertex() noexcept
+		inline LND_ARRAY(float, _dim)* data_vertex() noexcept
 		{
-			return static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data()));
+			return static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data()));
 		}
-		inline const LND_ARRAY<float, _dim>& operator()(size_t cluster, size_t vertex) const noexcept
+		inline const LND_ARRAY(float, _dim)& operator()(size_t cluster, size_t vertex) const noexcept
 		{
-			return *(static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data())) + vertex + _vertex_count_pc * cluster);
+			return *(static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data())) + vertex + _vertex_count_pc * cluster);
 		}
-		inline LND_ARRAY<float, _dim>& operator()(size_t cluster, size_t vertex) noexcept
+		inline LND_ARRAY(float, _dim)& operator()(size_t cluster, size_t vertex) noexcept
 		{
-			return *(static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data())) + vertex + _vertex_count_pc * cluster);
+			return *(static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data())) + vertex + _vertex_count_pc * cluster);
 		}
 
 		inline const lnd::cluster_vertex<_vertex_count_pc, _dim>* data_cluster() const noexcept
@@ -6157,12 +6157,12 @@ namespace lnd
 		}
 	};
 
-	template <size_t _dim, class _Allocator = std::allocator<LND_ARRAY<float, _dim>>> class group_vertex
+	template <size_t _dim, class _Allocator = std::allocator<LND_ARRAY(float, _dim)>> class group_vertex
 	{
 
 	private:
 
-		std::vector<LND_ARRAY<float, _dim>, _Allocator> m;
+		std::vector<LND_ARRAY(float, _dim), _Allocator> m;
 		lnd::buffer_vertex buffer;
 
 	public:
@@ -6171,11 +6171,11 @@ namespace lnd
 		~group_vertex() = default;
 		group_vertex(size_t n)
 		{
-			m = std::vector<LND_ARRAY<float, _dim>>(n, LND_ARRAY<float, _dim>{ 0.0f });
+			m = std::vector<LND_ARRAY(float, _dim)>(n, LND_ARRAY(float, _dim){ 0.0f });
 		}
-		group_vertex(size_t n, const LND_ARRAY<float, _dim>& x)
+		group_vertex(size_t n, const LND_ARRAY(float, _dim)& x)
 		{
-			m = std::vector<LND_ARRAY<float, _dim>>(n, x);
+			m = std::vector<LND_ARRAY(float, _dim)>(n, x);
 		}
 		template <class _rhs_Allocator> group_vertex(const group_vertex<_dim, _rhs_Allocator>& rhs)
 		{
@@ -6198,7 +6198,7 @@ namespace lnd
 
 		group_vertex(std::initializer_list<float> L)
 		{
-			m = std::vector<LND_ARRAY<float, _dim>, _Allocator>(L.size() / _dim);
+			m = std::vector<LND_ARRAY(float, _dim), _Allocator>(L.size() / _dim);
 			std::copy(L.begin(), L.end(), static_cast<float*>(static_cast<void*>(m.data())));
 		}
 		group_vertex& operator=(std::initializer_list<float> L)
@@ -6266,21 +6266,21 @@ namespace lnd
 			return *(static_cast<float*>(static_cast<void*>(m.data())) + coord + _dim * vertex);
 		}
 
-		inline const LND_ARRAY<float, _dim>* data_vertex() const noexcept
+		inline const LND_ARRAY(float, _dim)* data_vertex() const noexcept
 		{
-			return static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data()));
+			return static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data()));
 		}
-		inline LND_ARRAY<float, _dim>* data_vertex() noexcept
+		inline LND_ARRAY(float, _dim)* data_vertex() noexcept
 		{
-			return static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data()));
+			return static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data()));
 		}
-		inline const LND_ARRAY<float, _dim>& operator()(size_t vertex) const noexcept
+		inline const LND_ARRAY(float, _dim)& operator()(size_t vertex) const noexcept
 		{
-			return *(static_cast<const LND_ARRAY<float, _dim>*>(static_cast<const void*>(m.data())) + vertex);
+			return *(static_cast<const LND_ARRAY(float, _dim)*>(static_cast<const void*>(m.data())) + vertex);
 		}
-		inline LND_ARRAY<float, _dim>& operator()(size_t vertex) noexcept
+		inline LND_ARRAY(float, _dim)& operator()(size_t vertex) noexcept
 		{
-			return *(static_cast<LND_ARRAY<float, _dim>*>(static_cast<void*>(m.data())) + vertex);
+			return *(static_cast<LND_ARRAY(float, _dim)*>(static_cast<void*>(m.data())) + vertex);
 		}
 
 		inline void resize_vertex_count(size_t n)
@@ -6291,11 +6291,11 @@ namespace lnd
 		{
 			m.reserve(n);
 		}
-		inline void push_back_vertex(const LND_ARRAY<float, _dim>& new_vertex)
+		inline void push_back_vertex(const LND_ARRAY(float, _dim)& new_vertex)
 		{
 			m.push_back(new_vertex);
 		}
-		inline void push_front_vertex(const LND_ARRAY<float, _dim>& new_vertex)
+		inline void push_front_vertex(const LND_ARRAY(float, _dim)& new_vertex)
 		{
 			m.push_front(new_vertex);
 		}
@@ -6835,7 +6835,7 @@ namespace lnd
 
 			for (size_t k = text_size; k > 0; k--)
 			{
-				LND_ARRAY<float, 2> XY = atlas_XY(*text_ptr);
+				LND_ARRAY(float, 2) XY = atlas_XY(*text_ptr);
 
 				*ptr = XY[0];
 				*(ptr + 1) = XY[1];
