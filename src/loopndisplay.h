@@ -2342,6 +2342,7 @@ namespace lnd
 		const inline lnd::program_vertex_fragment& program_RGBA() const noexcept { return _program_RGBA; }
 		const inline lnd::program_vertex_fragment& program_RGBA_3d() const noexcept { return _program_RGBA_3d; } // mutable program
 		const inline lnd::program_vertex_fragment& program_texture() const noexcept { return _program_texture; }
+		const inline lnd::program_vertex_fragment& program_texture_3d() const noexcept { return _program_texture_3d; } // mutable program
 
 		inline const lnd::program_vertex_fragment& set_fragment_color(const lnd::program_vertex_fragment& program, float c0, float c1, float c2, float c3)
 		{
@@ -2480,6 +2481,7 @@ namespace lnd
 		lnd::shader_vertex _vertex_texture_shift_scale; // mutable
 		lnd::shader_vertex _vertex_texture_shift_rotate; // mutable
 		lnd::shader_vertex _vertex_texture_affine; // mutable
+		lnd::shader_vertex _vertex_texture_3d; // mutable
 
 		lnd::shader_fragment _fragment_black;
 		lnd::shader_fragment _fragment_red;
@@ -2510,6 +2512,7 @@ namespace lnd
 		lnd::program_vertex_fragment _program_RGBA;
 		lnd::program_vertex_fragment _program_RGBA_3d;
 		lnd::program_vertex_fragment _program_texture;
+		lnd::program_vertex_fragment _program_texture_3d;
 
 		std::vector<std::thread> auxiliary_threads;
 		std::condition_variable auxiliary_task_condition_var;
@@ -3281,6 +3284,17 @@ namespace lnd
 				"		gl_Position = M * vec4(X, 1);					\n"
 				"		forward_C = C; }								\n"
 			);
+			
+			_vertex_texture_3d.new_shader(
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec3 X;					\n"
+				"	layout (location = 1) in vec2 UV;					\n"
+				"	out vec2 forward_UV;								\n"
+				"	uniform mat4 M;										\n"
+				"	void main() {										\n"
+				"		gl_Position = M * vec4(X, 1);					\n"
+				"		forward_UV = UV; }								\n"
+			);
 
 			_fragment_black.new_shader(
 				"	#version 330 core									\n"
@@ -3380,6 +3394,7 @@ namespace lnd
 			_program_RGBA.new_program(_vertex_RGBA_identity, _fragment_RGBA);
 			_program_RGBA_3d.new_program(_vertex_RGBA_3d, _fragment_RGBA);
 			_program_texture.new_program(_vertex_texture_identity, _fragment_texture);
+			_program_texture_3d.new_program(_vertex_texture_3d, _fragment_texture);
 
 			lnd::__default_vertex_buffer.new_id(1);
 			lnd::__default_index_buffer.new_id(1);
@@ -3454,6 +3469,7 @@ namespace lnd
 			_vertex_texture_shift_scale.delete_shader();
 			_vertex_texture_shift_rotate.delete_shader();
 			_vertex_texture_affine.delete_shader();
+			_vertex_texture_3d.delete_shader();
 
 			_fragment_black.delete_shader();
 			_fragment_red.delete_shader();
@@ -3484,6 +3500,7 @@ namespace lnd
 			_program_RGBA.delete_program();
 			_program_RGBA_3d.delete_program();
 			_program_texture.delete_program();
+			_program_texture_3d.delete_program();
 
 			lnd::__default_vertex_buffer.delete_id();
 			lnd::__default_index_buffer.delete_id();
@@ -5719,6 +5736,62 @@ namespace lnd
 				}
 			}
 		}
+			
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(const lnd::program_vertex_fragment& program,
+			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
+		{
+			if (_pixel_dim == 4)
+			{
+				switch (_vertex_count_pc)
+				{
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					texture_image.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+			}
+			else
+			{
+				switch (_vertex_count_pc)
+				{
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					program.use();
+					glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					texture_image.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+			}
+		}
 
 		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw(GLsizei first_cluster, GLsizei end_cluster,
 			const lnd::program_vertex_fragment& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
@@ -5798,6 +5871,63 @@ namespace lnd
 					texture_image.buffer_bind();
 					program.use();
 					glDrawArrays(GL_QUADS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+						static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					texture_image.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+			}
+		}
+			
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
+			const lnd::program_vertex_fragment& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
+		{
+			if (_pixel_dim == 4)
+			{
+				switch (_vertex_count_pc)
+				{
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					texture_image.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+			}
+			else
+			{
+				switch (_vertex_count_pc)
+				{
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					program.use();
+					glDrawArrays(GL_TRIANGLES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
 						static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 					buffer.unbind();
 					texture_coord.buffer_unbind();
