@@ -1470,7 +1470,9 @@ namespace lnd
 		
 		inline void clear_color(float R, float G, float B, float A)
 		{
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glClearColor(R, G, B, A);
+			glBlendFunc(GL_ONE, GL_ZERO);
 		}
 
 
