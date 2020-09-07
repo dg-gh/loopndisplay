@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 06 / 09 / 2020
+// loopndisplay.h - last update : 08 / 09 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW installed
@@ -1676,6 +1676,17 @@ namespace lnd
 			glDrawArrays(GL_QUADS, 0, 4);
 			lnd::__default_vertex_buffer.unbind();
 		}
+		inline void draw_quad_3d(const float* const vertex_ptr, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program.use();
+			set_vertex_3d(program, mpv_matrix_ptr);
+			glDrawArrays(GL_QUADS, 0, 4);
+			lnd::__default_vertex_buffer.unbind();
+		}
 		inline void draw_quad_hollow(const float* const vertex_ptr, const lnd::program_vertex_fragment& program)
 		{
 			lnd::__default_vertex_buffer.bind();
@@ -1683,6 +1694,17 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 			program.use();
+			glDrawArrays(GL_LINE_LOOP, 0, 4);
+			lnd::__default_vertex_buffer.bind();
+		}
+		inline void draw_quad_hollow_3d(const float* const vertex_ptr, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program.use();
+			set_vertex_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_LINE_LOOP, 0, 4);
 			lnd::__default_vertex_buffer.bind();
 		}
@@ -1701,6 +1723,22 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
+		inline void draw_quad_RGB_3d(const float* const vertex_ptr, const float* const color_ptr, const float* const mpv_matrix_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			program_RGB_3d().use();
+			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			glDrawArrays(GL_QUADS, 0, 4);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
 		inline void draw_quad_RGBA(const float* const vertex_ptr, const float* const color_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
@@ -1712,7 +1750,25 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			program_RGBA().use();
+			program_RGBA_3d().use();
+			glDrawArrays(GL_QUADS, 0, 4);
+			glBlendFunc(GL_ONE, GL_ZERO);
+			lnd::__default_vertex_buffer.unbind();
+			lnd::__default_color_buffer.bind();
+		}
+		inline void draw_quad_RGBA_3d(const float* const vertex_ptr, const float* const color_ptr, const float* const mpv_matrix_ptr)
+		{
+			lnd::__default_vertex_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			lnd::__default_color_buffer.bind();
+			glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(float), color_ptr, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			program_RGBA_3d().use();
+			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_QUADS, 0, 4);
 			glBlendFunc(GL_ONE, GL_ZERO);
 			lnd::__default_vertex_buffer.unbind();
@@ -3284,7 +3340,7 @@ namespace lnd
 				"		gl_Position = M * vec4(X, 1);					\n"
 				"		forward_C = C; }								\n"
 			);
-			
+
 			_vertex_texture_3d.new_shader(
 				"	#version 330 core									\n"
 				"	layout (location = 0) in vec3 X;					\n"
@@ -5270,7 +5326,7 @@ namespace lnd
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
 				break;
-			
+
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
@@ -5361,7 +5417,7 @@ namespace lnd
 				glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
 				break;
-					
+
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
@@ -6042,7 +6098,7 @@ namespace lnd
 					break;
 				}
 			}
-		}	
+		}
 		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(const lnd::program_vertex_fragment& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
@@ -6068,7 +6124,7 @@ namespace lnd
 					texture_coord.buffer_unbind();
 					texture_image.buffer_unbind();
 					break;
-				
+
 				case 4:
 					buffer.bind();
 					glEnableVertexAttribArray(0);
@@ -6109,7 +6165,7 @@ namespace lnd
 					texture_coord.buffer_unbind();
 					texture_image.buffer_unbind();
 					break;
-				
+
 				case 4:
 					buffer.bind();
 					glEnableVertexAttribArray(0);
@@ -6219,7 +6275,7 @@ namespace lnd
 					break;
 				}
 			}
-		}	
+		}
 		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
 			const lnd::program_vertex_fragment& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
@@ -6245,7 +6301,7 @@ namespace lnd
 					texture_coord.buffer_unbind();
 					texture_image.buffer_unbind();
 					break;
-				
+
 				case 4:
 					buffer.bind();
 					glEnableVertexAttribArray(0);
@@ -6287,7 +6343,7 @@ namespace lnd
 					texture_coord.buffer_unbind();
 					texture_image.buffer_unbind();
 					break;
-					
+
 				case 4:
 					buffer.bind();
 					glEnableVertexAttribArray(0);
@@ -6303,7 +6359,7 @@ namespace lnd
 					texture_coord.buffer_unbind();
 					texture_image.buffer_unbind();
 					break;
-					
+
 				default:
 					break;
 				}
@@ -7172,66 +7228,141 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 			program.use();
 			indexing.buffer_bind();
 			glDrawElements(GL_LINES, static_cast<GLsizei>(indexing.size()), GL_UNSIGNED_INT, nullptr);
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
+		template <class _index_Allocator> inline void draw_lines_3d(const lnd::program_vertex_fragment& program,
+			const lnd::group_index<_index_Allocator>& indexing)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			program.use();
+			indexing.buffer_bind();
+			glDrawElements(GL_LINES, static_cast<GLsizei>(indexing.size()), GL_UNSIGNED_INT, nullptr);
+			buffer.unbind();
+			indexing.buffer_unbind();
+		}
+
 		template <class _index_Allocator> inline void draw_tris(const lnd::program_vertex_fragment& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 			program.use();
 			indexing.buffer_bind();
 			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indexing.size()), GL_UNSIGNED_INT, nullptr);
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
+		template <class _index_Allocator> inline void draw_tris_3d(const lnd::program_vertex_fragment& program,
+			const lnd::group_index<_index_Allocator>& indexing)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			program.use();
+			indexing.buffer_bind();
+			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indexing.size()), GL_UNSIGNED_INT, nullptr);
+			buffer.unbind();
+			indexing.buffer_unbind();
+		}
+
 		inline void draw_line_strip(const lnd::program_vertex_fragment& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
 		}
+		inline void draw_line_strip_3d(const lnd::program_vertex_fragment& program)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			program.use();
+			glDrawArrays(GL_LINE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
+			buffer.unbind();
+		}
+
 		inline void draw_line_strip(GLsizei first_vertex, GLsizei last_vertex, const lnd::program_vertex_fragment& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_STRIP, first_vertex, last_vertex - first_vertex);
 			buffer.unbind();
 		}
+		inline void draw_line_strip_3d(GLsizei first_vertex, GLsizei last_vertex, const lnd::program_vertex_fragment& program)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			program.use();
+			glDrawArrays(GL_LINE_STRIP, first_vertex, last_vertex - first_vertex);
+			buffer.unbind();
+		}
+
 		inline void draw_line_loop(const lnd::program_vertex_fragment& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_LOOP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
 		}
+		inline void draw_line_loop_3d(const lnd::program_vertex_fragment& program)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			program.use();
+			glDrawArrays(GL_LINE_LOOP, 0, static_cast<GLsizei>(this->vertex_count()));
+			buffer.unbind();
+		}
+
 		inline void draw_tri_strip(const lnd::program_vertex_fragment& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
 		}
+		inline void draw_tri_strip_3d(const lnd::program_vertex_fragment& program)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			program.use();
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
+			buffer.unbind();
+		}
+
 		inline void draw_tri_fan(const lnd::program_vertex_fragment& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			program.use();
+			glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(this->vertex_count()));
+			buffer.unbind();
+		}
+		inline void draw_tri_fan_3d(const lnd::program_vertex_fragment& program)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
@@ -7275,6 +7406,45 @@ namespace lnd
 				break;
 			}
 		}
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_3d(const lnd::program_vertex_fragment& program,
+			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
+		{
+			switch (_color_dim)
+			{
+
+			case 3:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				coloring.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+				program.use();
+				glDrawArrays(GL_LINE_STRIP, 0, this->vertex_count());
+				buffer.unbind();
+				coloring.buffer_unbind();
+				break;
+
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				coloring.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				program.use();
+				glDrawArrays(GL_LINE_STRIP, 0, this->vertex_count());
+				glBlendFunc(GL_ONE, GL_ZERO);
+				buffer.unbind();
+				coloring.buffer_unbind();
+				break;
+
+			default:
+				break;
+			}
+		}
+
 		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip(GLsizei first_vertex, GLsizei last_vertex,
 			const lnd::program_vertex_fragment& program, const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -7313,6 +7483,45 @@ namespace lnd
 				break;
 			}
 		}
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_3d(GLsizei first_vertex, GLsizei last_vertex,
+			const lnd::program_vertex_fragment& program, const lnd::group_color<_color_dim, _color_Allocator>& coloring)
+		{
+			switch (_color_dim)
+			{
+
+			case 3:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				coloring.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+				program.use();
+				glDrawArrays(GL_LINE_STRIP, first_vertex, last_vertex - first_vertex);
+				buffer.unbind();
+				coloring.buffer_unbind();
+				break;
+
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				coloring.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				program.use();
+				glDrawArrays(GL_LINE_STRIP, first_vertex, last_vertex - first_vertex);
+				glBlendFunc(GL_ONE, GL_ZERO);
+				buffer.unbind();
+				coloring.buffer_unbind();
+				break;
+
+			default:
+				break;
+			}
+		}
+
 		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop(const lnd::program_vertex_fragment& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -7351,6 +7560,45 @@ namespace lnd
 				break;
 			}
 		}
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop_3d(const lnd::program_vertex_fragment& program,
+			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
+		{
+			switch (_color_dim)
+			{
+
+			case 3:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				coloring.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+				program.use();
+				glDrawArrays(GL_LINE_LOOP, 0, this->vertex_count());
+				buffer.unbind();
+				coloring.buffer_unbind();
+				break;
+
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				coloring.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				program.use();
+				glDrawArrays(GL_LINE_LOOP, 0, this->vertex_count());
+				glBlendFunc(GL_ONE, GL_ZERO);
+				buffer.unbind();
+				coloring.buffer_unbind();
+				break;
+
+			default:
+				break;
+			}
+		}
+
 		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip(const lnd::program_vertex_fragment& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -7389,6 +7637,45 @@ namespace lnd
 				break;
 			}
 		}
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_3d(const lnd::program_vertex_fragment& program,
+			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
+		{
+			switch (_color_dim)
+			{
+
+			case 3:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				coloring.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+				program.use();
+				glDrawArrays(GL_TRIANGLE_STRIP, 0, this->vertex_count());
+				buffer.unbind();
+				coloring.buffer_unbind();
+				break;
+
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				coloring.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				program.use();
+				glDrawArrays(GL_TRIANGLE_STRIP, 0, this->vertex_count());
+				glBlendFunc(GL_ONE, GL_ZERO);
+				buffer.unbind();
+				coloring.buffer_unbind();
+				break;
+
+			default:
+				break;
+			}
+		}
+
 		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan(const lnd::program_vertex_fragment& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -7412,6 +7699,44 @@ namespace lnd
 				buffer.bind();
 				glEnableVertexAttribArray(0);
 				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				coloring.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				program.use();
+				glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(this->vertex_count()));
+				glBlendFunc(GL_ONE, GL_ZERO);
+				buffer.unbind();
+				coloring.buffer_unbind();
+				break;
+
+			default:
+				break;
+			}
+		}
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_3d(const lnd::program_vertex_fragment& program,
+			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
+		{
+			switch (_color_dim)
+			{
+
+			case 3:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				coloring.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+				program.use();
+				glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(this->vertex_count()));
+				buffer.unbind();
+				coloring.buffer_unbind();
+				break;
+
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
 				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
