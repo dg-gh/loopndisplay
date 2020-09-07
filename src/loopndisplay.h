@@ -8383,7 +8383,7 @@ namespace lnd
 				pC[offset + 2] += pA[14] * regB1;
 				pC[offset + 3] += pA[15] * regB1;
 			}
-			memcpy(pC + 12, pA, 4 * sizeof(float));
+			memcpy(pC + 12, pA + 12, 4 * sizeof(float));
 #endif // LND_INCLUDE_AVX
 		}
 	};
