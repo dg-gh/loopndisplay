@@ -8072,6 +8072,7 @@ namespace lnd
 		float vp_matrix[16] = { 0.0f };
 		float p_matrix[16] = { 0.0f };
 		float v_matrix[16] = { 0.0f };
+		float skybox_matrix[16] = { 0.0f };
 
 	public:
 
@@ -8158,6 +8159,11 @@ namespace lnd
 		{
 			m44xm44(static_cast<float*>(mvp_matrix), static_cast<const float*>(vp_matrix), m_matrix);
 		}
+		inline void compute_skybox_matrix() noexcept
+		{
+			m43xm44h(static_cast<float*>(skybox_matrix), static_cast<const float*>(p_matrix),
+				static_cast<const float*>(v_matrix));
+		}
 
 		inline const float* position_data() const noexcept
 		{
@@ -8202,6 +8208,15 @@ namespace lnd
 		inline float* vp_matrix_data() noexcept
 		{
 			return static_cast<float*>(vp_matrix);
+		}
+		
+		inline const float* skybox_matrix_data() const noexcept
+		{
+			return static_cast<const float*>(skybox_matrix);
+		}
+		inline float* skybox_matrix_data() noexcept
+		{
+			return static_cast<float*>(skybox_matrix);
 		}
 
 		inline void move_forward(float distance) noexcept
@@ -8313,6 +8328,62 @@ namespace lnd
 				pC[offset + 2] += pA[14] * regB1;
 				pC[offset + 3] += pA[15] * regB1;
 			}
+#endif // LND_INCLUDE_AVX
+		}
+		inline void m43xm44h(float* const pC, const float* const pA, const float* const pB) noexcept
+		{
+#ifdef LND_INCLUDE_AVX
+			__m128 vregA0 = _mm_loadu_ps(pA);
+			__m128 vregA1 = _mm_loadu_ps(pA + 4);
+			__m128 vregA2 = _mm_loadu_ps(pA + 8);
+			__m128 vregA3 = _mm_loadu_ps(pA + 12);
+
+			__m128 vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB));
+			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 1), vregC);
+			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 2), vregC);
+			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 3), vregC);
+			_mm_storeu_ps(pC, vregC);
+
+			vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 4));
+			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 5), vregC);
+			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 6), vregC);
+			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 7), vregC);
+			_mm_storeu_ps(pC + 4, vregC);
+
+			vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 8));
+			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 9), vregC);
+			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 10), vregC);
+			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 11), vregC);
+			_mm_storeu_ps(pC + 8, vregC);
+
+			_mm_storeu_ps(pC + 12, vregA3);
+#else // LND_INCLUDE_AVX
+			float regB0; float regB1; size_t offset;
+			for (size_t j = 0; j < 3; j++)
+			{
+				offset = 4 * j;
+				regB0 = pB[offset];
+				pC[offset] = pA[0] * regB0;
+				pC[offset + 1] = pA[1] * regB0;
+				pC[offset + 2] = pA[2] * regB0;
+				pC[offset + 3] = pA[3] * regB0;
+				regB1 = pB[offset + 1];
+				pC[offset] += pA[4] * regB1;
+				pC[offset + 1] += pA[5] * regB1;
+				pC[offset + 2] += pA[6] * regB1;
+				pC[offset + 3] += pA[7] * regB1;
+				regB0 = pB[offset + 2];
+				pC[offset] += pA[8] * regB0;
+				pC[offset + 1] += pA[9] * regB0;
+				pC[offset + 2] += pA[10] * regB0;
+				pC[offset + 3] += pA[11] * regB0;
+				regB1 = pB[offset + 3];
+				pC[offset] += pA[12] * regB1;
+				pC[offset + 1] += pA[13] * regB1;
+				pC[offset + 2] += pA[14] * regB1;
+				pC[offset + 3] += pA[15] * regB1;
+			}
+			memcpy(pC + 12, pA, 4 * sizeof(float));
 #endif // LND_INCLUDE_AVX
 		}
 	};
