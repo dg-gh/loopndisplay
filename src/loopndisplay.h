@@ -1453,7 +1453,7 @@ namespace lnd
 
 		inline int screen_width() const noexcept { return _screen_width; }
 		inline int screen_height() const noexcept { return _screen_height; }
-		inline int timeframe() const noexcept { return _timeframe; }
+		inline float timeframe() const noexcept { return _timeframe; }
 		inline float screen_ratio() const noexcept { return _screen_ratio; }
 		inline float screen_ratio_inv() const noexcept { return _screen_ratio_inv; }
 		inline float min_X() const noexcept { return _min_X; }
