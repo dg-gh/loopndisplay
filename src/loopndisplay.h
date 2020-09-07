@@ -5735,8 +5735,7 @@ namespace lnd
 					break;
 				}
 			}
-		}
-			
+		}	
 		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(const lnd::program_vertex_fragment& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
@@ -5881,8 +5880,7 @@ namespace lnd
 					break;
 				}
 			}
-		}
-			
+		}	
 		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
 			const lnd::program_vertex_fragment& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
