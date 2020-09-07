@@ -1453,7 +1453,7 @@ namespace lnd
 
 		inline int screen_width() const noexcept { return _screen_width; }
 		inline int screen_height() const noexcept { return _screen_height; }
-		inline int timeframe_ms() const noexcept { return _timeframe_ms; }
+		inline int timeframe() const noexcept { return _timeframe; }
 		inline float screen_ratio() const noexcept { return _screen_ratio; }
 		inline float screen_ratio_inv() const noexcept { return _screen_ratio_inv; }
 		inline float min_X() const noexcept { return _min_X; }
@@ -2496,7 +2496,7 @@ namespace lnd
 
 		int _screen_width = 200;
 		int _screen_height = 200;
-		int _timeframe_ms = 100;
+		float _timeframe = 1.0f;
 		float _screen_ratio = 1.0f;
 		float _screen_ratio_inv = 1.0f;
 		float _min_X = -1.0f;
@@ -2585,11 +2585,11 @@ namespace lnd
 		std::condition_variable display_condition_var;
 
 		// do not call this function in a derived class
-		void _setup_basic_infos(int new_screen_width, int new_screen_height, bool rescale_screen_coordinates, int timeframe_ms)
+		void _setup_basic_infos(int new_screen_width, int new_screen_height, bool rescale_screen_coordinates, float timeframe)
 		{
 			_screen_width = new_screen_width;
 			_screen_height = new_screen_height;
-			_timeframe_ms = timeframe_ms;
+			_timeframe = timeframe;
 			_screen_ratio = static_cast<float>(_screen_width) / static_cast<float>(_screen_height);
 			_screen_ratio_inv = static_cast<float>(_screen_height) / static_cast<float>(_screen_width);
 
@@ -3589,10 +3589,10 @@ namespace lnd
 	public:
 
 		bool show(int new_screen_width, int new_screen_height, bool rescale_screen_coordinates,
-			long long new_timeframe_ms, const char* new_title)
+			double new_timeframe, const char* new_title)
 		{
 			this->_setup_basic_infos(new_screen_width, new_screen_height,
-				rescale_screen_coordinates, static_cast<int>(new_timeframe_ms));
+				rescale_screen_coordinates, static_cast<float>(new_timeframe));
 
 			if (rescale_screen_coordinates)
 			{
@@ -3634,7 +3634,7 @@ namespace lnd
 			}
 
 			this->_setup_auxiliary_threads(number_of_threads, task_buffer_size);
-			clock_sleep_time = 1000000 * new_timeframe_ms;
+			clock_sleep_time = static_cast<long long>(static_cast<double>(1000000000) * new_timeframe);
 			_start = std::chrono::high_resolution_clock::now();
 
 			// loop
@@ -3643,7 +3643,7 @@ namespace lnd
 
 			lnd::__user_key_input.reset_key_events();
 
-			if (new_timeframe_ms != 0)
+			if (new_timeframe != 0.0)
 			{
 				while (true)
 				{
