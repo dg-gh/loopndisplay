@@ -5270,6 +5270,15 @@ namespace lnd
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
 				break;
+			
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				program.use();
+				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
+				buffer.unbind();
+				break;
 
 			default:
 				break;
@@ -5350,6 +5359,15 @@ namespace lnd
 				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+				buffer.unbind();
+				break;
+					
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				program.use();
+				glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
 				break;
 
@@ -6050,6 +6068,23 @@ namespace lnd
 					texture_coord.buffer_unbind();
 					texture_image.buffer_unbind();
 					break;
+				
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					texture_image.buffer_unbind();
+					break;
 
 				default:
 					break;
@@ -6070,6 +6105,21 @@ namespace lnd
 					texture_image.buffer_bind();
 					program.use();
 					glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					texture_image.buffer_unbind();
+					break;
+				
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					program.use();
+					glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
 					buffer.unbind();
 					texture_coord.buffer_unbind();
 					texture_image.buffer_unbind();
@@ -6195,6 +6245,23 @@ namespace lnd
 					texture_coord.buffer_unbind();
 					texture_image.buffer_unbind();
 					break;
+				
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					texture_image.buffer_unbind();
+					break;
 
 				default:
 					break;
@@ -6220,7 +6287,23 @@ namespace lnd
 					texture_coord.buffer_unbind();
 					texture_image.buffer_unbind();
 					break;
-
+					
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					program.use();
+					glDrawArrays(GL_QUADS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+						static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					texture_image.buffer_unbind();
+					break;
+					
 				default:
 					break;
 				}
