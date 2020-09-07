@@ -6322,6 +6322,18 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_3d(const lnd::program_vertex_fragment& program,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			indexing.buffer_bind();
+			program.use();
+			glDrawElements(GL_LINES, static_cast<GLsizei>(indexing.size()), GL_UNSIGNED_INT, nullptr);
+			buffer.unbind();
+			indexing.buffer_unbind();
+		}
 
 		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines(GLsizei first_cluster, GLsizei end_cluster,
 			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -6329,6 +6341,19 @@ namespace lnd
 			buffer.bind();
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			indexing.buffer_bind();
+			program.use();
+			glDrawElements(GL_LINES, static_cast<GLsizei>(_index_count_pc) * (end_cluster - first_cluster), GL_UNSIGNED_INT,
+				reinterpret_cast<void*>(first_cluster * sizeof(lnd::cluster_index<_index_count_pc>)));
+			buffer.unbind();
+			indexing.buffer_unbind();
+		}
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_3d(GLsizei first_cluster, GLsizei end_cluster,
+			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_LINES, static_cast<GLsizei>(_index_count_pc) * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -6349,6 +6374,18 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_3d(const lnd::program_vertex_fragment& program,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			indexing.buffer_bind();
+			program.use();
+			glDrawElements(GL_TRIANGLES, indexing.size(), GL_UNSIGNED_INT, nullptr);
+			buffer.unbind();
+			indexing.buffer_unbind();
+		}
 
 		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris(GLsizei first_cluster, GLsizei end_cluster,
 			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -6356,6 +6393,19 @@ namespace lnd
 			buffer.bind();
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			indexing.buffer_bind();
+			program.use();
+			glDrawElements(GL_TRIANGLES, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
+				reinterpret_cast<void*>(first_cluster * sizeof(lnd::cluster_index<_index_count_pc>)));
+			buffer.unbind();
+			indexing.buffer_unbind();
+		}
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_3d(GLsizei first_cluster, GLsizei end_cluster,
+			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_TRIANGLES, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -6376,6 +6426,18 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_3d(const lnd::program_vertex_fragment& program,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			indexing.buffer_bind();
+			program.use();
+			glDrawElements(GL_QUADS, indexing.size(), GL_UNSIGNED_INT, nullptr);
+			buffer.unbind();
+			indexing.buffer_unbind();
+		}
 
 		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads(GLsizei first_cluster, GLsizei end_cluster,
 			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -6383,6 +6445,19 @@ namespace lnd
 			buffer.bind();
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			indexing.buffer_bind();
+			program.use();
+			glDrawElements(GL_QUADS, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
+				reinterpret_cast<void*>(first_cluster * sizeof(lnd::cluster_index<_index_count_pc>)));
+			buffer.unbind();
+			indexing.buffer_unbind();
+		}
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_3d(GLsizei first_cluster, GLsizei end_cluster,
+			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+		{
+			buffer.bind();
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_QUADS, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
