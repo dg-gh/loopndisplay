@@ -8298,7 +8298,7 @@ namespace lnd
 				pC[offset + 2] = pA[2] * regB0;
 				pC[offset + 3] = pA[3] * regB0;
 				regB1 = pB[offset + 1];
-				pC[offset] += p_matrix[4] * regB1;
+				pC[offset] += pA[4] * regB1;
 				pC[offset + 1] += pA[5] * regB1;
 				pC[offset + 2] += pA[6] * regB1;
 				pC[offset + 3] += pA[7] * regB1;
