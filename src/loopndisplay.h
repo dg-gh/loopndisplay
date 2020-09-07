@@ -5498,6 +5498,146 @@ namespace lnd
 				break;
 			}
 		}
+		template <size_t _color_dim, class _color_Allocator> inline void draw_3d(const lnd::program_vertex_fragment& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
+		{
+			switch (_color_dim)
+			{
+
+			case 3:
+				switch (_vertex_count_pc)
+				{
+
+				case 1:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+					program.use();
+					glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(this->vertex_count()));
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 2:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+					program.use();
+					glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(this->vertex_count()));
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+					program.use();
+					glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+					program.use();
+					glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+				break;
+
+			case 4:
+				switch (_vertex_count_pc)
+				{
+
+				case 1:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(this->vertex_count()));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 2:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(this->vertex_count()));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
 
 		template <size_t _color_dim, class _color_Allocator> inline void draw(GLsizei first_cluster, GLsizei end_cluster,
 			const lnd::program_vertex_fragment& program, const lnd::group_cluster_color<_vertex_count_pc,
@@ -5627,6 +5767,155 @@ namespace lnd
 					buffer.bind();
 					glEnableVertexAttribArray(0);
 					glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_QUADS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+						static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+		template <size_t _color_dim, class _color_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
+			const lnd::program_vertex_fragment& program, const lnd::group_cluster_color<_vertex_count_pc,
+			_color_dim, _color_Allocator>& coloring)
+		{
+			switch (_color_dim)
+			{
+
+			case 3:
+				switch (_vertex_count_pc)
+				{
+
+				case 1:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+					program.use();
+					glDrawArrays(GL_POINTS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+						static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 2:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+					program.use();
+					glDrawArrays(GL_LINES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+						static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+					program.use();
+					glDrawArrays(GL_TRIANGLES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+						static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+					program.use();
+					glDrawArrays(GL_QUADS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+						static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+				break;
+
+			case 4:
+				switch (_vertex_count_pc)
+				{
+
+				case 1:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_POINTS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+						static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 2:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_LINES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+						static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					coloring.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_TRIANGLES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+						static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					coloring.buffer_unbind();
+					break;
+
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
 					coloring.buffer_bind();
 					glEnableVertexAttribArray(1);
 					glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
