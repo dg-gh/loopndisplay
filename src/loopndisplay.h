@@ -4708,6 +4708,7 @@ namespace lnd
 		size_t _height = 0;
 		lnd::buffer_texture buffer;
 		int map = GL_NEAREST;
+		int edges = GL_REPEAT;
 
 	public:
 
@@ -4806,6 +4807,8 @@ namespace lnd
 			default:
 				break;
 			}
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, edges);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, edges);
 			buffer.unbind();
 		}
 		inline void buffer_allocate_from(const unsigned char* const ptr, GLsizei width, GLsizei height) const
@@ -4841,6 +4844,8 @@ namespace lnd
 			default:
 				break;
 			}
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, edges);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, edges);
 			buffer.unbind();
 		}
 		inline void buffer_update() const
@@ -4872,6 +4877,8 @@ namespace lnd
 			default:
 				break;
 			}
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, edges);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, edges);
 			buffer.unbind();
 		}
 		inline void buffer_update_from(const unsigned char* const ptr, GLsizei width, GLsizei height) const
@@ -4899,6 +4906,8 @@ namespace lnd
 			default:
 				break;
 			}
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, edges);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, edges);
 			buffer.unbind();
 		}
 
@@ -4909,6 +4918,18 @@ namespace lnd
 		inline void map_linear() noexcept
 		{
 			map = GL_LINEAR;
+		}
+		inline void edges_repeat()
+		{
+			edges = GL_REPEAT;
+		}
+		inline void edges_mirrored_repeat()
+		{
+			edges = GL_MIRRORED_REPEAT;
+		}
+		inline void edges_clamp()
+		{
+			edges = GL_CLAMP_TO_EDGE;
 		}
 
 		inline size_t width() const noexcept { return _width; }
