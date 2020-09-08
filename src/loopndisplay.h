@@ -8284,10 +8284,6 @@ namespace lnd
 
 namespace lnd
 {
-	constexpr float pi = 3.14159265358979f;
-	constexpr float pi_m2 = 2.0f * 3.14159265358979f;
-	constexpr float pi_d2 = 0.5f * 3.14159265358979f;
-
 	class camera_3d
 	{
 
@@ -8485,25 +8481,61 @@ namespace lnd
 			position[2] -= distance;
 		}
 
-		inline void turn_up(float angle) noexcept
+		inline void turn_up_rad(float angle) noexcept
 		{
+			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
 			phi += angle;
-			if (phi > lnd::pi_d2) { phi = lnd::pi_d2; }
+			if (phi > pi_d2) { phi = pi_d2; }
 		}
-		inline void turn_down(float angle) noexcept
+		inline void turn_down_rad(float angle) noexcept
 		{
+			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
 			phi -= angle;
-			if (phi < -lnd::pi_d2) { phi = -lnd::pi_d2; }
+			if (phi < -pi_d2) { phi = -pi_d2; }
 		}
-		inline void turn_left(float angle) noexcept
+		inline void turn_left_rad(float angle) noexcept
 		{
+			constexpr float pi = 3.14159265358979f;
+			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
 			theta += angle;
-			if (theta > lnd::pi) { theta -= lnd::pi_m2; }
+			if (theta > pi) { theta -= pi_m2; }
 		}
-		inline void turn_right(float angle) noexcept
+		inline void turn_right_rad(float angle) noexcept
 		{
+			constexpr float pi = 3.14159265358979f;
+			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
 			theta -= angle;
-			if (theta < -lnd::pi) { theta += lnd::pi_m2; }
+			if (theta < -pi) { theta += pi_m2; }
+		}
+		inline void turn_up_deg(float angle) noexcept
+		{
+			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
+			constexpr float coeff = 3.14159265358979f / 180.0f;
+			phi += coeff * angle;
+			if (phi > pi_d2) { phi = pi_d2; }
+		}
+		inline void turn_down_deg(float angle) noexcept
+		{
+			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
+			constexpr float coeff = 3.14159265358979f / 180.0f;
+			phi -= coeff * angle;
+			if (phi < -pi_d2) { phi = -pi_d2; }
+		}
+		inline void turn_left_deg(float angle) noexcept
+		{
+			constexpr float pi = 3.14159265358979f;
+			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
+			constexpr float coeff = 3.14159265358979f / 180.0f;
+			theta += coeff * angle;
+			if (theta > pi) { theta -= pi_m2; }
+		}
+		inline void turn_right_deg(float angle) noexcept
+		{
+			constexpr float pi = 3.14159265358979f;
+			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
+			constexpr float coeff = 3.14159265358979f / 180.0f;
+			theta -= coeff * angle;
+			if (theta < -pi) { theta += pi_m2; }
 		}
 
 	private:
