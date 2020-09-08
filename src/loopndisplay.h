@@ -8089,6 +8089,7 @@ namespace lnd
 		float vp_matrix[16] = { 0.0f };
 		float p_matrix[16] = { 0.0f };
 		float v_matrix[16] = { 0.0f };
+		float mskybox_matrix[16] = { 0.0f };
 		float skybox_matrix[16] = { 0.0f };
 
 	public:
@@ -8181,6 +8182,10 @@ namespace lnd
 			m43xm44h(static_cast<float*>(skybox_matrix), static_cast<const float*>(p_matrix),
 				static_cast<const float*>(v_matrix));
 		}
+		inline void compute_mskybox_matrix(const float* const m_matrix) noexcept
+		{
+			m44xm44(static_cast<float*>(mskybox_matrix), static_cast<const float*>(skybox_matrix), m_matrix);
+		}
 
 		inline const float* position_data() const noexcept
 		{
@@ -8234,6 +8239,15 @@ namespace lnd
 		inline float* skybox_matrix_data() noexcept
 		{
 			return static_cast<float*>(skybox_matrix);
+		}
+		
+		inline const float* mskybox_matrix_data() const noexcept
+		{
+			return static_cast<const float*>(mskybox_matrix);
+		}
+		inline float* mskybox_matrix_data() noexcept
+		{
+			return static_cast<float*>(mskybox_matrix);
 		}
 
 		inline void move_forward(float distance) noexcept
