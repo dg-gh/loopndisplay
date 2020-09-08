@@ -8179,7 +8179,7 @@ namespace lnd
 		}
 		inline void compute_skybox_matrix() noexcept
 		{
-			m43xm44h(static_cast<float*>(skybox_matrix), static_cast<const float*>(p_matrix),
+			m33hxm44(static_cast<float*>(skybox_matrix), static_cast<const float*>(p_matrix),
 				static_cast<const float*>(v_matrix));
 		}
 		inline void compute_mskybox_matrix(const float* const m_matrix) noexcept
@@ -8361,7 +8361,7 @@ namespace lnd
 			}
 #endif // LND_INCLUDE_AVX
 		}
-		inline void m43xm44h(float* const pC, const float* const pA, const float* const pB) noexcept
+		inline void m33hxm44(float* const pC, const float* const pA, const float* const pB) noexcept
 		{
 #ifdef LND_INCLUDE_AVX
 			__m128 vregA0 = _mm_loadu_ps(pA);
