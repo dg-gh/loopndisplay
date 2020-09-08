@@ -964,7 +964,7 @@ namespace lnd
 		shader_fragment& operator=(shader_fragment&&) = delete;
 	};
 
-	class program_vertex_fragment
+	class program
 	{
 
 	private:
@@ -975,8 +975,8 @@ namespace lnd
 
 	public:
 
-		program_vertex_fragment() = default;
-		~program_vertex_fragment() { delete_program(); }
+		program() = default;
+		~program() { delete_program(); }
 
 		inline const unsigned int get() const noexcept { return program_index; }
 		inline void use() const { glUseProgram(program_index); }
@@ -1014,10 +1014,10 @@ namespace lnd
 
 	private:
 
-		program_vertex_fragment(const program_vertex_fragment&) = delete;
-		program_vertex_fragment(program_vertex_fragment&&) = delete;
-		program_vertex_fragment& operator=(const program_vertex_fragment&) = delete;
-		program_vertex_fragment& operator=(program_vertex_fragment&&) = delete;
+		program(const program&) = delete;
+		program(program&&) = delete;
+		program& operator=(const program&) = delete;
+		program& operator=(program&&) = delete;
 	};
 
 	buffer_vertex __default_vertex_buffer;
@@ -1488,7 +1488,7 @@ namespace lnd
 
 		// BASIC DRAW CALLS
 
-		inline void draw_line(const float* const vertex_ptr, const lnd::program_vertex_fragment& program)
+		inline void draw_line(const float* const vertex_ptr, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
@@ -1498,7 +1498,7 @@ namespace lnd
 			glDrawArrays(GL_LINES, 0, 2);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_line_3d(const float* const vertex_ptr, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		inline void draw_line_3d(const float* const vertex_ptr, const lnd::program& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
@@ -1575,7 +1575,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri(const float* const vertex_ptr, const lnd::program_vertex_fragment& program)
+		inline void draw_tri(const float* const vertex_ptr, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
@@ -1585,7 +1585,7 @@ namespace lnd
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_tri_3d(const float* const vertex_ptr, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		inline void draw_tri_3d(const float* const vertex_ptr, const lnd::program& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
@@ -1596,7 +1596,7 @@ namespace lnd
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_tri_hollow(const float* const vertex_ptr, const lnd::program_vertex_fragment& program)
+		inline void draw_tri_hollow(const float* const vertex_ptr, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
@@ -1606,7 +1606,7 @@ namespace lnd
 			glDrawArrays(GL_LINE_LOOP, 0, 3);
 			lnd::__default_vertex_buffer.bind();
 		}
-		inline void draw_tri_hollow_3d(const float* const vertex_ptr, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		inline void draw_tri_hollow_3d(const float* const vertex_ptr, const lnd::program& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
@@ -1683,7 +1683,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_quad(const float* const vertex_ptr, const lnd::program_vertex_fragment& program)
+		inline void draw_quad(const float* const vertex_ptr, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
@@ -1693,7 +1693,7 @@ namespace lnd
 			glDrawArrays(GL_QUADS, 0, 4);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_quad_3d(const float* const vertex_ptr, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		inline void draw_quad_3d(const float* const vertex_ptr, const lnd::program& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
@@ -1704,7 +1704,7 @@ namespace lnd
 			glDrawArrays(GL_QUADS, 0, 4);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_quad_hollow(const float* const vertex_ptr, const lnd::program_vertex_fragment& program)
+		inline void draw_quad_hollow(const float* const vertex_ptr, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
@@ -1714,7 +1714,7 @@ namespace lnd
 			glDrawArrays(GL_LINE_LOOP, 0, 4);
 			lnd::__default_vertex_buffer.bind();
 		}
-		inline void draw_quad_hollow_3d(const float* const vertex_ptr, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		inline void draw_quad_hollow_3d(const float* const vertex_ptr, const lnd::program& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), vertex_ptr, GL_STATIC_DRAW);
@@ -1792,7 +1792,7 @@ namespace lnd
 			lnd::__default_color_buffer.bind();
 		}
 
-		inline void draw_lines(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_lines(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -1802,7 +1802,7 @@ namespace lnd
 			glDrawArrays(GL_LINES, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_lines_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		inline void draw_lines_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -1879,7 +1879,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tris(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_tris(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -1889,7 +1889,7 @@ namespace lnd
 			glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_tris_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		inline void draw_tris_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -1966,7 +1966,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_quads(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_quads(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -2008,7 +2008,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_line_strip(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_line_strip(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -2018,7 +2018,7 @@ namespace lnd
 			glDrawArrays(GL_LINE_STRIP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_line_strip_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		inline void draw_line_strip_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -2096,7 +2096,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_line_loop(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_line_loop(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -2106,7 +2106,7 @@ namespace lnd
 			glDrawArrays(GL_LINE_LOOP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_line_loop_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		inline void draw_line_loop_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -2183,7 +2183,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri_strip(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_tri_strip(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -2193,7 +2193,7 @@ namespace lnd
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_tri_strip_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		inline void draw_tri_strip_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -2270,7 +2270,7 @@ namespace lnd
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
 		}
-		inline void draw_tri_fan(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program)
+		inline void draw_tri_fan(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (2 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -2280,7 +2280,7 @@ namespace lnd
 			glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
-		inline void draw_tri_fan_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program_vertex_fragment& program, const float* const mpv_matrix_ptr)
+		inline void draw_tri_fan_3d(const float* const vertex_ptr, GLsizei vertex_count, const lnd::program& program, const float* const mpv_matrix_ptr)
 		{
 			lnd::__default_vertex_buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), vertex_ptr, GL_STATIC_DRAW);
@@ -2400,45 +2400,45 @@ namespace lnd
 		const inline lnd::shader_fragment& fragment_RGBA() const noexcept { return _fragment_RGBA; }
 		const inline lnd::shader_fragment& fragment_texture() const noexcept { return _fragment_texture; }
 
-		const inline lnd::program_vertex_fragment& program_black() const noexcept { return _program_black; }
-		const inline lnd::program_vertex_fragment& program_red() const noexcept { return _program_red; }
-		const inline lnd::program_vertex_fragment& program_green() const noexcept { return _program_green; }
-		const inline lnd::program_vertex_fragment& program_blue() const noexcept { return _program_blue; }
-		const inline lnd::program_vertex_fragment& program_yellow() const noexcept { return _program_yellow; }
-		const inline lnd::program_vertex_fragment& program_magenta() const noexcept { return _program_magenta; }
-		const inline lnd::program_vertex_fragment& program_cyan() const noexcept { return _program_cyan; }
-		const inline lnd::program_vertex_fragment& program_orange() const noexcept { return _program_orange; }
-		const inline lnd::program_vertex_fragment& program_white() const noexcept { return _program_white; }
-		const inline lnd::program_vertex_fragment& program_color() const noexcept { return _program_color; } // mutable program
-		const inline lnd::program_vertex_fragment& program_RGB() const noexcept { return _program_RGB; }
-		const inline lnd::program_vertex_fragment& program_RGB_3d() const noexcept { return _program_RGB_3d; } // mutable program
-		const inline lnd::program_vertex_fragment& program_RGBA() const noexcept { return _program_RGBA; }
-		const inline lnd::program_vertex_fragment& program_RGBA_3d() const noexcept { return _program_RGBA_3d; } // mutable program
-		const inline lnd::program_vertex_fragment& program_texture() const noexcept { return _program_texture; }
-		const inline lnd::program_vertex_fragment& program_texture_3d() const noexcept { return _program_texture_3d; } // mutable program
+		const inline lnd::program& program_black() const noexcept { return _program_black; }
+		const inline lnd::program& program_red() const noexcept { return _program_red; }
+		const inline lnd::program& program_green() const noexcept { return _program_green; }
+		const inline lnd::program& program_blue() const noexcept { return _program_blue; }
+		const inline lnd::program& program_yellow() const noexcept { return _program_yellow; }
+		const inline lnd::program& program_magenta() const noexcept { return _program_magenta; }
+		const inline lnd::program& program_cyan() const noexcept { return _program_cyan; }
+		const inline lnd::program& program_orange() const noexcept { return _program_orange; }
+		const inline lnd::program& program_white() const noexcept { return _program_white; }
+		const inline lnd::program& program_color() const noexcept { return _program_color; } // mutable program
+		const inline lnd::program& program_RGB() const noexcept { return _program_RGB; }
+		const inline lnd::program& program_RGB_3d() const noexcept { return _program_RGB_3d; } // mutable program
+		const inline lnd::program& program_RGBA() const noexcept { return _program_RGBA; }
+		const inline lnd::program& program_RGBA_3d() const noexcept { return _program_RGBA_3d; } // mutable program
+		const inline lnd::program& program_texture() const noexcept { return _program_texture; }
+		const inline lnd::program& program_texture_3d() const noexcept { return _program_texture_3d; } // mutable program
 
-		inline const lnd::program_vertex_fragment& set_fragment_color(const lnd::program_vertex_fragment& program, float c0, float c1, float c2, float c3)
+		inline const lnd::program& set_fragment_color(const lnd::program& program, float c0, float c1, float c2, float c3)
 		{
 			program.use();
 			int location = glGetUniformLocation(program.get(), "u_C");
 			glUniform4f(location, c0, c1, c2, c3);
 			return program;
 		}
-		inline const lnd::program_vertex_fragment& set_vertex_shift(const lnd::program_vertex_fragment& program, float T0, float T1)
+		inline const lnd::program& set_vertex_shift(const lnd::program& program, float T0, float T1)
 		{
 			program.use();
 			int location = glGetUniformLocation(program.get(), "u_X");
 			glUniform2f(location, T0, T1);
 			return program;
 		}
-		inline const lnd::program_vertex_fragment& set_vertex_shift_scale(const lnd::program_vertex_fragment& program, float T0, float T1, float scale)
+		inline const lnd::program& set_vertex_shift_scale(const lnd::program& program, float T0, float T1, float scale)
 		{
 			program.use();
 			int location = glGetUniformLocation(program.get(), "u_X");
 			glUniform3f(location, T0, T1, scale);
 			return program;
 		}
-		inline const lnd::program_vertex_fragment& set_vertex_shift_rotate_rad(const lnd::program_vertex_fragment& program, float T0, float T1, float angle)
+		inline const lnd::program& set_vertex_shift_rotate_rad(const lnd::program& program, float T0, float T1, float angle)
 		{
 			float C = std::cosf(angle);
 			float S = std::sinf(angle);
@@ -2447,7 +2447,7 @@ namespace lnd
 			glUniform4f(location, T0, T1, C, S);
 			return program;
 		}
-		inline const lnd::program_vertex_fragment& set_vertex_shift_rotate_deg(const lnd::program_vertex_fragment& program, float T0, float T1, float angle)
+		inline const lnd::program& set_vertex_shift_rotate_deg(const lnd::program& program, float T0, float T1, float angle)
 		{
 			constexpr float deg_to_float = 3.14159265358979323846f / 180.0f;
 			angle *= deg_to_float;
@@ -2458,7 +2458,7 @@ namespace lnd
 			glUniform4f(location, T0, T1, C, S);
 			return program;
 		}
-		inline const lnd::program_vertex_fragment& set_vertex_affine(const lnd::program_vertex_fragment& program,
+		inline const lnd::program& set_vertex_affine(const lnd::program& program,
 			float T0, float T1, float orig0, float orig1, float A00, float A10, float A01, float A11)
 		{
 			program.use();
@@ -2468,7 +2468,7 @@ namespace lnd
 			glUniform4f(location1, A00, A10, A01, A11);
 			return program;
 		}
-		inline const lnd::program_vertex_fragment& set_vertex_3d(const lnd::program_vertex_fragment& program, const float* const matrix_ptr)
+		inline const lnd::program& set_vertex_3d(const lnd::program& program, const float* const matrix_ptr)
 		{
 			program.use();
 			int location = glGetUniformLocation(program.get(), "M");
@@ -2570,22 +2570,22 @@ namespace lnd
 		lnd::shader_fragment _fragment_RGBA;
 		lnd::shader_fragment _fragment_texture;
 
-		lnd::program_vertex_fragment _program_black;
-		lnd::program_vertex_fragment _program_red;
-		lnd::program_vertex_fragment _program_green;
-		lnd::program_vertex_fragment _program_blue;
-		lnd::program_vertex_fragment _program_yellow;
-		lnd::program_vertex_fragment _program_magenta;
-		lnd::program_vertex_fragment _program_cyan;
-		lnd::program_vertex_fragment _program_orange;
-		lnd::program_vertex_fragment _program_white;
-		lnd::program_vertex_fragment _program_color;
-		lnd::program_vertex_fragment _program_RGB;
-		lnd::program_vertex_fragment _program_RGB_3d;
-		lnd::program_vertex_fragment _program_RGBA;
-		lnd::program_vertex_fragment _program_RGBA_3d;
-		lnd::program_vertex_fragment _program_texture;
-		lnd::program_vertex_fragment _program_texture_3d;
+		lnd::program _program_black;
+		lnd::program _program_red;
+		lnd::program _program_green;
+		lnd::program _program_blue;
+		lnd::program _program_yellow;
+		lnd::program _program_magenta;
+		lnd::program _program_cyan;
+		lnd::program _program_orange;
+		lnd::program _program_white;
+		lnd::program _program_color;
+		lnd::program _program_RGB;
+		lnd::program _program_RGB_3d;
+		lnd::program _program_RGBA;
+		lnd::program _program_RGBA_3d;
+		lnd::program _program_texture;
+		lnd::program _program_texture_3d;
 
 		std::vector<std::thread> auxiliary_threads;
 		std::condition_variable auxiliary_task_condition_var;
@@ -5413,7 +5413,7 @@ namespace lnd
 		}
 
 
-		inline void draw(const lnd::program_vertex_fragment& program)
+		inline void draw(const lnd::program& program)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -5458,7 +5458,7 @@ namespace lnd
 				break;
 			}
 		}
-		inline void draw_3d(const lnd::program_vertex_fragment& program)
+		inline void draw_3d(const lnd::program& program)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -5503,7 +5503,7 @@ namespace lnd
 				break;
 			}
 		}
-		inline void draw_3d_with_normals(const lnd::program_vertex_fragment& program)
+		inline void draw_3d_with_normals(const lnd::program& program)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -5535,7 +5535,7 @@ namespace lnd
 			}
 		}
 
-		inline void draw(GLsizei first_cluster, GLsizei end_cluster, const lnd::program_vertex_fragment& program)
+		inline void draw(GLsizei first_cluster, GLsizei end_cluster, const lnd::program& program)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -5580,7 +5580,7 @@ namespace lnd
 				break;
 			}
 		}
-		inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster, const lnd::program_vertex_fragment& program)
+		inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster, const lnd::program& program)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -5625,7 +5625,7 @@ namespace lnd
 				break;
 			}
 		}
-		inline void draw_3d_with_normals(GLsizei first_cluster, GLsizei end_cluster, const lnd::program_vertex_fragment& program)
+		inline void draw_3d_with_normals(GLsizei first_cluster, GLsizei end_cluster, const lnd::program& program)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -5657,7 +5657,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw(const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -5797,7 +5797,7 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_3d(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw_3d(const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -5939,7 +5939,7 @@ namespace lnd
 		}
 
 		template <size_t _color_dim, class _color_Allocator> inline void draw(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_color<_vertex_count_pc,
+			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc,
 			_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -6088,7 +6088,7 @@ namespace lnd
 			}
 		}
 		template <size_t _color_dim, class _color_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_color<_vertex_count_pc,
+			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc,
 			_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -6237,7 +6237,7 @@ namespace lnd
 			}
 		}
 
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw(const lnd::program_vertex_fragment& program,
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw(const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
 		{
@@ -6324,7 +6324,7 @@ namespace lnd
 				}
 			}
 		}
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(const lnd::program_vertex_fragment& program,
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
 		{
@@ -6413,7 +6413,7 @@ namespace lnd
 		}
 
 		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+			const lnd::program& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
 		{
 			if (_pixel_dim == 4)
@@ -6502,7 +6502,7 @@ namespace lnd
 			}
 		}
 		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+			const lnd::program& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
 		{
 			if (_pixel_dim == 4)
@@ -6591,7 +6591,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines(const lnd::program_vertex_fragment& program,
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines(const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6603,7 +6603,7 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_3d(const lnd::program_vertex_fragment& program,
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_3d(const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6617,7 +6617,7 @@ namespace lnd
 		}
 
 		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6630,7 +6630,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6643,7 +6643,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris(const lnd::program_vertex_fragment& program,
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris(const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6655,7 +6655,7 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_3d(const lnd::program_vertex_fragment& program,
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_3d(const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6669,7 +6669,7 @@ namespace lnd
 		}
 
 		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6682,7 +6682,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6695,7 +6695,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads(const lnd::program_vertex_fragment& program,
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads(const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6707,7 +6707,7 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_3d(const lnd::program_vertex_fragment& program,
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_3d(const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6721,7 +6721,7 @@ namespace lnd
 		}
 
 		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6734,7 +6734,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6747,7 +6747,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines(const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -6789,7 +6789,7 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_3d(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_3d(const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -6833,7 +6833,7 @@ namespace lnd
 		}
 
 		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -6878,7 +6878,7 @@ namespace lnd
 			}
 		}
 		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -6923,7 +6923,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris(const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -6965,7 +6965,7 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_3d(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_3d(const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -7009,7 +7009,7 @@ namespace lnd
 		}
 
 		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -7054,7 +7054,7 @@ namespace lnd
 			}
 		}
 		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -7099,7 +7099,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads(const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -7141,7 +7141,7 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_3d(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_3d(const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -7185,7 +7185,7 @@ namespace lnd
 		}
 
 		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -7230,7 +7230,7 @@ namespace lnd
 			}
 		}
 		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program_vertex_fragment& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			switch (_color_dim)
@@ -7448,7 +7448,7 @@ namespace lnd
 		}
 
 
-		template <class _index_Allocator> inline void draw_lines(const lnd::program_vertex_fragment& program,
+		template <class _index_Allocator> inline void draw_lines(const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -7460,7 +7460,7 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <class _index_Allocator> inline void draw_lines_3d(const lnd::program_vertex_fragment& program,
+		template <class _index_Allocator> inline void draw_lines_3d(const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -7473,7 +7473,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <class _index_Allocator> inline void draw_tris(const lnd::program_vertex_fragment& program,
+		template <class _index_Allocator> inline void draw_tris(const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -7485,7 +7485,7 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <class _index_Allocator> inline void draw_tris_3d(const lnd::program_vertex_fragment& program,
+		template <class _index_Allocator> inline void draw_tris_3d(const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -7498,7 +7498,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		inline void draw_line_strip(const lnd::program_vertex_fragment& program)
+		inline void draw_line_strip(const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7507,7 +7507,7 @@ namespace lnd
 			glDrawArrays(GL_LINE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
 		}
-		inline void draw_line_strip_3d(const lnd::program_vertex_fragment& program)
+		inline void draw_line_strip_3d(const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7517,7 +7517,7 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		inline void draw_line_strip(GLsizei first_vertex, GLsizei last_vertex, const lnd::program_vertex_fragment& program)
+		inline void draw_line_strip(GLsizei first_vertex, GLsizei last_vertex, const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7526,7 +7526,7 @@ namespace lnd
 			glDrawArrays(GL_LINE_STRIP, first_vertex, last_vertex - first_vertex);
 			buffer.unbind();
 		}
-		inline void draw_line_strip_3d(GLsizei first_vertex, GLsizei last_vertex, const lnd::program_vertex_fragment& program)
+		inline void draw_line_strip_3d(GLsizei first_vertex, GLsizei last_vertex, const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7536,7 +7536,7 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		inline void draw_line_loop(const lnd::program_vertex_fragment& program)
+		inline void draw_line_loop(const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7545,7 +7545,7 @@ namespace lnd
 			glDrawArrays(GL_LINE_LOOP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
 		}
-		inline void draw_line_loop_3d(const lnd::program_vertex_fragment& program)
+		inline void draw_line_loop_3d(const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7555,7 +7555,7 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		inline void draw_tri_strip(const lnd::program_vertex_fragment& program)
+		inline void draw_tri_strip(const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7564,7 +7564,7 @@ namespace lnd
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
 		}
-		inline void draw_tri_strip_3d(const lnd::program_vertex_fragment& program)
+		inline void draw_tri_strip_3d(const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7574,7 +7574,7 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		inline void draw_tri_fan(const lnd::program_vertex_fragment& program)
+		inline void draw_tri_fan(const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7583,7 +7583,7 @@ namespace lnd
 			glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
 		}
-		inline void draw_tri_fan_3d(const lnd::program_vertex_fragment& program)
+		inline void draw_tri_fan_3d(const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7593,7 +7593,7 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip(const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -7631,7 +7631,7 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_3d(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_3d(const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -7671,7 +7671,7 @@ namespace lnd
 		}
 
 		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip(GLsizei first_vertex, GLsizei last_vertex,
-			const lnd::program_vertex_fragment& program, const lnd::group_color<_color_dim, _color_Allocator>& coloring)
+			const lnd::program& program, const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
 			{
@@ -7709,7 +7709,7 @@ namespace lnd
 			}
 		}
 		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_3d(GLsizei first_vertex, GLsizei last_vertex,
-			const lnd::program_vertex_fragment& program, const lnd::group_color<_color_dim, _color_Allocator>& coloring)
+			const lnd::program& program, const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
 			{
@@ -7747,7 +7747,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop(const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -7785,7 +7785,7 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop_3d(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop_3d(const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -7824,7 +7824,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip(const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -7862,7 +7862,7 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_3d(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_3d(const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -7901,7 +7901,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan(const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -7939,7 +7939,7 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_3d(const lnd::program_vertex_fragment& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_3d(const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			switch (_color_dim)
@@ -8242,7 +8242,7 @@ namespace lnd
 			glNamedBufferSubData(buffer_atlas_vertex.get(), 0, text_size * (8 * sizeof(float)), atlas_vertex.data());
 		}
 
-		template <size_t _dim, class _atlas_Allocator> inline  void draw(const lnd::program_vertex_fragment& program,
+		template <size_t _dim, class _atlas_Allocator> inline  void draw(const lnd::program& program,
 			const lnd::texture<_dim, _atlas_Allocator>& atlas)
 		{
 			if (_dim == 4)
