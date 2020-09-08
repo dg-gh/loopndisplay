@@ -1047,9 +1047,9 @@ namespace lnd
 
 		// set transparency
 
-		inline void set_transparency(bool transparency)
+		inline void set_transparency(bool transparency_enabled)
 		{
-			if (transparency) { glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); }
+			if (transparency_enabled) { glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); }
 			else { glBlendFunc(GL_ONE, GL_ZERO); }
 		}
 
@@ -1065,6 +1065,23 @@ namespace lnd
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);
 			_clear_window = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+		}
+		
+		// depth mask and buffer
+		inline void set_depth_buffer(bool depth_buffer_enabled)
+		{
+			if (depth_buffer_enabled)
+			{
+				glDepthMask(GL_TRUE);
+			}
+			else
+			{
+				glDepthMask(GL_FALSE);
+			}
+		}
+		inline void reset_depth_buffer()
+		{
+			glClear(GL_DEPTH_BUFFER_BIT);
 		}
 
 		// subwindow
