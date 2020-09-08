@@ -8167,8 +8167,6 @@ namespace lnd
 		}
 		inline void compute_v_matrix() noexcept
 		{
-			memset(static_cast<float*>(v_matrix), 0, 16 * sizeof(float));
-
 			v_matrix[0] = sin_theta;
 			v_matrix[1] = -cos_theta * sin_phi;
 			v_matrix[2] = cos_theta * cos_phi;
