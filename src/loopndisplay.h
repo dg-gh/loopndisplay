@@ -5439,6 +5439,37 @@ namespace lnd
 				break;
 			}
 		}
+		inline void draw_3d_with_normals(const lnd::program_vertex_fragment& program)
+		{
+			switch (_vertex_count_pc)
+			{
+
+			case 3:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+				program.use();
+				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
+				buffer.unbind();
+				break;
+
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+				program.use();
+				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
+				buffer.unbind();
+				break;
+
+			default:
+				break;
+			}
+		}
 
 		inline void draw(GLsizei first_cluster, GLsizei end_cluster, const lnd::program_vertex_fragment& program)
 		{
@@ -5521,6 +5552,37 @@ namespace lnd
 				buffer.bind();
 				glEnableVertexAttribArray(0);
 				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				program.use();
+				glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+				buffer.unbind();
+				break;
+
+			default:
+				break;
+			}
+		}
+		inline void draw_3d_with_normals(GLsizei first_cluster, GLsizei end_cluster, const lnd::program_vertex_fragment& program)
+		{
+			switch (_vertex_count_pc)
+			{
+
+			case 3:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+				program.use();
+				glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+				buffer.unbind();
+				break;
+
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
 				program.use();
 				glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
