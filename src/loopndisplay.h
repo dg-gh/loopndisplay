@@ -5286,6 +5286,67 @@ namespace lnd
 		{
 			m.shrink_to_fit();
 		}
+			
+		
+		inline void make_normals() noexcept
+		{
+			constexpr size_t _offset = _vertex_count_pc * _dim;
+			float* ptr = static_cast<float*>(static_cast<void*>(m.data()));
+			float factor;
+			size_t n = m.size();
+
+			switch (_dim)
+			{
+
+			case 2:
+				for (size_t j = 0; j < n; j++)
+				{
+					*(ptr + 2) = -*(ptr + 1);
+					*(ptr + 3) = *ptr;
+					factor = 1.0f / std::sqrt(*(ptr + 2) * *(ptr + 2) + *(ptr + 3) * *(ptr + 3));
+					*(ptr + 2) *= factor;
+					*(ptr + 3) *= factor;
+#pragma unroll
+					for (size_t k = 1; k < _vertex_count_pc; k++)
+					{
+						memcpy(ptr + 2 + 2 * k, ptr + 2, 2 * sizeof(float));
+					}
+					ptr += _offset;
+				}
+				break;
+
+			case 3:
+				float u3[3];
+				float v3[3];
+				for (size_t j = 0; j < n; j++)
+				{
+					u3[0] = *(ptr + 6) - *(ptr + 0);
+					u3[1] = *(ptr + 5) - *(ptr + 1);
+					u3[2] = *(ptr + 7) - *(ptr + 2);
+					v3[0] = *(ptr + 12) - *(ptr + 0);
+					v3[1] = *(ptr + 13) - *(ptr + 1);
+					v3[2] = *(ptr + 14) - *(ptr + 2);
+					*(ptr + 3) = u3[1] * v3[2] - u3[2] * v3[1];
+					*(ptr + 4) = u3[2] * v3[0] - u3[0] * v3[2];
+					*(ptr + 5) = u3[0] * v3[1] - u3[1] * v3[0];
+					factor = 1.0f / std::sqrt(*(ptr + 3) * *(ptr + 3)
+						+ *(ptr + 4) * *(ptr + 4) + *(ptr + 5) * *(ptr + 5));
+					*(ptr + 3) *= factor;
+					*(ptr + 4) *= factor;
+					*(ptr + 5) *= factor;
+#pragma unroll
+					for (size_t k = 1; k < _vertex_count_pc; k++)
+					{
+						memcpy(ptr + 3 + 3 * k, ptr + 3, 3 * sizeof(float));
+					}
+					ptr += _offset;
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
 
 
 		inline void draw(const lnd::program_vertex_fragment& program)
