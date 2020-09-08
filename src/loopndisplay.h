@@ -3660,7 +3660,7 @@ namespace lnd
 
 			lnd::__user_key_input.reset_key_events();
 
-			if (new_timeframe != 0.0)
+			if (new_timeframe > 0.0)
 			{
 				while (true)
 				{
