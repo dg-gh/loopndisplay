@@ -2475,6 +2475,37 @@ namespace lnd
 			glUniformMatrix4fv(location, 1, GL_FALSE, matrix_ptr);
 			return program;
 		}
+		inline const lnd::program& set_color_skylight_3d(const lnd::program& program, const float* const mvp_matrix_ptr, const float* const color_ptr,
+			const float* const light_direction_ptr, const float* const light_color_ptr, const float* const ambient_light_ptr, const float* const m_matrix_ptr)
+		{
+			program.use();
+			int location = glGetUniformLocation(program.get(), "M");
+			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
+			location = glGetUniformLocation(program.get(), "C");
+			glUniform4fv(location, 1, color_ptr);
+			location = glGetUniformLocation(program.get(), "dir");
+			glUniform3fv(location, 1, light_direction_ptr);
+			location = glGetUniformLocation(program.get(), "light_C");
+			glUniform3fv(location, 1, light_color_ptr);
+			location = glGetUniformLocation(program.get(), "amb");
+			glUniform3fv(location, 1, ambient_light_ptr);
+			if (m_matrix_ptr != nullptr)
+			{
+				location = glGetUniformLocation(program.get(), "m_M");
+				glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
+			}
+			else
+			{
+				float id_ptr[16] = {
+					1.0f, 0.0f, 0.0f, 0.0f,
+					0.0f, 1.0f, 0.0f, 0.0f,
+					0.0f, 0.0f, 1.0f
+				};
+				location = glGetUniformLocation(program.get(), "m_M");
+				glUniformMatrix4fv(location, 1, GL_FALSE, static_cast<float*>(id_ptr));
+			}
+			return program;
+		}
 
 
 		// CONSTRUCTORS AND DESTRUCTORS
@@ -8438,6 +8469,15 @@ namespace lnd
 		inline float* vp_matrix_data() noexcept
 		{
 			return static_cast<float*>(vp_matrix);
+		}
+		
+		inline const float* mvp_matrix_data() const noexcept
+		{
+			return static_cast<const float*>(mvp_matrix);
+		}
+		inline float* mvp_matrix_data() noexcept
+		{
+			return static_cast<float*>(mvp_matrix);
 		}
 		
 		inline const float* skybox_matrix_data() const noexcept
