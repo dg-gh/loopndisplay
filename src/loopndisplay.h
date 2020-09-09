@@ -2462,10 +2462,10 @@ namespace lnd
 			float T0, float T1, float orig0, float orig1, float A00, float A10, float A01, float A11)
 		{
 			program.use();
-			int location0 = glGetUniformLocation(program.get(), "u_X0");
-			glUniform4f(location0, T0, T1, orig0, orig1);
-			int location1 = glGetUniformLocation(program.get(), "u_X1");
-			glUniform4f(location1, A00, A10, A01, A11);
+			int location = glGetUniformLocation(program.get(), "u_X0");
+			glUniform4f(location, T0, T1, orig0, orig1);
+			location = glGetUniformLocation(program.get(), "u_X1");
+			glUniform4f(location, A00, A10, A01, A11);
 			return program;
 		}
 		inline const lnd::program& set_vertex_3d(const lnd::program& program, const float* const matrix_ptr)
