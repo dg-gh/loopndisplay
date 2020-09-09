@@ -2386,6 +2386,7 @@ namespace lnd
 		const inline lnd::shader_vertex& vertex_texture_shift_scale() const noexcept { return _vertex_texture_shift_scale; } // mutable
 		const inline lnd::shader_vertex& vertex_texture_shift_rotate() const noexcept { return _vertex_texture_shift_rotate; } // mutable
 		const inline lnd::shader_vertex& vertex_texture_affine() const noexcept { return _vertex_texture_affine; } // mutable
+		const inline lnd::shader_vertex& vertex_texture_normals_3d() const noexcept { return _vertex_texture_normals_3d; } // mutable
 
 		const inline lnd::shader_fragment& fragment_black() const noexcept { return _fragment_black; }
 		const inline lnd::shader_fragment& fragment_red() const noexcept { return _fragment_red; }
@@ -2400,6 +2401,8 @@ namespace lnd
 		const inline lnd::shader_fragment& fragment_RGB() const noexcept { return _fragment_RGB; }
 		const inline lnd::shader_fragment& fragment_RGBA() const noexcept { return _fragment_RGBA; }
 		const inline lnd::shader_fragment& fragment_texture() const noexcept { return _fragment_texture; }
+		const inline lnd::shader_fragment& fragment_color_skylight_3d() const noexcept { return _fragment_color_skylight_3d; } // mutable shader
+		const inline lnd::shader_fragment& fragment_texture_skylight_3d() const noexcept { return _fragment_texture_skylight_3d; } // mutable shader
 
 		const inline lnd::program& program_black() const noexcept { return _program_black; }
 		const inline lnd::program& program_red() const noexcept { return _program_red; }
@@ -2418,6 +2421,7 @@ namespace lnd
 		const inline lnd::program& program_texture() const noexcept { return _program_texture; }
 		const inline lnd::program& program_texture_3d() const noexcept { return _program_texture_3d; } // mutable program
 		const inline lnd::program& program_color_skylight_3d() const noexcept { return _program_color_skylight_3d; } // mutable program
+		const inline lnd::program& program_texture_skylight_3d() const noexcept { return _program_texture_skylight_3d; } // mutable program
 
 		inline const lnd::program& set_fragment_color(const lnd::program& program, float c0, float c1, float c2, float c3)
 		{
@@ -2485,6 +2489,35 @@ namespace lnd
 			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
 			location = glGetUniformLocation(program.get(), "C");
 			glUniform4fv(location, 1, color_ptr);
+			location = glGetUniformLocation(program.get(), "dir");
+			glUniform3fv(location, 1, light_direction_ptr);
+			location = glGetUniformLocation(program.get(), "light_C");
+			glUniform3fv(location, 1, light_color_ptr);
+			location = glGetUniformLocation(program.get(), "amb");
+			glUniform3fv(location, 1, ambient_light_ptr);
+			if (m_matrix_ptr != nullptr)
+			{
+				location = glGetUniformLocation(program.get(), "m_M");
+				glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
+			}
+			else
+			{
+				float id_ptr[16] = {
+					1.0f, 0.0f, 0.0f, 0.0f,
+					0.0f, 1.0f, 0.0f, 0.0f,
+					0.0f, 0.0f, 1.0f
+				};
+				location = glGetUniformLocation(program.get(), "m_M");
+				glUniformMatrix4fv(location, 1, GL_FALSE, static_cast<float*>(id_ptr));
+			}
+			return program;
+		}
+		inline const lnd::program& set_skylight_3d(const lnd::program& program, const float* const mvp_matrix_ptr, const float* const light_direction_ptr,
+			const float* const light_color_ptr, const float* const ambient_light_ptr, const float* const m_matrix_ptr)
+		{
+			program.use();
+			int location = glGetUniformLocation(program.get(), "M");
+			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
 			location = glGetUniformLocation(program.get(), "dir");
 			glUniform3fv(location, 1, light_direction_ptr);
 			location = glGetUniformLocation(program.get(), "light_C");
@@ -2589,6 +2622,7 @@ namespace lnd
 		lnd::shader_vertex _vertex_texture_shift_rotate; // mutable
 		lnd::shader_vertex _vertex_texture_affine; // mutable
 		lnd::shader_vertex _vertex_texture_3d; // mutable
+		lnd::shader_vertex _vertex_texture_normals_3d; // mutable
 
 		lnd::shader_fragment _fragment_black;
 		lnd::shader_fragment _fragment_red;
@@ -2604,6 +2638,7 @@ namespace lnd
 		lnd::shader_fragment _fragment_RGBA;
 		lnd::shader_fragment _fragment_texture;
 		lnd::shader_fragment _fragment_color_skylight_3d; // mutable
+		lnd::shader_fragment _fragment_texture_skylight_3d; // mutable
 
 		lnd::program _program_black;
 		lnd::program _program_red;
@@ -2622,6 +2657,7 @@ namespace lnd
 		lnd::program _program_texture;
 		lnd::program _program_texture_3d;
 		lnd::program _program_color_skylight_3d;
+		lnd::program _program_texture_skylight_3d;
 
 		std::vector<std::thread> auxiliary_threads;
 		std::condition_variable auxiliary_task_condition_var;
@@ -3383,6 +3419,20 @@ namespace lnd
 				"		forward_N = N; }								\n"
 			);
 
+			_vertex_texture_normals_3d.new_shader(
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec3 X;					\n"
+				"	layout (location = 1) in vec2 UV;					\n"
+				"	layout (location = 2) in vec3 N;					\n"
+				"	out vec2 forward_UV;								\n"
+				"	out vec3 forward_N;									\n"
+				"	uniform mat4 M;										\n"
+				"	void main() {										\n"
+				"		gl_Position = M * vec4(X, 1);					\n"
+				"		forward_UV = UV;								\n"
+				"		forward_N = N; }								\n"
+			);
+
 			_vertex_RGB_3d.new_shader(
 				"	#version 330 core									\n"
 				"	layout (location = 0) in vec3 X;					\n"
@@ -3513,6 +3563,22 @@ namespace lnd
 				"		* (light_C * vec3(C)), C[3]), vec4(amb, 0.0)); }		\n"
 			);
 
+			_fragment_texture_skylight_3d.new_shader(
+				"	#version 330 core											\n"
+				"	in vec3 forward_N;											\n"
+				"	in vec2 forward_UV;											\n"
+				"	out vec4 color;												\n"
+				"	uniform vec3 dir;											\n"
+				"	uniform sampler2D Tx;										\n"
+				"	uniform vec3 light_C;										\n"
+				"	uniform vec3 amb;											\n"
+				"	uniform mat4 m_M;											\n"
+				"	void main() {												\n"
+				"		vec4 C = texture(Tx, forward_UV);						\n"
+				"		color = max(vec4(-dot(mat3(m_M) * forward_N, dir)		\n"
+				"		* (light_C * vec3(C)), C[3]), vec4(amb, 0.0)); }		\n"
+			);
+
 			_program_black.new_program(_vertex_identity, _fragment_black);
 			_program_red.new_program(_vertex_identity, _fragment_red);
 			_program_green.new_program(_vertex_identity, _fragment_green);
@@ -3530,6 +3596,7 @@ namespace lnd
 			_program_texture.new_program(_vertex_texture_identity, _fragment_texture);
 			_program_texture_3d.new_program(_vertex_texture_3d, _fragment_texture);
 			_program_color_skylight_3d.new_program(_vertex_normals_3d, _fragment_color_skylight_3d);
+			_program_texture_skylight_3d.new_program(_vertex_texture_normals_3d, _fragment_texture_skylight_3d);
 
 			lnd::__default_vertex_buffer.new_id(1);
 			lnd::__default_index_buffer.new_id(1);
@@ -3606,6 +3673,7 @@ namespace lnd
 			_vertex_texture_shift_rotate.delete_shader();
 			_vertex_texture_affine.delete_shader();
 			_vertex_texture_3d.delete_shader();
+			_vertex_texture_normals_3d.delete_shader();
 
 			_fragment_black.delete_shader();
 			_fragment_red.delete_shader();
@@ -3621,6 +3689,7 @@ namespace lnd
 			_fragment_RGBA.delete_shader();
 			_fragment_texture.delete_shader();
 			_fragment_color_skylight_3d.delete_shader();
+			_fragment_texture_skylight_3d.delete_shader();
 
 			_program_black.delete_program();
 			_program_red.delete_program();
@@ -3639,7 +3708,8 @@ namespace lnd
 			_program_texture.delete_program();
 			_program_texture_3d.delete_program();
 			_program_color_skylight_3d.delete_program();
-			
+			_program_texture_skylight_3d.delete_program();
+
 			lnd::__default_vertex_buffer.delete_id();
 			lnd::__default_index_buffer.delete_id();
 			lnd::__default_color_buffer.delete_id();
@@ -6482,6 +6552,105 @@ namespace lnd
 				}
 			}
 		}
+		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_3d(const lnd::program& program,
+			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord, const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image,
+			const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normals_Allocator>& normals)
+		{
+			if (_pixel_dim == 4)
+			{
+				switch (_vertex_count_pc)
+				{
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					normals.buffer_bind();
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					normals.buffer_unbind();
+					break;
+
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					normals.buffer_bind();
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					normals.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+			}
+			else
+			{
+				switch (_vertex_count_pc)
+				{
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					normals.buffer_bind();
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					program.use();
+					glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					normals.buffer_unbind();
+					break;
+
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					normals.buffer_bind();
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					program.use();
+					glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					normals.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+			}
+		}
 
 		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw(GLsizei first_cluster, GLsizei end_cluster,
 			const lnd::program& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
@@ -6654,6 +6823,105 @@ namespace lnd
 					buffer.unbind();
 					texture_coord.buffer_unbind();
 					texture_image.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+			}
+		}
+		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
+			const lnd::program& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image, const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normals_Allocator>& normals)
+		{
+			if (_pixel_dim == 4)
+			{
+				switch (_vertex_count_pc)
+				{
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					normals.buffer_bind();
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					normals.buffer_unbind();
+					break;
+
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					normals.buffer_bind();
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					program.use();
+					glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
+					glBlendFunc(GL_ONE, GL_ZERO);
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					normals.buffer_unbind();
+					break;
+
+				default:
+					break;
+				}
+			}
+			else
+			{
+				switch (_vertex_count_pc)
+				{
+
+				case 3:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					normals.buffer_bind();
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					program.use();
+					glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					normals.buffer_unbind();
+					break;
+
+				case 4:
+					buffer.bind();
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_coord.buffer_bind();
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+					normals.buffer_bind();
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+					texture_image.buffer_bind();
+					program.use();
+					glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
+					buffer.unbind();
+					texture_coord.buffer_unbind();
+					normals.buffer_unbind();
 					break;
 
 				default:
@@ -8362,7 +8630,11 @@ namespace lnd
 
 		float mvp_matrix[16] = { 0.0f };
 		float vp_matrix[16] = { 0.0f };
-		float p_matrix[16] = { 0.0f };
+		float p_matrix[16] = {
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f
+		};
 		float v_matrix[16] = { 0.0f };
 		float mskybox_matrix[16] = { 0.0f };
 		float skybox_matrix[16] = { 0.0f };
@@ -8405,7 +8677,6 @@ namespace lnd
 				p_matrix[0] = 1.0f / (screen_ratio * tan_half_fov_y);
 				p_matrix[5] = 1.0f / tan_half_fov_y;
 				p_matrix[10] = -(z_far + z_near) * dz_inv;
-				p_matrix[11] = 1.0f;
 				p_matrix[14] = (2.0f * z_near) * (z_far * dz_inv);
 			}
 			else
@@ -8415,7 +8686,6 @@ namespace lnd
 				p_matrix[0] = 1.0f / tan_half_fov_x;
 				p_matrix[5] = screen_ratio / tan_half_fov_x;
 				p_matrix[10] = -(z_far + z_near) * dz_inv;
-				p_matrix[11] = 1.0f;
 				p_matrix[14] = (2.0f * z_near) * (z_far * dz_inv);
 			}
 		}
