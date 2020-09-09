@@ -8381,18 +8381,18 @@ namespace lnd
 			m44xm44(static_cast<float*>(vp_matrix), static_cast<const float*>(p_matrix),
 				static_cast<const float*>(v_matrix));
 		}
-		inline void compute_mvp_matrix(const float* const m_matrix) noexcept
+		inline void compute_mvp_matrix(const float* const m_matrix_ptr) noexcept
 		{
-			m44xm44(static_cast<float*>(mvp_matrix), static_cast<const float*>(vp_matrix), m_matrix);
+			m44xm44(static_cast<float*>(mvp_matrix), static_cast<const float*>(vp_matrix), m_matrix_ptr);
 		}
 		inline void compute_skybox_matrix() noexcept
 		{
 			m33hxm44(static_cast<float*>(skybox_matrix), static_cast<const float*>(p_matrix),
 				static_cast<const float*>(v_matrix));
 		}
-		inline void compute_mskybox_matrix(const float* const m_matrix) noexcept
+		inline void compute_mskybox_matrix(const float* const m_matrix_ptr) noexcept
 		{
-			m44xm44(static_cast<float*>(mskybox_matrix), static_cast<const float*>(skybox_matrix), m_matrix);
+			m44xm44(static_cast<float*>(mskybox_matrix), static_cast<const float*>(skybox_matrix), m_matrix_ptr);
 		}
 
 		inline const float* position_data() const noexcept
