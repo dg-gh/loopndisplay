@@ -5286,12 +5286,14 @@ namespace lnd
 		{
 			m.shrink_to_fit();
 		}
-			
 		
-		inline void make_normals(bool trigonometric_orientation) noexcept
+		
+		inline void make_normals_from(const lnd::group_cluster_vertex<_vertex_count_pc, _dim>& vertex, bool trigonometric_orientation) noexcept
 		{
+			m.resize(vertex.m.size());
 			constexpr size_t _offset = _vertex_count_pc * _dim;
-			float* ptr = static_cast<float*>(static_cast<void*>(m.data()));
+			float* p = static_cast<float*>(static_cast<void*>(m.data()));
+			const float* q = static_cast<const float*>(static_cast<const void*>(vertex.m.data()));
 			float factor;
 			size_t n = m.size();
 
@@ -5306,17 +5308,17 @@ namespace lnd
 				case 2:
 					for (size_t j = 0; j < n; j++)
 					{
-						*(ptr + 2) = -*(ptr + 1);
-						*(ptr + 3) = *ptr;
-						factor = 1.0f / std::sqrt(*(ptr + 2) * *(ptr + 2) + *(ptr + 3) * *(ptr + 3));
-						*(ptr + 2) *= factor;
-						*(ptr + 3) *= factor;
+						*p = -*(q + 1);
+						*(p + 1) = *q;
+						factor = 1.0f / std::sqrt((*p) * (*p) + (*q) * (*q));
+						*p *= factor;
+						*(p + 1) *= factor;
 #pragma unroll
 						for (size_t k = 1; k < _vertex_count_pc; k++)
 						{
-							memcpy(ptr + 2 + 2 * k, ptr + 2, 2 * sizeof(float));
+							memcpy(p + 2 * k, p, 2 * sizeof(float));
 						}
-						ptr += _offset;
+						p += _offset; q += _offset;
 					}
 					break;
 
@@ -5325,26 +5327,26 @@ namespace lnd
 					float v3[3];
 					for (size_t j = 0; j < n; j++)
 					{
-						u3[0] = *(ptr + 6) - *(ptr + 0);
-						u3[1] = *(ptr + 5) - *(ptr + 1);
-						u3[2] = *(ptr + 7) - *(ptr + 2);
-						v3[0] = *(ptr + 12) - *(ptr + 0);
-						v3[1] = *(ptr + 13) - *(ptr + 1);
-						v3[2] = *(ptr + 14) - *(ptr + 2);
-						*(ptr + 3) = u3[1] * v3[2] - u3[2] * v3[1];
-						*(ptr + 4) = u3[2] * v3[0] - u3[0] * v3[2];
-						*(ptr + 5) = u3[0] * v3[1] - u3[1] * v3[0];
-						factor = 1.0f / std::sqrt(*(ptr + 3) * *(ptr + 3)
-							+ *(ptr + 4) * *(ptr + 4) + *(ptr + 5) * *(ptr + 5));
-						*(ptr + 3) *= factor;
-						*(ptr + 4) *= factor;
-						*(ptr + 5) *= factor;
+						u3[0] = *(q + 3) - *(q);
+						u3[1] = *(q + 4) - *(q + 1);
+						u3[2] = *(q + 5) - *(q + 2);
+						v3[0] = *(q + 6) - *(q + 0);
+						v3[1] = *(q + 7) - *(q + 1);
+						v3[2] = *(q + 8) - *(q + 2);
+						*p = u3[1] * v3[2] - u3[2] * v3[1];
+						*(p + 1) = u3[2] * v3[0] - u3[0] * v3[2];
+						*(p + 2) = u3[0] * v3[1] - u3[1] * v3[0];
+						factor = 1.0f / std::sqrt((*p) * (*p)
+							+ (*(p + 1)) * (*(p + 1)) + (*(p + 2)) * (*(p + 2)));
+						*p *= factor;
+						*(p + 1) *= factor;
+						*(p + 2) *= factor;
 #pragma unroll
 						for (size_t k = 1; k < _vertex_count_pc; k++)
 						{
-							memcpy(ptr + 3 + 3 * k, ptr + 3, 3 * sizeof(float));
+							memcpy(p + 3 * k, p, 3 * sizeof(float));
 						}
-						ptr += _offset;
+						p += _offset; q += _offset;
 					}
 					break;
 
@@ -5362,17 +5364,17 @@ namespace lnd
 				case 2:
 					for (size_t j = 0; j < n; j++)
 					{
-						*(ptr + 2) = *(ptr + 1);
-						*(ptr + 3) = -*ptr;
-						factor = 1.0f / std::sqrt(*(ptr + 2) * *(ptr + 2) + *(ptr + 3) * *(ptr + 3));
-						*(ptr + 2) *= factor;
-						*(ptr + 3) *= factor;
+						*p = *(q + 1);
+						*(p + 1) = -*q;
+						factor = 1.0f / std::sqrt((*p) * (*p) + (*q) * (*q));
+						*p *= factor;
+						*(p + 1) *= factor;
 #pragma unroll
 						for (size_t k = 1; k < _vertex_count_pc; k++)
 						{
-							memcpy(ptr + 2 + 2 * k, ptr + 2, 2 * sizeof(float));
+							memcpy(p + 2 * k, p, 2 * sizeof(float));
 						}
-						ptr += _offset;
+						p += _offset; q += _offset;
 					}
 					break;
 
@@ -5381,26 +5383,26 @@ namespace lnd
 					float v3[3];
 					for (size_t j = 0; j < n; j++)
 					{
-						u3[0] = *(ptr + 6) - *(ptr + 0);
-						u3[1] = *(ptr + 5) - *(ptr + 1);
-						u3[2] = *(ptr + 7) - *(ptr + 2);
-						v3[0] = *(ptr + 12) - *(ptr + 0);
-						v3[1] = *(ptr + 13) - *(ptr + 1);
-						v3[2] = *(ptr + 14) - *(ptr + 2);
-						*(ptr + 3) = u3[2] * v3[1] - u3[1] * v3[2];
-						*(ptr + 4) = u3[0] * v3[2] - u3[2] * v3[0];
-						*(ptr + 5) = u3[1] * v3[0] - u3[0] * v3[1];
-						factor = 1.0f / std::sqrt(*(ptr + 3) * *(ptr + 3)
-							+ *(ptr + 4) * *(ptr + 4) + *(ptr + 5) * *(ptr + 5));
-						*(ptr + 3) *= factor;
-						*(ptr + 4) *= factor;
-						*(ptr + 5) *= factor;
+						u3[0] = *(q + 3) - *(q);
+						u3[1] = *(q + 4) - *(q + 1);
+						u3[2] = *(q + 5) - *(q + 2);
+						v3[0] = *(q + 6) - *(q + 0);
+						v3[1] = *(q + 7) - *(q + 1);
+						v3[2] = *(q + 8) - *(q + 2);
+						*p = u3[2] * v3[1] - u3[1] * v3[2];
+						*(p + 1) = u3[0] * v3[2] - u3[2] * v3[0];
+						*(p + 2) = u3[1] * v3[0] - u3[0] * v3[1];
+						factor = 1.0f / std::sqrt((*p) * (*p)
+							+ (*(p + 1)) * (*(p + 1)) + (*(p + 2)) * (*(p + 2)));
+						*p *= factor;
+						*(p + 1) *= factor;
+						*(p + 2) *= factor;
 #pragma unroll
 						for (size_t k = 1; k < _vertex_count_pc; k++)
 						{
-							memcpy(ptr + 3 + 3 * k, ptr + 3, 3 * sizeof(float));
+							memcpy(p + 3 * k, p, 3 * sizeof(float));
 						}
-						ptr += _offset;
+						p += _offset; q += _offset;
 					}
 					break;
 
