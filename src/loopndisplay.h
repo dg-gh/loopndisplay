@@ -5313,7 +5313,6 @@ namespace lnd
 						factor = 1.0f / std::sqrt((*p) * (*p) + (*q) * (*q));
 						*p *= factor;
 						*(p + 1) *= factor;
-#pragma unroll
 						for (size_t k = 1; k < _vertex_count_pc; k++)
 						{
 							memcpy(p + 2 * k, p, 2 * sizeof(float));
@@ -5341,7 +5340,6 @@ namespace lnd
 						*p *= factor;
 						*(p + 1) *= factor;
 						*(p + 2) *= factor;
-#pragma unroll
 						for (size_t k = 1; k < _vertex_count_pc; k++)
 						{
 							memcpy(p + 3 * k, p, 3 * sizeof(float));
@@ -5369,7 +5367,6 @@ namespace lnd
 						factor = 1.0f / std::sqrt((*p) * (*p) + (*q) * (*q));
 						*p *= factor;
 						*(p + 1) *= factor;
-#pragma unroll
 						for (size_t k = 1; k < _vertex_count_pc; k++)
 						{
 							memcpy(p + 2 * k, p, 2 * sizeof(float));
@@ -5397,7 +5394,6 @@ namespace lnd
 						*p *= factor;
 						*(p + 1) *= factor;
 						*(p + 2) *= factor;
-#pragma unroll
 						for (size_t k = 1; k < _vertex_count_pc; k++)
 						{
 							memcpy(p + 3 * k, p, 3 * sizeof(float));
