@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 08 / 09 / 2020
+// loopndisplay.h - last update : 09 / 09 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW installed
@@ -1066,7 +1066,7 @@ namespace lnd
 			glDepthFunc(GL_LESS);
 			_clear_window = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 		}
-		
+
 		// depth mask and buffer
 		inline void set_depth_buffer(bool depth_buffer_enabled)
 		{
@@ -2367,6 +2367,7 @@ namespace lnd
 		const inline lnd::shader_vertex& vertex_shift_rotate() const noexcept { return _vertex_shift_rotate; } // mutable
 		const inline lnd::shader_vertex& vertex_affine() const noexcept { return _vertex_affine; } // mutable
 		const inline lnd::shader_vertex& vertex_3d() const noexcept { return _vertex_3d; } // mutable
+		const inline lnd::shader_vertex& vertex_normals_3d() const noexcept { return _vertex_normals_3d; } // mutable
 		const inline lnd::shader_vertex& vertex_RGB_identity() const noexcept { return _vertex_RGB_identity; }
 		const inline lnd::shader_vertex& vertex_RGB_shift() const noexcept { return _vertex_RGB_shift; } // mutable
 		const inline lnd::shader_vertex& vertex_RGB_shift_scale() const noexcept { return _vertex_RGB_shift_scale; } // mutable
@@ -2416,6 +2417,7 @@ namespace lnd
 		const inline lnd::program& program_RGBA_3d() const noexcept { return _program_RGBA_3d; } // mutable program
 		const inline lnd::program& program_texture() const noexcept { return _program_texture; }
 		const inline lnd::program& program_texture_3d() const noexcept { return _program_texture_3d; } // mutable program
+		const inline lnd::program& program_color_skylight_3d() const noexcept { return _program_color_skylight_3d; } // mutable program
 
 		inline const lnd::program& set_fragment_color(const lnd::program& program, float c0, float c1, float c2, float c3)
 		{
@@ -2565,6 +2567,7 @@ namespace lnd
 		lnd::shader_vertex _vertex_shift_rotate; // mutable
 		lnd::shader_vertex _vertex_affine; // mutable
 		lnd::shader_vertex _vertex_3d; // mutable
+		lnd::shader_vertex _vertex_normals_3d; // mutable
 
 		lnd::shader_vertex _vertex_RGB_identity;
 		lnd::shader_vertex _vertex_RGB_shift; // mutable
@@ -2600,6 +2603,7 @@ namespace lnd
 		lnd::shader_fragment _fragment_RGB;
 		lnd::shader_fragment _fragment_RGBA;
 		lnd::shader_fragment _fragment_texture;
+		lnd::shader_fragment _fragment_color_skylight_3d; // mutable
 
 		lnd::program _program_black;
 		lnd::program _program_red;
@@ -2617,6 +2621,7 @@ namespace lnd
 		lnd::program _program_RGBA_3d;
 		lnd::program _program_texture;
 		lnd::program _program_texture_3d;
+		lnd::program _program_color_skylight_3d;
 
 		std::vector<std::thread> auxiliary_threads;
 		std::condition_variable auxiliary_task_condition_var;
@@ -3367,6 +3372,17 @@ namespace lnd
 				"	void main() { gl_Position = M * vec4(X, 1); }		\n"
 			);
 
+			_vertex_normals_3d.new_shader(
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec3 X;					\n"
+				"	layout (location = 1) in vec3 N;					\n"
+				"	out vec3 forward_N;									\n"
+				"	uniform mat4 M;										\n"
+				"	void main() {										\n"
+				"		gl_Position = M * vec4(X, 1);					\n"
+				"		forward_N = N; }								\n"
+			);
+
 			_vertex_RGB_3d.new_shader(
 				"	#version 330 core									\n"
 				"	layout (location = 0) in vec3 X;					\n"
@@ -3483,6 +3499,20 @@ namespace lnd
 				"	void main() { C = texture(Tx, forward_UV); }		\n"
 			);
 
+			_fragment_color_skylight_3d.new_shader(
+				"	#version 330 core											\n"
+				"	in vec3 forward_N;											\n"
+				"	out vec4 color;												\n"
+				"	uniform vec3 dir;											\n"
+				"	uniform vec4 C;												\n"
+				"	uniform vec3 light_C;										\n"
+				"	uniform vec3 amb;											\n"
+				"	uniform mat4 m_M;											\n"
+				"	void main() {												\n"
+				"		color = max(vec4(-dot(mat3(m_M) * forward_N, dir)		\n"
+				"		* (light_C * vec3(C)), C[3]), vec4(amb, 0.0)); }		\n"
+			);
+
 			_program_black.new_program(_vertex_identity, _fragment_black);
 			_program_red.new_program(_vertex_identity, _fragment_red);
 			_program_green.new_program(_vertex_identity, _fragment_green);
@@ -3499,6 +3529,7 @@ namespace lnd
 			_program_RGBA_3d.new_program(_vertex_RGBA_3d, _fragment_RGBA);
 			_program_texture.new_program(_vertex_texture_identity, _fragment_texture);
 			_program_texture_3d.new_program(_vertex_texture_3d, _fragment_texture);
+			_program_color_skylight_3d.new_program(_vertex_normals_3d, _fragment_color_skylight_3d);
 
 			lnd::__default_vertex_buffer.new_id(1);
 			lnd::__default_index_buffer.new_id(1);
@@ -3553,6 +3584,7 @@ namespace lnd
 			_vertex_shift_rotate.delete_shader();
 			_vertex_affine.delete_shader();
 			_vertex_3d.delete_shader();
+			_vertex_normals_3d.delete_shader();
 
 			_vertex_RGB_identity.delete_shader();
 			_vertex_RGB_shift.delete_shader();
@@ -3588,6 +3620,7 @@ namespace lnd
 			_fragment_RGB.delete_shader();
 			_fragment_RGBA.delete_shader();
 			_fragment_texture.delete_shader();
+			_fragment_color_skylight_3d.delete_shader();
 
 			_program_black.delete_program();
 			_program_red.delete_program();
@@ -3605,7 +3638,8 @@ namespace lnd
 			_program_RGBA_3d.delete_program();
 			_program_texture.delete_program();
 			_program_texture_3d.delete_program();
-
+			_program_color_skylight_3d.delete_program();
+			
 			lnd::__default_vertex_buffer.delete_id();
 			lnd::__default_index_buffer.delete_id();
 			lnd::__default_color_buffer.delete_id();
@@ -5317,8 +5351,8 @@ namespace lnd
 		{
 			m.shrink_to_fit();
 		}
-		
-		
+
+
 		inline void make_normals_from(const lnd::group_cluster_vertex<_vertex_count_pc, _dim>& vertex, bool trigonometric_orientation) noexcept
 		{
 			m.resize(vertex.m.size());
@@ -8470,7 +8504,7 @@ namespace lnd
 		{
 			return static_cast<float*>(vp_matrix);
 		}
-		
+
 		inline const float* mvp_matrix_data() const noexcept
 		{
 			return static_cast<const float*>(mvp_matrix);
@@ -8479,7 +8513,7 @@ namespace lnd
 		{
 			return static_cast<float*>(mvp_matrix);
 		}
-		
+
 		inline const float* skybox_matrix_data() const noexcept
 		{
 			return static_cast<const float*>(skybox_matrix);
@@ -8488,7 +8522,7 @@ namespace lnd
 		{
 			return static_cast<float*>(skybox_matrix);
 		}
-		
+
 		inline const float* mskybox_matrix_data() const noexcept
 		{
 			return static_cast<const float*>(mskybox_matrix);
