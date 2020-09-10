@@ -3864,7 +3864,7 @@ namespace lnd
 		{
 			window_resizable = _is_window_resizable;
 		}
-		void  set_window_fullscreen(bool _is_window_fullscreen)
+		void set_window_fullscreen(bool _is_window_fullscreen)
 		{
 			window_fullscreen = _is_window_fullscreen;
 		}
@@ -3957,7 +3957,7 @@ namespace lnd
 			this->setup();
 			display_running.store(true);
 
-			//  display
+			// display
 
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_ONE, GL_ZERO);
