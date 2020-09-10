@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 09 / 09 / 2020
+// loopndisplay.h - last update : 10 / 09 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW installed
@@ -9040,8 +9040,37 @@ namespace lnd
 			m_matrix[14] = z;
 		}
 
-		inline void set_angles(float yaw, float pitch, float roll) noexcept
+		inline void set_angles_rad(float yaw, float pitch, float roll) noexcept
 		{
+			float cos_yaw = std::cosf(yaw);
+			float sin_yaw = std::sinf(yaw);
+
+			float cos_pitch = std::cosf(pitch);
+			float sin_pitch = std::sinf(pitch);
+
+			float cos_roll = std::cosf(roll);
+			float sin_roll = std::sinf(roll);
+
+			m_matrix[0] = cos_yaw * cos_pitch;
+			m_matrix[1] = sin_yaw * cos_pitch;
+			m_matrix[2] = sin_pitch;
+
+			m_matrix[4] = cos_yaw * sin_pitch * sin_roll - sin_yaw * cos_roll;
+			m_matrix[5] = cos_yaw * cos_roll + sin_yaw * sin_pitch * sin_roll;
+			m_matrix[6] = -cos_pitch * sin_roll;
+
+			m_matrix[8] = -(sin_yaw * sin_roll + cos_yaw * sin_pitch * cos_roll);
+			m_matrix[9] = cos_yaw * sin_roll - sin_yaw * sin_pitch * cos_roll;
+			m_matrix[10] = cos_pitch * cos_roll;
+		}
+		inline void set_angles_deg(float yaw, float pitch, float roll) noexcept
+		{
+			constexpr float coeff = 3.14159265358979f / 180.0f;
+
+			yaw *= coeff;
+			pitch *= coeff;
+			roll *= coeff;
+
 			float cos_yaw = std::cosf(yaw);
 			float sin_yaw = std::sinf(yaw);
 
