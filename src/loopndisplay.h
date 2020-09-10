@@ -4854,7 +4854,7 @@ namespace lnd
 		size_t _width = 0;
 		size_t _height = 0;
 		lnd::buffer_texture buffer;
-		int map = GL_NEAREST;
+		int mapping = GL_NEAREST;
 		int edges = GL_REPEAT;
 
 	public:
@@ -4926,29 +4926,29 @@ namespace lnd
 			case 1:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, static_cast<GLsizei>(_width), static_cast<GLsizei>(_height), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE,
 					static_cast<const unsigned char*>(static_cast<const void*>(m.data())));
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, map);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, map);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapping);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapping);
 				break;
 
 			case 2:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, static_cast<GLsizei>(_width), static_cast<GLsizei>(_height), 0, GL_RG, GL_UNSIGNED_BYTE,
 					static_cast<const unsigned char*>(static_cast<const void*>(m.data())));
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, map);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, map);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapping);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapping);
 				break;
 
 			case 3:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, static_cast<GLsizei>(_width), static_cast<GLsizei>(_height), 0, GL_RGB, GL_UNSIGNED_BYTE,
 					static_cast<const unsigned char*>(static_cast<const void*>(m.data())));
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, map);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, map);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapping);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapping);
 				break;
 
 			case 4:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, static_cast<GLsizei>(_width), static_cast<GLsizei>(_height), 0, GL_RGBA, GL_UNSIGNED_BYTE,
 					static_cast<const unsigned char*>(static_cast<const void*>(m.data())));
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, map);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, map);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapping);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapping);
 				break;
 
 			default:
@@ -4966,26 +4966,26 @@ namespace lnd
 
 			case 1:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, ptr);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, map);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, map);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapping);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapping);
 				break;
 
 			case 2:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, width, height, 0, GL_RG, GL_UNSIGNED_BYTE, ptr);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, map);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, map);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapping);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapping);
 				break;
 
 			case 3:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, ptr);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, map);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, map);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapping);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapping);
 				break;
 
 			case 4:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, ptr);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, map);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, map);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapping);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapping);
 				break;
 
 			default:
@@ -5060,11 +5060,11 @@ namespace lnd
 
 		inline void map_nearest() noexcept
 		{
-			map = GL_NEAREST;
+			mapping = GL_NEAREST;
 		}
 		inline void map_linear() noexcept
 		{
-			map = GL_LINEAR;
+			mapping = GL_LINEAR;
 		}
 		inline void edges_repeat()
 		{
@@ -9018,7 +9018,7 @@ namespace lnd
 #endif // LND_INCLUDE_AVX
 		}
 	};
-	
+
 	class model_3d
 	{
 
