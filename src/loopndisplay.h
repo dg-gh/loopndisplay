@@ -8644,28 +8644,28 @@ namespace lnd
 		float position[4] = { 0.0f };
 		float direction[4] = { 1.0f };
 
-		float theta = 0.0f;
-		float phi = 0.0f;
+		float yaw = 0.0f;
+		float pitch = 0.0f;
 
 	private:
 
-		float cos_theta = 1.0f;
-		float sin_theta = 0.0f;
-		float cos_phi = 1.0f;
-		float sin_phi = 0.0f;
+		float cos_yaw = 1.0f;
+		float sin_yaw = 0.0f;
+		float cos_pitch = 1.0f;
+		float sin_pitch = 0.0f;
 
 	public:
 
 		inline void compute_trig() noexcept
 		{
-			cos_theta = std::cosf(theta);
-			sin_theta = std::sinf(theta);
-			cos_phi = std::cosf(phi);
-			sin_phi = std::sinf(phi);
+			cos_yaw = std::cosf(yaw);
+			sin_yaw = std::sinf(yaw);
+			cos_pitch = std::cosf(pitch);
+			sin_pitch = std::sinf(pitch);
 
-			direction[0] = cos_theta * cos_phi;
-			direction[1] = sin_theta * cos_phi;
-			direction[2] = sin_phi;
+			direction[0] = cos_yaw * cos_pitch;
+			direction[1] = sin_yaw * cos_pitch;
+			direction[2] = sin_pitch;
 		}
 
 		inline void compute_p_matrix(float screen_ratio, float fov, float z_near, float z_far) noexcept
@@ -8691,24 +8691,24 @@ namespace lnd
 		}
 		inline void compute_v_matrix() noexcept
 		{
-			v_matrix[0] = sin_theta;
-			v_matrix[1] = -cos_theta * sin_phi;
-			v_matrix[2] = cos_theta * cos_phi;
+			v_matrix[0] = sin_yaw;
+			v_matrix[1] = -cos_yaw * sin_pitch;
+			v_matrix[2] = cos_yaw * cos_pitch;
 			v_matrix[3] = 0.0f;
 
-			v_matrix[4] = -cos_theta;
-			v_matrix[5] = -sin_theta * sin_phi;
-			v_matrix[6] = sin_theta * cos_phi;
+			v_matrix[4] = -cos_yaw;
+			v_matrix[5] = -sin_yaw * sin_pitch;
+			v_matrix[6] = sin_yaw * cos_pitch;
 			v_matrix[7] = 0.0f;
 
 			v_matrix[8] = 0.0f;
-			v_matrix[9] = cos_phi;
-			v_matrix[10] = sin_phi;
+			v_matrix[9] = cos_pitch;
+			v_matrix[10] = sin_pitch;
 			v_matrix[11] = 0.0f;
 
-			v_matrix[12] = cos_theta * position[1] - sin_theta * position[0];
-			v_matrix[13] = cos_theta * sin_phi * position[0] + sin_theta * sin_phi * position[1] - cos_phi * position[2];
-			v_matrix[14] = -cos_theta * cos_phi * position[0] - sin_theta * cos_phi * position[1] - sin_phi * position[2];
+			v_matrix[12] = cos_yaw * position[1] - sin_yaw * position[0];
+			v_matrix[13] = cos_yaw * sin_pitch * position[0] + sin_yaw * sin_pitch * position[1] - cos_pitch * position[2];
+			v_matrix[14] = -cos_yaw * cos_pitch * position[0] - sin_yaw * cos_pitch * position[1] - sin_pitch * position[2];
 			v_matrix[15] = 1.0f;
 		}
 		inline void compute_vp_matrix() noexcept
@@ -8804,23 +8804,23 @@ namespace lnd
 
 		inline void move_forward(float distance) noexcept
 		{
-			position[0] += distance * cos_theta;
-			position[1] += distance * sin_theta;
+			position[0] += distance * cos_yaw;
+			position[1] += distance * sin_yaw;
 		}
 		inline void move_backward(float distance) noexcept
 		{
-			position[0] -= distance * cos_theta;
-			position[1] -= distance * sin_theta;
+			position[0] -= distance * cos_yaw;
+			position[1] -= distance * sin_yaw;
 		}
 		inline void move_left(float distance) noexcept
 		{
-			position[0] -= distance * sin_theta;
-			position[1] += distance * cos_theta;
+			position[0] -= distance * sin_yaw;
+			position[1] += distance * cos_yaw;
 		}
 		inline void move_right(float distance) noexcept
 		{
-			position[0] += distance * sin_theta;
-			position[1] -= distance * cos_theta;
+			position[0] += distance * sin_yaw;
+			position[1] -= distance * cos_yaw;
 		}
 		inline void move_up(float distance) noexcept
 		{
@@ -8834,58 +8834,58 @@ namespace lnd
 		inline void turn_up_rad(float angle) noexcept
 		{
 			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
-			phi += angle;
-			if (phi > pi_d2) { phi = pi_d2; }
+			pitch += angle;
+			if (pitch > pi_d2) { pitch = pi_d2; }
 		}
 		inline void turn_down_rad(float angle) noexcept
 		{
 			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
-			phi -= angle;
-			if (phi < -pi_d2) { phi = -pi_d2; }
+			pitch -= angle;
+			if (pitch < -pi_d2) { pitch = -pi_d2; }
 		}
 		inline void turn_left_rad(float angle) noexcept
 		{
 			constexpr float pi = 3.14159265358979f;
 			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
-			theta += angle;
-			if (theta > pi) { theta -= pi_m2; }
+			yaw += angle;
+			if (yaw > pi) { yaw -= pi_m2; }
 		}
 		inline void turn_right_rad(float angle) noexcept
 		{
 			constexpr float pi = 3.14159265358979f;
 			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
-			theta -= angle;
-			if (theta < -pi) { theta += pi_m2; }
+			yaw -= angle;
+			if (yaw < -pi) { yaw += pi_m2; }
 		}
 		inline void turn_up_deg(float angle) noexcept
 		{
 			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
 			constexpr float coeff = 3.14159265358979f / 180.0f;
-			phi += coeff * angle;
-			if (phi > pi_d2) { phi = pi_d2; }
+			pitch += coeff * angle;
+			if (pitch > pi_d2) { pitch = pi_d2; }
 		}
 		inline void turn_down_deg(float angle) noexcept
 		{
 			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
 			constexpr float coeff = 3.14159265358979f / 180.0f;
-			phi -= coeff * angle;
-			if (phi < -pi_d2) { phi = -pi_d2; }
+			pitch -= coeff * angle;
+			if (pitch < -pi_d2) { pitch = -pi_d2; }
 		}
 		inline void turn_left_deg(float angle) noexcept
 		{
 			constexpr float pi = 3.14159265358979f;
 			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
 			constexpr float coeff = 3.14159265358979f / 180.0f;
-			theta += coeff * angle;
-			if (theta > pi) { theta -= pi_m2; }
+			yaw += coeff * angle;
+			if (yaw > pi) { yaw -= pi_m2; }
 		}
 		inline void turn_right_deg(float angle) noexcept
 		{
 			constexpr float pi = 3.14159265358979f;
 			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
 			constexpr float coeff = 3.14159265358979f / 180.0f;
-			theta -= coeff * angle;
-			if (theta < -pi) { theta += pi_m2; }
+			yaw -= coeff * angle;
+			if (yaw < -pi) { yaw += pi_m2; }
 		}
 
 	private:
