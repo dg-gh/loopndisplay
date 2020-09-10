@@ -9006,6 +9006,64 @@ namespace lnd
 #endif // LND_INCLUDE_AVX
 		}
 	};
+	
+	class model_3d
+	{
+
+	private:
+
+		float m_matrix[16] = {
+			1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f,
+		};
+
+	public:
+
+		model_3d() = default;
+		~model_3d() = default;
+
+		inline const float* m_matrix_data() const noexcept
+		{
+			return static_cast<const float*>(m_matrix);
+		}
+		inline float* m_matrix_data() noexcept
+		{
+			return static_cast<float*>(m_matrix);
+		}
+
+		inline void set_position(float x, float y, float z) noexcept
+		{
+			m_matrix[12] = x;
+			m_matrix[13] = y;
+			m_matrix[14] = z;
+		}
+
+		inline void set_angles(float yaw, float pitch, float roll) noexcept
+		{
+			float cos_yaw = std::cosf(yaw);
+			float sin_yaw = std::sinf(yaw);
+
+			float cos_pitch = std::cosf(pitch);
+			float sin_pitch = std::sinf(pitch);
+
+			float cos_roll = std::cosf(roll);
+			float sin_roll = std::sinf(roll);
+
+			m_matrix[0] = cos_yaw * cos_pitch;
+			m_matrix[1] = sin_yaw * cos_pitch;
+			m_matrix[2] = sin_pitch;
+
+			m_matrix[4] = cos_yaw * sin_pitch * sin_roll - sin_yaw * cos_roll;
+			m_matrix[5] = cos_yaw * cos_roll + sin_yaw * sin_pitch * sin_roll;
+			m_matrix[6] = -cos_pitch * sin_roll;
+
+			m_matrix[8] = -(sin_yaw * sin_roll + cos_yaw * sin_pitch * cos_roll);
+			m_matrix[9] = cos_yaw * sin_roll - sin_yaw * sin_pitch * cos_roll;
+			m_matrix[10] = cos_pitch * cos_roll;
+		}
+	};
 }
 
 
