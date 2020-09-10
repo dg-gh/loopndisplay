@@ -3868,6 +3868,10 @@ namespace lnd
 		{
 			window_fullscreen = _is_window_fullscreen;
 		}
+		void set_anti_aliasing(bool _is_anti_aliasing_enabled)
+		{
+			window_anti_aliasing = _is_anti_aliasing_enabled;
+		}
 		void set_auxiliary_threads(size_t new_number_of_threads)
 		{
 			if (new_number_of_threads > 0) { number_of_threads = new_number_of_threads; }
@@ -3909,12 +3913,16 @@ namespace lnd
 
 			if (window_resizable) { glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); }
 			else { glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); }
+			
+			if (window_anti_aliasing) { glfwWindowHint(GLFW_SAMPLES, 4); }
 
-			if (window_fullscreen) {
+			if (window_fullscreen)
+			{
 				lnd::__window_ptr = glfwCreateWindow(new_screen_width, new_screen_height,
 					new_title, glfwGetPrimaryMonitor(), nullptr);
 			}
-			else {
+			else
+			{
 				lnd::__window_ptr = glfwCreateWindow(new_screen_width, new_screen_height,
 					new_title, nullptr, nullptr);
 			}
@@ -3953,6 +3961,7 @@ namespace lnd
 
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_ONE, GL_ZERO);
+			if (window_anti_aliasing) { glEnable(GL_MULTISAMPLE); }
 
 			lnd::__user_key_input.reset_key_events();
 
@@ -3986,6 +3995,7 @@ namespace lnd
 		// window
 		bool window_resizable = false;
 		bool window_fullscreen = false;
+		bool window_anti_aliasing = false;
 
 		// time elapsed since last frame
 		float time_elapsed;
