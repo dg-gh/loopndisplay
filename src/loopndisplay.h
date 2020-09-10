@@ -9108,6 +9108,13 @@ namespace lnd
 }
 
 
+#undef LND_VERTEX
+#undef LND_CLOCK
+#undef LND_COS
+#undef LND_SIN
+#undef LND_SQRT
+
+
 #endif // LOOPNDISPLAY_H
 
 
