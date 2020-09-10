@@ -24,7 +24,7 @@
 // as an example, you can enter the following code in the main:
 
 // lnd::window<looper_derived_class> window_example;
-// window_example.show(640, 480, true, 100, "My program !");
+// window_example.show(640, 480, true, 0.02, "My program !");
 
 
 
