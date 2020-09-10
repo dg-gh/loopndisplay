@@ -2487,7 +2487,7 @@ namespace lnd
 			program.use();
 			int location = glGetUniformLocation(program.get(), "M");
 			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
-			location = glGetUniformLocation(program.get(), "C");
+			location = glGetUniformLocation(program.get(), "u_C");
 			glUniform4fv(location, 1, color_ptr);
 			location = glGetUniformLocation(program.get(), "dir");
 			glUniform3fv(location, 1, light_direction_ptr);
@@ -3554,13 +3554,13 @@ namespace lnd
 				"	in vec3 forward_N;											\n"
 				"	out vec4 color;												\n"
 				"	uniform vec3 dir;											\n"
-				"	uniform vec4 C;												\n"
+				"	uniform vec4 u_C;												\n"
 				"	uniform vec3 light_C;										\n"
 				"	uniform vec3 amb;											\n"
 				"	uniform mat4 m_M;											\n"
 				"	void main() {												\n"
 				"		color = max(vec4(-dot(mat3(m_M) * forward_N, dir)		\n"
-				"		* (light_C * vec3(C)), C[3]), vec4(amb, 0.0)); }		\n"
+				"		* (light_C * vec3(u_C)), u_C[3]), vec4(amb, 0.0)); }		\n"
 			);
 
 			_fragment_texture_skylight_3d.new_shader(
