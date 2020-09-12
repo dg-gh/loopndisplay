@@ -2466,11 +2466,19 @@ namespace lnd
 		inline const lnd::program& set_skylight_3d(const lnd::program& program, const float* const mvp_matrix_ptr, const float* const light_direction_ptr,
 			const float* const light_color_ptr, const float* const ambient_light_ptr, const float* const m_matrix_ptr)
 		{
+			float factor = 1.0f / LND_SQRT(light_direction_ptr[0] * light_direction_ptr[0]
+				+ light_direction_ptr[1] * light_direction_ptr[1]
+				+ light_direction_ptr[2] * light_direction_ptr[2]);
+			float light_direction_normalized[3] = {
+				factor * light_direction_ptr[0],
+				factor * light_direction_ptr[1],
+				factor * light_direction_ptr[2]
+			};
 			program.use();
 			int location = glGetUniformLocation(program.get(), "M");
 			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
 			location = glGetUniformLocation(program.get(), "dir");
-			glUniform3fv(location, 1, light_direction_ptr);
+			glUniform3fv(location, 1, static_cast<float*>(light_direction_normalized));
 			location = glGetUniformLocation(program.get(), "light_C");
 			glUniform3fv(location, 1, light_color_ptr);
 			location = glGetUniformLocation(program.get(), "amb");
