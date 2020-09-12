@@ -38,6 +38,18 @@
 #define LND_VERTEX(Ty, N) std::array<Ty, N>
 #endif // LND_VERTEX
 
+#ifndef LND_INDEX
+#define LND_INDEX(Ty, N) std::array<Ty, N>
+#endif // LND_INDEX
+
+#ifndef LND_COLOR
+#define LND_COLOR(Ty, N) std::array<Ty, N>
+#endif // LND_COLOR
+
+#ifndef LND_PIXEL
+#define LND_PIXEL(Ty, N) std::array<Ty, N>
+#endif // LND_PIXEL
+
 #ifndef LND_CLOCK
 #define LND_CLOCK steady_clock
 #endif // LND_CLOCK
