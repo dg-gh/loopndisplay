@@ -1059,37 +1059,37 @@ namespace lnd
 
 		// set transparency
 
-		inline void set_transparency(bool transparency_enabled)
+		inline void enable_transparency()
 		{
-			if (transparency_enabled) { glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); }
-			else { glBlendFunc(GL_ONE, GL_ZERO); }
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
+		inline void disable_transparency()
+		{
+			glBlendFunc(GL_ONE, GL_ZERO);
 		}
 
 		// set dim
 
-		inline void set_to_2d()
-		{
-			glDisable(GL_DEPTH_TEST);
-			_clear_window = GL_COLOR_BUFFER_BIT;
-		}
-		inline void set_to_3d()
+		inline void enable_3d()
 		{
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);
 			_clear_window = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 		}
+		inline void disable_3d()
+		{
+			glDisable(GL_DEPTH_TEST);
+			_clear_window = GL_COLOR_BUFFER_BIT;
+		}
 
 		// depth mask and buffer
-		inline void set_depth_buffer(bool depth_buffer_enabled)
+		inline void enable_depth_buffer()
 		{
-			if (depth_buffer_enabled)
-			{
-				glDepthMask(GL_TRUE);
-			}
-			else
-			{
-				glDepthMask(GL_FALSE);
-			}
+			glDepthMask(GL_TRUE);
+		}
+		inline void disable_depth_buffer()
+		{
+			glDepthMask(GL_FALSE);
 		}
 		inline void reset_depth_buffer()
 		{
@@ -1098,7 +1098,7 @@ namespace lnd
 
 		// subwindow
 
-		inline void set_subwindow(float X_min, float Y_min, float X_max, float Y_max)
+		inline void enable_subwindow(float X_min, float Y_min, float X_max, float Y_max)
 		{
 			if (_screen_width >= _screen_height)
 			{
@@ -1115,7 +1115,7 @@ namespace lnd
 					static_cast<GLsizei>(factor_X * (X_max - X_min)), static_cast<GLsizei>(factor_Y * (Y_max - Y_min)));
 			}
 		}
-		inline void set_subwindow()
+		inline void disable_subwindow()
 		{
 			glViewport(0, 0, static_cast<GLsizei>(_screen_width), static_cast<GLsizei>(_screen_height));
 		}
