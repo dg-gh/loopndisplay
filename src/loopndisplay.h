@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 12 / 09 / 2020
+// loopndisplay.h - last update : 13 / 09 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW installed
@@ -1529,7 +1529,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, mpv_matrix_ptr);
+			set_mvp_matrix_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_LINES, 0, 2);
 			lnd::__default_vertex_buffer.unbind();
 		}
@@ -1559,7 +1559,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB_3d().use();
-			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGB_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_LINES, 0, 2);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -1590,7 +1590,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			program_RGBA_3d().use();
-			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_LINES, 0, 2);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -1612,7 +1612,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, mpv_matrix_ptr);
+			set_mvp_matrix_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			lnd::__default_vertex_buffer.unbind();
 		}
@@ -1633,7 +1633,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, mpv_matrix_ptr);
+			set_mvp_matrix_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_LINE_LOOP, 0, 3);
 			lnd::__default_vertex_buffer.bind();
 		}
@@ -1663,7 +1663,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB_3d().use();
-			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGB_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -1694,7 +1694,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			program_RGBA_3d().use();
-			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -1716,7 +1716,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, mpv_matrix_ptr);
+			set_mvp_matrix_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_QUADS, 0, 4);
 			lnd::__default_vertex_buffer.unbind();
 		}
@@ -1737,7 +1737,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, mpv_matrix_ptr);
+			set_mvp_matrix_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_LINE_LOOP, 0, 4);
 			lnd::__default_vertex_buffer.bind();
 		}
@@ -1767,7 +1767,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB_3d().use();
-			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGB_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_QUADS, 0, 4);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -1798,7 +1798,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			program_RGBA_3d().use();
-			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_QUADS, 0, 4);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -1821,7 +1821,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, mpv_matrix_ptr);
+			set_mvp_matrix_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_LINES, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
@@ -1851,7 +1851,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB_3d().use();
-			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGB_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_LINES, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -1882,7 +1882,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			program_RGBA_3d().use();
-			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_LINES, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -1904,7 +1904,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, mpv_matrix_ptr);
+			set_mvp_matrix_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
@@ -1934,7 +1934,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB_3d().use();
-			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGB_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -1965,7 +1965,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			program_RGBA_3d().use();
-			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -2027,7 +2027,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, mpv_matrix_ptr);
+			set_mvp_matrix_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_LINES, 0, vertex_count);
 			glDrawArrays(GL_LINE_STRIP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
@@ -2058,7 +2058,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB_3d().use();
-			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGB_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_LINE_STRIP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -2089,7 +2089,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			program_RGBA_3d().use();
-			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_LINE_STRIP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -2111,7 +2111,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, mpv_matrix_ptr);
+			set_mvp_matrix_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_LINE_LOOP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
@@ -2141,7 +2141,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB_3d().use();
-			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGB_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_LINE_LOOP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -2172,7 +2172,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			program_RGBA_3d().use();
-			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_LINE_LOOP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -2194,7 +2194,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, mpv_matrix_ptr);
+			set_mvp_matrix_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
@@ -2224,7 +2224,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB_3d().use();
-			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGB_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -2255,7 +2255,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			program_RGBA_3d().use();
-			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -2277,7 +2277,7 @@ namespace lnd
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program.use();
-			set_vertex_3d(program, mpv_matrix_ptr);
+			set_mvp_matrix_3d(program, mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 		}
@@ -2307,7 +2307,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			program_RGB_3d().use();
-			set_vertex_3d(program_RGB_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGB_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -2338,7 +2338,7 @@ namespace lnd
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 			program_RGBA_3d().use();
-			set_vertex_3d(program_RGBA_3d(), mpv_matrix_ptr);
+			set_mvp_matrix_3d(program_RGBA_3d(), mpv_matrix_ptr);
 			glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
@@ -2424,6 +2424,13 @@ namespace lnd
 			glUniform4f(location, c0, c1, c2, c3);
 			return program;
 		}
+		inline const lnd::program& set_fragment_color(const lnd::program& program, const float* const color_ptr)
+		{
+			program.use();
+			int location = glGetUniformLocation(program.get(), "u_C");
+			glUniform4fv(location, 1, color_ptr);
+			return program;
+		}
 		inline const lnd::program& set_vertex_shift(const lnd::program& program, float T0, float T1)
 		{
 			program.use();
@@ -2468,15 +2475,59 @@ namespace lnd
 			glUniform4f(location, A00, A10, A01, A11);
 			return program;
 		}
-		inline const lnd::program& set_vertex_3d(const lnd::program& program, const float* const matrix_ptr)
+
+		inline const lnd::program& set_mvp_matrix_3d(const lnd::program& program, const float* const mvp_matrix_ptr)
 		{
 			program.use();
-			int location = glGetUniformLocation(program.get(), "M");
-			glUniformMatrix4fv(location, 1, GL_FALSE, matrix_ptr);
+			int location = glGetUniformLocation(program.get(), "u_mvp_M");
+			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
 			return program;
 		}
-		inline const lnd::program& set_skylight_3d(const lnd::program& program, const float* const mvp_matrix_ptr, const float* const light_direction_ptr,
-			const float* const light_color_ptr, const float* const ambient_light_ptr, const float* const m_matrix_ptr)
+		inline const lnd::program& set_m_matrix_3d(const lnd::program& program, const float* const m_matrix_ptr)
+		{
+			program.use();
+			int location = glGetUniformLocation(program.get(), "u_m_M");
+			glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
+			return program;
+		}
+		inline const lnd::program& set_position_3d(const lnd::program& program, const float* const position_ptr)
+		{
+			program.use();
+			int location = glGetUniformLocation(program.get(), "u_v_pos");
+			glUniform3fv(location, 1, position_ptr);
+			return program;
+		}
+		inline const lnd::program& set_mvp_position_3d(const lnd::program& program, const float* const mvp_matrix_ptr,
+			const float* const position_ptr)
+		{
+			program.use();
+			int location = glGetUniformLocation(program.get(), "u_mvp_M");
+			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
+			location = glGetUniformLocation(program.get(), "u_v_pos");
+			glUniform3fv(location, 1, position_ptr);
+			return program;
+		}
+		inline const lnd::program& set_mvp_m_position_3d(const lnd::program& program, const float* const mvp_matrix_ptr,
+			const float* const m_matrix_ptr, const float* const position_ptr)
+		{
+			program.use();
+			int location = glGetUniformLocation(program.get(), "u_mvp_M");
+			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
+			location = glGetUniformLocation(program.get(), "u_m_M");
+			glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
+			location = glGetUniformLocation(program.get(), "u_v_pos");
+			glUniform3fv(location, 1, position_ptr);
+			return program;
+		}
+		inline const lnd::program& set_ambient_light_3d(const lnd::program& program, const float* const ambient_light_ptr)
+		{
+			program.use();
+			int location = glGetUniformLocation(program.get(), "u_amb");
+			glUniform3fv(location, 1, ambient_light_ptr);
+			return program;
+		}
+		inline const lnd::program& set_skylight_3d(const lnd::program& program, const float* const light_direction_ptr,
+			const float* const light_color_ptr)
 		{
 			float factor = 1.0f / LND_SQRT(light_direction_ptr[0] * light_direction_ptr[0]
 				+ light_direction_ptr[1] * light_direction_ptr[1]
@@ -2487,29 +2538,21 @@ namespace lnd
 				factor * light_direction_ptr[2]
 			};
 			program.use();
-			int location = glGetUniformLocation(program.get(), "M");
-			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
-			location = glGetUniformLocation(program.get(), "dir");
+			int location = glGetUniformLocation(program.get(), "u_light_dir");
 			glUniform3fv(location, 1, static_cast<float*>(light_direction_normalized));
-			location = glGetUniformLocation(program.get(), "light_C");
+			location = glGetUniformLocation(program.get(), "u_light_C");
 			glUniform3fv(location, 1, light_color_ptr);
-			location = glGetUniformLocation(program.get(), "amb");
-			glUniform3fv(location, 1, ambient_light_ptr);
-			if (m_matrix_ptr != nullptr)
-			{
-				location = glGetUniformLocation(program.get(), "m_M");
-				glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
-			}
-			else
-			{
-				float id_ptr[16] = {
-					1.0f, 0.0f, 0.0f, 0.0f,
-					0.0f, 1.0f, 0.0f, 0.0f,
-					0.0f, 0.0f, 1.0f
-				};
-				location = glGetUniformLocation(program.get(), "m_M");
-				glUniformMatrix4fv(location, 1, GL_FALSE, static_cast<float*>(id_ptr));
-			}
+			return program;
+		}
+		inline const lnd::program& set_material_3d(const lnd::program& program, float diff_coeff, float spec_coeff, float concentration_coeff)
+		{
+			program.use();
+			int location = glGetUniformLocation(program.get(), "u_diff");
+			glUniform1f(location, diff_coeff);
+			location = glGetUniformLocation(program.get(), "u_spec");
+			glUniform1f(location, spec_coeff);
+			location = glGetUniformLocation(program.get(), "u_conc");
+			glUniform1f(location, concentration_coeff);
 			return program;
 		}
 
@@ -2703,58 +2746,66 @@ namespace lnd
 					_vertex_identity.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
+						"	out vec2 forward_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * X[0], X[1], X[2], X[3]); }		\n"
+						"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
 					);
 
 					_vertex_shift.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
+						"	out vec2 forward_X;									\n"
 						"	uniform vec2 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		" + ratio + " * (X[0] + u_X[0]),				\n"
-						"		X[1] + u_X[1],									\n"
-						"		X[2], X[3]); }									\n"
+						"		X[1] + u_X[1], X[2], X[3]);						\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
 					);
 
 					_vertex_shift_scale.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
+						"	out vec2 forward_X;									\n"
 						"	uniform vec3 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
-						"		u_X[2] * X[1] + u_X[1],							\n"
-						"		X[2], X[3]); }									\n"
+						"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
 					);
 
 					_vertex_shift_rotate.new_shader(std::string("") +
 						"	#version 330 core												\n"
 						"	layout (location = 0) in vec4 X;								\n"
+						"	out vec2 forward_X;												\n"
 						"	uniform vec4 u_X;												\n"
 						"	void main() { gl_Position = vec4(								\n"
 						"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
-						"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],						\n"
-						"		X[2], X[3]); }												\n"
+						"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]); }				\n"
 					);
 
 					_vertex_affine.new_shader(std::string("") +
 						"	#version 330 core																			\n"
 						"	layout (location = 0) in vec4 X;															\n"
+						"	out vec2 forward_X;																			\n"
 						"	uniform vec4 u_X0;																			\n"
 						"	uniform vec4 u_X1;																			\n"
 						"	void main() { gl_Position  = vec4(															\n"
 						"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),					\n"
-						"		X[2], X[3]); }																			\n"
+						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]); }											\n"
 					);
 
 					_vertex_RGB_identity.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec3 C;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec3 forward_C;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
 						"		forward_C = C; }								\n"
 					);
 
@@ -2762,58 +2813,68 @@ namespace lnd
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec3 C;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec3 forward_C;									\n"
 						"	uniform vec2 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		" + ratio + " * (X[0] + u_X[0]),				\n"
-						"		X[1] + u_X[1],									\n"
-						"		X[2], X[3]); forward_C = C; }					\n"
+						"		X[1] + u_X[1], X[2], X[3]);						\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+						"		forward_C = C; }								\n"
 					);
 
 					_vertex_RGB_shift_scale.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec3 C;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec3 forward_C;									\n"
 						"	uniform vec3 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
-						"		u_X[2] * X[1] + u_X[1],							\n"
-						"		X[2], X[3]); forward_C = C; }					\n"
+						"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+						"		forward_C = C; }								\n"
 					);
 
 					_vertex_RGB_shift_rotate.new_shader(std::string("") +
 						"	#version 330 core												\n"
 						"	layout (location = 0) in vec4 X;								\n"
 						"	layout (location = 1) in vec3 C;								\n"
+						"	out vec2 forward_X;												\n"
 						"	out vec3 forward_C;												\n"
 						"	uniform vec4 u_X;												\n"
 						"	void main() { gl_Position = vec4(								\n"
 						"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
-						"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],						\n"
-						"		X[2], X[3]); forward_C = C; }								\n"
+						"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
+						"		forward_C = C; }											\n"
 					);
 
 					_vertex_RGB_affine.new_shader(std::string("") +
 						"	#version 330 core																			\n"
 						"	layout (location = 0) in vec4 X;															\n"
 						"	layout (location = 1) in vec3 C;															\n"
+						"	out vec2 forward_X;																			\n"
+						"	out vec3 forward_C;																			\n"
 						"	uniform vec4 u_X0;																			\n"
 						"	uniform vec4 u_X1;																			\n"
-						"	out vec3 forward_C;																			\n"
 						"	void main() { gl_Position  = vec4(															\n"
 						"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),					\n"
-						"		X[2], X[3]); forward_C = C; }															\n"
+						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
+						"		forward_C = C; }																		\n"
 					);
 
 					_vertex_RGBA_identity.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec4 C;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec4 forward_C;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
 						"		forward_C = C; }								\n"
 					);
 
@@ -2821,58 +2882,70 @@ namespace lnd
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec4 C;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec4 forward_C;									\n"
 						"	uniform vec2 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		" + ratio + " * (X[0] + u_X[0]),				\n"
-						"		X[1] + u_X[1],									\n"
-						"		X[2], X[3]); forward_C = C; }					\n"
+						"		X[1] + u_X[1], X[2], X[3]);						\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+						"		forward_C = C; }								\n"
 					);
 
 					_vertex_RGBA_shift_scale.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec4 C;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec4 forward_C;									\n"
 						"	uniform vec4 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
 						"		u_X[2] * X[1] + u_X[1],							\n"
-						"		X[2], X[3]); forward_C = C; }					\n"
+						"		X[2], X[3]);									\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+						"		forward_C = C; }								\n"
 					);
 
 					_vertex_RGBA_shift_rotate.new_shader(std::string("") +
 						"	#version 330 core												\n"
 						"	layout (location = 0) in vec4 X;								\n"
 						"	layout (location = 1) in vec4 C;								\n"
+						"	out vec2 forward_X;												\n"
 						"	out vec4 forward_C;												\n"
 						"	uniform vec4 u_X;												\n"
 						"	void main() { gl_Position = vec4(								\n"
 						"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
 						"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],						\n"
-						"		X[2], X[3]); forward_C = C; }								\n"
+						"		X[2], X[3]);												\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
+						"		forward_C = C; }											\n"
 					);
 
 					_vertex_RGBA_affine.new_shader(std::string("") +
 						"	#version 330 core																			\n"
 						"	layout (location = 0) in vec4 X;															\n"
 						"	layout (location = 1) in vec4 C;															\n"
+						"	out vec2 forward_X;																			\n"
+						"	out vec4 forward_C;																			\n"
 						"	uniform vec4 u_X0;																			\n"
 						"	uniform vec4 u_X1;																			\n"
-						"	out vec4 forward_C;																			\n"
 						"	void main() { gl_Position  = vec4(															\n"
 						"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),					\n"
-						"		X[2], X[3]); forward_C = C; }															\n"
+						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
+						"		forward_C = C; }																		\n"
 					);
 
 					_vertex_texture_identity.new_shader(
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec2 UV;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec2 forward_UV;								\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
 						"		forward_UV = UV; }								\n"
 					);
 
@@ -2880,49 +2953,57 @@ namespace lnd
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec2 UV;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec2 forward_UV;								\n"
 						"	uniform vec2 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		" + ratio + " * (X[0] + u_X[0]),				\n"
-						"		X[1] + u_X[1],									\n"
-						"		X[2], X[3]); forward_UV = UV; }					\n"
+						"		X[1] + u_X[1], X[2], X[3]);						\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+						"		forward_UV = UV; }								\n"
 					);
 
 					_vertex_texture_shift_scale.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec2 UV;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec2 forward_UV;								\n"
 						"	uniform vec3 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
-						"		u_X[2] * X[1] + u_X[1],							\n"
-						"		X[2], X[3]); forward_UV = UV; }					\n"
+						"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+						"		forward_UV = UV; }								\n"
 					);
 
 					_vertex_texture_shift_rotate.new_shader(std::string("") +
 						"	#version 330 core												\n"
 						"	layout (location = 0) in vec4 X;								\n"
 						"	layout (location = 1) in vec2 UV;								\n"
+						"	out vec2 forward_X;												\n"
 						"	out vec2 forward_UV;											\n"
 						"	uniform vec4 u_X;												\n"
 						"	void main() { gl_Position = vec4(								\n"
 						"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
-						"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],						\n"
-						"		X[2], X[3]); forward_UV = UV; }								\n"
+						"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
+						"		forward_UV = UV; }											\n"
 					);
 
 					_vertex_texture_affine.new_shader(std::string("") +
 						"	#version 330 core																			\n"
 						"	layout (location = 0) in vec4 X;															\n"
 						"	layout (location = 1) in vec2 UV;															\n"
+						"	out vec2 forward_X;																			\n"
 						"	out vec2 forward_UV;																		\n"
 						"	uniform vec4 u_X0;																			\n"
 						"	uniform vec4 u_X1;																			\n"
 						"	void main() { gl_Position  = vec4(															\n"
 						"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),					\n"
-						"		X[2], X[3]); forward_UV = UV; }															\n"
+						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
+						"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
+						"		forward_UV = UV; }																		\n"
 					);
 				}
 				else
@@ -2932,58 +3013,70 @@ namespace lnd
 					_vertex_identity.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
+						"	out vec2 forward_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
-						"		X[0], " + ratio + " * X[1], X[2], X[3]); }		\n"
+						"		X[0], " + ratio + " * X[1], X[2], X[3]);		\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
 					);
 
 					_vertex_shift.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
+						"	out vec2 forward_X;									\n"
 						"	uniform vec2 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		X[0] + u_X[0],									\n"
 						"		" + ratio + " * (X[1] + u_X[1]),				\n"
-						"		X[2], X[3]); }									\n"
+						"		X[2], X[3]);									\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
 					);
 
 					_vertex_shift_scale.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
+						"	out vec2 forward_X;									\n"
 						"	uniform vec3 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		u_X[2] * X[0] + u_X[0],							\n"
 						"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-						"		X[2], X[3]); }									\n"
+						"		X[2], X[3]);									\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
 					);
 
 					_vertex_shift_rotate.new_shader(std::string("") +
 						"	#version 330 core												\n"
 						"	layout (location = 0) in vec4 X;								\n"
+						"	out vec2 forward_X;												\n"
 						"	uniform vec4 u_X;												\n"
 						"	void main() { gl_Position = vec4(								\n"
 						"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
 						"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-						"		X[2], X[3]); }												\n"
+						"		X[2], X[3]);												\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
 					);
 
 					_vertex_affine.new_shader(std::string("") +
 						"	#version 330 core																			\n"
 						"	layout (location = 0) in vec4 X;															\n"
+						"	out vec2 forward_X;																			\n"
 						"	uniform vec4 u_X0;																			\n"
 						"	uniform vec4 u_X1;																			\n"
 						"	void main() { gl_Position  = vec4(															\n"
 						"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
 						"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-						"		X[2], X[3]); }																			\n"
+						"		X[2], X[3]);																			\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }											\n"
 					);
 
 					_vertex_RGB_identity.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec3 C;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec3 forward_C;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		X[0], " + ratio + " * X[1], X[2], X[3]);		\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
 						"		forward_C = C; }								\n"
 					);
 
@@ -2991,167 +3084,207 @@ namespace lnd
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec3 C;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec3 forward_C;									\n"
 						"	uniform vec2 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		X[0] + u_X[0],									\n"
 						"		" + ratio + " * (X[1] + u_X[1]),				\n"
-						"		X[2], X[3]); forward_C = C; }					\n"
+						"		X[2], X[3]);									\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
+						"		forward_C = C; }								\n"
 					);
 
 					_vertex_RGB_shift_scale.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec3 C;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec3 forward_C;									\n"
 						"	uniform vec3 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		u_X[2] * X[0] + u_X[0],							\n"
 						"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-						"		X[2], X[3]); forward_C = C; }					\n"
+						"		X[2], X[3]);									\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
+						"		forward_C = C; }								\n"
 					);
 
 					_vertex_RGB_shift_rotate.new_shader(std::string("") +
 						"	#version 330 core												\n"
 						"	layout (location = 0) in vec4 X;								\n"
 						"	layout (location = 1) in vec3 C;								\n"
+						"	out vec2 forward_X;												\n"
 						"	out vec3 forward_C;												\n"
 						"	uniform vec4 u_X;												\n"
 						"	void main() { gl_Position = vec4(								\n"
 						"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
 						"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-						"		X[2], X[3]); forward_C = C; }								\n"
+						"		X[2], X[3]);												\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
+						"		forward_C = C; }											\n"
 					);
 
 					_vertex_RGB_affine.new_shader(std::string("") +
 						"	#version 330 core																			\n"
 						"	layout (location = 0) in vec4 X;															\n"
 						"	layout (location = 1) in vec3 C;															\n"
+						"	out vec2 forward_X;																			\n"
 						"	out vec3 forward_C;																			\n"
 						"	uniform vec4 u_X0;																			\n"
 						"	uniform vec4 u_X1;																			\n"
 						"	void main() { gl_Position  = vec4(															\n"
 						"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
 						"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-						"		X[2], X[3]); forward_C = C; }															\n"
+						"		X[2], X[3]);																			\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
+						"		forward_C = C; }																		\n"
 					);
 
 					_vertex_RGBA_identity.new_shader(std::string("") +
 						"	#version 330 core                                   \n"
 						"	layout (location = 0) in vec4 X;                    \n"
 						"	layout (location = 1) in vec4 C;                    \n"
+						"	out vec2 forward_X;									\n"
 						"	out vec4 forward_C;                                 \n"
 						"	void main() { gl_Position = vec4(                   \n"
 						"		X[0], " + ratio + " * X[1], X[2], X[3]);        \n"
-						"		forward_C = C; }                                \n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+						"		forward_C = C; }								\n"
 					);
 
 					_vertex_RGBA_shift.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec4 C;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec4 forward_C;									\n"
 						"	uniform vec2 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		X[0] + u_X[0],									\n"
 						"		" + ratio + " * (X[1] + u_X[1]),				\n"
-						"		X[2], X[3]); forward_C = C; }					\n"
+						"		X[2], X[3]);									\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+						"		forward_C = C; }								\n"
 					);
 
 					_vertex_RGBA_shift_scale.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec4 C;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec4 forward_C;									\n"
 						"	uniform vec4 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		u_X[2] * X[0] + u_X[0],							\n"
 						"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-						"		X[2], X[3]); forward_C = C; }					\n"
+						"		X[2], X[3]);									\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+						"		forward_C = C; }								\n"
 					);
 
 					_vertex_RGBA_shift_rotate.new_shader(std::string("") +
 						"	#version 330 core												\n"
 						"	layout (location = 0) in vec4 X;								\n"
 						"	layout (location = 1) in vec4 C;								\n"
+						"	out vec2 forward_X;												\n"
 						"	out vec4 forward_C;												\n"
 						"	uniform vec4 u_X;												\n"
 						"	void main() { gl_Position = vec4(								\n"
 						"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
 						"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-						"		X[2], X[3]); forward_C = C; }								\n"
+						"		X[2], X[3]);												\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
+						"		forward_C = C; }											\n"
 					);
 
 					_vertex_RGBA_affine.new_shader(std::string("") +
 						"	#version 330 core																			\n"
 						"	layout (location = 0) in vec4 X;															\n"
 						"	layout (location = 1) in vec4 C;															\n"
+						"	out vec2 forward_X;																			\n"
 						"	out vec4 forward_C;																			\n"
 						"	uniform vec4 u_X0;																			\n"
 						"	uniform vec4 u_X1;																			\n"
 						"	void main() { gl_Position  = vec4(															\n"
 						"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
 						"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-						"		X[2], X[3]); forward_C = C; }															\n"
+						"		X[2], X[3]);																			\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
+						"		forward_C = C; }																		\n"
 					);
 
 					_vertex_texture_identity.new_shader(
 						"   #version 330 core                                   \n"
 						"   layout (location = 0) in vec4 X;                    \n"
 						"   layout (location = 1) in vec2 UV;                   \n"
+						"	out vec2 forward_X;									\n"
 						"   out vec2 forward_UV;                                \n"
 						"   void main() { gl_Position = vec4(                   \n"
 						"       X[0], " + ratio + " * X[1], X[2], X[3]);        \n"
-						"	    forward_UV = UV; }                              \n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+						"		forward_UV = UV; }								\n"
 					);
 
 					_vertex_texture_shift.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec2 UV;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec2 forward_UV;								\n"
 						"	uniform vec2 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		X[0] + u_X[0],									\n"
 						"		" + ratio + " * (X[1] + u_X[1]),				\n"
-						"		X[2], X[3]); forward_UV = UV; }					\n"
+						"		X[2], X[3]);									\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+						"		forward_UV = UV; }								\n"
 					);
 
 					_vertex_texture_shift_scale.new_shader(std::string("") +
 						"	#version 330 core									\n"
 						"	layout (location = 0) in vec4 X;					\n"
 						"	layout (location = 1) in vec2 UV;					\n"
+						"	out vec2 forward_X;									\n"
 						"	out vec2 forward_UV;								\n"
 						"	uniform vec3 u_X;									\n"
 						"	void main() { gl_Position = vec4(					\n"
 						"		u_X[2] * X[0] + u_X[0],							\n"
 						"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-						"		X[2], X[3]); forward_UV = UV; }					\n"
+						"		X[2], X[3]);									\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+						"		forward_UV = UV; }								\n"
 					);
 
 					_vertex_texture_shift_rotate.new_shader(std::string("") +
 						"	#version 330 core												\n"
 						"	layout (location = 0) in vec4 X;								\n"
 						"	layout (location = 1) in vec2 UV;								\n"
+						"	out vec2 forward_X;												\n"
 						"	out vec2 forward_UV;											\n"
 						"	uniform vec4 u_X;												\n"
 						"	void main() { gl_Position = vec4(								\n"
 						"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
 						"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-						"		X[2], X[3]); forward_UV = UV; }								\n"
+						"		X[2], X[3]);												\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
+						"		forward_UV = UV; }											\n"
 					);
 
 					_vertex_texture_affine.new_shader(std::string("") +
 						"	#version 330 core																			\n"
 						"	layout (location = 0) in vec4 X;															\n"
 						"	layout (location = 1) in vec2 UV;															\n"
+						"	out vec2 forward_X;																			\n"
 						"	out vec2 forward_UV;																		\n"
 						"	uniform vec4 u_X0;																			\n"
 						"	uniform vec4 u_X1;																			\n"
 						"	void main() { gl_Position  = vec4(															\n"
 						"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
 						"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-						"		X[2], X[3]); forward_UV = UV; }															\n"
+						"		X[2], X[3]);																			\n"
+						"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
+						"		forward_UV = UV; }																		\n"
 					);
 				}
 			}
@@ -3160,149 +3293,185 @@ namespace lnd
 				_vertex_identity.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
-					"	void main() { gl_Position = X; }					\n"
+					"	out vec2 forward_X;									\n"
+					"	void main() { gl_Position = X;						\n"
+					"		forward_X = vec2(gl_Position); }				\n"
 				);
 
 				_vertex_shift.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
+					"	out vec2 forward_X;									\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		X[0] + u_X[0],									\n"
 					"		X[1] + u_X[1],									\n"
-					"		X[2], X[3]); }									\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(gl_Position); }				\n"
 				);
 
 				_vertex_shift_scale.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
+					"	out vec2 forward_X;									\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		u_X[2] * X[0] + u_X[0],							\n"
 					"		u_X[2] * X[1] + u_X[1],							\n"
-					"		X[2], X[3]); }									\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(gl_Position); }				\n"
 				);
 
 				_vertex_shift_rotate.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
+					"	out vec2 forward_X;									\n"
 					"	uniform vec4 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
 					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-					"		X[2], X[3]); }									\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(gl_Position); }				\n"
 				);
 
 				_vertex_affine.new_shader(
 					"	#version 330 core															\n"
 					"	layout (location = 0) in vec4 X;											\n"
+					"	out vec2 forward_X;															\n"
 					"	uniform vec4 u_X0;															\n"
 					"	uniform vec4 u_X1;															\n"
 					"	void main() { gl_Position  = vec4(											\n"
 					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
 					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-					"		X[2], X[3]); }															\n"
+					"		X[2], X[3]);															\n"
+					"		forward_X = vec2(gl_Position); }										\n"
 				);
 
 				_vertex_RGB_identity.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
 					"	layout (location = 1) in vec3 C;					\n"
+					"	out vec2 forward_X;									\n"
 					"	out vec3 forward_C;									\n"
-					"	void main() { gl_Position = X; forward_C = C; }		\n"
+					"	void main() { gl_Position = X;						\n"
+					"		forward_X = vec2(gl_Position);					\n"
+					"		forward_C = C; }								\n"
 				);
 
 				_vertex_RGB_shift.new_shader(
 					"   #version 330 core                                   \n"
 					"   layout (location = 0) in vec4 X;                    \n"
 					"   layout (location = 1) in vec3 C;                    \n"
+					"	out vec2 forward_X;									\n"
 					"   out vec3 forward_C;                                 \n"
 					"   uniform vec2 u_X;                                   \n"
 					"   void main() { gl_Position = vec4(                   \n"
 					"       X[0] + u_X[0],                                  \n"
 					"       X[1] + u_X[1],                                  \n"
-					"       X[2], X[3]); forward_C = C; }                   \n"
+					"		forward_X = vec2(gl_Position);					\n"
+					"		forward_C = C; }								\n"
 				);
 
 				_vertex_RGB_shift_scale.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
 					"	layout (location = 1) in vec3 C;					\n"
+					"	out vec2 forward_X;									\n"
 					"	out vec3 forward_C;									\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		u_X[2] * X[0] + u_X[0],							\n"
 					"		u_X[2] * X[1] + u_X[1],							\n"
-					"		X[2], X[3]); forward_C = C; }					\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(gl_Position);					\n"
+					"		forward_C = C; }								\n"
 				);
 
 				_vertex_RGB_shift_rotate.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
 					"	layout (location = 1) in vec3 C;					\n"
+					"	out vec2 forward_X;									\n"
 					"	out vec3 forward_C;									\n"
 					"	uniform vec4 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
 					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-					"		X[2], X[3]); forward_C = C; }					\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(gl_Position);					\n"
+					"		forward_C = C; }								\n"
 				);
 
 				_vertex_RGB_affine.new_shader(
 					"	#version 330 core															\n"
 					"	layout (location = 0) in vec4 X;											\n"
 					"	layout (location = 1) in vec3 C;											\n"
+					"	out vec2 forward_X;															\n"
 					"	out vec3 forward_C;															\n"
 					"	uniform vec4 u_X0;															\n"
 					"	uniform vec4 u_X1;															\n"
 					"	void main() { gl_Position  = vec4(											\n"
 					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
 					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-					"		X[2], X[3]); forward_C = C; }											\n"
+					"		X[2], X[3]);															\n"
+					"		forward_X = vec2(gl_Position);											\n"
+					"		forward_C = C; }														\n"
 				);
 
 				_vertex_RGBA_identity.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
 					"	layout (location = 1) in vec4 C;					\n"
+					"	out vec2 forward_X;									\n"
 					"	out vec4 forward_C;									\n"
-					"	void main() { gl_Position = X; forward_C = C; }		\n"
+					"	void main() { gl_Position = X;						\n"
+					"		forward_X = vec2(gl_Position);					\n"
+					"		forward_C = C; }								\n"
 				);
 
 				_vertex_RGBA_shift.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
 					"	layout (location = 1) in vec4 C;					\n"
+					"	out vec2 forward_X;									\n"
 					"	out vec4 forward_C;									\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		X[0] + u_X[0],									\n"
 					"		X[1] + u_X[1],									\n"
-					"		X[2], X[3]); forward_C = C; }					\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(gl_Position);					\n"
+					"		forward_C = C; }								\n"
 				);
 
 				_vertex_RGBA_shift_scale.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
 					"	layout (location = 1) in vec4 C;					\n"
+					"	out vec2 forward_X;									\n"
 					"	out vec4 forward_C;									\n"
 					"	uniform vec4 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		u_X[2] * X[0] + u_X[0],							\n"
 					"		u_X[2] * X[1] + u_X[1],							\n"
-					"		X[2], X[3]); forward_C = C; }					\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(gl_Position);					\n"
+					"		forward_C = C; }								\n"
 				);
 
 				_vertex_RGBA_shift_rotate.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
 					"	layout (location = 1) in vec4 C;					\n"
+					"	out vec2 forward_X;									\n"
 					"	out vec4 forward_C;									\n"
 					"	uniform vec4 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
 					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-					"		X[2], X[3]); forward_C = C; }					\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(gl_Position);					\n"
+					"		forward_C = C; }								\n"
 				);
 
 				_vertex_RGBA_affine.new_shader(
@@ -3315,16 +3484,20 @@ namespace lnd
 					"	void main() { gl_Position  = vec4(											\n"
 					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
 					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-					"		X[2], X[3]); forward_C = C; }											\n"
+					"		X[2], X[3]);															\n"
+					"		forward_X = vec2(gl_Position);											\n"
+					"		forward_C = C; }														\n"
 				);
 
 				_vertex_texture_identity.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
 					"	layout (location = 1) in vec2 UV;					\n"
+					"	out vec2 forward_X;									\n"
 					"	out vec2 forward_UV;								\n"
 					"	void main() {										\n"
 					"		gl_Position = X;								\n"
+					"		forward_X = vec2(gl_Position);					\n"
 					"		forward_UV = UV; }								\n"
 				);
 
@@ -3332,68 +3505,98 @@ namespace lnd
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
 					"	layout (location = 1) in vec2 UV;					\n"
+					"	out vec2 forward_X;									\n"
 					"	out vec2 forward_UV;								\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		X[0] + u_X[0],									\n"
 					"		X[1] + u_X[1],									\n"
-					"		X[2], X[3]); forward_UV = UV; }					\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(gl_Position);					\n"
+					"		forward_UV = UV; }								\n"
 				);
 
 				_vertex_texture_shift_scale.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
 					"	layout (location = 1) in vec2 UV;					\n"
+					"	out vec2 forward_X;									\n"
 					"	out vec2 forward_UV;								\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		u_X[2] * X[0] + u_X[0],							\n"
 					"		u_X[2] * X[1] + u_X[1],							\n"
-					"		X[2], X[3]); forward_UV = UV; }					\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(gl_Position);					\n"
+					"		forward_UV = UV; }								\n"
 				);
 
 				_vertex_texture_shift_rotate.new_shader(
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 X;					\n"
 					"	layout (location = 1) in vec2 UV;					\n"
+					"	out vec2 forward_X;									\n"
 					"	out vec2 forward_UV;								\n"
 					"	uniform vec4 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
 					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-					"		X[2], X[3]); forward_UV = UV; }					\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(gl_Position);					\n"
+					"		forward_UV = UV; }								\n"
 				);
 
 				_vertex_texture_affine.new_shader(
 					"	#version 330 core															\n"
 					"	layout (location = 0) in vec4 X;											\n"
 					"	layout (location = 1) in vec2 UV;											\n"
+					"	out vec2 forward_X;															\n"
 					"	out vec2 forward_UV;														\n"
 					"	uniform vec4 u_X0;															\n"
 					"	uniform vec4 u_X1;															\n"
 					"	void main() { gl_Position  = vec4(											\n"
 					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
 					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-					"		X[2], X[3]); forward_UV = UV; }											\n"
+					"		X[2], X[3]);															\n"
+					"		forward_X = vec2(gl_Position);											\n"
+					"		forward_UV = UV; }														\n"
 				);
 			}
 
 			_vertex_3d.new_shader(
 				"	#version 330 core									\n"
 				"	layout (location = 0) in vec3 X;					\n"
-				"	uniform mat4 M;										\n"
-				"	void main() { gl_Position = M * vec4(X, 1); }		\n"
+				"	out vec3 forward_X;									\n"
+				"	uniform mat4 u_mvp_M;								\n"
+				"	void main() {										\n"
+				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+				"		forward_X = X; }								\n"
 			);
 
 			_vertex_normals_3d.new_shader(
 				"	#version 330 core									\n"
 				"	layout (location = 0) in vec3 X;					\n"
 				"	layout (location = 1) in vec3 N;					\n"
+				"	out vec3 forward_X;									\n"
 				"	out vec3 forward_N;									\n"
-				"	uniform mat4 M;										\n"
+				"	uniform mat4 u_mvp_M;								\n"
 				"	void main() {										\n"
-				"		gl_Position = M * vec4(X, 1);					\n"
+				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+				"		forward_X = X;									\n"
 				"		forward_N = N; }								\n"
+			);
+
+			_vertex_RGB_3d.new_shader(
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec3 X;					\n"
+				"	layout (location = 1) in vec3 C;					\n"
+				"	out vec3 forward_X;									\n"
+				"	out vec3 forward_C;									\n"
+				"	uniform mat4 u_mvp_M;								\n"
+				"	void main() {										\n"
+				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+				"		forward_X = X;									\n"
+				"		forward_C = C; }								\n"
 			);
 
 			_vertex_RGB_normals_3d.new_shader(
@@ -3401,27 +3604,28 @@ namespace lnd
 				"	layout (location = 0) in vec3 X;					\n"
 				"	layout (location = 1) in vec3 C;					\n"
 				"	layout (location = 2) in vec3 N;					\n"
+				"	out vec3 forward_X;									\n"
 				"	out vec3 forward_C;									\n"
 				"	out vec3 forward_N;									\n"
-				"	uniform mat4 M;										\n"
+				"	uniform mat4 u_mvp_M;								\n"
 				"	void main() {										\n"
-				"		gl_Position = M * vec4(X, 1);					\n"
+				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+				"		forward_X = X;									\n"
 				"		forward_C = C;									\n"
 				"		forward_N = N; }								\n"
 			);
 
-			_vertex_RGB_normals_3d.new_shader(
+			_vertex_RGBA_3d.new_shader(
 				"	#version 330 core									\n"
 				"	layout (location = 0) in vec3 X;					\n"
-				"	layout (location = 1) in vec3 C;					\n"
-				"	layout (location = 2) in vec3 N;					\n"
-				"	out vec3 forward_C;									\n"
-				"	out vec3 forward_N;									\n"
-				"	uniform mat4 M;										\n"
+				"	layout (location = 1) in vec4 C;					\n"
+				"	out vec3 forward_X;									\n"
+				"	out vec4 forward_C;									\n"
+				"	uniform mat4 u_mvp_M;								\n"
 				"	void main() {										\n"
-				"		gl_Position = M * vec4(X, 1);					\n"
-				"		forward_C = C;									\n"
-				"		forward_N = N; }								\n"
+				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+				"		forward_X = X;									\n"
+				"		forward_C = C; }								\n"
 			);
 
 			_vertex_RGBA_normals_3d.new_shader(
@@ -3429,13 +3633,28 @@ namespace lnd
 				"	layout (location = 0) in vec3 X;					\n"
 				"	layout (location = 1) in vec4 C;					\n"
 				"	layout (location = 2) in vec3 N;					\n"
+				"	out vec3 forward_X;									\n"
 				"	out vec4 forward_C;									\n"
 				"	out vec3 forward_N;									\n"
 				"	uniform mat4 M;										\n"
 				"	void main() {										\n"
 				"		gl_Position = M * vec4(X, 1);					\n"
+				"		forward_X = X;									\n"
 				"		forward_C = C;									\n"
 				"		forward_N = N; }								\n"
+			);
+
+			_vertex_texture_3d.new_shader(
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec3 X;					\n"
+				"	layout (location = 1) in vec2 UV;					\n"
+				"	out vec3 forward_X;									\n"
+				"	out vec2 forward_UV;								\n"
+				"	uniform mat4 u_mvp_M;								\n"
+				"	void main() {										\n"
+				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+				"		forward_X = X;									\n"
+				"		forward_UV = UV; }								\n"
 			);
 
 			_vertex_texture_normals_3d.new_shader(
@@ -3444,45 +3663,14 @@ namespace lnd
 				"	layout (location = 1) in vec2 UV;					\n"
 				"	layout (location = 2) in vec3 N;					\n"
 				"	out vec2 forward_UV;								\n"
+				"	out vec3 forward_X;									\n"
 				"	out vec3 forward_N;									\n"
-				"	uniform mat4 M;										\n"
+				"	uniform mat4 u_mvp_M;								\n"
 				"	void main() {										\n"
-				"		gl_Position = M * vec4(X, 1);					\n"
+				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
 				"		forward_UV = UV;								\n"
+				"		forward_X = X;									\n"
 				"		forward_N = N; }								\n"
-			);
-
-			_vertex_RGB_3d.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec3 X;					\n"
-				"	layout (location = 1) in vec3 C;					\n"
-				"	out vec3 forward_C;									\n"
-				"	uniform mat4 M;										\n"
-				"	void main() {										\n"
-				"		gl_Position = M * vec4(X, 1);					\n"
-				"		forward_C = C; }								\n"
-			);
-
-			_vertex_RGBA_3d.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec3 X;					\n"
-				"	layout (location = 1) in vec4 C;					\n"
-				"	out vec4 forward_C;									\n"
-				"	uniform mat4 M;										\n"
-				"	void main() {										\n"
-				"		gl_Position = M * vec4(X, 1);					\n"
-				"		forward_C = C; }								\n"
-			);
-
-			_vertex_texture_3d.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec3 X;					\n"
-				"	layout (location = 1) in vec2 UV;					\n"
-				"	out vec2 forward_UV;								\n"
-				"	uniform mat4 M;										\n"
-				"	void main() {										\n"
-				"		gl_Position = M * vec4(X, 1);					\n"
-				"		forward_UV = UV; }								\n"
 			);
 
 			_fragment_black.new_shader(
@@ -3569,61 +3757,93 @@ namespace lnd
 			);
 
 			_fragment_color_skylight_3d.new_shader(
-				"	#version 330 core											\n"
-				"	in vec3 forward_N;											\n"
-				"	out vec4 color;												\n"
-				"	uniform vec3 dir;											\n"
-				"	uniform vec3 light_C;										\n"
-				"	uniform vec3 amb;											\n"
-				"	uniform mat4 m_M;											\n"
-				"	uniform vec4 u_C;											\n"
-				"	void main() {												\n"
-				"		color = max(vec4(-dot(mat3(m_M) * forward_N, dir)		\n"
-				"		* (light_C * vec3(u_C)), u_C[3]), vec4(amb, 0.0)); }	\n"
+				"	#version 330 core																	\n"
+				"	in vec3 forward_X;																	\n"
+				"	in vec3 forward_N;																	\n"
+				"	out vec4 color;																		\n"
+				"	uniform float u_diff;																\n"
+				"	uniform float u_spec;																\n"
+				"	uniform float u_conc;																\n"
+				"	uniform vec3 u_v_pos;																\n"
+				"	uniform vec3 u_amb;																	\n"
+				"	uniform vec3 u_light_dir;															\n"
+				"	uniform vec3 u_light_C;																\n"
+				"	uniform mat4 u_m_M;																	\n"
+				"	uniform vec4 u_C;																	\n"
+				"	void main() {																		\n"
+				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
+				"		float spec = u_spec * pow(max(dot(normalize(u_v_pos - forward_X),				\n"
+				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
+				"		color = max(vec4((diff + spec)													\n"
+				"		* (u_light_C * vec3(u_C)), u_C[3]), vec4(u_amb, 0.0)); }						\n"
 			);
 
 			_fragment_RGB_skylight_3d.new_shader(
-				"	#version 330 core														\n"
-				"	in vec3 forward_N;														\n"
-				"	in vec3 forward_C;														\n"
-				"	out vec4 color;															\n"
-				"	uniform vec3 dir;														\n"
-				"	uniform vec3 light_C;													\n"
-				"	uniform vec3 amb;														\n"
-				"	uniform mat4 m_M;														\n"
-				"	void main() {															\n"
-				"		color = max(vec4(-dot(mat3(m_M) * forward_N, dir)					\n"
-				"		* (light_C * vec3(forward_C)), 1.0), vec4(amb, 0.0)); }	\n"
+				"	#version 330 core																	\n"
+				"	in vec3 forward_X;																	\n"
+				"	in vec3 forward_N;																	\n"
+				"	in vec3 forward_C;																	\n"
+				"	out vec4 color;																		\n"
+				"	uniform float u_diff;																\n"
+				"	uniform float u_spec;																\n"
+				"	uniform float u_conc;																\n"
+				"	uniform vec3 u_v_pos;																\n"
+				"	uniform vec3 u_amb;																	\n"
+				"	uniform vec3 u_light_dir;															\n"
+				"	uniform vec3 u_light_C;																\n"
+				"	uniform mat4 u_m_M;																	\n"
+				"	void main() {																		\n"
+				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
+				"		float spec = u_spec * pow(max(dot(normalize(u_v_pos - forward_X),				\n"
+				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
+				"		color = max(vec4((diff + spec)													\n"
+				"		* (u_light_C * forward_C), 1.0), vec4(u_amb, 0.0)); }							\n"
 			);
 
 			_fragment_RGBA_skylight_3d.new_shader(
-				"	#version 330 core														\n"
-				"	in vec3 forward_N;														\n"
-				"	in vec4 forward_C;														\n"
-				"	out vec4 color;															\n"
-				"	uniform vec3 dir;														\n"
-				"	uniform vec3 light_C;													\n"
-				"	uniform vec3 amb;														\n"
-				"	uniform mat4 m_M;														\n"
-				"	void main() {															\n"
-				"		color = max(vec4(-dot(mat3(m_M) * forward_N, dir)					\n"
-				"		* (light_C * vec3(forward_C)), forward_C[3]), vec4(amb, 0.0)); }	\n"
+				"	#version 330 core																	\n"
+				"	in vec3 forward_X;																	\n"
+				"	in vec3 forward_N;																	\n"
+				"	in vec4 forward_C;																	\n"
+				"	out vec4 color;																		\n"
+				"	uniform float u_diff;																\n"
+				"	uniform float u_spec;																\n"
+				"	uniform float u_conc;																\n"
+				"	uniform vec3 u_v_pos;																\n"
+				"	uniform vec3 u_amb;																	\n"
+				"	uniform vec3 u_light_dir;															\n"
+				"	uniform vec3 u_light_C;																\n"
+				"	uniform mat4 u_m_M;																	\n"
+				"	void main() {																		\n"
+				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
+				"		float spec = u_spec * pow(max(dot(normalize(u_v_pos - forward_X),				\n"
+				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
+				"		color = max(vec4((diff + spec)													\n"
+				"		* (u_light_C * vec3(forward_C)), forward_C[3]), vec4(u_amb, 0.0)); }			\n"
 			);
 
 			_fragment_texture_skylight_3d.new_shader(
-				"	#version 330 core											\n"
-				"	in vec2 forward_UV;											\n"
-				"	in vec3 forward_N;											\n"
-				"	out vec4 color;												\n"
-				"	uniform vec3 dir;											\n"
-				"	uniform vec3 light_C;										\n"
-				"	uniform vec3 amb;											\n"
-				"	uniform mat4 m_M;											\n"
-				"	uniform sampler2D Tx;										\n"
-				"	void main() {												\n"
-				"		vec4 C = texture(Tx, forward_UV);						\n"
-				"		color = max(vec4(-dot(mat3(m_M) * forward_N, dir)		\n"
-				"		* (light_C * vec3(C)), C[3]), vec4(amb, 0.0)); }		\n"
+				"	#version 330 core																	\n"
+				"	in vec3 forward_X;																	\n"
+				"	in vec3 forward_N;																	\n"
+				"	in vec2 forward_UV;																	\n"
+				"	out vec4 color;																		\n"
+				"	uniform float u_diff;																\n"
+				"	uniform float u_spec;																\n"
+				"	uniform float u_conc;																\n"
+				"	uniform vec3 u_v_pos;																\n"
+				"	uniform vec3 u_amb;																	\n"
+				"	uniform vec3 u_light_dir;															\n"
+				"	uniform vec3 u_light_C;																\n"
+				"	uniform mat4 u_m_M;																	\n"
+				"	uniform sampler2D Tx;																\n"
+				"	void main() {																		\n"
+				"		vec4 C = texture(Tx, forward_UV);												\n"
+				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
+				"		float spec = u_spec * pow(max(dot(normalize(u_v_pos - forward_X),				\n"
+				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
+				"		color = max(vec4((diff + spec)													\n"
+				"		* (u_light_C * vec3(C)), C[3]), vec4(u_amb, 0.0)); }							\n"
 			);
 
 			_program_black.new_program(_vertex_identity, _fragment_black);
@@ -4003,7 +4223,7 @@ namespace lnd
 			// display
 
 			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glBlendFunc(GL_ONE, GL_ZERO);
 			if (window_anti_aliasing) { glEnable(GL_MULTISAMPLE); }
 
 			lnd::__user_key_input.reset_key_events();
@@ -4071,7 +4291,7 @@ namespace lnd
 
 	private:
 
-		std::array<unsigned int, _index_count> m;
+		LND_INDEX(unsigned int, _index_count) m;
 
 	public:
 
@@ -4461,7 +4681,7 @@ namespace lnd
 
 	private:
 
-		std::array<LND_VERTEX(float, _dim), _color_count_pc> m;
+		std::array<LND_COLOR(float, _dim), _color_count_pc> m;
 
 	public:
 
@@ -4501,21 +4721,21 @@ namespace lnd
 			return *(static_cast<float*>(static_cast<void*>(m.data())) + coord + _dim * color);
 		}
 
-		inline const LND_VERTEX(float, _dim)* data_color() const noexcept
+		inline const LND_COLOR(float, _dim)* data_color() const noexcept
 		{
-			return static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(m.data()));
+			return static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(m.data()));
 		}
-		inline LND_VERTEX(float, _dim)* data_color() noexcept
+		inline LND_COLOR(float, _dim)* data_color() noexcept
 		{
-			return static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(m.data()));
+			return static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(m.data()));
 		}
-		inline const LND_VERTEX(float, _dim)& operator()(size_t color) const noexcept
+		inline const LND_COLOR(float, _dim)& operator()(size_t color) const noexcept
 		{
-			return *(static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(m.data())) + color);
+			return *(static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(m.data())) + color);
 		}
-		inline LND_VERTEX(float, _dim)& operator()(size_t color) noexcept
+		inline LND_COLOR(float, _dim)& operator()(size_t color) noexcept
 		{
-			return *(static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(m.data())) + color);
+			return *(static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(m.data())) + color);
 		}
 
 		constexpr size_t color_count() const noexcept
@@ -4633,21 +4853,21 @@ namespace lnd
 			return *(static_cast<float*>(static_cast<void*>(m.data())) + coord + _dim * color + n * cluster);
 		}
 
-		inline const LND_VERTEX(float, _dim)* data_color() const noexcept
+		inline const LND_COLOR(float, _dim)* data_color() const noexcept
 		{
-			return static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(m.data()));
+			return static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(m.data()));
 		}
-		inline LND_VERTEX(float, _dim)* data_color() noexcept
+		inline LND_COLOR(float, _dim)* data_color() noexcept
 		{
-			return static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(m.data()));
+			return static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(m.data()));
 		}
-		inline const LND_VERTEX(float, _dim)& operator()(size_t cluster, size_t color) const noexcept
+		inline const LND_COLOR(float, _dim)& operator()(size_t cluster, size_t color) const noexcept
 		{
-			return *(static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(m.data())) + color + _color_count_pc * cluster);
+			return *(static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(m.data())) + color + _color_count_pc * cluster);
 		}
-		inline LND_VERTEX(float, _dim)& operator()(size_t cluster, size_t color) noexcept
+		inline LND_COLOR(float, _dim)& operator()(size_t cluster, size_t color) noexcept
 		{
-			return *(static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(m.data())) + color + _color_count_pc * cluster);
+			return *(static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(m.data())) + color + _color_count_pc * cluster);
 		}
 
 		inline const lnd::cluster_color<_color_count_pc, _dim>* data_cluster() const noexcept
@@ -4722,12 +4942,12 @@ namespace lnd
 		}
 	};
 
-	template <size_t _dim, class _Allocator = std::allocator<LND_VERTEX(float, _dim)>> class group_color
+	template <size_t _dim, class _Allocator = std::allocator<LND_COLOR(float, _dim)>> class group_color
 	{
 
 	private:
 
-		std::vector<LND_VERTEX(float, _dim), _Allocator> m;
+		std::vector<LND_COLOR(float, _dim), _Allocator> m;
 		lnd::buffer_color buffer;
 
 	public:
@@ -4736,9 +4956,9 @@ namespace lnd
 		~group_color() = default;
 		group_color(size_t n)
 		{
-			m = std::vector<LND_VERTEX(float, _dim)>(n, 0.0f);
+			m = std::vector<LND_COLOR(float, _dim)>(n, 0.0f);
 		}
-		group_color(size_t n, const LND_VERTEX(float, _dim)& x)
+		group_color(size_t n, const LND_COLOR(float, _dim)& x)
 		{
 			m = std::vector<unsigned int>(n, x);
 		}
@@ -4763,7 +4983,7 @@ namespace lnd
 
 		group_color(std::initializer_list<float> L)
 		{
-			m = std::vector<LND_VERTEX(float, _dim), _Allocator>(L.size() / _dim);
+			m = std::vector<LND_COLOR(float, _dim), _Allocator>(L.size() / _dim);
 			std::copy(L.begin(), L.end(), static_cast<float*>(static_cast<void*>(m.data())));
 		}
 		group_color& operator=(std::initializer_list<float> L)
@@ -4832,21 +5052,21 @@ namespace lnd
 			return *(static_cast<float*>(static_cast<void*>(m.data())) + coord + _dim * color);
 		}
 
-		inline const LND_VERTEX(float, _dim)* data_color() const noexcept
+		inline const LND_COLOR(float, _dim)* data_color() const noexcept
 		{
-			return static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(m.data()));
+			return static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(m.data()));
 		}
-		inline LND_VERTEX(float, _dim)* data_color() noexcept
+		inline LND_COLOR(float, _dim)* data_color() noexcept
 		{
-			return static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(m.data()));
+			return static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(m.data()));
 		}
-		inline const LND_VERTEX(float, _dim)& operator()(size_t color) const noexcept
+		inline const LND_COLOR(float, _dim)& operator()(size_t color) const noexcept
 		{
-			return *(static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(m.data())) + color);
+			return *(static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(m.data())) + color);
 		}
-		inline LND_VERTEX(float, _dim)& operator()(size_t color) noexcept
+		inline LND_COLOR(float, _dim)& operator()(size_t color) noexcept
 		{
-			return *(static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(m.data())) + color);
+			return *(static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(m.data())) + color);
 		}
 
 		inline void resize_color_count(size_t n)
@@ -4857,11 +5077,11 @@ namespace lnd
 		{
 			m.reserve(n);
 		}
-		inline void push_back_color(const LND_VERTEX(float, _dim)& new_color)
+		inline void push_back_color(const LND_COLOR(float, _dim)& new_color)
 		{
 			m.push_back(new_color);
 		}
-		inline void push_front_color(const LND_VERTEX(float, _dim)& new_color)
+		inline void push_front_color(const LND_COLOR(float, _dim)& new_color)
 		{
 			m.push_front(new_color);
 		}
@@ -4898,12 +5118,12 @@ namespace lnd
 
 	// TEXTURE STORAGE CLASSES
 
-	template <size_t _dim, class _texture_Allocator = std::allocator<LND_VERTEX(unsigned char, _dim)>> class texture
+	template <size_t _dim, class _texture_Allocator = std::allocator<LND_PIXEL(unsigned char, _dim)>> class texture
 	{
 
 	private:
 
-		std::vector<LND_VERTEX(unsigned char, _dim), _texture_Allocator> m;
+		std::vector<LND_PIXEL(unsigned char, _dim), _texture_Allocator> m;
 		size_t _width = 0;
 		size_t _height = 0;
 		lnd::buffer_texture buffer;
@@ -4916,14 +5136,14 @@ namespace lnd
 		~texture() = default;
 		texture(size_t new_width, size_t new_height)
 		{
-			m = std::vector<LND_VERTEX(unsigned char, _dim)>(new_width * new_height,
-				LND_VERTEX(unsigned char, _dim){ static_cast<unsigned char>(0) });
+			m = std::vector<LND_PIXEL(unsigned char, _dim)>(new_width * new_height,
+				LND_PIXEL(unsigned char, _dim){ static_cast<unsigned char>(0) });
 			_width = new_width;
 			_height = new_height;
 		}
-		texture(size_t new_width, size_t new_height, const LND_VERTEX(float, _dim)& x)
+		texture(size_t new_width, size_t new_height, const LND_PIXEL(float, _dim)& x)
 		{
-			m = std::vector<LND_VERTEX(unsigned char, _dim)>(new_width * new_height, x);
+			m = std::vector<LND_PIXEL(unsigned char, _dim)>(new_width * new_height, x);
 			_width = new_width;
 			_height = new_height;
 		}
@@ -5137,9 +5357,9 @@ namespace lnd
 
 		inline void flip()
 		{
-			LND_VERTEX(unsigned char, _dim) temp;
-			LND_VERTEX(unsigned char, _dim)* p = m.data();
-			LND_VERTEX(unsigned char, _dim)* q = m.data() + _width * (_height - 1);
+			LND_PIXEL(unsigned char, _dim) temp;
+			LND_PIXEL(unsigned char, _dim)* p = m.data();
+			LND_PIXEL(unsigned char, _dim)* q = m.data() + _width * (_height - 1);
 			size_t j;
 			size_t jump = 2 * _width;
 			for (size_t i = _height / 2; i > 0; i--)
@@ -5166,29 +5386,29 @@ namespace lnd
 			return *(static_cast<unsigned char*>(static_cast<void*>(m.data())) + offset);
 		}
 
-		inline const LND_VERTEX(unsigned char, _dim)* data_pixel() const noexcept
+		inline const LND_PIXEL(unsigned char, _dim)* data_pixel() const noexcept
 		{
-			return static_cast<const LND_VERTEX(unsigned char, _dim)*>(static_cast<const void*>(m.data()));
+			return static_cast<const LND_PIXEL(unsigned char, _dim)*>(static_cast<const void*>(m.data()));
 		}
-		inline LND_VERTEX(unsigned char, _dim)* data_pixel() noexcept
+		inline LND_PIXEL(unsigned char, _dim)* data_pixel() noexcept
 		{
-			return static_cast<LND_VERTEX(unsigned char, _dim)*>(static_cast<void*>(m.data()));
+			return static_cast<LND_PIXEL(unsigned char, _dim)*>(static_cast<void*>(m.data()));
 		}
-		inline const LND_VERTEX(unsigned char, _dim)& operator()(size_t position) const noexcept
+		inline const LND_PIXEL(unsigned char, _dim)& operator()(size_t position) const noexcept
 		{
-			return *(static_cast<const LND_VERTEX(unsigned char, _dim)*>(static_cast<const void*>(m.data())) + position);
+			return *(static_cast<const LND_PIXEL(unsigned char, _dim)*>(static_cast<const void*>(m.data())) + position);
 		}
-		inline LND_VERTEX(unsigned char, _dim)& operator()(size_t position) noexcept
+		inline LND_PIXEL(unsigned char, _dim)& operator()(size_t position) noexcept
 		{
-			return *(static_cast<LND_VERTEX(unsigned char, _dim)*>(static_cast<void*>(m.data())) + position);
+			return *(static_cast<LND_PIXEL(unsigned char, _dim)*>(static_cast<void*>(m.data())) + position);
 		}
-		inline const LND_VERTEX(unsigned char, _dim)& operator()(size_t position_X, size_t position_Y) const noexcept
+		inline const LND_PIXEL(unsigned char, _dim)& operator()(size_t position_X, size_t position_Y) const noexcept
 		{
-			return *(static_cast<const LND_VERTEX(unsigned char, _dim)*>(static_cast<const void*>(m.data())) + position_X + _width * position_Y);
+			return *(static_cast<const LND_PIXEL(unsigned char, _dim)*>(static_cast<const void*>(m.data())) + position_X + _width * position_Y);
 		}
-		inline LND_VERTEX(unsigned char, _dim)& operator()(size_t position_X, size_t position_Y) noexcept
+		inline LND_PIXEL(unsigned char, _dim)& operator()(size_t position_X, size_t position_Y) noexcept
 		{
-			return *(static_cast<LND_VERTEX(unsigned char, _dim)*>(static_cast<void*>(m.data())) + position_X + _width * position_Y);
+			return *(static_cast<LND_PIXEL(unsigned char, _dim)*>(static_cast<void*>(m.data())) + position_X + _width * position_Y);
 		}
 
 		inline size_t size() const noexcept
@@ -5663,7 +5883,8 @@ namespace lnd
 
 		// draw with solid colors
 
-		inline void draw(const lnd::program& program)
+		inline void draw(
+			const lnd::program& program)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -5708,7 +5929,9 @@ namespace lnd
 				break;
 			}
 		}
-		inline void draw_3d(const lnd::program& program)
+
+		inline void draw_3d(
+			const lnd::program& program)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -5753,7 +5976,9 @@ namespace lnd
 				break;
 			}
 		}
-		template <class _normal_Allocator> inline void draw_3d(const lnd::program& program,
+
+		template <class _normal_Allocator> inline void draw_3d(
+			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normal_Allocator>& normals)
 		{
 			switch (_vertex_count_pc)
@@ -5790,7 +6015,11 @@ namespace lnd
 			}
 		}
 
-		inline void draw(GLsizei first_cluster, GLsizei end_cluster, const lnd::program& program)
+
+		inline void draw(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -5835,7 +6064,11 @@ namespace lnd
 				break;
 			}
 		}
-		inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster, const lnd::program& program)
+
+		inline void draw_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -5880,8 +6113,12 @@ namespace lnd
 				break;
 			}
 		}
-		template <class _normal_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normal_Allocator>& normals)
+
+		template <class _normal_Allocator> inline void draw_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normal_Allocator>& normals)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -5916,10 +6153,12 @@ namespace lnd
 				break;
 			}
 		}
+
 
 		// draw with RGB/RGBA gradient colors
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw(const lnd::program& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw(
+			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
 		{
 			switch (_vertex_count_pc)
@@ -5981,7 +6220,9 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_3d(const lnd::program& program,
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw_3d(
+			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
 		{
 			switch (_vertex_count_pc)
@@ -6043,7 +6284,9 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_3d(const lnd::program& program,
+
+		template <size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_3d(
+			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normal_Allocator>& normals)
 		{
@@ -6089,8 +6332,12 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -6155,9 +6402,12 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc,
-			_color_dim, _color_Allocator>& coloring)
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -6222,8 +6472,12 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+
+		template <size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normal_Allocator>& normals)
 		{
 			switch (_vertex_count_pc)
@@ -6270,9 +6524,11 @@ namespace lnd
 			}
 		}
 
+
 		// draw with textures
 
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw(const lnd::program& program,
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw(
+			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
 		{
@@ -6313,7 +6569,9 @@ namespace lnd
 				break;
 			}
 		}
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(const lnd::program& program,
+
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(
+			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
 		{
@@ -6354,8 +6612,11 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_3d(const lnd::program& program,
-			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord, const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image,
+
+		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_3d(
+			const lnd::program& program,
+			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image,
 			const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normals_Allocator>& normals)
 		{
 			switch (_vertex_count_pc)
@@ -6402,8 +6663,12 @@ namespace lnd
 			}
 		}
 
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
 		{
 			switch (_vertex_count_pc)
@@ -6445,8 +6710,12 @@ namespace lnd
 				break;
 			}
 		}
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
 		{
 			switch (_vertex_count_pc)
@@ -6488,9 +6757,14 @@ namespace lnd
 				break;
 			}
 		}
-		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
-			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image, const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normals_Allocator>& normals)
+
+		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image,
+			const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normals_Allocator>& normals)
 		{
 			switch (_vertex_count_pc)
 			{
@@ -6536,9 +6810,11 @@ namespace lnd
 			}
 		}
 
+
 		// draw indexed clusters
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines(const lnd::program& program,
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines(
+			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6550,7 +6826,9 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_3d(const lnd::program& program,
+
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_3d(
+			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6563,8 +6841,12 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6576,8 +6858,12 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6590,7 +6876,9 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris(const lnd::program& program,
+
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris(
+			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6602,7 +6890,9 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_3d(const lnd::program& program,
+
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_3d(
+			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6615,8 +6905,12 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6628,8 +6922,12 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6642,7 +6940,9 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads(const lnd::program& program,
+
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads(
+			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6654,7 +6954,9 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_3d(const lnd::program& program,
+
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_3d(
+			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6667,8 +6969,12 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6680,8 +6986,12 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6693,11 +7003,14 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
+
 
 		// draw indexed clusters with RGB/RGBA gradient colors
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines(const lnd::program& program,
-			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines(
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6712,8 +7025,11 @@ namespace lnd
 			coloring.buffer_bind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_3d(const lnd::program& program,
-			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_3d(
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6729,8 +7045,12 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6747,8 +7067,12 @@ namespace lnd
 			coloring.buffer_bind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6766,8 +7090,11 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris(const lnd::program& program,
-			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris(
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6782,8 +7109,11 @@ namespace lnd
 			coloring.buffer_bind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_3d(const lnd::program& program,
-			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_3d(
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6799,8 +7129,12 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6817,8 +7151,12 @@ namespace lnd
 			coloring.buffer_bind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6836,8 +7174,11 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads(const lnd::program& program,
-			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads(
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6852,8 +7193,11 @@ namespace lnd
 			coloring.buffer_bind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_3d(const lnd::program& program,
-			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring, const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
+
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_3d(
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -6869,8 +7213,12 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -6887,8 +7235,12 @@ namespace lnd
 			coloring.buffer_bind();
 			indexing.buffer_unbind();
 		}
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_3d(GLsizei first_cluster, GLsizei end_cluster,
-			const lnd::program& program, const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
+
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_3d(
+			GLsizei first_cluster,
+			GLsizei end_cluster,
+			const lnd::program& program,
+			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -7081,7 +7433,8 @@ namespace lnd
 
 		// draw with solid colors
 
-		template <class _index_Allocator> inline void draw_lines(const lnd::program& program,
+		template <class _index_Allocator> inline void draw_lines(
+			const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -7093,7 +7446,9 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <class _index_Allocator> inline void draw_lines_3d(const lnd::program& program,
+
+		template <class _index_Allocator> inline void draw_lines_3d(
+			const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -7106,7 +7461,9 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <class _index_Allocator> inline void draw_tris(const lnd::program& program,
+
+		template <class _index_Allocator> inline void draw_tris(
+			const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -7118,7 +7475,9 @@ namespace lnd
 			buffer.unbind();
 			indexing.buffer_unbind();
 		}
-		template <class _index_Allocator> inline void draw_tris_3d(const lnd::program& program,
+
+		template <class _index_Allocator> inline void draw_tris_3d(
+			const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
 			buffer.bind();
@@ -7131,7 +7490,9 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		inline void draw_line_strip(const lnd::program& program)
+
+		inline void draw_line_strip(
+			const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7140,7 +7501,9 @@ namespace lnd
 			glDrawArrays(GL_LINE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
 		}
-		inline void draw_line_strip_3d(const lnd::program& program)
+
+		inline void draw_line_strip_3d(
+			const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7150,7 +7513,11 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		inline void draw_line_strip(GLsizei first_vertex, GLsizei last_vertex, const lnd::program& program)
+
+		inline void draw_line_strip(
+			GLsizei first_vertex,
+			GLsizei last_vertex,
+			const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7159,7 +7526,11 @@ namespace lnd
 			glDrawArrays(GL_LINE_STRIP, first_vertex, last_vertex - first_vertex);
 			buffer.unbind();
 		}
-		inline void draw_line_strip_3d(GLsizei first_vertex, GLsizei last_vertex, const lnd::program& program)
+
+		inline void draw_line_strip_3d(
+			GLsizei first_vertex,
+			GLsizei last_vertex,
+			const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7169,7 +7540,9 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		inline void draw_line_loop(const lnd::program& program)
+
+		inline void draw_line_loop(
+			const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7178,7 +7551,9 @@ namespace lnd
 			glDrawArrays(GL_LINE_LOOP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
 		}
-		inline void draw_line_loop_3d(const lnd::program& program)
+
+		inline void draw_line_loop_3d(
+			const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7188,7 +7563,9 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		inline void draw_tri_strip(const lnd::program& program)
+
+		inline void draw_tri_strip(
+			const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7197,7 +7574,9 @@ namespace lnd
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
 		}
-		inline void draw_tri_strip_3d(const lnd::program& program)
+
+		inline void draw_tri_strip_3d(
+			const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7207,7 +7586,9 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		inline void draw_tri_fan(const lnd::program& program)
+
+		inline void draw_tri_fan(
+			const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7216,7 +7597,9 @@ namespace lnd
 			glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
 		}
-		inline void draw_tri_fan_3d(const lnd::program& program)
+
+		inline void draw_tri_fan_3d(
+			const lnd::program& program)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7229,7 +7612,8 @@ namespace lnd
 
 		// draw with RGB/RGBA gradient colors
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip(const lnd::program& program,
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip(
+			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			buffer.bind();
@@ -7243,7 +7627,9 @@ namespace lnd
 			buffer.unbind();
 			coloring.buffer_unbind();
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_3d(const lnd::program& program,
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_3d(
+			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			buffer.bind();
@@ -7259,8 +7645,12 @@ namespace lnd
 			break;
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip(GLsizei first_vertex, GLsizei last_vertex,
-			const lnd::program& program, const lnd::group_color<_color_dim, _color_Allocator>& coloring)
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip(
+			GLsizei first_vertex,
+			GLsizei last_vertex,
+			const lnd::program& program,
+			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7273,8 +7663,12 @@ namespace lnd
 			buffer.unbind();
 			coloring.buffer_unbind();
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_3d(GLsizei first_vertex, GLsizei last_vertex,
-			const lnd::program& program, const lnd::group_color<_color_dim, _color_Allocator>& coloring)
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_3d(
+			GLsizei first_vertex,
+			GLsizei last_vertex,
+			const lnd::program& program,
+			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
@@ -7288,7 +7682,9 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop(const lnd::program& program,
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop(
+			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			buffer.bind();
@@ -7302,7 +7698,9 @@ namespace lnd
 			buffer.unbind();
 			coloring.buffer_unbind();
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop_3d(const lnd::program& program,
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop_3d(
+			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			buffer.bind();
@@ -7317,7 +7715,9 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip(const lnd::program& program,
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip(
+			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			buffer.bind();
@@ -7331,7 +7731,9 @@ namespace lnd
 			buffer.unbind();
 			coloring.buffer_unbind();
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_3d(const lnd::program& program,
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_3d(
+			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			buffer.bind();
@@ -7346,7 +7748,9 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan(const lnd::program& program,
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan(
+			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			buffer.bind();
@@ -7360,7 +7764,9 @@ namespace lnd
 			buffer.unbind();
 			coloring.buffer_unbind();
 		}
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_3d(const lnd::program& program,
+
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_3d(
+			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
 			buffer.bind();
