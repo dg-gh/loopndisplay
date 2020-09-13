@@ -1095,6 +1095,7 @@ namespace lnd
 		}
 
 		// depth mask and buffer
+		
 		inline void enable_depth_buffer()
 		{
 			glDepthMask(GL_TRUE);
@@ -1106,6 +1107,35 @@ namespace lnd
 		inline void reset_depth_buffer()
 		{
 			glClear(GL_DEPTH_BUFFER_BIT);
+		}
+		
+		// face culling
+
+		inline void enable_face_culling(bool counter_clockwise_front_faces, bool cull_back_faces)
+		{
+			glEnable(GL_CULL_FACE);
+
+			if (counter_clockwise_front_faces)
+			{
+				glFrontFace(GL_CCW);
+			}
+			else
+			{
+				glFrontFace(GL_CW);
+			}
+
+			if (cull_back_faces)
+			{
+				glCullFace(GL_BACK);
+			}
+			else
+			{
+				glCullFace(GL_FRONT);
+			}
+		}
+		inline void disable_face_culling()
+		{
+			glDisable(GL_CULL_FACE);
 		}
 
 		// subwindow
