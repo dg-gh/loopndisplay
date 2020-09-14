@@ -2523,7 +2523,7 @@ namespace lnd
 		inline const lnd::program& set_position_3d(const lnd::program& program, const float* const position_ptr)
 		{
 			program.use();
-			int location = glGetUniformLocation(program.get(), "u_v_pos");
+			int location = glGetUniformLocation(program.get(), "u_view_pos");
 			glUniform3fv(location, 1, position_ptr);
 			return program;
 		}
@@ -2533,7 +2533,7 @@ namespace lnd
 			program.use();
 			int location = glGetUniformLocation(program.get(), "u_mvp_M");
 			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
-			location = glGetUniformLocation(program.get(), "u_v_pos");
+			location = glGetUniformLocation(program.get(), "u_view_pos");
 			glUniform3fv(location, 1, position_ptr);
 			return program;
 		}
@@ -2545,7 +2545,7 @@ namespace lnd
 			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
 			location = glGetUniformLocation(program.get(), "u_m_M");
 			glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
-			location = glGetUniformLocation(program.get(), "u_v_pos");
+			location = glGetUniformLocation(program.get(), "u_view_pos");
 			glUniform3fv(location, 1, position_ptr);
 			return program;
 		}
@@ -3794,7 +3794,7 @@ namespace lnd
 				"	uniform float u_diff;																\n"
 				"	uniform float u_spec;																\n"
 				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_v_pos;																\n"
+				"	uniform vec3 u_view_pos;																\n"
 				"	uniform vec3 u_amb;																	\n"
 				"	uniform vec3 u_light_dir;															\n"
 				"	uniform vec3 u_light_C;																\n"
@@ -3802,7 +3802,7 @@ namespace lnd
 				"	uniform vec4 u_C;																	\n"
 				"	void main() {																		\n"
 				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
-				"		float spec = u_spec * pow(max(dot(normalize(u_v_pos - forward_X),				\n"
+				"		float spec = u_spec * pow(max(dot(normalize(u_view_pos - forward_X),				\n"
 				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
 				"		color = max(vec4((diff + spec)													\n"
 				"		* (u_light_C * vec3(u_C)), u_C[3]), vec4(u_amb, 0.0)); }						\n"
@@ -3817,14 +3817,14 @@ namespace lnd
 				"	uniform float u_diff;																\n"
 				"	uniform float u_spec;																\n"
 				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_v_pos;																\n"
+				"	uniform vec3 u_view_pos;																\n"
 				"	uniform vec3 u_amb;																	\n"
 				"	uniform vec3 u_light_dir;															\n"
 				"	uniform vec3 u_light_C;																\n"
 				"	uniform mat4 u_m_M;																	\n"
 				"	void main() {																		\n"
 				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
-				"		float spec = u_spec * pow(max(dot(normalize(u_v_pos - forward_X),				\n"
+				"		float spec = u_spec * pow(max(dot(normalize(u_view_pos - forward_X),				\n"
 				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
 				"		color = max(vec4((diff + spec)													\n"
 				"		* (u_light_C * forward_C), 1.0), vec4(u_amb, 0.0)); }							\n"
@@ -3839,14 +3839,14 @@ namespace lnd
 				"	uniform float u_diff;																\n"
 				"	uniform float u_spec;																\n"
 				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_v_pos;																\n"
+				"	uniform vec3 u_view_pos;																\n"
 				"	uniform vec3 u_amb;																	\n"
 				"	uniform vec3 u_light_dir;															\n"
 				"	uniform vec3 u_light_C;																\n"
 				"	uniform mat4 u_m_M;																	\n"
 				"	void main() {																		\n"
 				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
-				"		float spec = u_spec * pow(max(dot(normalize(u_v_pos - forward_X),				\n"
+				"		float spec = u_spec * pow(max(dot(normalize(u_view_pos - forward_X),				\n"
 				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
 				"		color = max(vec4((diff + spec)													\n"
 				"		* (u_light_C * vec3(forward_C)), forward_C[3]), vec4(u_amb, 0.0)); }			\n"
@@ -3861,7 +3861,7 @@ namespace lnd
 				"	uniform float u_diff;																\n"
 				"	uniform float u_spec;																\n"
 				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_v_pos;																\n"
+				"	uniform vec3 u_view_pos;																\n"
 				"	uniform vec3 u_amb;																	\n"
 				"	uniform vec3 u_light_dir;															\n"
 				"	uniform vec3 u_light_C;																\n"
@@ -3870,7 +3870,7 @@ namespace lnd
 				"	void main() {																		\n"
 				"		vec4 C = texture(Tx, forward_UV);												\n"
 				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
-				"		float spec = u_spec * pow(max(dot(normalize(u_v_pos - forward_X),				\n"
+				"		float spec = u_spec * pow(max(dot(normalize(u_view_pos - forward_X),				\n"
 				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
 				"		color = max(vec4((diff + spec)													\n"
 				"		* (u_light_C * vec3(C)), C[3]), vec4(u_amb, 0.0)); }							\n"
