@@ -8170,7 +8170,7 @@ namespace lnd
 			direction[2] = sin_pitch;
 		}
 
-		inline void compute_p_matrix(float screen_ratio, float fov, float z_near, float z_far) noexcept
+		inline void compute_p_matrix(float screen_ratio, float fov, float z_far, float z_near) noexcept
 		{
 			if (screen_ratio >= 1.0f)
 			{
