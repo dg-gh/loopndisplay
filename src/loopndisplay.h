@@ -2446,6 +2446,54 @@ namespace lnd
 		const inline lnd::program& program_RGB_skylight_3d() const noexcept { return _program_RGB_skylight_3d; } // takes uniforms
 		const inline lnd::program& program_RGBA_skylight_3d() const noexcept { return _program_RGBA_skylight_3d; } // takes uniforms
 		const inline lnd::program& program_texture_skylight_3d() const noexcept { return _program_texture_skylight_3d; } // takes uniforms
+		
+		std::string fragment_color_pointlight_source(unsigned int _number_of_point_lights)
+		{
+			std::string number_of_point_lights = std::to_string(_number_of_point_lights);
+
+			return std::string("") +
+				"	#version 330 core																										\n"
+				"	in vec3 forward_X;																										\n"
+				"	in vec3 forward_N;																										\n"
+				"	out vec4 color;																											\n"
+				"	uniform float u_diff;																									\n"
+				"	uniform float u_spec;																									\n"
+				"	uniform float u_conc;																									\n"
+				"	uniform vec3 u_view_pos;																								\n"
+				"	uniform vec3 u_amb;																										\n"
+
+				"	uniform vec3 u_plight_pos[" + number_of_point_lights + "];																\n"
+				"	uniform vec4 u_plight_C[" + number_of_point_lights + "];																\n"
+				"	uniform vec3 u_plight_att[" + number_of_point_lights + "];																\n"
+
+				"	uniform mat4 u_m_M;																										\n"
+				"	uniform vec4 u_C;																										\n"
+
+				"	void main()																												\n"
+				"	{																														\n"
+				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 																			\n"
+				"		vec3 view_dir = normalize(forward_X - u_view_pos); 																	\n"
+				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);																	\n"
+
+				"		vec3 color3 = vec3(0.0, 0.0, 0.0);																					\n"
+
+				"		for (int k = 0; k < " + number_of_point_lights + "; k++)															\n"
+				"		{																													\n"
+				"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);														\n"
+				"			float light_dist = length(forward_X - u_plight_pos[k]);															\n"
+				"			float att = u_plight_att[k][0] / (1.0 + light_dist																\n"
+				"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));													\n"
+				"			float dot_diff = dot(rotated_N, light_dir);																		\n"
+
+				"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);										\n"
+				"			float spec = max(sign(-dot_diff), 0.0) * u_spec																	\n"
+				"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);										\n"
+				"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * vec3(u_C));											\n"
+				"		}																													\n"
+				"		color = max(vec4(color3, u_C[3]), face * vec4(u_amb, 0.0));															\n"
+				"	}																														\n"
+				;
+		}
 
 		inline const lnd::program& set_fragment_color(const lnd::program& program, float c0, float c1, float c2, float c3)
 		{
@@ -2583,6 +2631,25 @@ namespace lnd
 			glUniform1f(location, spec_coeff);
 			location = glGetUniformLocation(program.get(), "u_conc");
 			glUniform1f(location, concentration_coeff);
+			return program;
+		}
+		lnd::program& set_pointlight_pos_3d(lnd::program& program, unsigned int light_number, const float* const light_position_ptr)
+		{
+			std::string light_number_str = std::to_string(light_number);
+			program.use();
+			int location = glGetUniformLocation(program.get(), ("u_plight_pos[" + light_number_str + "]").c_str());
+			glUniform3fv(location, 1, light_position_ptr);
+			return program;
+		}
+		lnd::program& set_pointlight_prop_3d(lnd::program& program, unsigned int light_number, const float* const light_color_ptr,
+			const float* const light_attenuation_ptr)
+		{
+			std::string light_number_str = std::to_string(light_number);
+			program.use();
+			int location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
+			glUniform4fv(location, 1, light_color_ptr);
+			location = glGetUniformLocation(program.get(), ("u_plight_att[" + light_number_str + "]").c_str());
+			glUniform3fv(location, 1, light_attenuation_ptr);
 			return program;
 		}
 
