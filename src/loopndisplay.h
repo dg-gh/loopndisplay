@@ -3794,18 +3794,25 @@ namespace lnd
 				"	uniform float u_diff;																\n"
 				"	uniform float u_spec;																\n"
 				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_view_pos;																\n"
+				"	uniform vec3 u_view_pos;															\n"
 				"	uniform vec3 u_amb;																	\n"
 				"	uniform vec3 u_light_dir;															\n"
 				"	uniform vec3 u_light_C;																\n"
 				"	uniform mat4 u_m_M;																	\n"
 				"	uniform vec4 u_C;																	\n"
 				"	void main() {																		\n"
-				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
-				"		float spec = u_spec * pow(max(dot(normalize(u_view_pos - forward_X),				\n"
-				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
+
+				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
+				"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
+				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+				"		float dot_diff = dot(rotated_N, u_light_dir);									\n"
+
+				"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
+				"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+				"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
+				"			reflect(u_light_dir, rotated_N)), 0.0), u_conc);							\n"
 				"		color = max(vec4((diff + spec)													\n"
-				"		* (u_light_C * vec3(u_C)), u_C[3]), vec4(u_amb, 0.0)); }						\n"
+				"			* (u_light_C * vec3(u_C)), u_C[3]), face * vec4(u_amb, 0.0)); }				\n"
 			);
 
 			_fragment_RGB_skylight_3d.new_shader(
@@ -3817,17 +3824,24 @@ namespace lnd
 				"	uniform float u_diff;																\n"
 				"	uniform float u_spec;																\n"
 				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_view_pos;																\n"
+				"	uniform vec3 u_view_pos;															\n"
 				"	uniform vec3 u_amb;																	\n"
 				"	uniform vec3 u_light_dir;															\n"
 				"	uniform vec3 u_light_C;																\n"
 				"	uniform mat4 u_m_M;																	\n"
 				"	void main() {																		\n"
-				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
-				"		float spec = u_spec * pow(max(dot(normalize(u_view_pos - forward_X),				\n"
+
+				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
+				"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
+				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+				"		float dot_diff = dot(rotated_N, u_light_dir);									\n"
+
+				"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
+				"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+				"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
 				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
 				"		color = max(vec4((diff + spec)													\n"
-				"		* (u_light_C * forward_C), 1.0), vec4(u_amb, 0.0)); }							\n"
+				"			* (u_light_C * forward_C), 1.0), face * vec4(u_amb, 0.0)); }				\n"
 			);
 
 			_fragment_RGBA_skylight_3d.new_shader(
@@ -3839,17 +3853,24 @@ namespace lnd
 				"	uniform float u_diff;																\n"
 				"	uniform float u_spec;																\n"
 				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_view_pos;																\n"
+				"	uniform vec3 u_view_pos;															\n"
 				"	uniform vec3 u_amb;																	\n"
 				"	uniform vec3 u_light_dir;															\n"
 				"	uniform vec3 u_light_C;																\n"
 				"	uniform mat4 u_m_M;																	\n"
 				"	void main() {																		\n"
-				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
-				"		float spec = u_spec * pow(max(dot(normalize(u_view_pos - forward_X),				\n"
+
+				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
+				"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
+				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+				"		float dot_diff = dot(rotated_N, u_light_dir);									\n"
+
+				"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
+				"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+				"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
 				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
 				"		color = max(vec4((diff + spec)													\n"
-				"		* (u_light_C * vec3(forward_C)), forward_C[3]), vec4(u_amb, 0.0)); }			\n"
+				"			* (u_light_C * vec3(forward_C)), forward_C[3]), face * vec4(u_amb, 0.0)); }	\n"
 			);
 
 			_fragment_texture_skylight_3d.new_shader(
@@ -3861,19 +3882,26 @@ namespace lnd
 				"	uniform float u_diff;																\n"
 				"	uniform float u_spec;																\n"
 				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_view_pos;																\n"
+				"	uniform vec3 u_view_pos;															\n"
 				"	uniform vec3 u_amb;																	\n"
 				"	uniform vec3 u_light_dir;															\n"
 				"	uniform vec3 u_light_C;																\n"
 				"	uniform mat4 u_m_M;																	\n"
 				"	uniform sampler2D Tx;																\n"
 				"	void main() {																		\n"
+
+				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
+				"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
+				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+				"		float dot_diff = dot(rotated_N, u_light_dir);									\n"
+
 				"		vec4 C = texture(Tx, forward_UV);												\n"
-				"		float diff = u_diff * max(-dot(mat3(u_m_M) * forward_N, u_light_dir), 0.0);		\n"
-				"		float spec = u_spec * pow(max(dot(normalize(u_view_pos - forward_X),				\n"
+				"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
+				"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+				"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
 				"			reflect(u_light_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
 				"		color = max(vec4((diff + spec)													\n"
-				"		* (u_light_C * vec3(C)), C[3]), vec4(u_amb, 0.0)); }							\n"
+				"			* (u_light_C * vec3(C)), C[3]), face * vec4(u_amb, 0.0)); }					\n"
 			);
 
 			_program_black.new_program(_vertex_identity, _fragment_black);
