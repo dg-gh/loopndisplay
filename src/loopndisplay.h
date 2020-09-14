@@ -4273,17 +4273,17 @@ namespace lnd
 			glfwSetKeyCallback(lnd::__window_ptr, &lnd::key_callback);
 			glfwSetMouseButtonCallback(lnd::__window_ptr, &lnd::mouse_button_callback);
 			glfwSetCursorPosCallback(lnd::__window_ptr, &lnd::mouse_position_callback);
-
-			this->_setup_basic_shaders_and_buffers(rescale_screen_coordinates);
-			this->setup();
-			display_running.store(true);
-
+			
 			// display
 
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_ONE, GL_ZERO);
 			if (window_anti_aliasing) { glEnable(GL_MULTISAMPLE); }
 
+			this->_setup_basic_shaders_and_buffers(rescale_screen_coordinates);
+			this->setup();
+			display_running.store(true);
+			
 			lnd::__user_key_input.reset_key_events();
 
 			while (true)
