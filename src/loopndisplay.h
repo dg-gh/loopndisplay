@@ -1095,7 +1095,7 @@ namespace lnd
 		}
 
 		// depth mask and buffer
-		
+
 		inline void enable_depth_buffer()
 		{
 			glDepthMask(GL_TRUE);
@@ -1108,7 +1108,7 @@ namespace lnd
 		{
 			glClear(GL_DEPTH_BUFFER_BIT);
 		}
-		
+
 		// face culling
 
 		inline void enable_face_culling(bool counter_clockwise_front_faces, bool cull_back_faces)
@@ -2446,10 +2446,10 @@ namespace lnd
 		const inline lnd::program& program_RGB_skylight_3d() const noexcept { return _program_RGB_skylight_3d; } // takes uniforms
 		const inline lnd::program& program_RGBA_skylight_3d() const noexcept { return _program_RGBA_skylight_3d; } // takes uniforms
 		const inline lnd::program& program_texture_skylight_3d() const noexcept { return _program_texture_skylight_3d; } // takes uniforms
-		
-		std::string fragment_color_pointlight_source(unsigned int _number_of_point_lights)
+
+		std::string source_fragment_color_pointlight_3d(unsigned int _number_of_pointlights)
 		{
-			std::string number_of_point_lights = std::to_string(_number_of_point_lights);
+			std::string number_of_pointlights = std::to_string(_number_of_pointlights);
 
 			return std::string("") +
 				"	#version 330 core																										\n"
@@ -2462,9 +2462,9 @@ namespace lnd
 				"	uniform vec3 u_view_pos;																								\n"
 				"	uniform vec3 u_amb;																										\n"
 
-				"	uniform vec3 u_plight_pos[" + number_of_point_lights + "];																\n"
-				"	uniform vec4 u_plight_C[" + number_of_point_lights + "];																\n"
-				"	uniform vec3 u_plight_att[" + number_of_point_lights + "];																\n"
+				"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];																\n"
+				"	uniform vec4 u_plight_C[" + number_of_pointlights + "];																	\n"
+				"	uniform vec3 u_plight_att[" + number_of_pointlights + "];																\n"
 
 				"	uniform mat4 u_m_M;																										\n"
 				"	uniform vec4 u_C;																										\n"
@@ -2477,7 +2477,7 @@ namespace lnd
 
 				"		vec3 color3 = vec3(0.0, 0.0, 0.0);																					\n"
 
-				"		for (int k = 0; k < " + number_of_point_lights + "; k++)															\n"
+				"		for (int k = 0; k < " + number_of_pointlights + "; k++)																\n"
 				"		{																													\n"
 				"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);														\n"
 				"			float light_dist = length(forward_X - u_plight_pos[k]);															\n"
@@ -4360,7 +4360,7 @@ namespace lnd
 			glfwSetKeyCallback(lnd::__window_ptr, &lnd::key_callback);
 			glfwSetMouseButtonCallback(lnd::__window_ptr, &lnd::mouse_button_callback);
 			glfwSetCursorPosCallback(lnd::__window_ptr, &lnd::mouse_position_callback);
-			
+
 			// display
 
 			glEnable(GL_BLEND);
@@ -4370,7 +4370,7 @@ namespace lnd
 			this->_setup_basic_shaders_and_buffers(rescale_screen_coordinates);
 			this->setup();
 			display_running.store(true);
-			
+
 			lnd::__user_key_input.reset_key_events();
 
 			while (true)
