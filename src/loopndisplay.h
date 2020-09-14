@@ -8178,8 +8178,8 @@ namespace lnd
 				float dz_inv = 1.0f / (z_far - z_near);
 				p_matrix[0] = 1.0f / (screen_ratio * tan_half_fov_y);
 				p_matrix[5] = 1.0f / tan_half_fov_y;
-				p_matrix[10] = -(z_far + z_near) * dz_inv;
-				p_matrix[14] = (2.0f * z_near) * (z_far * dz_inv);
+				p_matrix[10] = (z_far + z_near) * dz_inv;
+				p_matrix[14] = ((-2.0f) * z_near) * (z_far * dz_inv);
 			}
 			else
 			{
@@ -8187,8 +8187,8 @@ namespace lnd
 				float dz_inv = 1.0f / (z_far - z_near);
 				p_matrix[0] = 1.0f / tan_half_fov_x;
 				p_matrix[5] = screen_ratio / tan_half_fov_x;
-				p_matrix[10] = -(z_far + z_near) * dz_inv;
-				p_matrix[14] = (2.0f * z_near) * (z_far * dz_inv);
+				p_matrix[10] = (z_far + z_near) * dz_inv;
+				p_matrix[14] = ((-2.0f) * z_near) * (z_far * dz_inv);
 			}
 		}
 		inline void compute_v_matrix() noexcept
