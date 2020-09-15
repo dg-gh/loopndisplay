@@ -3926,7 +3926,7 @@ namespace lnd
 			glBufferData(GL_ARRAY_BUFFER, vertex_count * (3 * sizeof(float)), color_ptr, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-			program_RGB().use();
+			program.use();
 			glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 			lnd::__default_vertex_buffer.unbind();
 			lnd::__default_color_buffer.bind();
