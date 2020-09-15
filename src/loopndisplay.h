@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 13 / 09 / 2020
+// loopndisplay.h - last update : 15 / 09 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW installed
@@ -2447,7 +2447,7 @@ namespace lnd
 		const inline lnd::program& program_RGBA_skylight_3d() const noexcept { return _program_RGBA_skylight_3d; } // takes uniforms
 		const inline lnd::program& program_texture_skylight_3d() const noexcept { return _program_texture_skylight_3d; } // takes uniforms
 
-		std::string source_fragment_color_pointlight_3d(unsigned int _number_of_pointlights)
+		std::string source_fragment_color_pointlight_3d(int _number_of_pointlights)
 		{
 			std::string number_of_pointlights = std::to_string(_number_of_pointlights);
 
@@ -2465,6 +2465,8 @@ namespace lnd
 				"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];																\n"
 				"	uniform vec4 u_plight_C[" + number_of_pointlights + "];																	\n"
 				"	uniform vec3 u_plight_att[" + number_of_pointlights + "];																\n"
+				"	uniform int first_light;																								\n"
+				"	uniform int end_light;																									\n"
 
 				"	uniform mat4 u_m_M;																										\n"
 				"	uniform vec4 u_C;																										\n"
@@ -2477,7 +2479,7 @@ namespace lnd
 
 				"		vec3 color3 = vec3(0.0, 0.0, 0.0);																					\n"
 
-				"		for (int k = 0; k < " + number_of_pointlights + "; k++)																\n"
+				"		for (int k = first_light; k < end_light; k++)																		\n"
 				"		{																													\n"
 				"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);														\n"
 				"			float light_dist = length(forward_X - u_plight_pos[k]);															\n"
@@ -2650,7 +2652,7 @@ namespace lnd
 			}
 			return program;
 		}
-		lnd::program& set_pointlight_prop_3d(lnd::program& program, unsigned int light_number, const float* const light_color_ptr,
+		lnd::program& set_pointlight_prop_3d(lnd::program& program, int light_number, const float* const light_color_ptr,
 			const float* const light_attenuation_ptr)
 		{
 			std::string light_number_str = std::to_string(light_number);
@@ -2672,7 +2674,16 @@ namespace lnd
 			}
 			return program;
 		}
-
+		lnd::program& set_pointlights_range_3d(lnd::program& program, int first_light, int end_light)
+		{
+			program.use();
+			int location = glGetUniformLocation(program.get(), "first_light");
+			glUniform1i(location, first_light);
+			location = glGetUniformLocation(program.get(), "end_light");
+			glUniform1i(location, end_light);
+			return program;
+		}
+		
 
 		// CONSTRUCTORS AND DESTRUCTORS
 
