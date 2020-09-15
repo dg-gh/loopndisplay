@@ -2644,9 +2644,9 @@ namespace lnd
 			}
 			else
 			{
-				float null_array[3] = { 0.0f };
-				int location = glGetUniformLocation(program.get(), ("u_plight_pos[" + light_number_str + "]").c_str());
-				glUniform3fv(location, 1, static_cast<float*>(null_array));
+				float null_array[4] = { 0.0f };
+				int location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
+				glUniform4fv(location, 1, static_cast<float*>(null_array));
 			}
 			return program;
 		}
@@ -2667,8 +2667,6 @@ namespace lnd
 				float null_array[4] = { 0.0f };
 				int location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
 				glUniform4fv(location, 1, static_cast<float*>(null_array));
-				location = glGetUniformLocation(program.get(), ("u_plight_att[" + light_number_str + "]").c_str());
-				glUniform3fv(location, 1, static_cast<float*>(null_array));
 			}
 			return program;
 		}
