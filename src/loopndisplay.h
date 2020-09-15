@@ -1051,6 +1051,763 @@ namespace lnd
 }
 
 
+// SHADER SOURCES
+
+namespace lnd
+{
+	std::string source_vertex_3d()
+	{
+		return
+			"	#version 330 core									\n"
+			"	layout (location = 0) in vec3 X;					\n"
+			"	out vec3 forward_X;									\n"
+			"	uniform mat4 u_mvp_M;								\n"
+			"	void main() {										\n"
+			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+			"		forward_X = X; }								\n"
+			;
+	}
+
+	std::string source_vertex_RGB_3d()
+	{
+		return
+			"	#version 330 core									\n"
+			"	layout (location = 0) in vec3 X;					\n"
+			"	layout (location = 1) in vec3 C;					\n"
+			"	out vec3 forward_X;									\n"
+			"	out vec3 forward_C;									\n"
+			"	uniform mat4 u_mvp_M;								\n"
+			"	void main() {										\n"
+			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+			"		forward_X = X;									\n"
+			"		forward_C = C; }								\n"
+			;
+	}
+
+
+	std::string source_vertex_RGBA_3d()
+	{
+		return
+			"	#version 330 core									\n"
+			"	layout (location = 0) in vec3 X;					\n"
+			"	layout (location = 1) in vec4 C;					\n"
+			"	out vec3 forward_X;									\n"
+			"	out vec4 forward_C;									\n"
+			"	uniform mat4 u_mvp_M;								\n"
+			"	void main() {										\n"
+			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+			"		forward_X = X;									\n"
+			"		forward_C = C; }								\n"
+			;
+	}
+
+	std::string source_vertex_texture_3d()
+	{
+		return
+			"	#version 330 core									\n"
+			"	layout (location = 0) in vec3 X;					\n"
+			"	layout (location = 1) in vec2 UV;					\n"
+			"	out vec3 forward_X;									\n"
+			"	out vec2 forward_UV;								\n"
+			"	uniform mat4 u_mvp_M;								\n"
+			"	void main() {										\n"
+			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+			"		forward_X = X;									\n"
+			"		forward_UV = UV; }								\n"
+			;
+	}
+
+	std::string source_vertex_normals_3d()
+	{
+		return
+			"	#version 330 core									\n"
+			"	layout (location = 0) in vec3 X;					\n"
+			"	layout (location = 1) in vec3 N;					\n"
+			"	out vec3 forward_X;									\n"
+			"	out vec3 forward_N;									\n"
+			"	uniform mat4 u_mvp_M;								\n"
+			"	void main() {										\n"
+			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+			"		forward_X = X;									\n"
+			"		forward_N = N; }								\n"
+			;
+	}
+
+	std::string source_vertex_RGB_normals_3d()
+	{
+		return
+			"	#version 330 core									\n"
+			"	layout (location = 0) in vec3 X;					\n"
+			"	layout (location = 1) in vec3 C;					\n"
+			"	layout (location = 2) in vec3 N;					\n"
+			"	out vec3 forward_X;									\n"
+			"	out vec3 forward_C;									\n"
+			"	out vec3 forward_N;									\n"
+			"	uniform mat4 u_mvp_M;								\n"
+			"	void main() {										\n"
+			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+			"		forward_X = X;									\n"
+			"		forward_C = C;									\n"
+			"		forward_N = N; }								\n"
+			;
+	}
+
+	std::string source_vertex_RGBA_normals_3d()
+	{
+		return
+			"	#version 330 core									\n"
+			"	layout (location = 0) in vec3 X;					\n"
+			"	layout (location = 1) in vec4 C;					\n"
+			"	layout (location = 2) in vec3 N;					\n"
+			"	out vec3 forward_X;									\n"
+			"	out vec4 forward_C;									\n"
+			"	out vec3 forward_N;									\n"
+			"	uniform mat4 M;										\n"
+			"	void main() {										\n"
+			"		gl_Position = M * vec4(X, 1);					\n"
+			"		forward_X = X;									\n"
+			"		forward_C = C;									\n"
+			"		forward_N = N; }								\n"
+			;
+	}
+
+	std::string source_vertex_texture_normals_3d()
+	{
+		return
+			"	#version 330 core									\n"
+			"	layout (location = 0) in vec3 X;					\n"
+			"	layout (location = 1) in vec2 UV;					\n"
+			"	layout (location = 2) in vec3 N;					\n"
+			"	out vec2 forward_UV;								\n"
+			"	out vec3 forward_X;									\n"
+			"	out vec3 forward_N;									\n"
+			"	uniform mat4 u_mvp_M;								\n"
+			"	void main() {										\n"
+			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
+			"		forward_UV = UV;								\n"
+			"		forward_X = X;									\n"
+			"		forward_N = N; }								\n"
+			;
+	}
+
+	std::string source_fragment_fixed_color(float R, float G, float B, float A)
+	{
+		std::string r = std::to_string(R);
+		std::string g = std::to_string(G);
+		std::string b = std::to_string(B);
+		std::string a = std::to_string(A);
+		return
+			"	#version 330 core												\n"
+			"	out vec4 color;													\n"
+			"	uniform vec4 u_C;												\n"
+			"	void main() {													\n"
+			"		color = vec4(" + r + ", " + g + ", " + b + ", " + a + "); }	\n"
+			;
+	}
+	std::string source_fragment_color()
+	{
+		return
+			"	#version 330 core									\n"
+			"	out vec4 color;										\n"
+			"	uniform vec4 u_C;									\n"
+			"	void main() { color = u_C; }						\n"
+			;
+	}
+	std::string source_fragment_RGB()
+	{
+		return
+			"	#version 330 core									\n"
+			"	in vec3 forward_C;									\n"
+			"	out vec3 color;										\n"
+			"	void main() { color = forward_C; }					\n"
+			;
+	}
+	std::string source_fragment_RGBA()
+	{
+		return
+			"	#version 330 core									\n"
+			"	in vec4 forward_C;									\n"
+			"	out vec4 color;										\n"
+			"	void main() { color = forward_C; }					\n"
+			;
+	}
+	std::string source_fragment_texture()
+	{
+		return
+			"	#version 330 core									\n"
+			"	out vec4 color;										\n"
+			"	in vec2 forward_UV;									\n"
+			"	uniform sampler2D Tx;								\n"
+			"	void main() { color = texture(Tx, forward_UV); }	\n"
+			;
+	}
+
+	std::string source_fragment_color_skylight_3d()
+	{
+		return
+			"	#version 330 core																	\n"
+			"	in vec3 forward_X;																	\n"
+			"	in vec3 forward_N;																	\n"
+			"	out vec4 color;																		\n"
+			"	uniform float u_diff;																\n"
+			"	uniform float u_spec;																\n"
+			"	uniform float u_conc;																\n"
+			"	uniform vec3 u_view_pos;															\n"
+			"	uniform vec3 u_amb;																	\n"
+			"	uniform vec3 u_slight_dir;															\n"
+			"	uniform vec3 u_slight_C;															\n"
+			"	uniform mat4 u_m_M;																	\n"
+			"	uniform vec4 u_C;																	\n"
+			"	void main()																			\n"
+			"	{																					\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+			"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
+
+			"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
+			"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+			"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
+			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);							\n"
+			"		color = max(vec4((diff + spec)													\n"
+			"			* (u_slight_C * vec3(u_C)), u_C[3]), face * vec4(u_amb, 0.0));				\n"
+			"	}																					\n"
+			;
+	}
+	std::string source_fragment_RGB_skylight_3d()
+	{
+		return
+			"	#version 330 core																	\n"
+			"	in vec3 forward_X;																	\n"
+			"	in vec3 forward_N;																	\n"
+			"	in vec3 forward_C;																	\n"
+			"	out vec4 color;																		\n"
+			"	uniform float u_diff;																\n"
+			"	uniform float u_spec;																\n"
+			"	uniform float u_conc;																\n"
+			"	uniform vec3 u_view_pos;															\n"
+			"	uniform vec3 u_amb;																	\n"
+			"	uniform vec3 u_slight_dir;															\n"
+			"	uniform vec3 u_slight_C;															\n"
+			"	uniform mat4 u_m_M;																	\n"
+			"	void main()																			\n"
+			"	{																					\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+			"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
+
+			"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
+			"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+			"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
+			"			reflect(u_slight_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
+			"		color = max(vec4((diff + spec)													\n"
+			"			* (u_slight_C * forward_C), 1.0), face * vec4(u_amb, 0.0));					\n"
+			"	}																					\n"
+			;
+	}
+	std::string source_fragment_RGBA_skylight_3d()
+	{
+		return
+			"	#version 330 core																	\n"
+			"	in vec3 forward_X;																	\n"
+			"	in vec3 forward_N;																	\n"
+			"	in vec4 forward_C;																	\n"
+			"	out vec4 color;																		\n"
+			"	uniform float u_diff;																\n"
+			"	uniform float u_spec;																\n"
+			"	uniform float u_conc;																\n"
+			"	uniform vec3 u_view_pos;															\n"
+			"	uniform vec3 u_amb;																	\n"
+			"	uniform vec3 u_slight_dir;															\n"
+			"	uniform vec3 u_slight_C;															\n"
+			"	uniform mat4 u_m_M;																	\n"
+			"	void main()																			\n"
+			"	{																					\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+			"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
+
+			"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
+			"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+			"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
+			"			reflect(u_slight_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
+			"		color = max(vec4((diff + spec)													\n"
+			"			* (u_slight_C * vec3(forward_C)), forward_C[3]), face * vec4(u_amb, 0.0));	\n"
+			"	}																					\n"
+			;
+	}
+	std::string source_fragment_texture_skylight_3d()
+	{
+		return
+			"	#version 330 core																	\n"
+			"	in vec3 forward_X;																	\n"
+			"	in vec2 forward_UV;																	\n"
+			"	in vec3 forward_N;																	\n"
+			"	out vec4 color;																		\n"
+			"	uniform float u_diff;																\n"
+			"	uniform float u_spec;																\n"
+			"	uniform float u_conc;																\n"
+			"	uniform vec3 u_view_pos;															\n"
+			"	uniform vec3 u_amb;																	\n"
+			"	uniform vec3 u_slight_dir;															\n"
+			"	uniform vec3 u_slight_C;															\n"
+			"	uniform mat4 u_m_M;																	\n"
+			"	uniform sampler2D Tx;																\n"
+			"	void main()																			\n"
+			"	{																					\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+			"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
+
+			"		vec4 C = texture(Tx, forward_UV);												\n"
+			"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
+			"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+			"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
+			"			reflect(u_slight_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
+			"		color = max(vec4((diff + spec)													\n"
+			"			* (u_slight_C * vec3(C)), C[3]), face * vec4(u_amb, 0.0));					\n"
+			"	}																					\n"
+			;
+	}
+
+	std::string source_fragment_color_pointlights_3d(int _number_of_pointlights)
+	{
+		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+
+		return
+			"	#version 330 core																		\n"
+			"	in vec3 forward_X;																		\n"
+			"	in vec3 forward_N;																		\n"
+			"	out vec4 color;																			\n"
+			"	uniform float u_diff;																	\n"
+			"	uniform float u_spec;																	\n"
+			"	uniform float u_conc;																	\n"
+			"	uniform vec3 u_view_pos;																\n"
+			"	uniform vec3 u_amb;																		\n"
+
+			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
+			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform int first_light;																\n"
+			"	uniform int end_light;																	\n"
+
+			"	uniform mat4 u_m_M;																		\n"
+			"	uniform vec4 u_C;																		\n"
+
+			"	void main()																				\n"
+			"	{																						\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+
+			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
+
+			"		for (int k = first_light; k < end_light; k++)										\n"
+			"		{																					\n"
+			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
+			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
+			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			"			float dot_diff = dot(rotated_N, light_dir);										\n"
+
+			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
+			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * vec3(u_C));			\n"
+			"		}																					\n"
+			"		color = max(vec4(color3, u_C[3]), face * vec4(u_amb, 0.0));							\n"
+			"	}																						\n"
+			;
+	}
+	std::string source_fragment_color_combolights_3d(int _number_of_pointlights)
+	{
+		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+
+		return
+			"	#version 330 core																		\n"
+			"	in vec3 forward_X;																		\n"
+			"	in vec3 forward_N;																		\n"
+			"	out vec4 color;																			\n"
+			"	uniform float u_diff;																	\n"
+			"	uniform float u_spec;																	\n"
+			"	uniform float u_conc;																	\n"
+			"	uniform vec3 u_view_pos;																\n"
+			"	uniform vec3 u_amb;																		\n"
+
+			"	uniform vec3 u_slight_dir;																\n"
+			"	uniform vec3 u_slight_C;																\n"
+
+			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
+			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform int first_light;																\n"
+			"	uniform int end_light;																	\n"
+
+			"	uniform mat4 u_m_M;																		\n"
+			"	uniform vec4 u_C;																		\n"
+
+			"	void main()																				\n"
+			"	{																						\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+
+			"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
+			"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
+			"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
+			"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
+			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
+			"		vec3 color3 = (diff + spec) * (u_slight_C * vec3(u_C));								\n"
+
+			"		for (int k = first_light; k < end_light; k++)										\n"
+			"		{																					\n"
+			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
+			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
+			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			"			dot_diff = dot(rotated_N, light_dir);											\n"
+
+			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
+			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
+			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * vec3(u_C));			\n"
+			"		}																					\n"
+			"		color = max(vec4(color3, u_C[3]), face * vec4(u_amb, 0.0));							\n"
+			"	}																						\n"
+			;
+	}
+	std::string source_fragment_RGB_pointlights_3d(int _number_of_pointlights)
+	{
+		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+
+		return
+			"	#version 330 core																		\n"
+			"	in vec3 forward_X;																		\n"
+			"	in vec3 forward_C;																		\n"
+			"	in vec3 forward_N;																		\n"
+			"	out vec4 color;																			\n"
+			"	uniform float u_diff;																	\n"
+			"	uniform float u_spec;																	\n"
+			"	uniform float u_conc;																	\n"
+			"	uniform vec3 u_view_pos;																\n"
+			"	uniform vec3 u_amb;																		\n"
+
+			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
+			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform int first_light;																\n"
+			"	uniform int end_light;																	\n"
+
+			"	uniform mat4 u_m_M;																		\n"
+
+			"	void main()																				\n"
+			"	{																						\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+
+			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
+
+			"		for (int k = first_light; k < end_light; k++)										\n"
+			"		{																					\n"
+			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
+			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
+			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			"			float dot_diff = dot(rotated_N, light_dir);										\n"
+
+			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
+			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C);			\n"
+			"		}																					\n"
+			"		color = max(vec4(color3, 1.0), face * vec4(u_amb, 0.0));							\n"
+			"	}																						\n"
+			;
+	}
+	std::string source_fragment_RGB_combolights_3d(int _number_of_pointlights)
+	{
+		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+
+		return
+			"	#version 330 core																		\n"
+			"	in vec3 forward_X;																		\n"
+			"	in vec3 forward_C;																		\n"
+			"	in vec3 forward_N;																		\n"
+			"	out vec4 color;																			\n"
+			"	uniform float u_diff;																	\n"
+			"	uniform float u_spec;																	\n"
+			"	uniform float u_conc;																	\n"
+			"	uniform vec3 u_view_pos;																\n"
+			"	uniform vec3 u_amb;																		\n"
+
+			"	uniform vec3 u_slight_dir;																\n"
+			"	uniform vec3 u_slight_C;																\n"
+
+			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
+			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform int first_light;																\n"
+			"	uniform int end_light;																	\n"
+
+			"	uniform mat4 u_m_M;																		\n"
+
+			"	void main()																				\n"
+			"	{																						\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+
+			"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
+			"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
+			"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
+			"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
+			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
+			"		vec3 color3 = (diff + spec) * (u_slight_C * forward_C);								\n"
+
+			"		for (int k = first_light; k < end_light; k++)										\n"
+			"		{																					\n"
+			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
+			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
+			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			"			dot_diff = dot(rotated_N, light_dir);											\n"
+
+			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
+			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
+			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C);			\n"
+			"		}																					\n"
+			"		color = max(vec4(color3, 1.0), face * vec4(u_amb, 0.0));							\n"
+			"	}																						\n"
+			;
+	}
+	std::string source_fragment_RGBA_pointlights_3d(int _number_of_pointlights)
+	{
+		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+
+		return
+			"	#version 330 core																		\n"
+			"	in vec3 forward_X;																		\n"
+			"	in vec4 forward_C;																		\n"
+			"	in vec3 forward_N;																		\n"
+			"	out vec4 color;																			\n"
+			"	uniform float u_diff;																	\n"
+			"	uniform float u_spec;																	\n"
+			"	uniform float u_conc;																	\n"
+			"	uniform vec3 u_view_pos;																\n"
+			"	uniform vec3 u_amb;																		\n"
+
+			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
+			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform int first_light;																\n"
+			"	uniform int end_light;																	\n"
+
+			"	uniform mat4 u_m_M;																		\n"
+
+			"	void main()																				\n"
+			"	{																						\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+			"		vec3 forward_C3 = vec3(forward_C);													\n"
+
+			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
+
+			"		for (int k = first_light; k < end_light; k++)										\n"
+			"		{																					\n"
+			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
+			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
+			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			"			float dot_diff = dot(rotated_N, light_dir);										\n"
+
+			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
+			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C3);			\n"
+			"		}																					\n"
+			"		color = max(vec4(color3, forward_C[3]), face * vec4(u_amb, 0.0));					\n"
+			"	}																						\n"
+			;
+	}
+	std::string source_fragment_RGBA_combolights_3d(int _number_of_pointlights)
+	{
+		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+
+		return
+			"	#version 330 core																		\n"
+			"	in vec3 forward_X;																		\n"
+			"	in vec4 forward_C;																		\n"
+			"	in vec3 forward_N;																		\n"
+			"	out vec4 color;																			\n"
+			"	uniform float u_diff;																	\n"
+			"	uniform float u_spec;																	\n"
+			"	uniform float u_conc;																	\n"
+			"	uniform vec3 u_view_pos;																\n"
+			"	uniform vec3 u_amb;																		\n"
+
+			"	uniform vec3 u_slight_dir;																\n"
+			"	uniform vec3 u_slight_C;																\n"
+
+			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
+			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform int first_light;																\n"
+			"	uniform int end_light;																	\n"
+
+			"	uniform mat4 u_m_M;																		\n"
+
+			"	void main()																				\n"
+			"	{																						\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+			"		vec3 forward_C3 = vec3(forward_C);													\n"
+
+			"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
+			"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
+			"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
+			"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
+			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
+			"		vec3 color3 = (diff + spec) * (u_slight_C * forward_C3);							\n"
+
+			"		for (int k = first_light; k < end_light; k++)										\n"
+			"		{																					\n"
+			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
+			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
+			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			"			dot_diff = dot(rotated_N, light_dir);											\n"
+
+			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
+			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
+			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C3);			\n"
+			"		}																					\n"
+			"		color = max(vec4(color3, forward_C[3]), face * vec4(u_amb, 0.0));					\n"
+			"	}																						\n"
+			;
+	}
+	std::string source_fragment_texture_pointlights_3d(int _number_of_pointlights)
+	{
+		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+
+		return
+			"	#version 330 core																		\n"
+			"	in vec3 forward_X;																		\n"
+			"	in vec2 forward_UV;																		\n"
+			"	in vec3 forward_N;																		\n"
+			"	out vec4 color;																			\n"
+			"	uniform float u_diff;																	\n"
+			"	uniform float u_spec;																	\n"
+			"	uniform float u_conc;																	\n"
+			"	uniform vec3 u_view_pos;																\n"
+			"	uniform vec3 u_amb;																		\n"
+
+			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
+			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform int first_light;																\n"
+			"	uniform int end_light;																	\n"
+
+			"	uniform mat4 u_m_M;																		\n"
+			"	uniform sampler2D Tx;																	\n"
+
+			"	void main()																				\n"
+			"	{																						\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+			"		vec4 C = texture(Tx, forward_UV);													\n"
+			"		vec3 C3 = vec3(C);																	\n"
+
+			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
+
+			"		for (int k = first_light; k < end_light; k++)										\n"
+			"		{																					\n"
+			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
+			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
+			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			"			float dot_diff = dot(rotated_N, light_dir);										\n"
+
+			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
+			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C3);					\n"
+			"		}																					\n"
+			"		color = max(vec4(color3, C[3]), face * vec4(u_amb, 0.0));							\n"
+			"	}																						\n"
+			;
+	}
+	std::string source_fragment_texture_combolights_3d(int _number_of_pointlights)
+	{
+		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+
+		return
+			"	#version 330 core																		\n"
+			"	in vec3 forward_X;																		\n"
+			"	in vec2 forward_UV;																		\n"
+			"	in vec3 forward_N;																		\n"
+			"	out vec4 color;																			\n"
+			"	uniform float u_diff;																	\n"
+			"	uniform float u_spec;																	\n"
+			"	uniform float u_conc;																	\n"
+			"	uniform vec3 u_view_pos;																\n"
+			"	uniform vec3 u_amb;																		\n"
+
+			"	uniform vec3 u_slight_dir;																\n"
+			"	uniform vec3 u_slight_C;																\n"
+
+			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
+			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform int first_light;																\n"
+			"	uniform int end_light;																	\n"
+
+			"	uniform mat4 u_m_M;																		\n"
+			"	uniform sampler2D Tx;																	\n"
+
+			"	void main()																				\n"
+			"	{																						\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+			"		vec4 C = texture(Tx, forward_UV);													\n"
+			"		vec3 C3 = vec3(C);																	\n"
+
+			"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
+			"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
+			"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
+			"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
+			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
+			"		vec3 color3 = (diff + spec) * (u_slight_C * C3);									\n"
+
+			"		for (int k = first_light; k < end_light; k++)										\n"
+			"		{																					\n"
+			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
+			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
+			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			"			dot_diff = dot(rotated_N, light_dir);											\n"
+
+			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
+			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
+			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C3);					\n"
+			"		}																					\n"
+			"		color = max(vec4(color3, C[3]), face * vec4(u_amb, 0.0));							\n"
+			"	}																						\n"
+			;
+	}
+}
+
+
 namespace lnd
 {
 	class looper
@@ -2447,439 +3204,6 @@ namespace lnd
 		const inline lnd::program& program_RGBA_skylight_3d() const noexcept { return _program_RGBA_skylight_3d; } // takes uniforms
 		const inline lnd::program& program_texture_skylight_3d() const noexcept { return _program_texture_skylight_3d; } // takes uniforms
 
-		std::string source_fragment_color_pointlights_3d(int _number_of_pointlights)
-		{
-			std::string number_of_pointlights = std::to_string(_number_of_pointlights);
-
-			return std::string("") +
-				"	#version 330 core																		\n"
-				"	in vec3 forward_X;																		\n"
-				"	in vec3 forward_N;																		\n"
-				"	out vec4 color;																			\n"
-				"	uniform float u_diff;																	\n"
-				"	uniform float u_spec;																	\n"
-				"	uniform float u_conc;																	\n"
-				"	uniform vec3 u_view_pos;																\n"
-				"	uniform vec3 u_amb;																		\n"
-
-				"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-				"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-				"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
-				"	uniform int first_light;																\n"
-				"	uniform int end_light;																	\n"
-
-				"	uniform mat4 u_m_M;																		\n"
-				"	uniform vec4 u_C;																		\n"
-
-				"	void main()																				\n"
-				"	{																						\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-
-				"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
-
-				"		for (int k = first_light; k < end_light; k++)										\n"
-				"		{																					\n"
-				"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-				"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
-				"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
-				"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
-				"			float dot_diff = dot(rotated_N, light_dir);										\n"
-
-				"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
-				"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-				"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-				"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * vec3(u_C));			\n"
-				"		}																					\n"
-				"		color = max(vec4(color3, u_C[3]), face * vec4(u_amb, 0.0));							\n"
-				"	}																						\n"
-				;
-		}
-		std::string source_fragment_color_combolights_3d(int _number_of_pointlights)
-		{
-			std::string number_of_pointlights = std::to_string(_number_of_pointlights);
-
-			return std::string("") +
-				"	#version 330 core																		\n"
-				"	in vec3 forward_X;																		\n"
-				"	in vec3 forward_N;																		\n"
-				"	out vec4 color;																			\n"
-				"	uniform float u_diff;																	\n"
-				"	uniform float u_spec;																	\n"
-				"	uniform float u_conc;																	\n"
-				"	uniform vec3 u_view_pos;																\n"
-				"	uniform vec3 u_amb;																		\n"
-
-				"	uniform vec3 u_slight_dir;																\n"
-				"	uniform vec3 u_slight_C;																\n"
-
-				"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-				"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-				"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
-				"	uniform int first_light;																\n"
-				"	uniform int end_light;																	\n"
-
-				"	uniform mat4 u_m_M;																		\n"
-				"	uniform vec4 u_C;																		\n"
-
-				"	void main()																				\n"
-				"	{																						\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-
-				"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
-				"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
-				"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-				"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
-				"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
-				"		vec3 color3 = (diff + spec) * (u_slight_C * vec3(u_C));								\n"
-
-				"		for (int k = first_light; k < end_light; k++)										\n"
-				"		{																					\n"
-				"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-				"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
-				"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
-				"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
-				"			dot_diff = dot(rotated_N, light_dir);											\n"
-
-				"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
-				"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-				"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-				"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * vec3(u_C));			\n"
-				"		}																					\n"
-				"		color = max(vec4(color3, u_C[3]), face * vec4(u_amb, 0.0));							\n"
-				"	}																						\n"
-				;
-		}
-		std::string source_fragment_RGB_pointlights_3d(int _number_of_pointlights)
-		{
-			std::string number_of_pointlights = std::to_string(_number_of_pointlights);
-
-			return std::string("") +
-				"	#version 330 core																		\n"
-				"	in vec3 forward_X;																		\n"
-				"	in vec3 forward_C;																		\n"
-				"	in vec3 forward_N;																		\n"
-				"	out vec4 color;																			\n"
-				"	uniform float u_diff;																	\n"
-				"	uniform float u_spec;																	\n"
-				"	uniform float u_conc;																	\n"
-				"	uniform vec3 u_view_pos;																\n"
-				"	uniform vec3 u_amb;																		\n"
-
-				"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-				"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-				"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
-				"	uniform int first_light;																\n"
-				"	uniform int end_light;																	\n"
-
-				"	uniform mat4 u_m_M;																		\n"
-
-				"	void main()																				\n"
-				"	{																						\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-
-				"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
-
-				"		for (int k = first_light; k < end_light; k++)										\n"
-				"		{																					\n"
-				"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-				"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
-				"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
-				"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
-				"			float dot_diff = dot(rotated_N, light_dir);										\n"
-
-				"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
-				"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-				"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-				"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C);			\n"
-				"		}																					\n"
-				"		color = max(vec4(color3, 1.0), face * vec4(u_amb, 0.0));							\n"
-				"	}																						\n"
-				;
-		}
-		std::string source_fragment_RGB_combolights_3d(int _number_of_pointlights)
-		{
-			std::string number_of_pointlights = std::to_string(_number_of_pointlights);
-
-			return std::string("") +
-				"	#version 330 core																		\n"
-				"	in vec3 forward_X;																		\n"
-				"	in vec3 forward_C;																		\n"
-				"	in vec3 forward_N;																		\n"
-				"	out vec4 color;																			\n"
-				"	uniform float u_diff;																	\n"
-				"	uniform float u_spec;																	\n"
-				"	uniform float u_conc;																	\n"
-				"	uniform vec3 u_view_pos;																\n"
-				"	uniform vec3 u_amb;																		\n"
-
-				"	uniform vec3 u_slight_dir;																\n"
-				"	uniform vec3 u_slight_C;																\n"
-
-				"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-				"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-				"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
-				"	uniform int first_light;																\n"
-				"	uniform int end_light;																	\n"
-
-				"	uniform mat4 u_m_M;																		\n"
-
-				"	void main()																				\n"
-				"	{																						\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-
-				"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
-				"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
-				"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-				"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
-				"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
-				"		vec3 color3 = (diff + spec) * (u_slight_C * forward_C);								\n"
-
-				"		for (int k = first_light; k < end_light; k++)										\n"
-				"		{																					\n"
-				"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-				"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
-				"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
-				"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
-				"			dot_diff = dot(rotated_N, light_dir);											\n"
-
-				"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
-				"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-				"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-				"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C);			\n"
-				"		}																					\n"
-				"		color = max(vec4(color3, 1.0), face * vec4(u_amb, 0.0));							\n"
-				"	}																						\n"
-				;
-		}
-		std::string source_fragment_RGBA_pointlights_3d(int _number_of_pointlights)
-		{
-			std::string number_of_pointlights = std::to_string(_number_of_pointlights);
-
-			return std::string("") +
-				"	#version 330 core																		\n"
-				"	in vec3 forward_X;																		\n"
-				"	in vec4 forward_C;																		\n"
-				"	in vec3 forward_N;																		\n"
-				"	out vec4 color;																			\n"
-				"	uniform float u_diff;																	\n"
-				"	uniform float u_spec;																	\n"
-				"	uniform float u_conc;																	\n"
-				"	uniform vec3 u_view_pos;																\n"
-				"	uniform vec3 u_amb;																		\n"
-
-				"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-				"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-				"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
-				"	uniform int first_light;																\n"
-				"	uniform int end_light;																	\n"
-
-				"	uniform mat4 u_m_M;																		\n"
-
-				"	void main()																				\n"
-				"	{																						\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-				"		vec3 forward_C3 = vec3(forward_C);													\n"
-
-				"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
-
-				"		for (int k = first_light; k < end_light; k++)										\n"
-				"		{																					\n"
-				"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-				"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
-				"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
-				"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
-				"			float dot_diff = dot(rotated_N, light_dir);										\n"
-
-				"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
-				"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-				"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-				"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C3);			\n"
-				"		}																					\n"
-				"		color = max(vec4(color3, forward_C[3]), face * vec4(u_amb, 0.0));					\n"
-				"	}																						\n"
-				;
-		}
-		std::string source_fragment_RGBA_combolights_3d(int _number_of_pointlights)
-		{
-			std::string number_of_pointlights = std::to_string(_number_of_pointlights);
-
-			return std::string("") +
-				"	#version 330 core																		\n"
-				"	in vec3 forward_X;																		\n"
-				"	in vec4 forward_C;																		\n"
-				"	in vec3 forward_N;																		\n"
-				"	out vec4 color;																			\n"
-				"	uniform float u_diff;																	\n"
-				"	uniform float u_spec;																	\n"
-				"	uniform float u_conc;																	\n"
-				"	uniform vec3 u_view_pos;																\n"
-				"	uniform vec3 u_amb;																		\n"
-
-				"	uniform vec3 u_slight_dir;																\n"
-				"	uniform vec3 u_slight_C;																\n"
-
-				"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-				"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-				"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
-				"	uniform int first_light;																\n"
-				"	uniform int end_light;																	\n"
-
-				"	uniform mat4 u_m_M;																		\n"
-
-				"	void main()																				\n"
-				"	{																						\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-				"		vec3 forward_C3 = vec3(forward_C);													\n"
-
-				"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
-				"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
-				"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-				"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
-				"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
-				"		vec3 color3 = (diff + spec) * (u_slight_C * forward_C3);							\n"
-
-				"		for (int k = first_light; k < end_light; k++)										\n"
-				"		{																					\n"
-				"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-				"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
-				"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
-				"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
-				"			dot_diff = dot(rotated_N, light_dir);											\n"
-
-				"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
-				"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-				"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-				"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C3);			\n"
-				"		}																					\n"
-				"		color = max(vec4(color3, forward_C[3]), face * vec4(u_amb, 0.0));					\n"
-				"	}																						\n"
-				;
-		}
-		std::string source_fragment_texture_pointlights_3d(int _number_of_pointlights)
-		{
-			std::string number_of_pointlights = std::to_string(_number_of_pointlights);
-
-			return std::string("") +
-				"	#version 330 core																		\n"
-				"	in vec3 forward_X;																		\n"
-				"	in vec2 forward_UV;																		\n"
-				"	in vec3 forward_N;																		\n"
-				"	out vec4 color;																			\n"
-				"	uniform float u_diff;																	\n"
-				"	uniform float u_spec;																	\n"
-				"	uniform float u_conc;																	\n"
-				"	uniform vec3 u_view_pos;																\n"
-				"	uniform vec3 u_amb;																		\n"
-
-				"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-				"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-				"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
-				"	uniform int first_light;																\n"
-				"	uniform int end_light;																	\n"
-
-				"	uniform mat4 u_m_M;																		\n"
-				"	uniform sampler2D Tx;																	\n"
-
-				"	void main()																				\n"
-				"	{																						\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-				"		vec4 C = texture(Tx, forward_UV);													\n"
-				"		vec3 C3 = vec3(C);																	\n"
-
-				"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
-
-				"		for (int k = first_light; k < end_light; k++)										\n"
-				"		{																					\n"
-				"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-				"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
-				"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
-				"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
-				"			float dot_diff = dot(rotated_N, light_dir);										\n"
-
-				"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
-				"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-				"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-				"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C3);					\n"
-				"		}																					\n"
-				"		color = max(vec4(color3, C[3]), face * vec4(u_amb, 0.0));							\n"
-				"	}																						\n"
-				;
-		}
-		std::string source_fragment_texture_combolights_3d(int _number_of_pointlights)
-		{
-			std::string number_of_pointlights = std::to_string(_number_of_pointlights);
-
-			return std::string("") +
-				"	#version 330 core																		\n"
-				"	in vec3 forward_X;																		\n"
-				"	in vec2 forward_UV;																		\n"
-				"	in vec3 forward_N;																		\n"
-				"	out vec4 color;																			\n"
-				"	uniform float u_diff;																	\n"
-				"	uniform float u_spec;																	\n"
-				"	uniform float u_conc;																	\n"
-				"	uniform vec3 u_view_pos;																\n"
-				"	uniform vec3 u_amb;																		\n"
-
-				"	uniform vec3 u_slight_dir;																\n"
-				"	uniform vec3 u_slight_C;																\n"
-
-				"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-				"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-				"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
-				"	uniform int first_light;																\n"
-				"	uniform int end_light;																	\n"
-
-				"	uniform mat4 u_m_M;																		\n"
-				"	uniform sampler2D Tx;																	\n"		
-
-				"	void main()																				\n"
-				"	{																						\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-				"		vec4 C = texture(Tx, forward_UV);													\n"
-				"		vec3 C3 = vec3(C);																	\n"
-
-				"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
-				"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
-				"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-				"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
-				"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
-				"		vec3 color3 = (diff + spec) * (u_slight_C * C3);									\n"
-
-				"		for (int k = first_light; k < end_light; k++)										\n"
-				"		{																					\n"
-				"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-				"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
-				"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
-				"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
-				"			dot_diff = dot(rotated_N, light_dir);											\n"
-
-				"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
-				"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-				"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-				"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C3);					\n"
-				"		}																					\n"
-				"		color = max(vec4(color3, C[3]), face * vec4(u_amb, 0.0));							\n"
-				"	}																						\n"
-				;
-		}
-
 		inline const lnd::program& set_fragment_color(const lnd::program& program, float c0, float c1, float c2, float c3)
 		{
 			program.use();
@@ -4063,320 +4387,34 @@ namespace lnd
 				);
 			}
 
-			_vertex_3d.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec3 X;					\n"
-				"	out vec3 forward_X;									\n"
-				"	uniform mat4 u_mvp_M;								\n"
-				"	void main() {										\n"
-				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-				"		forward_X = X; }								\n"
-			);
+			_vertex_3d.new_shader(lnd::source_vertex_3d());
+			_vertex_RGB_3d.new_shader(lnd::source_vertex_RGB_3d());
+			_vertex_RGBA_3d.new_shader(lnd::source_vertex_RGBA_3d());
+			_vertex_texture_3d.new_shader(lnd::source_vertex_texture_3d());
+			_vertex_normals_3d.new_shader(lnd::source_vertex_normals_3d());
+			_vertex_RGB_normals_3d.new_shader(lnd::source_vertex_RGB_normals_3d());
+			_vertex_RGBA_normals_3d.new_shader(lnd::source_vertex_RGBA_normals_3d());
+			_vertex_texture_normals_3d.new_shader(lnd::source_vertex_texture_normals_3d());
 
-			_vertex_normals_3d.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec3 X;					\n"
-				"	layout (location = 1) in vec3 N;					\n"
-				"	out vec3 forward_X;									\n"
-				"	out vec3 forward_N;									\n"
-				"	uniform mat4 u_mvp_M;								\n"
-				"	void main() {										\n"
-				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-				"		forward_X = X;									\n"
-				"		forward_N = N; }								\n"
-			);
+			_fragment_black.new_shader(source_fragment_fixed_color(0.0f, 0.0f, 0.0f, 1.0f));
+			_fragment_red.new_shader(source_fragment_fixed_color(1.0f, 0.0f, 0.0f, 1.0f));
+			_fragment_green.new_shader(source_fragment_fixed_color(0.0f, 1.0f, 0.0f, 1.0f));
+			_fragment_blue.new_shader(source_fragment_fixed_color(0.0f, 0.0f, 1.0f, 1.0f));
+			_fragment_yellow.new_shader(source_fragment_fixed_color(1.0f, 1.0f, 0.0f, 1.0f));
+			_fragment_magenta.new_shader(source_fragment_fixed_color(1.0f, 0.0f, 1.0f, 1.0f));
+			_fragment_cyan.new_shader(source_fragment_fixed_color(0.0f, 1.0f, 1.0f, 1.0f));
+			_fragment_orange.new_shader(source_fragment_fixed_color(1.0f, 0.5f, 0.0f, 1.0f));
+			_fragment_white.new_shader(source_fragment_fixed_color(1.0f, 1.0f, 1.0f, 1.0f));
 
-			_vertex_RGB_3d.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec3 X;					\n"
-				"	layout (location = 1) in vec3 C;					\n"
-				"	out vec3 forward_X;									\n"
-				"	out vec3 forward_C;									\n"
-				"	uniform mat4 u_mvp_M;								\n"
-				"	void main() {										\n"
-				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-				"		forward_X = X;									\n"
-				"		forward_C = C; }								\n"
-			);
+			_fragment_color.new_shader(lnd::source_fragment_color());
+			_fragment_RGB.new_shader(lnd::source_fragment_RGB());
+			_fragment_RGBA.new_shader(lnd::source_fragment_RGBA());
+			_fragment_texture.new_shader(lnd::source_fragment_texture());
 
-			_vertex_RGB_normals_3d.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec3 X;					\n"
-				"	layout (location = 1) in vec3 C;					\n"
-				"	layout (location = 2) in vec3 N;					\n"
-				"	out vec3 forward_X;									\n"
-				"	out vec3 forward_C;									\n"
-				"	out vec3 forward_N;									\n"
-				"	uniform mat4 u_mvp_M;								\n"
-				"	void main() {										\n"
-				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-				"		forward_X = X;									\n"
-				"		forward_C = C;									\n"
-				"		forward_N = N; }								\n"
-			);
-
-			_vertex_RGBA_3d.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec3 X;					\n"
-				"	layout (location = 1) in vec4 C;					\n"
-				"	out vec3 forward_X;									\n"
-				"	out vec4 forward_C;									\n"
-				"	uniform mat4 u_mvp_M;								\n"
-				"	void main() {										\n"
-				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-				"		forward_X = X;									\n"
-				"		forward_C = C; }								\n"
-			);
-
-			_vertex_RGBA_normals_3d.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec3 X;					\n"
-				"	layout (location = 1) in vec4 C;					\n"
-				"	layout (location = 2) in vec3 N;					\n"
-				"	out vec3 forward_X;									\n"
-				"	out vec4 forward_C;									\n"
-				"	out vec3 forward_N;									\n"
-				"	uniform mat4 M;										\n"
-				"	void main() {										\n"
-				"		gl_Position = M * vec4(X, 1);					\n"
-				"		forward_X = X;									\n"
-				"		forward_C = C;									\n"
-				"		forward_N = N; }								\n"
-			);
-
-			_vertex_texture_3d.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec3 X;					\n"
-				"	layout (location = 1) in vec2 UV;					\n"
-				"	out vec3 forward_X;									\n"
-				"	out vec2 forward_UV;								\n"
-				"	uniform mat4 u_mvp_M;								\n"
-				"	void main() {										\n"
-				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-				"		forward_X = X;									\n"
-				"		forward_UV = UV; }								\n"
-			);
-
-			_vertex_texture_normals_3d.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec3 X;					\n"
-				"	layout (location = 1) in vec2 UV;					\n"
-				"	layout (location = 2) in vec3 N;					\n"
-				"	out vec2 forward_UV;								\n"
-				"	out vec3 forward_X;									\n"
-				"	out vec3 forward_N;									\n"
-				"	uniform mat4 u_mvp_M;								\n"
-				"	void main() {										\n"
-				"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-				"		forward_UV = UV;								\n"
-				"		forward_X = X;									\n"
-				"		forward_N = N; }								\n"
-			);
-
-			_fragment_black.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) out vec3 C;					\n"
-				"	void main() { C = vec3(0.0, 0.0, 0.0); }			\n"
-			);
-
-			_fragment_red.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) out vec3 C;					\n"
-				"	void main() { C = vec3(1.0, 0.0, 0.0); }			\n"
-			);
-
-			_fragment_green.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) out vec3 C;					\n"
-				"	void main() { C = vec3(0.0, 1.0, 0.0); }			\n"
-			);
-
-			_fragment_blue.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) out vec3 C;					\n"
-				"	void main() { C = vec3(0.0, 0.0, 1.0); }			\n"
-			);
-
-			_fragment_yellow.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) out vec3 C;					\n"
-				"	void main() { C = vec3(1.0, 1.0, 0.0); }			\n"
-			);
-
-			_fragment_magenta.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) out vec3 C;					\n"
-				"	void main() { C = vec3(1.0, 0.0, 1.0); }			\n"
-			);
-
-			_fragment_cyan.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) out vec3 C;					\n"
-				"	void main() { C = vec3(0.0, 1.0, 1.0); }			\n"
-			);
-
-			_fragment_orange.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) out vec3 C;					\n"
-				"	void main() { C = vec3(1.0, 0.5, 0.0); }			\n"
-			);
-
-			_fragment_white.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) out vec3 C;					\n"
-				"	void main() { C = vec3(1.0, 1.0, 1.0); }			\n"
-			);
-
-			_fragment_color.new_shader(
-				"	#version 330 core									\n"
-				"	layout (location = 0) out vec4 C;					\n"
-				"	uniform vec4 u_C;									\n"
-				"	void main() { C = u_C; }							\n"
-			);
-
-			_fragment_RGB.new_shader(
-				"	#version 330 core									\n"
-				"	in vec3 forward_C;									\n"
-				"	out vec3 color;										\n"
-				"	void main() { color = forward_C; }					\n"
-			);
-
-			_fragment_RGBA.new_shader(
-				"	#version 330 core									\n"
-				"	in vec4 forward_C;									\n"
-				"	out vec4 color;										\n"
-				"	void main() { color = forward_C; }					\n"
-			);
-
-			_fragment_texture.new_shader(
-				"	#version 330 core									\n"
-				"	out vec4 C;											\n"
-				"	in vec2 forward_UV;									\n"
-				"	uniform sampler2D Tx;								\n"
-				"	void main() { C = texture(Tx, forward_UV); }		\n"
-			);
-
-			_fragment_color_skylight_3d.new_shader(
-				"	#version 330 core																	\n"
-				"	in vec3 forward_X;																	\n"
-				"	in vec3 forward_N;																	\n"
-				"	out vec4 color;																		\n"
-				"	uniform float u_diff;																\n"
-				"	uniform float u_spec;																\n"
-				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_view_pos;															\n"
-				"	uniform vec3 u_amb;																	\n"
-				"	uniform vec3 u_slight_dir;															\n"
-				"	uniform vec3 u_slight_C;															\n"
-				"	uniform mat4 u_m_M;																	\n"
-				"	uniform vec4 u_C;																	\n"
-				"	void main()																			\n"
-				"	{																					\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
-				"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
-
-				"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
-				"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-				"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
-				"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);							\n"
-				"		color = max(vec4((diff + spec)													\n"
-				"			* (u_slight_C * vec3(u_C)), u_C[3]), face * vec4(u_amb, 0.0));				\n"
-				"	}																					\n"
-			);
-
-			_fragment_RGB_skylight_3d.new_shader(
-				"	#version 330 core																	\n"
-				"	in vec3 forward_X;																	\n"
-				"	in vec3 forward_N;																	\n"
-				"	in vec3 forward_C;																	\n"
-				"	out vec4 color;																		\n"
-				"	uniform float u_diff;																\n"
-				"	uniform float u_spec;																\n"
-				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_view_pos;															\n"
-				"	uniform vec3 u_amb;																	\n"
-				"	uniform vec3 u_slight_dir;															\n"
-				"	uniform vec3 u_slight_C;															\n"
-				"	uniform mat4 u_m_M;																	\n"
-				"	void main()																			\n"
-				"	{																					\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
-				"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
-
-				"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
-				"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-				"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
-				"			reflect(u_slight_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
-				"		color = max(vec4((diff + spec)													\n"
-				"			* (u_slight_C * forward_C), 1.0), face * vec4(u_amb, 0.0));					\n"
-				"	}																					\n"
-			);
-
-			_fragment_RGBA_skylight_3d.new_shader(
-				"	#version 330 core																	\n"
-				"	in vec3 forward_X;																	\n"
-				"	in vec3 forward_N;																	\n"
-				"	in vec4 forward_C;																	\n"
-				"	out vec4 color;																		\n"
-				"	uniform float u_diff;																\n"
-				"	uniform float u_spec;																\n"
-				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_view_pos;															\n"
-				"	uniform vec3 u_amb;																	\n"
-				"	uniform vec3 u_slight_dir;															\n"
-				"	uniform vec3 u_slight_C;															\n"
-				"	uniform mat4 u_m_M;																	\n"
-				"	void main()																			\n"
-				"	{																					\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
-				"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
-
-				"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
-				"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-				"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
-				"			reflect(u_slight_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
-				"		color = max(vec4((diff + spec)													\n"
-				"			* (u_slight_C * vec3(forward_C)), forward_C[3]), face * vec4(u_amb, 0.0));	\n"
-				"	}																					\n"
-			);
-
-			_fragment_texture_skylight_3d.new_shader(
-				"	#version 330 core																	\n"
-				"	in vec3 forward_X;																	\n"
-				"	in vec2 forward_UV;																	\n"
-				"	in vec3 forward_N;																	\n"
-				"	out vec4 color;																		\n"
-				"	uniform float u_diff;																\n"
-				"	uniform float u_spec;																\n"
-				"	uniform float u_conc;																\n"
-				"	uniform vec3 u_view_pos;															\n"
-				"	uniform vec3 u_amb;																	\n"
-				"	uniform vec3 u_slight_dir;															\n"
-				"	uniform vec3 u_slight_C;															\n"
-				"	uniform mat4 u_m_M;																	\n"
-				"	uniform sampler2D Tx;																\n"
-				"	void main()																			\n"
-				"	{																					\n"
-				"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
-				"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
-				"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
-				"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
-
-				"		vec4 C = texture(Tx, forward_UV);												\n"
-				"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
-				"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-				"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
-				"			reflect(u_slight_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
-				"		color = max(vec4((diff + spec)													\n"
-				"			* (u_slight_C * vec3(C)), C[3]), face * vec4(u_amb, 0.0));					\n"
-				"	}																					\n"
-			);
+			_fragment_color_skylight_3d.new_shader(lnd::source_fragment_color_skylight_3d());
+			_fragment_RGB_skylight_3d.new_shader(lnd::source_fragment_RGB_skylight_3d());
+			_fragment_RGBA_skylight_3d.new_shader(lnd::source_fragment_RGBA_skylight_3d());
+			_fragment_texture_skylight_3d.new_shader(lnd::source_fragment_texture_skylight_3d());
 
 			_program_black.new_program(_vertex_identity, _fragment_black);
 			_program_red.new_program(_vertex_identity, _fragment_red);
