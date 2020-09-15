@@ -2696,17 +2696,8 @@ namespace lnd
 		{
 			std::string light_number_str = std::to_string(light_number);
 			program.use();
-			if (light_position_ptr != nullptr)
-			{
-				int location = glGetUniformLocation(program.get(), ("u_plight_pos[" + light_number_str + "]").c_str());
-				glUniform3fv(location, 1, light_position_ptr);
-			}
-			else
-			{
-				float null_array[3] = { 0.0f };
-				int location = glGetUniformLocation(program.get(), ("u_plight_pos[" + light_number_str + "]").c_str());
-				glUniform3fv(location, 1, static_cast<float*>(null_array));
-			}
+			int location = glGetUniformLocation(program.get(), ("u_plight_pos[" + light_number_str + "]").c_str());
+			glUniform3fv(location, 1, light_position_ptr);
 			return program;
 		}
 		lnd::program& set_pointlight_prop_3d(lnd::program& program, int light_number, const float* const light_color_ptr,
@@ -2726,8 +2717,6 @@ namespace lnd
 				float null_array[4] = { 0.0f };
 				int location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
 				glUniform4fv(location, 1, static_cast<float*>(null_array));
-				location = glGetUniformLocation(program.get(), ("u_plight_att[" + light_number_str + "]").c_str());
-				glUniform3fv(location, 1, static_cast<float*>(null_array));
 			}
 			return program;
 		}
