@@ -299,8 +299,6 @@ namespace lnd
 		std::atomic<bool> alt_release{ false };
 		std::atomic<bool> shift_release{ false };
 
-		int padding[8] = { 0 };
-
 
 		inline void reset_key_events()
 		{
