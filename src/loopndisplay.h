@@ -94,6 +94,8 @@
 ////// IMPLEMENTATION //////
 
 
+// INPUTS
+
 namespace lnd
 {
 	class user_key_input
@@ -323,9 +325,15 @@ namespace lnd
 
 	// INSTANCES
 
+	int  padding0[8] = { 0 };
 	GLFWwindow* __window_ptr = nullptr;
+	int  padding1[8] = { 0 };
 	lnd::user_key_input __user_key_input;
+	int  padding2[8] = { 0 };
 	lnd::user_mouse_input __user_mouse_input;
+	int  padding3[8] = { 0 };
+	GLbitfield __clear_window = GL_COLOR_BUFFER_BIT;
+	int  padding4[8] = { 0 };
 
 
 	// ON CALLBACK
@@ -722,6 +730,8 @@ namespace lnd
 }
 
 
+// BUFFERS
+
 namespace lnd
 {
 	class buffer_vertex
@@ -1055,6 +1065,1099 @@ namespace lnd
 
 namespace lnd
 {
+	std::string source_vertex_identity(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	out vec2 forward_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	out vec2 forward_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		X[0], " + ratio + " * X[1], X[2], X[3]);		\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	out vec2 forward_X;									\n"
+				"	void main() { gl_Position = X;						\n"
+				"		forward_X = vec2(X); }							\n"
+				;
+		}
+	}
+	std::string source_vertex_shift(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	out vec2 forward_X;									\n"
+					"	uniform vec2 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * (X[0] + u_X[0]),				\n"
+					"		X[1] + u_X[1], X[2], X[3]);						\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	out vec2 forward_X;									\n"
+					"	uniform vec2 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		X[0] + u_X[0],									\n"
+					"		" + ratio + " * (X[1] + u_X[1]),				\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	out vec2 forward_X;									\n"
+				"	uniform vec2 u_X;									\n"
+				"	void main() { gl_Position = vec4(					\n"
+				"		X[0] + u_X[0],									\n"
+				"		X[1] + u_X[1],									\n"
+				"		X[2], X[3]);									\n"
+				"		forward_X = vec2(X); }							\n"
+				;
+		}
+	}
+	std::string source_vertex_shift_scale(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	out vec2 forward_X;									\n"
+					"	uniform vec3 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
+					"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	out vec2 forward_X;									\n"
+					"	uniform vec3 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		u_X[2] * X[0] + u_X[0],							\n"
+					"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	out vec2 forward_X;									\n"
+				"	uniform vec3 u_X;									\n"
+				"	void main() { gl_Position = vec4(					\n"
+				"		u_X[2] * X[0] + u_X[0],							\n"
+				"		u_X[2] * X[1] + u_X[1],							\n"
+				"		X[2], X[3]);									\n"
+				"		forward_X = vec2(X); }							\n"
+				;
+		}
+	}
+	std::string source_vertex_shift_rotate(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core												\n"
+					"	layout (location = 0) in vec4 X;								\n"
+					"	out vec2 forward_X;												\n"
+					"	uniform vec4 u_X;												\n"
+					"	void main() { gl_Position = vec4(								\n"
+					"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
+					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]); }				\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core												\n"
+					"	layout (location = 0) in vec4 X;								\n"
+					"	out vec2 forward_X;												\n"
+					"	uniform vec4 u_X;												\n"
+					"	void main() { gl_Position = vec4(								\n"
+					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
+					"		X[2], X[3]);												\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]); }				\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	out vec2 forward_X;									\n"
+				"	uniform vec4 u_X;									\n"
+				"	void main() { gl_Position = vec4(					\n"
+				"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
+				"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
+				"		X[2], X[3]);									\n"
+				"		forward_X = vec2(X); }							\n"
+				;
+		}
+	}
+	std::string source_vertex_affine(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core																			\n"
+					"	layout (location = 0) in vec4 X;															\n"
+					"	out vec2 forward_X;																			\n"
+					"	uniform vec4 u_X0;																			\n"
+					"	uniform vec4 u_X1;																			\n"
+					"	void main() { gl_Position  = vec4(															\n"
+					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
+					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]); }											\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core																			\n"
+					"	layout (location = 0) in vec4 X;															\n"
+					"	out vec2 forward_X;																			\n"
+					"	uniform vec4 u_X0;																			\n"
+					"	uniform vec4 u_X1;																			\n"
+					"	void main() { gl_Position  = vec4(															\n"
+					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
+					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
+					"		X[2], X[3]);																			\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]); }											\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core															\n"
+				"	layout (location = 0) in vec4 X;											\n"
+				"	out vec2 forward_X;															\n"
+				"	uniform vec4 u_X0;															\n"
+				"	uniform vec4 u_X1;															\n"
+				"	void main() { gl_Position  = vec4(											\n"
+				"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
+				"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
+				"		X[2], X[3]);															\n"
+				"		forward_X = vec2(X); }													\n"
+				;
+		}
+	}
+
+	std::string source_vertex_RGB_identity(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec3 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec3 forward_C;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec3 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec3 forward_C;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		X[0], " + ratio + " * X[1], X[2], X[3]);		\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	layout (location = 1) in vec3 C;					\n"
+				"	out vec2 forward_X;									\n"
+				"	out vec3 forward_C;									\n"
+				"	void main() { gl_Position = X;						\n"
+				"		forward_X = vec2(X);							\n"
+				"		forward_C = C; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_RGB_shift(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec3 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec3 forward_C;									\n"
+					"	uniform vec2 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * (X[0] + u_X[0]),				\n"
+					"		X[1] + u_X[1], X[2], X[3]);						\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec3 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec3 forward_C;									\n"
+					"	uniform vec2 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		X[0] + u_X[0],									\n"
+					"		" + ratio + " * (X[1] + u_X[1]),				\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"   #version 330 core                                   \n"
+				"   layout (location = 0) in vec4 X;                    \n"
+				"   layout (location = 1) in vec3 C;                    \n"
+				"	out vec2 forward_X;									\n"
+				"   out vec3 forward_C;                                 \n"
+				"   uniform vec2 u_X;                                   \n"
+				"   void main() { gl_Position = vec4(                   \n"
+				"       X[0] + u_X[0],                                  \n"
+				"       X[1] + u_X[1],                                  \n"
+				"		forward_X = vec2(X);							\n"
+				"		forward_C = C; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_RGB_shift_scale(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec3 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec3 forward_C;									\n"
+					"	uniform vec3 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
+					"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec3 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec3 forward_C;									\n"
+					"	uniform vec4 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		u_X[2] * X[0] + u_X[0],							\n"
+					"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"   #version 330 core                                   \n"
+				"   layout (location = 0) in vec4 X;                    \n"
+				"   layout (location = 1) in vec3 C;                    \n"
+				"	out vec2 forward_X;									\n"
+				"   out vec3 forward_C;                                 \n"
+				"   uniform vec2 u_X;                                   \n"
+				"   void main() { gl_Position = vec4(                   \n"
+				"       X[0] + u_X[0],                                  \n"
+				"       X[1] + u_X[1],                                  \n"
+				"		forward_X = vec2(X);							\n"
+				"		forward_C = C; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_RGB_shift_rotate(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core												\n"
+					"	layout (location = 0) in vec4 X;								\n"
+					"	layout (location = 1) in vec3 C;								\n"
+					"	out vec2 forward_X;												\n"
+					"	out vec3 forward_C;												\n"
+					"	uniform vec4 u_X;												\n"
+					"	void main() { gl_Position = vec4(								\n"
+					"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
+					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
+					"		forward_C = C; }											\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core												\n"
+					"	layout (location = 0) in vec4 X;								\n"
+					"	layout (location = 1) in vec3 C;								\n"
+					"	out vec2 forward_X;												\n"
+					"	out vec3 forward_C;												\n"
+					"	uniform vec4 u_X;												\n"
+					"	void main() { gl_Position = vec4(								\n"
+					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
+					"		X[2], X[3]);												\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
+					"		forward_C = C; }											\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	layout (location = 1) in vec3 C;					\n"
+				"	out vec2 forward_X;									\n"
+				"	out vec3 forward_C;									\n"
+				"	uniform vec4 u_X;									\n"
+				"	void main() { gl_Position = vec4(					\n"
+				"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
+				"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
+				"		X[2], X[3]);									\n"
+				"		forward_X = vec2(X);							\n"
+				"		forward_C = C; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_RGB_affine(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core																			\n"
+					"	layout (location = 0) in vec4 X;															\n"
+					"	layout (location = 1) in vec3 C;															\n"
+					"	out vec2 forward_X;																			\n"
+					"	out vec3 forward_C;																			\n"
+					"	uniform vec4 u_X0;																			\n"
+					"	uniform vec4 u_X1;																			\n"
+					"	void main() { gl_Position  = vec4(															\n"
+					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
+					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
+					"		forward_C = C; }																		\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core																			\n"
+					"	layout (location = 0) in vec4 X;															\n"
+					"	layout (location = 1) in vec3 C;															\n"
+					"	out vec2 forward_X;																			\n"
+					"	out vec3 forward_C;																			\n"
+					"	uniform vec4 u_X0;																			\n"
+					"	uniform vec4 u_X1;																			\n"
+					"	void main() { gl_Position  = vec4(															\n"
+					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
+					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
+					"		X[2], X[3]);																			\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
+					"		forward_C = C; }																		\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core															\n"
+				"	layout (location = 0) in vec4 X;											\n"
+				"	layout (location = 1) in vec3 C;											\n"
+				"	out vec2 forward_X;															\n"
+				"	out vec3 forward_C;															\n"
+				"	uniform vec4 u_X0;															\n"
+				"	uniform vec4 u_X1;															\n"
+				"	void main() { gl_Position  = vec4(											\n"
+				"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
+				"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
+				"		X[2], X[3]);															\n"
+				"		forward_X = vec2(X);													\n"
+				"		forward_C = C; }														\n"
+				;
+		}
+	}
+
+	std::string source_vertex_RGBA_identity(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec4 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec4 forward_C;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec3 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec3 forward_C;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		X[0], " + ratio + " * X[1], X[2], X[3]);		\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	layout (location = 1) in vec4 C;					\n"
+				"	out vec2 forward_X;									\n"
+				"	out vec4 forward_C;									\n"
+				"	void main() { gl_Position = X;						\n"
+				"		forward_X = vec2(X);							\n"
+				"		forward_C = C; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_RGBA_shift(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec4 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec4 forward_C;									\n"
+					"	uniform vec2 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * (X[0] + u_X[0]),				\n"
+					"		X[1] + u_X[1], X[2], X[3]);						\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec4 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec4 forward_C;									\n"
+					"	uniform vec2 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		X[0] + u_X[0],									\n"
+					"		" + ratio + " * (X[1] + u_X[1]),				\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"   #version 330 core                                   \n"
+				"   layout (location = 0) in vec4 X;                    \n"
+				"   layout (location = 1) in vec4 C;                    \n"
+				"	out vec2 forward_X;									\n"
+				"   out vec4 forward_C;                                 \n"
+				"   uniform vec2 u_X;                                   \n"
+				"   void main() { gl_Position = vec4(                   \n"
+				"       X[0] + u_X[0],                                  \n"
+				"       X[1] + u_X[1],                                  \n"
+				"		forward_X = vec2(X);							\n"
+				"		forward_C = C; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_RGBA_shift_scale(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec4 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec4 forward_C;									\n"
+					"	uniform vec3 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
+					"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec4 C;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec4 forward_C;									\n"
+					"	uniform vec4 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		u_X[2] * X[0] + u_X[0],							\n"
+					"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+					"		forward_C = C; }								\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"   #version 330 core                                   \n"
+				"   layout (location = 0) in vec4 X;                    \n"
+				"   layout (location = 1) in vec4 C;                    \n"
+				"	out vec2 forward_X;									\n"
+				"   out vec4 forward_C;                                 \n"
+				"   uniform vec2 u_X;                                   \n"
+				"   void main() { gl_Position = vec4(                   \n"
+				"       X[0] + u_X[0],                                  \n"
+				"       X[1] + u_X[1],                                  \n"
+				"		forward_X = vec2(X);							\n"
+				"		forward_C = C; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_RGBA_shift_rotate(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core												\n"
+					"	layout (location = 0) in vec4 X;								\n"
+					"	layout (location = 1) in vec4 C;								\n"
+					"	out vec2 forward_X;												\n"
+					"	out vec4 forward_C;												\n"
+					"	uniform vec4 u_X;												\n"
+					"	void main() { gl_Position = vec4(								\n"
+					"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
+					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
+					"		forward_C = C; }											\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core												\n"
+					"	layout (location = 0) in vec4 X;								\n"
+					"	layout (location = 1) in vec4 C;								\n"
+					"	out vec2 forward_X;												\n"
+					"	out vec4 forward_C;												\n"
+					"	uniform vec4 u_X;												\n"
+					"	void main() { gl_Position = vec4(								\n"
+					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
+					"		X[2], X[3]);												\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
+					"		forward_C = C; }											\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	layout (location = 1) in vec4 C;					\n"
+				"	out vec2 forward_X;									\n"
+				"	out vec4 forward_C;									\n"
+				"	uniform vec4 u_X;									\n"
+				"	void main() { gl_Position = vec4(					\n"
+				"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
+				"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
+				"		X[2], X[3]);									\n"
+				"		forward_X = vec2(X);							\n"
+				"		forward_C = C; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_RGBA_affine(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core																			\n"
+					"	layout (location = 0) in vec4 X;															\n"
+					"	layout (location = 1) in vec4 C;															\n"
+					"	out vec2 forward_X;																			\n"
+					"	out vec4 forward_C;																			\n"
+					"	uniform vec4 u_X0;																			\n"
+					"	uniform vec4 u_X1;																			\n"
+					"	void main() { gl_Position  = vec4(															\n"
+					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
+					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
+					"		forward_C = C; }																		\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core																			\n"
+					"	layout (location = 0) in vec4 X;															\n"
+					"	layout (location = 1) in vec4 C;															\n"
+					"	out vec2 forward_X;																			\n"
+					"	out vec4 forward_C;																			\n"
+					"	uniform vec4 u_X0;																			\n"
+					"	uniform vec4 u_X1;																			\n"
+					"	void main() { gl_Position  = vec4(															\n"
+					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
+					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
+					"		X[2], X[3]);																			\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
+					"		forward_C = C; }																		\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core															\n"
+				"	layout (location = 0) in vec4 X;											\n"
+				"	layout (location = 1) in vec4 C;											\n"
+				"	out vec2 forward_X;															\n"
+				"	out vec4 forward_C;															\n"
+				"	uniform vec4 u_X0;															\n"
+				"	uniform vec4 u_X1;															\n"
+				"	void main() { gl_Position  = vec4(											\n"
+				"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
+				"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
+				"		X[2], X[3]);															\n"
+				"		forward_X = vec2(X);													\n"
+				"		forward_C = C; }														\n"
+				;
+		}
+	}
+
+	std::string source_vertex_texture_identity(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec2 UV;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec2 forward_UV;								\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+					"		forward_UV = UV; }								\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"   #version 330 core                                   \n"
+					"   layout (location = 0) in vec4 X;                    \n"
+					"   layout (location = 1) in vec2 UV;                   \n"
+					"	out vec2 forward_X;									\n"
+					"   out vec2 forward_UV;                                \n"
+					"   void main() { gl_Position = vec4(                   \n"
+					"       X[0], " + ratio + " * X[1], X[2], X[3]);        \n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+					"		forward_UV = UV; }								\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	layout (location = 1) in vec2 UV;					\n"
+				"	out vec2 forward_X;									\n"
+				"	out vec2 forward_UV;								\n"
+				"	void main() {										\n"
+				"		gl_Position = X;								\n"
+				"		forward_X = vec2(gl_Position);					\n"
+				"		forward_UV = UV; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_texture_shift(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec2 UV;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec2 forward_UV;								\n"
+					"	uniform vec2 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * (X[0] + u_X[0]),				\n"
+					"		X[1] + u_X[1], X[2], X[3]);						\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+					"		forward_UV = UV; }								\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec2 UV;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec2 forward_UV;								\n"
+					"	uniform vec2 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		X[0] + u_X[0],									\n"
+					"		" + ratio + " * (X[1] + u_X[1]),				\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+					"		forward_UV = UV; }								\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	layout (location = 1) in vec2 UV;					\n"
+				"	out vec2 forward_X;									\n"
+				"	out vec2 forward_UV;								\n"
+				"	uniform vec2 u_X;									\n"
+				"	void main() { gl_Position = vec4(					\n"
+				"		X[0] + u_X[0],									\n"
+				"		X[1] + u_X[1],									\n"
+				"		X[2], X[3]);									\n"
+				"		forward_X = vec2(X);							\n"
+				"		forward_UV = UV; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_texture_shift_scale(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec2 UV;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec2 forward_UV;								\n"
+					"	uniform vec3 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
+					"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
+					"		forward_UV = UV; }								\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 X;					\n"
+					"	layout (location = 1) in vec2 UV;					\n"
+					"	out vec2 forward_X;									\n"
+					"	out vec2 forward_UV;								\n"
+					"	uniform vec3 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		u_X[2] * X[0] + u_X[0],							\n"
+					"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
+					"		X[2], X[3]);									\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
+					"		forward_UV = UV; }								\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	layout (location = 1) in vec2 UV;					\n"
+				"	out vec2 forward_X;									\n"
+				"	out vec2 forward_UV;								\n"
+				"	uniform vec3 u_X;									\n"
+				"	void main() { gl_Position = vec4(					\n"
+				"		u_X[2] * X[0] + u_X[0],							\n"
+				"		u_X[2] * X[1] + u_X[1],							\n"
+				"		X[2], X[3]);									\n"
+				"		forward_X = vec2(X);							\n"
+				"		forward_UV = UV; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_texture_shift_rotate(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core												\n"
+					"	layout (location = 0) in vec4 X;								\n"
+					"	layout (location = 1) in vec2 UV;								\n"
+					"	out vec2 forward_X;												\n"
+					"	out vec2 forward_UV;											\n"
+					"	uniform vec4 u_X;												\n"
+					"	void main() { gl_Position = vec4(								\n"
+					"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
+					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
+					"		forward_UV = UV; }											\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core												\n"
+					"	layout (location = 0) in vec4 X;								\n"
+					"	layout (location = 1) in vec2 UV;								\n"
+					"	out vec2 forward_X;												\n"
+					"	out vec2 forward_UV;											\n"
+					"	uniform vec4 u_X;												\n"
+					"	void main() { gl_Position = vec4(								\n"
+					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
+					"		X[2], X[3]);												\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
+					"		forward_UV = UV; }											\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 X;					\n"
+				"	layout (location = 1) in vec2 UV;					\n"
+				"	out vec2 forward_X;									\n"
+				"	out vec2 forward_UV;								\n"
+				"	uniform vec4 u_X;									\n"
+				"	void main() { gl_Position = vec4(					\n"
+				"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
+				"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
+				"		X[2], X[3]);									\n"
+				"		forward_X = vec2(gl_Position);					\n"
+				"		forward_UV = UV; }								\n"
+				;
+		}
+	}
+	std::string source_vertex_texture_affine(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core																			\n"
+					"	layout (location = 0) in vec4 X;															\n"
+					"	layout (location = 1) in vec2 UV;															\n"
+					"	out vec2 forward_X;																			\n"
+					"	out vec2 forward_UV;																		\n"
+					"	uniform vec4 u_X0;																			\n"
+					"	uniform vec4 u_X1;																			\n"
+					"	void main() { gl_Position  = vec4(															\n"
+					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
+					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
+					"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
+					"		forward_UV = UV; }																		\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core																			\n"
+					"	layout (location = 0) in vec4 X;															\n"
+					"	layout (location = 1) in vec2 UV;															\n"
+					"	out vec2 forward_X;																			\n"
+					"	out vec2 forward_UV;																		\n"
+					"	uniform vec4 u_X0;																			\n"
+					"	uniform vec4 u_X1;																			\n"
+					"	void main() { gl_Position  = vec4(															\n"
+					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
+					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
+					"		X[2], X[3]);																			\n"
+					"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
+					"		forward_UV = UV; }																		\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core															\n"
+				"	layout (location = 0) in vec4 X;											\n"
+				"	layout (location = 1) in vec2 UV;											\n"
+				"	out vec2 forward_X;															\n"
+				"	out vec2 forward_UV;														\n"
+				"	uniform vec4 u_X0;															\n"
+				"	uniform vec4 u_X1;															\n"
+				"	void main() { gl_Position  = vec4(											\n"
+				"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
+				"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
+				"		X[2], X[3]);															\n"
+				"		forward_X = vec2(gl_Position);											\n"
+				"		forward_UV = UV; }														\n"
+				;
+		}
+	}
+
+
 	std::string source_vertex_3d()
 	{
 		return
@@ -1067,7 +2170,6 @@ namespace lnd
 			"		forward_X = X; }								\n"
 			;
 	}
-
 	std::string source_vertex_RGB_3d()
 	{
 		return
@@ -1083,8 +2185,6 @@ namespace lnd
 			"		forward_C = C; }								\n"
 			;
 	}
-
-
 	std::string source_vertex_RGBA_3d()
 	{
 		return
@@ -1100,7 +2200,6 @@ namespace lnd
 			"		forward_C = C; }								\n"
 			;
 	}
-
 	std::string source_vertex_texture_3d()
 	{
 		return
@@ -1132,7 +2231,6 @@ namespace lnd
 			"		forward_N = N; }								\n"
 			;
 	}
-
 	std::string source_vertex_RGB_normals_3d()
 	{
 		return
@@ -1151,7 +2249,6 @@ namespace lnd
 			"		forward_N = N; }								\n"
 			;
 	}
-
 	std::string source_vertex_RGBA_normals_3d()
 	{
 		return
@@ -1170,7 +2267,6 @@ namespace lnd
 			"		forward_N = N; }								\n"
 			;
 	}
-
 	std::string source_vertex_texture_normals_3d()
 	{
 		return
@@ -1422,6 +2518,158 @@ namespace lnd
 			"	}																						\n"
 			;
 	}
+	std::string source_fragment_RGB_pointlights_3d(int _number_of_pointlights)
+	{
+		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+
+		return
+			"	#version 330 core																		\n"
+			"	in vec3 forward_X;																		\n"
+			"	in vec3 forward_C;																		\n"
+			"	in vec3 forward_N;																		\n"
+			"	out vec4 color;																			\n"
+			"	uniform float u_diff;																	\n"
+			"	uniform float u_spec;																	\n"
+			"	uniform float u_conc;																	\n"
+			"	uniform vec3 u_view_pos;																\n"
+			"	uniform vec3 u_amb;																		\n"
+
+			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
+			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform int first_light;																\n"
+			"	uniform int end_light;																	\n"
+
+			"	uniform mat4 u_m_M;																		\n"
+
+			"	void main()																				\n"
+			"	{																						\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+
+			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
+
+			"		for (int k = first_light; k < end_light; k++)										\n"
+			"		{																					\n"
+			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
+			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
+			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			"			float dot_diff = dot(rotated_N, light_dir);										\n"
+
+			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
+			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C);			\n"
+			"		}																					\n"
+			"		color = max(vec4(color3, 1.0), face * vec4(u_amb, 0.0));							\n"
+			"	}																						\n"
+			;
+	}
+	std::string source_fragment_RGBA_pointlights_3d(int _number_of_pointlights)
+	{
+		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+
+		return
+			"	#version 330 core																		\n"
+			"	in vec3 forward_X;																		\n"
+			"	in vec4 forward_C;																		\n"
+			"	in vec3 forward_N;																		\n"
+			"	out vec4 color;																			\n"
+			"	uniform float u_diff;																	\n"
+			"	uniform float u_spec;																	\n"
+			"	uniform float u_conc;																	\n"
+			"	uniform vec3 u_view_pos;																\n"
+			"	uniform vec3 u_amb;																		\n"
+
+			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
+			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform int first_light;																\n"
+			"	uniform int end_light;																	\n"
+
+			"	uniform mat4 u_m_M;																		\n"
+
+			"	void main()																				\n"
+			"	{																						\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+			"		vec3 forward_C3 = vec3(forward_C);													\n"
+
+			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
+
+			"		for (int k = first_light; k < end_light; k++)										\n"
+			"		{																					\n"
+			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
+			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
+			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			"			float dot_diff = dot(rotated_N, light_dir);										\n"
+
+			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
+			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C3);			\n"
+			"		}																					\n"
+			"		color = max(vec4(color3, forward_C[3]), face * vec4(u_amb, 0.0));					\n"
+			"	}																						\n"
+			;
+	}
+	std::string source_fragment_texture_pointlights_3d(int _number_of_pointlights)
+	{
+		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+
+		return
+			"	#version 330 core																		\n"
+			"	in vec3 forward_X;																		\n"
+			"	in vec2 forward_UV;																		\n"
+			"	in vec3 forward_N;																		\n"
+			"	out vec4 color;																			\n"
+			"	uniform float u_diff;																	\n"
+			"	uniform float u_spec;																	\n"
+			"	uniform float u_conc;																	\n"
+			"	uniform vec3 u_view_pos;																\n"
+			"	uniform vec3 u_amb;																		\n"
+
+			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
+			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform int first_light;																\n"
+			"	uniform int end_light;																	\n"
+
+			"	uniform mat4 u_m_M;																		\n"
+			"	uniform sampler2D Tx;																	\n"
+
+			"	void main()																				\n"
+			"	{																						\n"
+			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
+			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+			"		vec4 C = texture(Tx, forward_UV);													\n"
+			"		vec3 C3 = vec3(C);																	\n"
+
+			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
+
+			"		for (int k = first_light; k < end_light; k++)										\n"
+			"		{																					\n"
+			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
+			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
+			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			"			float dot_diff = dot(rotated_N, light_dir);										\n"
+
+			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
+			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
+			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C3);					\n"
+			"		}																					\n"
+			"		color = max(vec4(color3, C[3]), face * vec4(u_amb, 0.0));							\n"
+			"	}																						\n"
+			;
+	}
+
 	std::string source_fragment_color_combolights_3d(int _number_of_pointlights)
 	{
 		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
@@ -1476,55 +2724,6 @@ namespace lnd
 			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * vec3(u_C));			\n"
 			"		}																					\n"
 			"		color = max(vec4(color3, u_C[3]), face * vec4(u_amb, 0.0));							\n"
-			"	}																						\n"
-			;
-	}
-	std::string source_fragment_RGB_pointlights_3d(int _number_of_pointlights)
-	{
-		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
-
-		return
-			"	#version 330 core																		\n"
-			"	in vec3 forward_X;																		\n"
-			"	in vec3 forward_C;																		\n"
-			"	in vec3 forward_N;																		\n"
-			"	out vec4 color;																			\n"
-			"	uniform float u_diff;																	\n"
-			"	uniform float u_spec;																	\n"
-			"	uniform float u_conc;																	\n"
-			"	uniform vec3 u_view_pos;																\n"
-			"	uniform vec3 u_amb;																		\n"
-
-			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
-			"	uniform int first_light;																\n"
-			"	uniform int end_light;																	\n"
-
-			"	uniform mat4 u_m_M;																		\n"
-
-			"	void main()																				\n"
-			"	{																						\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-
-			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
-
-			"		for (int k = first_light; k < end_light; k++)										\n"
-			"		{																					\n"
-			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
-			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
-			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
-			"			float dot_diff = dot(rotated_N, light_dir);										\n"
-
-			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
-			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C);			\n"
-			"		}																					\n"
-			"		color = max(vec4(color3, 1.0), face * vec4(u_amb, 0.0));							\n"
 			"	}																						\n"
 			;
 	}
@@ -1585,56 +2784,6 @@ namespace lnd
 			"	}																						\n"
 			;
 	}
-	std::string source_fragment_RGBA_pointlights_3d(int _number_of_pointlights)
-	{
-		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
-
-		return
-			"	#version 330 core																		\n"
-			"	in vec3 forward_X;																		\n"
-			"	in vec4 forward_C;																		\n"
-			"	in vec3 forward_N;																		\n"
-			"	out vec4 color;																			\n"
-			"	uniform float u_diff;																	\n"
-			"	uniform float u_spec;																	\n"
-			"	uniform float u_conc;																	\n"
-			"	uniform vec3 u_view_pos;																\n"
-			"	uniform vec3 u_amb;																		\n"
-
-			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
-			"	uniform int first_light;																\n"
-			"	uniform int end_light;																	\n"
-
-			"	uniform mat4 u_m_M;																		\n"
-
-			"	void main()																				\n"
-			"	{																						\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-			"		vec3 forward_C3 = vec3(forward_C);													\n"
-
-			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
-
-			"		for (int k = first_light; k < end_light; k++)										\n"
-			"		{																					\n"
-			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
-			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
-			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
-			"			float dot_diff = dot(rotated_N, light_dir);										\n"
-
-			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
-			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C3);			\n"
-			"		}																					\n"
-			"		color = max(vec4(color3, forward_C[3]), face * vec4(u_amb, 0.0));					\n"
-			"	}																						\n"
-			;
-	}
 	std::string source_fragment_RGBA_combolights_3d(int _number_of_pointlights)
 	{
 		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
@@ -1690,58 +2839,6 @@ namespace lnd
 			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C3);			\n"
 			"		}																					\n"
 			"		color = max(vec4(color3, forward_C[3]), face * vec4(u_amb, 0.0));					\n"
-			"	}																						\n"
-			;
-	}
-	std::string source_fragment_texture_pointlights_3d(int _number_of_pointlights)
-	{
-		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
-
-		return
-			"	#version 330 core																		\n"
-			"	in vec3 forward_X;																		\n"
-			"	in vec2 forward_UV;																		\n"
-			"	in vec3 forward_N;																		\n"
-			"	out vec4 color;																			\n"
-			"	uniform float u_diff;																	\n"
-			"	uniform float u_spec;																	\n"
-			"	uniform float u_conc;																	\n"
-			"	uniform vec3 u_view_pos;																\n"
-			"	uniform vec3 u_amb;																		\n"
-
-			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
-			"	uniform int first_light;																\n"
-			"	uniform int end_light;																	\n"
-
-			"	uniform mat4 u_m_M;																		\n"
-			"	uniform sampler2D Tx;																	\n"
-
-			"	void main()																				\n"
-			"	{																						\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-			"		vec4 C = texture(Tx, forward_UV);													\n"
-			"		vec3 C3 = vec3(C);																	\n"
-
-			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
-
-			"		for (int k = first_light; k < end_light; k++)										\n"
-			"		{																					\n"
-			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
-			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
-			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
-			"			float dot_diff = dot(rotated_N, light_dir);										\n"
-
-			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
-			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C3);					\n"
-			"		}																					\n"
-			"		color = max(vec4(color3, C[3]), face * vec4(u_amb, 0.0));							\n"
 			"	}																						\n"
 			;
 	}
@@ -1805,8 +2902,203 @@ namespace lnd
 			"	}																						\n"
 			;
 	}
+
+
+	inline const lnd::program& set_mvp_matrix_3d(const lnd::program& program, const float* const mvp_matrix_ptr)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_mvp_M");
+		glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
+		return program;
+	}
+	inline const lnd::program& set_m_matrix_3d(const lnd::program& program, const float* const m_matrix_ptr)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_m_M");
+		glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
+		return program;
+	}
+	inline const lnd::program& set_position_3d(const lnd::program& program, const float* const position_ptr)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_view_pos");
+		glUniform3fv(location, 1, position_ptr);
+		return program;
+	}
+	inline const lnd::program& set_mvp_position_3d(const lnd::program& program, const float* const mvp_matrix_ptr,
+		const float* const position_ptr)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_mvp_M");
+		glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
+		location = glGetUniformLocation(program.get(), "u_view_pos");
+		glUniform3fv(location, 1, position_ptr);
+		return program;
+	}
+	inline const lnd::program& set_mvp_m_position_3d(const lnd::program& program, const float* const mvp_matrix_ptr,
+		const float* const m_matrix_ptr, const float* const position_ptr)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_mvp_M");
+		glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
+		location = glGetUniformLocation(program.get(), "u_m_M");
+		glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
+		location = glGetUniformLocation(program.get(), "u_view_pos");
+		glUniform3fv(location, 1, position_ptr);
+		return program;
+	}
+	inline const lnd::program& set_ambient_light_3d(const lnd::program& program, const float* const ambient_light_ptr)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_amb");
+		glUniform3fv(location, 1, ambient_light_ptr);
+		return program;
+	}
+	inline const lnd::program& set_skylight_3d(const lnd::program& program, const float* const light_direction_ptr,
+		const float* const light_color_ptr)
+	{
+		float factor = 1.0f / LND_SQRT(light_direction_ptr[0] * light_direction_ptr[0]
+			+ light_direction_ptr[1] * light_direction_ptr[1]
+			+ light_direction_ptr[2] * light_direction_ptr[2]);
+		float light_direction_normalized[3] = {
+			factor * light_direction_ptr[0],
+			factor * light_direction_ptr[1],
+			factor * light_direction_ptr[2]
+		};
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_slight_dir");
+		glUniform3fv(location, 1, static_cast<float*>(light_direction_normalized));
+		location = glGetUniformLocation(program.get(), "u_slight_C");
+		glUniform3fv(location, 1, light_color_ptr);
+		return program;
+	}
+	inline const lnd::program& set_material_3d(const lnd::program& program, float diff_coeff, float spec_coeff, float concentration_coeff)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_diff");
+		glUniform1f(location, diff_coeff);
+		location = glGetUniformLocation(program.get(), "u_spec");
+		glUniform1f(location, spec_coeff);
+		location = glGetUniformLocation(program.get(), "u_conc");
+		glUniform1f(location, concentration_coeff);
+		return program;
+	}
+	inline const lnd::program& set_pointlight_pos_3d(lnd::program& program, unsigned int light_number, const float* const light_position_ptr)
+	{
+		std::string light_number_str = std::to_string(light_number);
+		program.use();
+		int location = glGetUniformLocation(program.get(), ("u_plight_pos[" + light_number_str + "]").c_str());
+		glUniform3fv(location, 1, light_position_ptr);
+		return program;
+	}
+	inline const lnd::program& set_pointlight_prop_3d(lnd::program& program, int light_number, const float* const light_color_ptr,
+		const float* const light_attenuation_ptr)
+	{
+		std::string light_number_str = std::to_string(light_number);
+		program.use();
+		if ((light_color_ptr != nullptr) && (light_attenuation_ptr != nullptr))
+		{
+			int location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
+			glUniform4fv(location, 1, light_color_ptr);
+			location = glGetUniformLocation(program.get(), ("u_plight_att[" + light_number_str + "]").c_str());
+			glUniform3fv(location, 1, light_attenuation_ptr);
+		}
+		else
+		{
+			float null_array[4] = { 0.0f };
+			int location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
+			glUniform4fv(location, 1, static_cast<float*>(null_array));
+		}
+		return program;
+	}
+	inline const lnd::program& set_pointlights_range_3d(lnd::program& program, int first_light, int end_light)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "first_light");
+		glUniform1i(location, first_light);
+		location = glGetUniformLocation(program.get(), "end_light");
+		glUniform1i(location, end_light);
+		return program;
+	}
 }
 
+
+// OPENGL MODES
+
+namespace lnd
+{
+	// set transparency
+
+	inline void enable_transparency()
+	{
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+	inline void disable_transparency()
+	{
+		glBlendFunc(GL_ONE, GL_ZERO);
+	}
+
+	// set dim
+
+	inline void enable_3d()
+	{
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+		lnd::__clear_window = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+	}
+	inline void disable_3d()
+	{
+		glDisable(GL_DEPTH_TEST);
+		lnd::__clear_window = GL_COLOR_BUFFER_BIT;
+	}
+
+	// depth mask and buffer
+
+	inline void enable_depth_buffer()
+	{
+		glDepthMask(GL_TRUE);
+	}
+	inline void disable_depth_buffer()
+	{
+		glDepthMask(GL_FALSE);
+	}
+	inline void reset_depth_buffer()
+	{
+		glClear(GL_DEPTH_BUFFER_BIT);
+	}
+
+	// face culling
+
+	inline void enable_face_culling(bool counter_clockwise_front_faces, bool cull_back_faces)
+	{
+		glEnable(GL_CULL_FACE);
+
+		if (counter_clockwise_front_faces)
+		{
+			glFrontFace(GL_CCW);
+		}
+		else
+		{
+			glFrontFace(GL_CW);
+		}
+
+		if (cull_back_faces)
+		{
+			glCullFace(GL_BACK);
+		}
+		else
+		{
+			glCullFace(GL_FRONT);
+		}
+	}
+	inline void disable_face_culling()
+	{
+		glDisable(GL_CULL_FACE);
+	}
+}
+
+
+// LOOPER AND WINDOW
 
 namespace lnd
 {
@@ -1823,76 +3115,7 @@ namespace lnd
 		}
 		inline void clear_window()
 		{
-			glClear(_clear_window);
-		}
-
-		// set transparency
-
-		inline void enable_transparency()
-		{
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		}
-		inline void disable_transparency()
-		{
-			glBlendFunc(GL_ONE, GL_ZERO);
-		}
-
-		// set dim
-
-		inline void enable_3d()
-		{
-			glEnable(GL_DEPTH_TEST);
-			glDepthFunc(GL_LESS);
-			_clear_window = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
-		}
-		inline void disable_3d()
-		{
-			glDisable(GL_DEPTH_TEST);
-			_clear_window = GL_COLOR_BUFFER_BIT;
-		}
-
-		// depth mask and buffer
-
-		inline void enable_depth_buffer()
-		{
-			glDepthMask(GL_TRUE);
-		}
-		inline void disable_depth_buffer()
-		{
-			glDepthMask(GL_FALSE);
-		}
-		inline void reset_depth_buffer()
-		{
-			glClear(GL_DEPTH_BUFFER_BIT);
-		}
-
-		// face culling
-
-		inline void enable_face_culling(bool counter_clockwise_front_faces, bool cull_back_faces)
-		{
-			glEnable(GL_CULL_FACE);
-
-			if (counter_clockwise_front_faces)
-			{
-				glFrontFace(GL_CCW);
-			}
-			else
-			{
-				glFrontFace(GL_CW);
-			}
-
-			if (cull_back_faces)
-			{
-				glCullFace(GL_BACK);
-			}
-			else
-			{
-				glCullFace(GL_FRONT);
-			}
-		}
-		inline void disable_face_culling()
-		{
-			glDisable(GL_CULL_FACE);
+			glClear(lnd::__clear_window);
 		}
 
 		// subwindow
@@ -3263,123 +4486,6 @@ namespace lnd
 			return program;
 		}
 
-		inline const lnd::program& set_mvp_matrix_3d(const lnd::program& program, const float* const mvp_matrix_ptr)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_mvp_M");
-			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
-			return program;
-		}
-		inline const lnd::program& set_m_matrix_3d(const lnd::program& program, const float* const m_matrix_ptr)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_m_M");
-			glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
-			return program;
-		}
-		inline const lnd::program& set_position_3d(const lnd::program& program, const float* const position_ptr)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_view_pos");
-			glUniform3fv(location, 1, position_ptr);
-			return program;
-		}
-		inline const lnd::program& set_mvp_position_3d(const lnd::program& program, const float* const mvp_matrix_ptr,
-			const float* const position_ptr)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_mvp_M");
-			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
-			location = glGetUniformLocation(program.get(), "u_view_pos");
-			glUniform3fv(location, 1, position_ptr);
-			return program;
-		}
-		inline const lnd::program& set_mvp_m_position_3d(const lnd::program& program, const float* const mvp_matrix_ptr,
-			const float* const m_matrix_ptr, const float* const position_ptr)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_mvp_M");
-			glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
-			location = glGetUniformLocation(program.get(), "u_m_M");
-			glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
-			location = glGetUniformLocation(program.get(), "u_view_pos");
-			glUniform3fv(location, 1, position_ptr);
-			return program;
-		}
-		inline const lnd::program& set_ambient_light_3d(const lnd::program& program, const float* const ambient_light_ptr)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_amb");
-			glUniform3fv(location, 1, ambient_light_ptr);
-			return program;
-		}
-		inline const lnd::program& set_skylight_3d(const lnd::program& program, const float* const light_direction_ptr,
-			const float* const light_color_ptr)
-		{
-			float factor = 1.0f / LND_SQRT(light_direction_ptr[0] * light_direction_ptr[0]
-				+ light_direction_ptr[1] * light_direction_ptr[1]
-				+ light_direction_ptr[2] * light_direction_ptr[2]);
-			float light_direction_normalized[3] = {
-				factor * light_direction_ptr[0],
-				factor * light_direction_ptr[1],
-				factor * light_direction_ptr[2]
-			};
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_slight_dir");
-			glUniform3fv(location, 1, static_cast<float*>(light_direction_normalized));
-			location = glGetUniformLocation(program.get(), "u_slight_C");
-			glUniform3fv(location, 1, light_color_ptr);
-			return program;
-		}
-		inline const lnd::program& set_material_3d(const lnd::program& program, float diff_coeff, float spec_coeff, float concentration_coeff)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_diff");
-			glUniform1f(location, diff_coeff);
-			location = glGetUniformLocation(program.get(), "u_spec");
-			glUniform1f(location, spec_coeff);
-			location = glGetUniformLocation(program.get(), "u_conc");
-			glUniform1f(location, concentration_coeff);
-			return program;
-		}
-		lnd::program& set_pointlight_pos_3d(lnd::program& program, unsigned int light_number, const float* const light_position_ptr)
-		{
-			std::string light_number_str = std::to_string(light_number);
-			program.use();
-			int location = glGetUniformLocation(program.get(), ("u_plight_pos[" + light_number_str + "]").c_str());
-			glUniform3fv(location, 1, light_position_ptr);
-			return program;
-		}
-		lnd::program& set_pointlight_prop_3d(lnd::program& program, int light_number, const float* const light_color_ptr,
-			const float* const light_attenuation_ptr)
-		{
-			std::string light_number_str = std::to_string(light_number);
-			program.use();
-			if ((light_color_ptr != nullptr) && (light_attenuation_ptr != nullptr))
-			{
-				int location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
-				glUniform4fv(location, 1, light_color_ptr);
-				location = glGetUniformLocation(program.get(), ("u_plight_att[" + light_number_str + "]").c_str());
-				glUniform3fv(location, 1, light_attenuation_ptr);
-			}
-			else
-			{
-				float null_array[4] = { 0.0f };
-				int location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
-				glUniform4fv(location, 1, static_cast<float*>(null_array));
-			}
-			return program;
-		}
-		lnd::program& set_pointlights_range_3d(lnd::program& program, int first_light, int end_light)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "first_light");
-			glUniform1i(location, first_light);
-			location = glGetUniformLocation(program.get(), "end_light");
-			glUniform1i(location, end_light);
-			return program;
-		}
-
 
 		// CONSTRUCTORS AND DESTRUCTORS
 
@@ -3426,7 +4532,6 @@ namespace lnd
 		float _max_Y = 1.0f;
 		float _pixel_X = 0.01f;
 		float _pixel_Y = 0.01f;
-		GLbitfield _clear_window = GL_COLOR_BUFFER_BIT;
 
 
 		unsigned int tri_hollow_index[6] = { 0, 1, 1, 2, 2, 0 };
@@ -3561,831 +4666,33 @@ namespace lnd
 		// do not call this function in a derived class
 		void _setup_basic_shaders_and_buffers(bool rescale_screen_coordinates)
 		{
-			if (rescale_screen_coordinates)
-			{
-				if (_screen_width >= _screen_height)
-				{
-					std::string ratio = std::to_string(_screen_ratio_inv);
+			float screen_width_ps = static_cast<float>(_screen_width);
+			float screen_height_ps = static_cast<float>(_screen_height);
 
-					_vertex_identity.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	out vec2 forward_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
-					);
+			_vertex_identity.new_shader(lnd::source_vertex_identity(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_shift.new_shader(lnd::source_vertex_shift(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_shift_scale.new_shader(lnd::source_vertex_shift_scale(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_shift_rotate.new_shader(lnd::source_vertex_shift_rotate(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_affine.new_shader(lnd::source_vertex_affine(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
 
-					_vertex_shift.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	out vec2 forward_X;									\n"
-						"	uniform vec2 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * (X[0] + u_X[0]),				\n"
-						"		X[1] + u_X[1], X[2], X[3]);						\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
-					);
+			_vertex_RGB_identity.new_shader(lnd::source_vertex_RGB_identity(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_RGB_shift.new_shader(lnd::source_vertex_RGB_shift(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_RGB_shift_scale.new_shader(lnd::source_vertex_RGB_shift_scale(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_RGB_shift_rotate.new_shader(lnd::source_vertex_RGB_shift_rotate(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_RGB_affine.new_shader(lnd::source_vertex_RGB_affine(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
 
-					_vertex_shift_scale.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	out vec2 forward_X;									\n"
-						"	uniform vec3 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
-						"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
-					);
+			_vertex_RGBA_identity.new_shader(lnd::source_vertex_RGBA_identity(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_RGBA_shift.new_shader(lnd::source_vertex_RGBA_shift(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_RGBA_shift_scale.new_shader(lnd::source_vertex_RGBA_shift_scale(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_RGBA_shift_rotate.new_shader(lnd::source_vertex_RGBA_shift_rotate(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_RGBA_affine.new_shader(lnd::source_vertex_RGBA_affine(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
 
-					_vertex_shift_rotate.new_shader(std::string("") +
-						"	#version 330 core												\n"
-						"	layout (location = 0) in vec4 X;								\n"
-						"	out vec2 forward_X;												\n"
-						"	uniform vec4 u_X;												\n"
-						"	void main() { gl_Position = vec4(								\n"
-						"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
-						"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]); }				\n"
-					);
-
-					_vertex_affine.new_shader(std::string("") +
-						"	#version 330 core																			\n"
-						"	layout (location = 0) in vec4 X;															\n"
-						"	out vec2 forward_X;																			\n"
-						"	uniform vec4 u_X0;																			\n"
-						"	uniform vec4 u_X1;																			\n"
-						"	void main() { gl_Position  = vec4(															\n"
-						"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]); }											\n"
-					);
-
-					_vertex_RGB_identity.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec3 C;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec3 forward_C;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGB_shift.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec3 C;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec3 forward_C;									\n"
-						"	uniform vec2 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * (X[0] + u_X[0]),				\n"
-						"		X[1] + u_X[1], X[2], X[3]);						\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGB_shift_scale.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec3 C;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec3 forward_C;									\n"
-						"	uniform vec3 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
-						"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGB_shift_rotate.new_shader(std::string("") +
-						"	#version 330 core												\n"
-						"	layout (location = 0) in vec4 X;								\n"
-						"	layout (location = 1) in vec3 C;								\n"
-						"	out vec2 forward_X;												\n"
-						"	out vec3 forward_C;												\n"
-						"	uniform vec4 u_X;												\n"
-						"	void main() { gl_Position = vec4(								\n"
-						"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
-						"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
-						"		forward_C = C; }											\n"
-					);
-
-					_vertex_RGB_affine.new_shader(std::string("") +
-						"	#version 330 core																			\n"
-						"	layout (location = 0) in vec4 X;															\n"
-						"	layout (location = 1) in vec3 C;															\n"
-						"	out vec2 forward_X;																			\n"
-						"	out vec3 forward_C;																			\n"
-						"	uniform vec4 u_X0;																			\n"
-						"	uniform vec4 u_X1;																			\n"
-						"	void main() { gl_Position  = vec4(															\n"
-						"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
-						"		forward_C = C; }																		\n"
-					);
-
-					_vertex_RGBA_identity.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec4 C;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec4 forward_C;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGBA_shift.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec4 C;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec4 forward_C;									\n"
-						"	uniform vec2 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * (X[0] + u_X[0]),				\n"
-						"		X[1] + u_X[1], X[2], X[3]);						\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGBA_shift_scale.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec4 C;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec4 forward_C;									\n"
-						"	uniform vec4 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
-						"		u_X[2] * X[1] + u_X[1],							\n"
-						"		X[2], X[3]);									\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGBA_shift_rotate.new_shader(std::string("") +
-						"	#version 330 core												\n"
-						"	layout (location = 0) in vec4 X;								\n"
-						"	layout (location = 1) in vec4 C;								\n"
-						"	out vec2 forward_X;												\n"
-						"	out vec4 forward_C;												\n"
-						"	uniform vec4 u_X;												\n"
-						"	void main() { gl_Position = vec4(								\n"
-						"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
-						"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],						\n"
-						"		X[2], X[3]);												\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
-						"		forward_C = C; }											\n"
-					);
-
-					_vertex_RGBA_affine.new_shader(std::string("") +
-						"	#version 330 core																			\n"
-						"	layout (location = 0) in vec4 X;															\n"
-						"	layout (location = 1) in vec4 C;															\n"
-						"	out vec2 forward_X;																			\n"
-						"	out vec4 forward_C;																			\n"
-						"	uniform vec4 u_X0;																			\n"
-						"	uniform vec4 u_X1;																			\n"
-						"	void main() { gl_Position  = vec4(															\n"
-						"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
-						"		forward_C = C; }																		\n"
-					);
-
-					_vertex_texture_identity.new_shader(
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec2 UV;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec2 forward_UV;								\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-						"		forward_UV = UV; }								\n"
-					);
-
-					_vertex_texture_shift.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec2 UV;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec2 forward_UV;								\n"
-						"	uniform vec2 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * (X[0] + u_X[0]),				\n"
-						"		X[1] + u_X[1], X[2], X[3]);						\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-						"		forward_UV = UV; }								\n"
-					);
-
-					_vertex_texture_shift_scale.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec2 UV;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec2 forward_UV;								\n"
-						"	uniform vec3 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
-						"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-						"		forward_UV = UV; }								\n"
-					);
-
-					_vertex_texture_shift_rotate.new_shader(std::string("") +
-						"	#version 330 core												\n"
-						"	layout (location = 0) in vec4 X;								\n"
-						"	layout (location = 1) in vec2 UV;								\n"
-						"	out vec2 forward_X;												\n"
-						"	out vec2 forward_UV;											\n"
-						"	uniform vec4 u_X;												\n"
-						"	void main() { gl_Position = vec4(								\n"
-						"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
-						"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
-						"		forward_UV = UV; }											\n"
-					);
-
-					_vertex_texture_affine.new_shader(std::string("") +
-						"	#version 330 core																			\n"
-						"	layout (location = 0) in vec4 X;															\n"
-						"	layout (location = 1) in vec2 UV;															\n"
-						"	out vec2 forward_X;																			\n"
-						"	out vec2 forward_UV;																		\n"
-						"	uniform vec4 u_X0;																			\n"
-						"	uniform vec4 u_X1;																			\n"
-						"	void main() { gl_Position  = vec4(															\n"
-						"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-						"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
-						"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
-						"		forward_UV = UV; }																		\n"
-					);
-				}
-				else
-				{
-					std::string ratio = std::to_string(_screen_ratio);
-
-					_vertex_identity.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	out vec2 forward_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		X[0], " + ratio + " * X[1], X[2], X[3]);		\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
-					);
-
-					_vertex_shift.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	out vec2 forward_X;									\n"
-						"	uniform vec2 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		X[0] + u_X[0],									\n"
-						"		" + ratio + " * (X[1] + u_X[1]),				\n"
-						"		X[2], X[3]);									\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
-					);
-
-					_vertex_shift_scale.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	out vec2 forward_X;									\n"
-						"	uniform vec3 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		u_X[2] * X[0] + u_X[0],							\n"
-						"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-						"		X[2], X[3]);									\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
-					);
-
-					_vertex_shift_rotate.new_shader(std::string("") +
-						"	#version 330 core												\n"
-						"	layout (location = 0) in vec4 X;								\n"
-						"	out vec2 forward_X;												\n"
-						"	uniform vec4 u_X;												\n"
-						"	void main() { gl_Position = vec4(								\n"
-						"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
-						"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-						"		X[2], X[3]);												\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
-					);
-
-					_vertex_affine.new_shader(std::string("") +
-						"	#version 330 core																			\n"
-						"	layout (location = 0) in vec4 X;															\n"
-						"	out vec2 forward_X;																			\n"
-						"	uniform vec4 u_X0;																			\n"
-						"	uniform vec4 u_X1;																			\n"
-						"	void main() { gl_Position  = vec4(															\n"
-						"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
-						"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-						"		X[2], X[3]);																			\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }											\n"
-					);
-
-					_vertex_RGB_identity.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec3 C;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec3 forward_C;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		X[0], " + ratio + " * X[1], X[2], X[3]);		\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGB_shift.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec3 C;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec3 forward_C;									\n"
-						"	uniform vec2 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		X[0] + u_X[0],									\n"
-						"		" + ratio + " * (X[1] + u_X[1]),				\n"
-						"		X[2], X[3]);									\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGB_shift_scale.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec3 C;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec3 forward_C;									\n"
-						"	uniform vec3 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		u_X[2] * X[0] + u_X[0],							\n"
-						"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-						"		X[2], X[3]);									\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGB_shift_rotate.new_shader(std::string("") +
-						"	#version 330 core												\n"
-						"	layout (location = 0) in vec4 X;								\n"
-						"	layout (location = 1) in vec3 C;								\n"
-						"	out vec2 forward_X;												\n"
-						"	out vec3 forward_C;												\n"
-						"	uniform vec4 u_X;												\n"
-						"	void main() { gl_Position = vec4(								\n"
-						"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
-						"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-						"		X[2], X[3]);												\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
-						"		forward_C = C; }											\n"
-					);
-
-					_vertex_RGB_affine.new_shader(std::string("") +
-						"	#version 330 core																			\n"
-						"	layout (location = 0) in vec4 X;															\n"
-						"	layout (location = 1) in vec3 C;															\n"
-						"	out vec2 forward_X;																			\n"
-						"	out vec3 forward_C;																			\n"
-						"	uniform vec4 u_X0;																			\n"
-						"	uniform vec4 u_X1;																			\n"
-						"	void main() { gl_Position  = vec4(															\n"
-						"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
-						"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-						"		X[2], X[3]);																			\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
-						"		forward_C = C; }																		\n"
-					);
-
-					_vertex_RGBA_identity.new_shader(std::string("") +
-						"	#version 330 core                                   \n"
-						"	layout (location = 0) in vec4 X;                    \n"
-						"	layout (location = 1) in vec4 C;                    \n"
-						"	out vec2 forward_X;									\n"
-						"	out vec4 forward_C;                                 \n"
-						"	void main() { gl_Position = vec4(                   \n"
-						"		X[0], " + ratio + " * X[1], X[2], X[3]);        \n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGBA_shift.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec4 C;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec4 forward_C;									\n"
-						"	uniform vec2 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		X[0] + u_X[0],									\n"
-						"		" + ratio + " * (X[1] + u_X[1]),				\n"
-						"		X[2], X[3]);									\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGBA_shift_scale.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec4 C;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec4 forward_C;									\n"
-						"	uniform vec4 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		u_X[2] * X[0] + u_X[0],							\n"
-						"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-						"		X[2], X[3]);									\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-						"		forward_C = C; }								\n"
-					);
-
-					_vertex_RGBA_shift_rotate.new_shader(std::string("") +
-						"	#version 330 core												\n"
-						"	layout (location = 0) in vec4 X;								\n"
-						"	layout (location = 1) in vec4 C;								\n"
-						"	out vec2 forward_X;												\n"
-						"	out vec4 forward_C;												\n"
-						"	uniform vec4 u_X;												\n"
-						"	void main() { gl_Position = vec4(								\n"
-						"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
-						"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-						"		X[2], X[3]);												\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
-						"		forward_C = C; }											\n"
-					);
-
-					_vertex_RGBA_affine.new_shader(std::string("") +
-						"	#version 330 core																			\n"
-						"	layout (location = 0) in vec4 X;															\n"
-						"	layout (location = 1) in vec4 C;															\n"
-						"	out vec2 forward_X;																			\n"
-						"	out vec4 forward_C;																			\n"
-						"	uniform vec4 u_X0;																			\n"
-						"	uniform vec4 u_X1;																			\n"
-						"	void main() { gl_Position  = vec4(															\n"
-						"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
-						"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-						"		X[2], X[3]);																			\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
-						"		forward_C = C; }																		\n"
-					);
-
-					_vertex_texture_identity.new_shader(
-						"   #version 330 core                                   \n"
-						"   layout (location = 0) in vec4 X;                    \n"
-						"   layout (location = 1) in vec2 UV;                   \n"
-						"	out vec2 forward_X;									\n"
-						"   out vec2 forward_UV;                                \n"
-						"   void main() { gl_Position = vec4(                   \n"
-						"       X[0], " + ratio + " * X[1], X[2], X[3]);        \n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-						"		forward_UV = UV; }								\n"
-					);
-
-					_vertex_texture_shift.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec2 UV;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec2 forward_UV;								\n"
-						"	uniform vec2 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		X[0] + u_X[0],									\n"
-						"		" + ratio + " * (X[1] + u_X[1]),				\n"
-						"		X[2], X[3]);									\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-						"		forward_UV = UV; }								\n"
-					);
-
-					_vertex_texture_shift_scale.new_shader(std::string("") +
-						"	#version 330 core									\n"
-						"	layout (location = 0) in vec4 X;					\n"
-						"	layout (location = 1) in vec2 UV;					\n"
-						"	out vec2 forward_X;									\n"
-						"	out vec2 forward_UV;								\n"
-						"	uniform vec3 u_X;									\n"
-						"	void main() { gl_Position = vec4(					\n"
-						"		u_X[2] * X[0] + u_X[0],							\n"
-						"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-						"		X[2], X[3]);									\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-						"		forward_UV = UV; }								\n"
-					);
-
-					_vertex_texture_shift_rotate.new_shader(std::string("") +
-						"	#version 330 core												\n"
-						"	layout (location = 0) in vec4 X;								\n"
-						"	layout (location = 1) in vec2 UV;								\n"
-						"	out vec2 forward_X;												\n"
-						"	out vec2 forward_UV;											\n"
-						"	uniform vec4 u_X;												\n"
-						"	void main() { gl_Position = vec4(								\n"
-						"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
-						"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-						"		X[2], X[3]);												\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
-						"		forward_UV = UV; }											\n"
-					);
-
-					_vertex_texture_affine.new_shader(std::string("") +
-						"	#version 330 core																			\n"
-						"	layout (location = 0) in vec4 X;															\n"
-						"	layout (location = 1) in vec2 UV;															\n"
-						"	out vec2 forward_X;																			\n"
-						"	out vec2 forward_UV;																		\n"
-						"	uniform vec4 u_X0;																			\n"
-						"	uniform vec4 u_X1;																			\n"
-						"	void main() { gl_Position  = vec4(															\n"
-						"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
-						"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-						"		X[2], X[3]);																			\n"
-						"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
-						"		forward_UV = UV; }																		\n"
-					);
-				}
-			}
-			else
-			{
-				_vertex_identity.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	out vec2 forward_X;									\n"
-					"	void main() { gl_Position = X;						\n"
-					"		forward_X = vec2(gl_Position); }				\n"
-				);
-
-				_vertex_shift.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	out vec2 forward_X;									\n"
-					"	uniform vec2 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		X[0] + u_X[0],									\n"
-					"		X[1] + u_X[1],									\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(gl_Position); }				\n"
-				);
-
-				_vertex_shift_scale.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	out vec2 forward_X;									\n"
-					"	uniform vec3 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] + u_X[0],							\n"
-					"		u_X[2] * X[1] + u_X[1],							\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(gl_Position); }				\n"
-				);
-
-				_vertex_shift_rotate.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	out vec2 forward_X;									\n"
-					"	uniform vec4 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
-					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(gl_Position); }				\n"
-				);
-
-				_vertex_affine.new_shader(
-					"	#version 330 core															\n"
-					"	layout (location = 0) in vec4 X;											\n"
-					"	out vec2 forward_X;															\n"
-					"	uniform vec4 u_X0;															\n"
-					"	uniform vec4 u_X1;															\n"
-					"	void main() { gl_Position  = vec4(											\n"
-					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
-					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-					"		X[2], X[3]);															\n"
-					"		forward_X = vec2(gl_Position); }										\n"
-				);
-
-				_vertex_RGB_identity.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec3 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec3 forward_C;									\n"
-					"	void main() { gl_Position = X;						\n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_C = C; }								\n"
-				);
-
-				_vertex_RGB_shift.new_shader(
-					"   #version 330 core                                   \n"
-					"   layout (location = 0) in vec4 X;                    \n"
-					"   layout (location = 1) in vec3 C;                    \n"
-					"	out vec2 forward_X;									\n"
-					"   out vec3 forward_C;                                 \n"
-					"   uniform vec2 u_X;                                   \n"
-					"   void main() { gl_Position = vec4(                   \n"
-					"       X[0] + u_X[0],                                  \n"
-					"       X[1] + u_X[1],                                  \n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_C = C; }								\n"
-				);
-
-				_vertex_RGB_shift_scale.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec3 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec3 forward_C;									\n"
-					"	uniform vec3 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] + u_X[0],							\n"
-					"		u_X[2] * X[1] + u_X[1],							\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_C = C; }								\n"
-				);
-
-				_vertex_RGB_shift_rotate.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec3 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec3 forward_C;									\n"
-					"	uniform vec4 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
-					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_C = C; }								\n"
-				);
-
-				_vertex_RGB_affine.new_shader(
-					"	#version 330 core															\n"
-					"	layout (location = 0) in vec4 X;											\n"
-					"	layout (location = 1) in vec3 C;											\n"
-					"	out vec2 forward_X;															\n"
-					"	out vec3 forward_C;															\n"
-					"	uniform vec4 u_X0;															\n"
-					"	uniform vec4 u_X1;															\n"
-					"	void main() { gl_Position  = vec4(											\n"
-					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
-					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-					"		X[2], X[3]);															\n"
-					"		forward_X = vec2(gl_Position);											\n"
-					"		forward_C = C; }														\n"
-				);
-
-				_vertex_RGBA_identity.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec4 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec4 forward_C;									\n"
-					"	void main() { gl_Position = X;						\n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_C = C; }								\n"
-				);
-
-				_vertex_RGBA_shift.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec4 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec4 forward_C;									\n"
-					"	uniform vec2 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		X[0] + u_X[0],									\n"
-					"		X[1] + u_X[1],									\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_C = C; }								\n"
-				);
-
-				_vertex_RGBA_shift_scale.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec4 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec4 forward_C;									\n"
-					"	uniform vec4 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] + u_X[0],							\n"
-					"		u_X[2] * X[1] + u_X[1],							\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_C = C; }								\n"
-				);
-
-				_vertex_RGBA_shift_rotate.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec4 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec4 forward_C;									\n"
-					"	uniform vec4 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
-					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_C = C; }								\n"
-				);
-
-				_vertex_RGBA_affine.new_shader(
-					"	#version 330 core															\n"
-					"	layout (location = 0) in vec4 X;											\n"
-					"	layout (location = 1) in vec4 C;											\n"
-					"	out vec4 forward_C;															\n"
-					"	uniform vec4 u_X0;															\n"
-					"	uniform vec4 u_X1;															\n"
-					"	void main() { gl_Position  = vec4(											\n"
-					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
-					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-					"		X[2], X[3]);															\n"
-					"		forward_X = vec2(gl_Position);											\n"
-					"		forward_C = C; }														\n"
-				);
-
-				_vertex_texture_identity.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec2 UV;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec2 forward_UV;								\n"
-					"	void main() {										\n"
-					"		gl_Position = X;								\n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_UV = UV; }								\n"
-				);
-
-				_vertex_texture_shift.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec2 UV;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec2 forward_UV;								\n"
-					"	uniform vec2 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		X[0] + u_X[0],									\n"
-					"		X[1] + u_X[1],									\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_UV = UV; }								\n"
-				);
-
-				_vertex_texture_shift_scale.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec2 UV;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec2 forward_UV;								\n"
-					"	uniform vec3 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] + u_X[0],							\n"
-					"		u_X[2] * X[1] + u_X[1],							\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_UV = UV; }								\n"
-				);
-
-				_vertex_texture_shift_rotate.new_shader(
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec2 UV;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec2 forward_UV;								\n"
-					"	uniform vec4 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
-					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(gl_Position);					\n"
-					"		forward_UV = UV; }								\n"
-				);
-
-				_vertex_texture_affine.new_shader(
-					"	#version 330 core															\n"
-					"	layout (location = 0) in vec4 X;											\n"
-					"	layout (location = 1) in vec2 UV;											\n"
-					"	out vec2 forward_X;															\n"
-					"	out vec2 forward_UV;														\n"
-					"	uniform vec4 u_X0;															\n"
-					"	uniform vec4 u_X1;															\n"
-					"	void main() { gl_Position  = vec4(											\n"
-					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
-					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-					"		X[2], X[3]);															\n"
-					"		forward_X = vec2(gl_Position);											\n"
-					"		forward_UV = UV; }														\n"
-				);
-			}
+			_vertex_texture_identity.new_shader(lnd::source_vertex_texture_identity(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_texture_shift.new_shader(lnd::source_vertex_texture_shift(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_texture_shift_scale.new_shader(lnd::source_vertex_texture_shift_scale(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_texture_shift_rotate.new_shader(lnd::source_vertex_texture_shift_rotate(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			_vertex_texture_affine.new_shader(lnd::source_vertex_texture_affine(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
+			
 
 			_vertex_3d.new_shader(lnd::source_vertex_3d());
 			_vertex_RGB_3d.new_shader(lnd::source_vertex_RGB_3d());
@@ -4851,6 +5158,8 @@ namespace lnd
 	};
 }
 
+
+// STORAGE CLASSES
 
 namespace lnd
 {
@@ -8634,6 +8943,8 @@ namespace lnd
 	};
 }
 
+
+// CAMERA 3D
 
 namespace lnd
 {
