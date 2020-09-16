@@ -3118,7 +3118,7 @@ namespace lnd
 
 		// subwindow
 
-		inline void enable_subwindow(float X_min, float Y_min, float X_max, float Y_max)
+		inline void enter_subwindow(float X_min, float Y_min, float X_max, float Y_max)
 		{
 			if (_screen_width >= _screen_height)
 			{
@@ -3135,7 +3135,7 @@ namespace lnd
 					static_cast<GLsizei>(factor_X * (X_max - X_min)), static_cast<GLsizei>(factor_Y * (Y_max - Y_min)));
 			}
 		}
-		inline void disable_subwindow()
+		inline void exit_subwindow()
 		{
 			glViewport(0, 0, static_cast<GLsizei>(_screen_width), static_cast<GLsizei>(_screen_height));
 		}
