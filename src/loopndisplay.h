@@ -1076,7 +1076,7 @@ namespace lnd
 					"	out vec2 X;													\n"
 					"	void main() { gl_Position = vec4(							\n"
 					"		" + ratio + " * in_X[0], in_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]); }			\n"
+					"		X = vec2(in_X); }										\n"
 					;
 			}
 			else
@@ -1088,7 +1088,7 @@ namespace lnd
 					"	out vec2 X;													\n"
 					"	void main() { gl_Position = vec4(							\n"
 					"		in_X[0], " + ratio + " * in_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]); }			\n"
+					"		X = vec2(in_X); }										\n"
 					;
 			}
 		}
@@ -1118,7 +1118,7 @@ namespace lnd
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (in_X[0] + u_X[0]),				\n"
 					"		in_X[1] + u_X[1], in_X[2], in_X[3]);			\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]); }	\n"
+					"		X = vec2(in_X); }								\n"
 					;
 			}
 			else
@@ -1133,7 +1133,7 @@ namespace lnd
 					"		in_X[0] + u_X[0],								\n"
 					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
 					"		in_X[2], in_X[3]);								\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]); }	\n"
+					"		X = vec2(in_X); }								\n"
 					;
 			}
 		}
@@ -1167,7 +1167,7 @@ namespace lnd
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
 					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]); }	\n"
+					"		X = vec2(in_X); }								\n"
 					;
 			}
 			else
@@ -1182,7 +1182,7 @@ namespace lnd
 					"		u_X[2] * in_X[0] + u_X[0],						\n"
 					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
 					"		in_X[2], in_X[3]);								\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]); }	\n"
+					"		X = vec2(in_X); }								\n"
 					;
 			}
 		}
@@ -1216,7 +1216,7 @@ namespace lnd
 					"	void main() { gl_Position = vec4(										\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
 					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]); }						\n"
+					"		X = vec2(in_X); }													\n"
 					;
 			}
 			else
@@ -1231,7 +1231,7 @@ namespace lnd
 					"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],						\n"
 					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
 					"		in_X[2], in_X[3]);													\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]); }						\n"
+					"		X = vec2(in_X); }													\n"
 					;
 			}
 		}
@@ -1266,7 +1266,7 @@ namespace lnd
 					"	void main() { gl_Position  = vec4(																	\n"
 					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
 					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]); }													\n"
+					"		X = vec2(in_X); }																				\n"
 					;
 			}
 			else
@@ -1282,7 +1282,7 @@ namespace lnd
 					"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),						\n"
 					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
 					"		in_X[2], in_X[3]);																				\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]); }													\n"
+					"		X = vec2(in_X); }																				\n"
 					;
 			}
 		}
@@ -1318,7 +1318,7 @@ namespace lnd
 					"	out vec3 C;													\n"
 					"	void main() { gl_Position = vec4(							\n"
 					"		" + ratio + " * in_X[0], in_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);				\n"
+					"		X = vec2(in_X);											\n"
 					"		C = in_C; }												\n"
 					;
 			}
@@ -1333,7 +1333,7 @@ namespace lnd
 					"	out vec3 C;													\n"
 					"	void main() { gl_Position = vec4(							\n"
 					"		in_X[0], " + ratio + " * in_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);				\n"
+					"		X = vec2(in_X);											\n"
 					"		C = in_C; }												\n"
 					;
 			}
@@ -1363,14 +1363,14 @@ namespace lnd
 					"	#version 330 core										\n"
 					"	layout (location = 0) in vec4 in_X;						\n"
 					"	layout (location = 1) in vec3 in_C;						\n"
-					"	out vec2 X;										\n"
-					"	out vec3 C;										\n"
+					"	out vec2 X;												\n"
+					"	out vec3 C;												\n"
 					"	uniform vec2 u_X;										\n"
 					"	void main() { gl_Position = vec4(						\n"
 					"		" + ratio + " * (in_X[0] + u_X[0]),					\n"
 					"		in_X[1] + u_X[1], in_X[2], in_X[3]);				\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);	\n"
-					"		C = in_C; }									\n"
+					"		X = vec2(in_X);										\n"
+					"		C = in_C; }											\n"
 					;
 			}
 			else
@@ -1387,7 +1387,7 @@ namespace lnd
 					"		in_X[0] + u_X[0],								\n"
 					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
 					"		in_X[2], in_X[3]);								\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		X = vec2(in_X);									\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1427,7 +1427,7 @@ namespace lnd
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
 					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);		\n"
+					"		X = vec2(in_X);									\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1445,7 +1445,7 @@ namespace lnd
 					"		u_X[2] * in_X[0] + u_X[0],						\n"
 					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
 					"		in_X[2], in_X[3]);								\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		X = vec2(in_X);									\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1485,7 +1485,7 @@ namespace lnd
 					"	void main() { gl_Position = vec4(										\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
 					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);							\n"
+					"		X = vec2(in_X);														\n"
 					"		C = in_C; }															\n"
 					;
 			}
@@ -1503,7 +1503,7 @@ namespace lnd
 					"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],						\n"
 					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
 					"		in_X[2], in_X[3]);													\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);							\n"
+					"		X = vec2(in_X);														\n"
 					"		C = in_C; }															\n"
 					;
 			}
@@ -1544,7 +1544,7 @@ namespace lnd
 					"	void main() { gl_Position  = vec4(																	\n"
 					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
 					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);														\n"
+					"		X = vec2(in_X);																					\n"
 					"		C = in_C; }																						\n"
 					;
 			}
@@ -1563,7 +1563,7 @@ namespace lnd
 					"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),						\n"
 					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
 					"		in_X[2], in_X[3]);																				\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);														\n"
+					"		X = vec2(in_X);																					\n"
 					"		C = in_C; }																						\n"
 					;
 			}
@@ -1603,7 +1603,7 @@ namespace lnd
 					"	out vec4 C;													\n"
 					"	void main() { gl_Position = vec4(							\n"
 					"		" + ratio + " * in_X[0], in_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);				\n"
+					"		X = vec2(in_X);											\n"
 					"		C = in_C; }												\n"
 					;
 			}
@@ -1618,7 +1618,7 @@ namespace lnd
 					"	out vec3 C;													\n"
 					"	void main() { gl_Position = vec4(							\n"
 					"		in_X[0], " + ratio + " * in_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);				\n"
+					"		X = vec2(in_X);											\n"
 					"		C = in_C; }												\n"
 					;
 			}
@@ -1654,7 +1654,7 @@ namespace lnd
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (in_X[0] + u_X[0]),				\n"
 					"		in_X[1] + u_X[1], in_X[2], in_X[3]);			\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);		\n"
+					"		X = vec2(in_X);									\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1672,7 +1672,7 @@ namespace lnd
 					"		in_X[0] + u_X[0],								\n"
 					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
 					"		in_X[2], in_X[3]);								\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		X = vec2(in_X);									\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1712,7 +1712,7 @@ namespace lnd
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
 					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);		\n"
+					"		X = vec2(in_X);									\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1730,7 +1730,7 @@ namespace lnd
 					"		u_X[2] * in_X[0] + u_X[0],						\n"
 					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
 					"		in_X[2], in_X[3]);								\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		X = vec2(in_X);									\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1770,7 +1770,7 @@ namespace lnd
 					"	void main() { gl_Position = vec4(										\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
 					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);							\n"
+					"		X = vec2(in_X);														\n"
 					"		C = in_C; }															\n"
 					;
 			}
@@ -1788,7 +1788,7 @@ namespace lnd
 					"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],						\n"
 					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
 					"		in_X[2], in_X[3]);													\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);							\n"
+					"		X = vec2(in_X);														\n"
 					"		C = in_C; }															\n"
 					;
 			}
@@ -1829,7 +1829,7 @@ namespace lnd
 					"	void main() { gl_Position  = vec4(																	\n"
 					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
 					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);														\n"
+					"		X = vec2(in_X);																					\n"
 					"		C = in_C; }																						\n"
 					;
 			}
@@ -1848,7 +1848,7 @@ namespace lnd
 					"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),						\n"
 					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
 					"		in_X[2], in_X[3]);																				\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);														\n"
+					"		X = vec2(in_X);																					\n"
 					"		C = in_C; }																						\n"
 					;
 			}
@@ -1888,7 +1888,7 @@ namespace lnd
 					"	out vec2 UV;												\n"
 					"	void main() { gl_Position = vec4(							\n"
 					"		" + ratio + " * in_X[0], in_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);				\n"
+					"		X = vec2(in_X);											\n"
 					"		UV = in_UV; }											\n"
 					;
 			}
@@ -1903,7 +1903,7 @@ namespace lnd
 					"   out vec2 UV;												\n"
 					"   void main() { gl_Position = vec4(							\n"
 					"       in_X[0], " + ratio + " * in_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);				\n"
+					"		X = vec2(in_X);											\n"
 					"		UV = in_UV; }											\n"
 					;
 			}
@@ -1918,7 +1918,7 @@ namespace lnd
 				"	out vec2 UV;							\n"
 				"	void main() {							\n"
 				"		gl_Position = in_X;					\n"
-				"		X = vec2(gl_Position);				\n"
+				"		X = vec2(in_X);						\n"
 				"		UV = in_UV; }						\n"
 				;
 		}
@@ -1940,7 +1940,7 @@ namespace lnd
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (in_X[0] + u_X[0]),				\n"
 					"		in_X[1] + u_X[1], in_X[2], in_X[3]);			\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);		\n"
+					"		X = vec2(in_X);									\n"
 					"		UV = in_UV; }									\n"
 					;
 			}
@@ -1958,7 +1958,7 @@ namespace lnd
 					"		in_X[0] + u_X[0],								\n"
 					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
 					"		in_X[2], in_X[3]);								\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		X = vec2(in_X);									\n"
 					"		UV = in_UV; }									\n"
 					;
 			}
@@ -1998,7 +1998,7 @@ namespace lnd
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
 					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);		\n"
+					"		X = vec2(in_X);									\n"
 					"		UV = in_UV; }									\n"
 					;
 			}
@@ -2016,7 +2016,7 @@ namespace lnd
 					"		u_X[2] * in_X[0] + u_X[0],						\n"
 					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
 					"		in_X[2], in_X[3]);								\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		X = vec2(in_X);									\n"
 					"		UV = in_UV; }									\n"
 					;
 			}
@@ -2056,7 +2056,7 @@ namespace lnd
 					"	void main() { gl_Position = vec4(										\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
 					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);							\n"
+					"		X = vec2(in_X);														\n"
 					"		UV = in_UV; }														\n"
 					;
 			}
@@ -2074,7 +2074,7 @@ namespace lnd
 					"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],						\n"
 					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
 					"		in_X[2], in_X[3]);													\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);							\n"
+					"		X = vec2(in_X);														\n"
 					"		UV = in_UV; }														\n"
 					;
 			}
@@ -2092,7 +2092,7 @@ namespace lnd
 				"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],	\n"
 				"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1],	\n"
 				"		in_X[2], in_X[3]);								\n"
-				"		X = vec2(gl_Position);							\n"
+				"		X = vec2(in_X);									\n"
 				"		UV = in_UV; }									\n"
 				;
 		}
@@ -2115,7 +2115,7 @@ namespace lnd
 					"	void main() { gl_Position  = vec4(																	\n"
 					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
 					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
-					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);														\n"
+					"		X = vec2(in_X);																					\n"
 					"		UV = in_UV; }																					\n"
 					;
 			}
@@ -2134,7 +2134,7 @@ namespace lnd
 					"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),						\n"
 					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
 					"		in_X[2], in_X[3]);																				\n"
-					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);														\n"
+					"		X = vec2(in_X);																					\n"
 					"		UV = in_UV; }																					\n"
 					;
 			}
@@ -2153,7 +2153,7 @@ namespace lnd
 				"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),	\n"
 				"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])),	\n"
 				"		in_X[2], in_X[3]);															\n"
-				"		X = vec2(gl_Position);														\n"
+				"		X = vec2(in_X);																\n"
 				"		UV = in_UV; }																\n"
 				;
 		}
