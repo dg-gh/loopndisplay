@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 15 / 09 / 2020
+// loopndisplay.h - last update : 20 / 09 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW installed
@@ -1071,35 +1071,35 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	out vec2 forward_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
+					"	#version 330 core											\n"
+					"	layout (location = 0) in vec4 in_X;							\n"
+					"	out vec2 X;													\n"
+					"	void main() { gl_Position = vec4(							\n"
+					"		" + ratio + " * in_X[0], in_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]); }			\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	out vec2 forward_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		X[0], " + ratio + " * X[1], X[2], X[3]);		\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
+					"	#version 330 core											\n"
+					"	layout (location = 0) in vec4 in_X;							\n"
+					"	out vec2 X;													\n"
+					"	void main() { gl_Position = vec4(							\n"
+					"		in_X[0], " + ratio + " * in_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]); }			\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	out vec2 forward_X;									\n"
-				"	void main() { gl_Position = X;						\n"
-				"		forward_X = vec2(X); }							\n"
+				"	#version 330 core							\n"
+				"	layout (location = 0) in vec4 in_X;			\n"
+				"	out vec2 X;									\n"
+				"	void main() { gl_Position = in_X;			\n"
+				"		X = vec2(in_X); }						\n"
 				;
 		}
 	}
@@ -1112,13 +1112,13 @@ namespace lnd
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	out vec2 forward_X;									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	out vec2 X;											\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * (X[0] + u_X[0]),				\n"
-					"		X[1] + u_X[1], X[2], X[3]);						\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
+					"		" + ratio + " * (in_X[0] + u_X[0]),				\n"
+					"		in_X[1] + u_X[1], in_X[2], in_X[3]);			\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]); }	\n"
 					;
 			}
 			else
@@ -1126,29 +1126,29 @@ namespace lnd
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	out vec2 forward_X;									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	out vec2 X;											\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		X[0] + u_X[0],									\n"
-					"		" + ratio + " * (X[1] + u_X[1]),				\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
+					"		in_X[0] + u_X[0],								\n"
+					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
+					"		in_X[2], in_X[3]);								\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]); }	\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	out vec2 forward_X;									\n"
-				"	uniform vec2 u_X;									\n"
-				"	void main() { gl_Position = vec4(					\n"
-				"		X[0] + u_X[0],									\n"
-				"		X[1] + u_X[1],									\n"
-				"		X[2], X[3]);									\n"
-				"		forward_X = vec2(X); }							\n"
+				"	#version 330 core						\n"
+				"	layout (location = 0) in vec4 in_X;		\n"
+				"	out vec2 X;								\n"
+				"	uniform vec2 u_X;						\n"
+				"	void main() { gl_Position = vec4(		\n"
+				"		in_X[0] + u_X[0],					\n"
+				"		in_X[1] + u_X[1],					\n"
+				"		in_X[2], in_X[3]);					\n"
+				"		X = vec2(in_X); }					\n"
 				;
 		}
 	}
@@ -1161,13 +1161,13 @@ namespace lnd
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	out vec2 forward_X;									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	out vec2 X;											\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
-					"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]); }	\n"
+					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
+					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]); }	\n"
 					;
 			}
 			else
@@ -1175,29 +1175,29 @@ namespace lnd
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	out vec2 forward_X;									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	out vec2 X;											\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] + u_X[0],							\n"
-					"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]); }	\n"
+					"		u_X[2] * in_X[0] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
+					"		in_X[2], in_X[3]);								\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]); }	\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	out vec2 forward_X;									\n"
-				"	uniform vec3 u_X;									\n"
-				"	void main() { gl_Position = vec4(					\n"
-				"		u_X[2] * X[0] + u_X[0],							\n"
-				"		u_X[2] * X[1] + u_X[1],							\n"
-				"		X[2], X[3]);									\n"
-				"		forward_X = vec2(X); }							\n"
+				"	#version 330 core						\n"
+				"	layout (location = 0) in vec4 in_X;		\n"
+				"	out vec2 X;								\n"
+				"	uniform vec3 u_X;						\n"
+				"	void main() { gl_Position = vec4(		\n"
+				"		u_X[2] * in_X[0] + u_X[0],			\n"
+				"		u_X[2] * in_X[1] + u_X[1],			\n"
+				"		in_X[2], in_X[3]);					\n"
+				"		X = vec2(in_X); }					\n"
 				;
 		}
 	}
@@ -1209,29 +1209,29 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core												\n"
-					"	layout (location = 0) in vec4 X;								\n"
-					"	out vec2 forward_X;												\n"
-					"	uniform vec4 u_X;												\n"
-					"	void main() { gl_Position = vec4(								\n"
-					"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
-					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]); }				\n"
+					"	#version 330 core														\n"
+					"	layout (location = 0) in vec4 in_X;										\n"
+					"	out vec2 X;																\n"
+					"	uniform vec4 u_X;														\n"
+					"	void main() { gl_Position = vec4(										\n"
+					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
+					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]); }						\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"	#version 330 core												\n"
-					"	layout (location = 0) in vec4 X;								\n"
-					"	out vec2 forward_X;												\n"
-					"	uniform vec4 u_X;												\n"
-					"	void main() { gl_Position = vec4(								\n"
-					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
-					"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-					"		X[2], X[3]);												\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]); }				\n"
+					"	#version 330 core														\n"
+					"	layout (location = 0) in vec4 in_X;										\n"
+					"	out vec2 X;																\n"
+					"	uniform vec4 u_X;														\n"
+					"	void main() { gl_Position = vec4(										\n"
+					"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
+					"		in_X[2], in_X[3]);													\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]); }						\n"
 					;
 			}
 		}
@@ -1239,14 +1239,14 @@ namespace lnd
 		{
 			return
 				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	out vec2 forward_X;									\n"
+				"	layout (location = 0) in vec4 in_X;					\n"
+				"	out vec2 X;											\n"
 				"	uniform vec4 u_X;									\n"
 				"	void main() { gl_Position = vec4(					\n"
-				"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
-				"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-				"		X[2], X[3]);									\n"
-				"		forward_X = vec2(X); }							\n"
+				"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],	\n"
+				"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1],	\n"
+				"		in_X[2], in_X[3]);								\n"
+				"		X = vec2(in_X); }								\n"
 				;
 		}
 	}
@@ -1258,47 +1258,47 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core																			\n"
-					"	layout (location = 0) in vec4 X;															\n"
-					"	out vec2 forward_X;																			\n"
-					"	uniform vec4 u_X0;																			\n"
-					"	uniform vec4 u_X1;																			\n"
-					"	void main() { gl_Position  = vec4(															\n"
-					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]); }											\n"
+					"	#version 330 core																					\n"
+					"	layout (location = 0) in vec4 in_X;																	\n"
+					"	out vec2 X;																							\n"
+					"	uniform vec4 u_X0;																					\n"
+					"	uniform vec4 u_X1;																					\n"
+					"	void main() { gl_Position  = vec4(																	\n"
+					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
+					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]); }													\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"	#version 330 core																			\n"
-					"	layout (location = 0) in vec4 X;															\n"
-					"	out vec2 forward_X;																			\n"
-					"	uniform vec4 u_X0;																			\n"
-					"	uniform vec4 u_X1;																			\n"
-					"	void main() { gl_Position  = vec4(															\n"
-					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
-					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-					"		X[2], X[3]);																			\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]); }											\n"
+					"	#version 330 core																					\n"
+					"	layout (location = 0) in vec4 in_X;																	\n"
+					"	out vec2 X;																							\n"
+					"	uniform vec4 u_X0;																					\n"
+					"	uniform vec4 u_X1;																					\n"
+					"	void main() { gl_Position  = vec4(																	\n"
+					"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),						\n"
+					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
+					"		in_X[2], in_X[3]);																				\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]); }													\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"	#version 330 core															\n"
-				"	layout (location = 0) in vec4 X;											\n"
-				"	out vec2 forward_X;															\n"
-				"	uniform vec4 u_X0;															\n"
-				"	uniform vec4 u_X1;															\n"
-				"	void main() { gl_Position  = vec4(											\n"
-				"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
-				"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-				"		X[2], X[3]);															\n"
-				"		forward_X = vec2(X); }													\n"
+				"	#version 330 core																\n"
+				"	layout (location = 0) in vec4 in_X;												\n"
+				"	out vec2 X;																		\n"
+				"	uniform vec4 u_X0;																\n"
+				"	uniform vec4 u_X1;																\n"
+				"	void main() { gl_Position  = vec4(												\n"
+				"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),	\n"
+				"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])),	\n"
+				"		in_X[2], in_X[3]);															\n"
+				"		X = vec2(in_X); }															\n"
 				;
 		}
 	}
@@ -1311,44 +1311,44 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec3 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec3 forward_C;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"	#version 330 core											\n"
+					"	layout (location = 0) in vec4 in_X;							\n"
+					"	layout (location = 1) in vec3 in_C;							\n"
+					"	out vec2 X;													\n"
+					"	out vec3 C;													\n"
+					"	void main() { gl_Position = vec4(							\n"
+					"		" + ratio + " * in_X[0], in_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);				\n"
+					"		C = in_C; }												\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec3 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec3 forward_C;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		X[0], " + ratio + " * X[1], X[2], X[3]);		\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"	#version 330 core											\n"
+					"	layout (location = 0) in vec4 in_X;							\n"
+					"	layout (location = 1) in vec3 in_C;							\n"
+					"	out vec2 X;													\n"
+					"	out vec3 C;													\n"
+					"	void main() { gl_Position = vec4(							\n"
+					"		in_X[0], " + ratio + " * in_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);				\n"
+					"		C = in_C; }												\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	layout (location = 1) in vec3 C;					\n"
-				"	out vec2 forward_X;									\n"
-				"	out vec3 forward_C;									\n"
-				"	void main() { gl_Position = X;						\n"
-				"		forward_X = vec2(X);							\n"
-				"		forward_C = C; }								\n"
+				"	#version 330 core						\n"
+				"	layout (location = 0) in vec4 in_X;		\n"
+				"	layout (location = 1) in vec3 in_C;		\n"
+				"	out vec2 X;								\n"
+				"	out vec3 C;								\n"
+				"	void main() { gl_Position = in_X;		\n"
+				"		X = vec2(in_X);						\n"
+				"		C = in_C; }							\n"
 				;
 		}
 	}
@@ -1360,17 +1360,17 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec3 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec3 forward_C;									\n"
-					"	uniform vec2 u_X;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * (X[0] + u_X[0]),				\n"
-					"		X[1] + u_X[1], X[2], X[3]);						\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"	#version 330 core										\n"
+					"	layout (location = 0) in vec4 in_X;						\n"
+					"	layout (location = 1) in vec3 in_C;						\n"
+					"	out vec2 X;										\n"
+					"	out vec3 C;										\n"
+					"	uniform vec2 u_X;										\n"
+					"	void main() { gl_Position = vec4(						\n"
+					"		" + ratio + " * (in_X[0] + u_X[0]),					\n"
+					"		in_X[1] + u_X[1], in_X[2], in_X[3]);				\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);	\n"
+					"		C = in_C; }									\n"
 					;
 			}
 			else
@@ -1378,34 +1378,35 @@ namespace lnd
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec3 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec3 forward_C;									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec3 in_C;					\n"
+					"	out vec2 X;											\n"
+					"	out vec3 C;											\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		X[0] + u_X[0],									\n"
-					"		" + ratio + " * (X[1] + u_X[1]),				\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"		in_X[0] + u_X[0],								\n"
+					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
+					"		in_X[2], in_X[3]);								\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		C = in_C; }										\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"   #version 330 core                                   \n"
-				"   layout (location = 0) in vec4 X;                    \n"
-				"   layout (location = 1) in vec3 C;                    \n"
-				"	out vec2 forward_X;									\n"
-				"   out vec3 forward_C;                                 \n"
-				"   uniform vec2 u_X;                                   \n"
-				"   void main() { gl_Position = vec4(                   \n"
-				"       X[0] + u_X[0],                                  \n"
-				"       X[1] + u_X[1],                                  \n"
-				"		forward_X = vec2(X);							\n"
-				"		forward_C = C; }								\n"
+				"   #version 330 core						\n"
+				"   layout (location = 0) in vec4 in_X;		\n"
+				"   layout (location = 1) in vec3 in_C;		\n"
+				"	out vec2 X;								\n"
+				"   out vec3 C;								\n"
+				"   uniform vec2 u_X;						\n"
+				"   void main() { gl_Position = vec4(		\n"
+				"       in_X[0] + u_X[0],					\n"
+				"       in_X[1] + u_X[1],					\n"
+				"		in_X[2], in_X[3]);					\n"
+				"		X = vec2(in_X);						\n"
+				"		C = in_C; }							\n"
 				;
 		}
 	}
@@ -1418,16 +1419,16 @@ namespace lnd
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec3 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec3 forward_C;									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec3 in_C;					\n"
+					"	out vec2 X;											\n"
+					"	out vec3 C;											\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
-					"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
+					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);		\n"
+					"		C = in_C; }										\n"
 					;
 			}
 			else
@@ -1435,34 +1436,35 @@ namespace lnd
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec3 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec3 forward_C;									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec3 in_C;					\n"
+					"	out vec2 X;											\n"
+					"	out vec3 C;											\n"
 					"	uniform vec4 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] + u_X[0],							\n"
-					"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"		u_X[2] * in_X[0] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
+					"		in_X[2], in_X[3]);								\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		C = in_C; }										\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"   #version 330 core                                   \n"
-				"   layout (location = 0) in vec4 X;                    \n"
-				"   layout (location = 1) in vec3 C;                    \n"
-				"	out vec2 forward_X;									\n"
-				"   out vec3 forward_C;                                 \n"
-				"   uniform vec2 u_X;                                   \n"
-				"   void main() { gl_Position = vec4(                   \n"
-				"       X[0] + u_X[0],                                  \n"
-				"       X[1] + u_X[1],                                  \n"
-				"		forward_X = vec2(X);							\n"
-				"		forward_C = C; }								\n"
+				"   #version 330 core						\n"
+				"   layout (location = 0) in vec4 in_X;		\n"
+				"   layout (location = 1) in vec3 in_C;		\n"
+				"	out vec2 X;								\n"
+				"   out vec3 C;								\n"
+				"   uniform vec2 u_X;						\n"
+				"   void main() { gl_Position = vec4(		\n"
+				"       in_X[0] + u_X[0],					\n"
+				"       in_X[1] + u_X[1],					\n"
+				"		in_X[2], in_X[3]);					\n"
+				"		X = vec2(in_X);						\n"
+				"		C = in_C; }							\n"
 				;
 		}
 	}
@@ -1474,35 +1476,35 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core												\n"
-					"	layout (location = 0) in vec4 X;								\n"
-					"	layout (location = 1) in vec3 C;								\n"
-					"	out vec2 forward_X;												\n"
-					"	out vec3 forward_C;												\n"
-					"	uniform vec4 u_X;												\n"
-					"	void main() { gl_Position = vec4(								\n"
-					"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
-					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
-					"		forward_C = C; }											\n"
+					"	#version 330 core														\n"
+					"	layout (location = 0) in vec4 in_X;										\n"
+					"	layout (location = 1) in vec3 in_C;										\n"
+					"	out vec2 X;																\n"
+					"	out vec3 C;																\n"
+					"	uniform vec4 u_X;														\n"
+					"	void main() { gl_Position = vec4(										\n"
+					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
+					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);							\n"
+					"		C = in_C; }															\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"	#version 330 core												\n"
-					"	layout (location = 0) in vec4 X;								\n"
-					"	layout (location = 1) in vec3 C;								\n"
-					"	out vec2 forward_X;												\n"
-					"	out vec3 forward_C;												\n"
-					"	uniform vec4 u_X;												\n"
-					"	void main() { gl_Position = vec4(								\n"
-					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
-					"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-					"		X[2], X[3]);												\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
-					"		forward_C = C; }											\n"
+					"	#version 330 core														\n"
+					"	layout (location = 0) in vec4 in_X;										\n"
+					"	layout (location = 1) in vec3 in_C;										\n"
+					"	out vec2 X;																\n"
+					"	out vec3 C;																\n"
+					"	uniform vec4 u_X;														\n"
+					"	void main() { gl_Position = vec4(										\n"
+					"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
+					"		in_X[2], in_X[3]);													\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);							\n"
+					"		C = in_C; }															\n"
 					;
 			}
 		}
@@ -1510,17 +1512,17 @@ namespace lnd
 		{
 			return
 				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	layout (location = 1) in vec3 C;					\n"
-				"	out vec2 forward_X;									\n"
-				"	out vec3 forward_C;									\n"
+				"	layout (location = 0) in vec4 in_X;					\n"
+				"	layout (location = 1) in vec3 in_C;					\n"
+				"	out vec2 X;											\n"
+				"	out vec3 C;											\n"
 				"	uniform vec4 u_X;									\n"
 				"	void main() { gl_Position = vec4(					\n"
-				"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
-				"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-				"		X[2], X[3]);									\n"
-				"		forward_X = vec2(X);							\n"
-				"		forward_C = C; }								\n"
+				"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],	\n"
+				"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1],	\n"
+				"		in_X[2], in_X[3]);								\n"
+				"		X = vec2(in_X);									\n"
+				"		C = in_C; }										\n"
 				;
 		}
 	}
@@ -1532,56 +1534,56 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core																			\n"
-					"	layout (location = 0) in vec4 X;															\n"
-					"	layout (location = 1) in vec3 C;															\n"
-					"	out vec2 forward_X;																			\n"
-					"	out vec3 forward_C;																			\n"
-					"	uniform vec4 u_X0;																			\n"
-					"	uniform vec4 u_X1;																			\n"
-					"	void main() { gl_Position  = vec4(															\n"
-					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
-					"		forward_C = C; }																		\n"
+					"	#version 330 core																					\n"
+					"	layout (location = 0) in vec4 in_X;																	\n"
+					"	layout (location = 1) in vec3 in_C;																	\n"
+					"	out vec2 X;																							\n"
+					"	out vec3 C;																							\n"
+					"	uniform vec4 u_X0;																					\n"
+					"	uniform vec4 u_X1;																					\n"
+					"	void main() { gl_Position  = vec4(																	\n"
+					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
+					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);														\n"
+					"		C = in_C; }																						\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"	#version 330 core																			\n"
-					"	layout (location = 0) in vec4 X;															\n"
-					"	layout (location = 1) in vec3 C;															\n"
-					"	out vec2 forward_X;																			\n"
-					"	out vec3 forward_C;																			\n"
-					"	uniform vec4 u_X0;																			\n"
-					"	uniform vec4 u_X1;																			\n"
-					"	void main() { gl_Position  = vec4(															\n"
-					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
-					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-					"		X[2], X[3]);																			\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
-					"		forward_C = C; }																		\n"
+					"	#version 330 core																					\n"
+					"	layout (location = 0) in vec4 in_X;																	\n"
+					"	layout (location = 1) in vec3 in_C;																	\n"
+					"	out vec2 X;																							\n"
+					"	out vec3 C;																							\n"
+					"	uniform vec4 u_X0;																					\n"
+					"	uniform vec4 u_X1;																					\n"
+					"	void main() { gl_Position  = vec4(																	\n"
+					"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),						\n"
+					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
+					"		in_X[2], in_X[3]);																				\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);														\n"
+					"		C = in_C; }																						\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"	#version 330 core															\n"
-				"	layout (location = 0) in vec4 X;											\n"
-				"	layout (location = 1) in vec3 C;											\n"
-				"	out vec2 forward_X;															\n"
-				"	out vec3 forward_C;															\n"
-				"	uniform vec4 u_X0;															\n"
-				"	uniform vec4 u_X1;															\n"
-				"	void main() { gl_Position  = vec4(											\n"
-				"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
-				"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-				"		X[2], X[3]);															\n"
-				"		forward_X = vec2(X);													\n"
-				"		forward_C = C; }														\n"
+				"	#version 330 core																\n"
+				"	layout (location = 0) in vec4 in_X;												\n"
+				"	layout (location = 1) in vec3 in_C;												\n"
+				"	out vec2 X;																		\n"
+				"	out vec3 C;																		\n"
+				"	uniform vec4 u_X0;																\n"
+				"	uniform vec4 u_X1;																\n"
+				"	void main() { gl_Position  = vec4(												\n"
+				"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),	\n"
+				"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])),	\n"
+				"		in_X[2], in_X[3]);															\n"
+				"		X = vec2(in_X);																\n"
+				"		C = in_C; }																	\n"
 				;
 		}
 	}
@@ -1594,44 +1596,44 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec4 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec4 forward_C;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"	#version 330 core											\n"
+					"	layout (location = 0) in vec4 in_X;							\n"
+					"	layout (location = 1) in vec4 in_C;							\n"
+					"	out vec2 X;													\n"
+					"	out vec4 C;													\n"
+					"	void main() { gl_Position = vec4(							\n"
+					"		" + ratio + " * in_X[0], in_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);				\n"
+					"		C = in_C; }												\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec3 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec3 forward_C;									\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		X[0], " + ratio + " * X[1], X[2], X[3]);		\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"	#version 330 core											\n"
+					"	layout (location = 0) in vec4 in_X;							\n"
+					"	layout (location = 1) in vec3 in_C;							\n"
+					"	out vec2 X;													\n"
+					"	out vec3 C;													\n"
+					"	void main() { gl_Position = vec4(							\n"
+					"		in_X[0], " + ratio + " * in_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);				\n"
+					"		C = in_C; }												\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	layout (location = 1) in vec4 C;					\n"
-				"	out vec2 forward_X;									\n"
-				"	out vec4 forward_C;									\n"
-				"	void main() { gl_Position = X;						\n"
-				"		forward_X = vec2(X);							\n"
-				"		forward_C = C; }								\n"
+				"	#version 330 core						\n"
+				"	layout (location = 0) in vec4 in_X;		\n"
+				"	layout (location = 1) in vec4 in_C;		\n"
+				"	out vec2 X;								\n"
+				"	out vec4 C;								\n"
+				"	void main() { gl_Position = in_X;		\n"
+				"		X = vec2(in_X);						\n"
+				"		C = in_C; }							\n"
 				;
 		}
 	}
@@ -1644,16 +1646,16 @@ namespace lnd
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec4 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec4 forward_C;									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec4 in_C;					\n"
+					"	out vec2 X;											\n"
+					"	out vec4 C;											\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * (X[0] + u_X[0]),				\n"
-					"		X[1] + u_X[1], X[2], X[3]);						\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"		" + ratio + " * (in_X[0] + u_X[0]),				\n"
+					"		in_X[1] + u_X[1], in_X[2], in_X[3]);			\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);		\n"
+					"		C = in_C; }										\n"
 					;
 			}
 			else
@@ -1661,34 +1663,35 @@ namespace lnd
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec4 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec4 forward_C;									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec4 in_C;					\n"
+					"	out vec2 X;											\n"
+					"	out vec4 C;											\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		X[0] + u_X[0],									\n"
-					"		" + ratio + " * (X[1] + u_X[1]),				\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"		in_X[0] + u_X[0],								\n"
+					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
+					"		in_X[2], in_X[3]);								\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		C = in_C; }										\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"   #version 330 core                                   \n"
-				"   layout (location = 0) in vec4 X;                    \n"
-				"   layout (location = 1) in vec4 C;                    \n"
-				"	out vec2 forward_X;									\n"
-				"   out vec4 forward_C;                                 \n"
-				"   uniform vec2 u_X;                                   \n"
-				"   void main() { gl_Position = vec4(                   \n"
-				"       X[0] + u_X[0],                                  \n"
-				"       X[1] + u_X[1],                                  \n"
-				"		forward_X = vec2(X);							\n"
-				"		forward_C = C; }								\n"
+				"   #version 330 core						\n"
+				"   layout (location = 0) in vec4 in_X;		\n"
+				"   layout (location = 1) in vec4 in_C;		\n"
+				"	out vec2 X;								\n"
+				"   out vec4 C;								\n"
+				"   uniform vec2 u_X;						\n"
+				"   void main() { gl_Position = vec4(		\n"
+				"       in_X[0] + u_X[0],					\n"
+				"       in_X[1] + u_X[1],					\n"
+				"		in_X[2], in_X[3]);					\n"
+				"		X = vec2(in_X);						\n"
+				"		C = in_C; }							\n"
 				;
 		}
 	}
@@ -1701,16 +1704,16 @@ namespace lnd
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec4 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec4 forward_C;									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec4 in_C;					\n"
+					"	out vec2 X;											\n"
+					"	out vec4 C;											\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
-					"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
+					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);		\n"
+					"		C = in_C; }										\n"
 					;
 			}
 			else
@@ -1718,34 +1721,35 @@ namespace lnd
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec4 C;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec4 forward_C;									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec4 in_C;					\n"
+					"	out vec2 X;											\n"
+					"	out vec4 C;											\n"
 					"	uniform vec4 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] + u_X[0],							\n"
-					"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-					"		forward_C = C; }								\n"
+					"		u_X[2] * in_X[0] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
+					"		in_X[2], in_X[3]);								\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		C = in_C; }										\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"   #version 330 core                                   \n"
-				"   layout (location = 0) in vec4 X;                    \n"
-				"   layout (location = 1) in vec4 C;                    \n"
-				"	out vec2 forward_X;									\n"
-				"   out vec4 forward_C;                                 \n"
-				"   uniform vec2 u_X;                                   \n"
-				"   void main() { gl_Position = vec4(                   \n"
-				"       X[0] + u_X[0],                                  \n"
-				"       X[1] + u_X[1],                                  \n"
-				"		forward_X = vec2(X);							\n"
-				"		forward_C = C; }								\n"
+				"   #version 330 core						\n"
+				"   layout (location = 0) in vec4 in_X;		\n"
+				"   layout (location = 1) in vec4 in_C;		\n"
+				"	out vec2 X;								\n"
+				"   out vec4 C;								\n"
+				"   uniform vec2 u_X;						\n"
+				"   void main() { gl_Position = vec4(		\n"
+				"       in_X[0] + u_X[0],					\n"
+				"       in_X[1] + u_X[1],					\n"
+				"		in_X[2], in_X[3]);					\n"
+				"		X = vec2(in_X);						\n"
+				"		C = in_C; }							\n"
 				;
 		}
 	}
@@ -1757,35 +1761,35 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core												\n"
-					"	layout (location = 0) in vec4 X;								\n"
-					"	layout (location = 1) in vec4 C;								\n"
-					"	out vec2 forward_X;												\n"
-					"	out vec4 forward_C;												\n"
-					"	uniform vec4 u_X;												\n"
-					"	void main() { gl_Position = vec4(								\n"
-					"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
-					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
-					"		forward_C = C; }											\n"
+					"	#version 330 core														\n"
+					"	layout (location = 0) in vec4 in_X;										\n"
+					"	layout (location = 1) in vec4 in_C;										\n"
+					"	out vec2 X;																\n"
+					"	out vec4 C;																\n"
+					"	uniform vec4 u_X;														\n"
+					"	void main() { gl_Position = vec4(										\n"
+					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
+					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);							\n"
+					"		C = in_C; }															\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"	#version 330 core												\n"
-					"	layout (location = 0) in vec4 X;								\n"
-					"	layout (location = 1) in vec4 C;								\n"
-					"	out vec2 forward_X;												\n"
-					"	out vec4 forward_C;												\n"
-					"	uniform vec4 u_X;												\n"
-					"	void main() { gl_Position = vec4(								\n"
-					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
-					"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-					"		X[2], X[3]);												\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
-					"		forward_C = C; }											\n"
+					"	#version 330 core														\n"
+					"	layout (location = 0) in vec4 in_X;										\n"
+					"	layout (location = 1) in vec4 in_C;										\n"
+					"	out vec2 X;																\n"
+					"	out vec4 C;																\n"
+					"	uniform vec4 u_X;														\n"
+					"	void main() { gl_Position = vec4(										\n"
+					"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
+					"		in_X[2], in_X[3]);													\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);							\n"
+					"		C = in_C; }															\n"
 					;
 			}
 		}
@@ -1793,17 +1797,17 @@ namespace lnd
 		{
 			return
 				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	layout (location = 1) in vec4 C;					\n"
-				"	out vec2 forward_X;									\n"
-				"	out vec4 forward_C;									\n"
+				"	layout (location = 0) in vec4 in_X;					\n"
+				"	layout (location = 1) in vec4 in_C;					\n"
+				"	out vec2 X;											\n"
+				"	out vec4 C;											\n"
 				"	uniform vec4 u_X;									\n"
 				"	void main() { gl_Position = vec4(					\n"
-				"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
-				"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-				"		X[2], X[3]);									\n"
-				"		forward_X = vec2(X);							\n"
-				"		forward_C = C; }								\n"
+				"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],	\n"
+				"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1],	\n"
+				"		in_X[2], in_X[3]);								\n"
+				"		X = vec2(in_X);									\n"
+				"		C = in_C; }										\n"
 				;
 		}
 	}
@@ -1815,56 +1819,56 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core																			\n"
-					"	layout (location = 0) in vec4 X;															\n"
-					"	layout (location = 1) in vec4 C;															\n"
-					"	out vec2 forward_X;																			\n"
-					"	out vec4 forward_C;																			\n"
-					"	uniform vec4 u_X0;																			\n"
-					"	uniform vec4 u_X1;																			\n"
-					"	void main() { gl_Position  = vec4(															\n"
-					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
-					"		forward_C = C; }																		\n"
+					"	#version 330 core																					\n"
+					"	layout (location = 0) in vec4 in_X;																	\n"
+					"	layout (location = 1) in vec4 in_C;																	\n"
+					"	out vec2 X;																							\n"
+					"	out vec4 C;																							\n"
+					"	uniform vec4 u_X0;																					\n"
+					"	uniform vec4 u_X1;																					\n"
+					"	void main() { gl_Position  = vec4(																	\n"
+					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
+					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);														\n"
+					"		C = in_C; }																						\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"	#version 330 core																			\n"
-					"	layout (location = 0) in vec4 X;															\n"
-					"	layout (location = 1) in vec4 C;															\n"
-					"	out vec2 forward_X;																			\n"
-					"	out vec4 forward_C;																			\n"
-					"	uniform vec4 u_X0;																			\n"
-					"	uniform vec4 u_X1;																			\n"
-					"	void main() { gl_Position  = vec4(															\n"
-					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
-					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-					"		X[2], X[3]);																			\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
-					"		forward_C = C; }																		\n"
+					"	#version 330 core																					\n"
+					"	layout (location = 0) in vec4 in_X;																	\n"
+					"	layout (location = 1) in vec4 in_C;																	\n"
+					"	out vec2 X;																							\n"
+					"	out vec4 C;																							\n"
+					"	uniform vec4 u_X0;																					\n"
+					"	uniform vec4 u_X1;																					\n"
+					"	void main() { gl_Position  = vec4(																	\n"
+					"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),						\n"
+					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
+					"		in_X[2], in_X[3]);																				\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);														\n"
+					"		C = in_C; }																						\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"	#version 330 core															\n"
-				"	layout (location = 0) in vec4 X;											\n"
-				"	layout (location = 1) in vec4 C;											\n"
-				"	out vec2 forward_X;															\n"
-				"	out vec4 forward_C;															\n"
-				"	uniform vec4 u_X0;															\n"
-				"	uniform vec4 u_X1;															\n"
-				"	void main() { gl_Position  = vec4(											\n"
-				"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
-				"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-				"		X[2], X[3]);															\n"
-				"		forward_X = vec2(X);													\n"
-				"		forward_C = C; }														\n"
+				"	#version 330 core																\n"
+				"	layout (location = 0) in vec4 in_X;												\n"
+				"	layout (location = 1) in vec4 in_C;												\n"
+				"	out vec2 X;																		\n"
+				"	out vec4 C;																		\n"
+				"	uniform vec4 u_X0;																\n"
+				"	uniform vec4 u_X1;																\n"
+				"	void main() { gl_Position  = vec4(												\n"
+				"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),	\n"
+				"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])),	\n"
+				"		in_X[2], in_X[3]);															\n"
+				"		X = vec2(in_X);																\n"
+				"		C = in_C; }																	\n"
 				;
 		}
 	}
@@ -1877,45 +1881,45 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec2 UV;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec2 forward_UV;								\n"
-					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * X[0], X[1], X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-					"		forward_UV = UV; }								\n"
+					"	#version 330 core											\n"
+					"	layout (location = 0) in vec4 in_X;							\n"
+					"	layout (location = 1) in vec2 in_UV;						\n"
+					"	out vec2 X;													\n"
+					"	out vec2 UV;												\n"
+					"	void main() { gl_Position = vec4(							\n"
+					"		" + ratio + " * in_X[0], in_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);				\n"
+					"		UV = in_UV; }											\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"   #version 330 core                                   \n"
-					"   layout (location = 0) in vec4 X;                    \n"
-					"   layout (location = 1) in vec2 UV;                   \n"
-					"	out vec2 forward_X;									\n"
-					"   out vec2 forward_UV;                                \n"
-					"   void main() { gl_Position = vec4(                   \n"
-					"       X[0], " + ratio + " * X[1], X[2], X[3]);        \n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-					"		forward_UV = UV; }								\n"
+					"   #version 330 core											\n"
+					"   layout (location = 0) in vec4 in_X;							\n"
+					"   layout (location = 1) in vec2 in_UV;						\n"
+					"	out vec2 X;													\n"
+					"   out vec2 UV;												\n"
+					"   void main() { gl_Position = vec4(							\n"
+					"       in_X[0], " + ratio + " * in_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);				\n"
+					"		UV = in_UV; }											\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	layout (location = 1) in vec2 UV;					\n"
-				"	out vec2 forward_X;									\n"
-				"	out vec2 forward_UV;								\n"
-				"	void main() {										\n"
-				"		gl_Position = X;								\n"
-				"		forward_X = vec2(gl_Position);					\n"
-				"		forward_UV = UV; }								\n"
+				"	#version 330 core						\n"
+				"	layout (location = 0) in vec4 in_X;		\n"
+				"	layout (location = 1) in vec2 in_UV;	\n"
+				"	out vec2 X;								\n"
+				"	out vec2 UV;							\n"
+				"	void main() {							\n"
+				"		gl_Position = in_X;					\n"
+				"		X = vec2(gl_Position);				\n"
+				"		UV = in_UV; }						\n"
 				;
 		}
 	}
@@ -1928,16 +1932,16 @@ namespace lnd
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec2 UV;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec2 forward_UV;								\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec2 in_UV;				\n"
+					"	out vec2 X;											\n"
+					"	out vec2 UV;										\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * (X[0] + u_X[0]),				\n"
-					"		X[1] + u_X[1], X[2], X[3]);						\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-					"		forward_UV = UV; }								\n"
+					"		" + ratio + " * (in_X[0] + u_X[0]),				\n"
+					"		in_X[1] + u_X[1], in_X[2], in_X[3]);			\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);		\n"
+					"		UV = in_UV; }									\n"
 					;
 			}
 			else
@@ -1945,35 +1949,35 @@ namespace lnd
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec2 UV;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec2 forward_UV;								\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec2 in_UV;				\n"
+					"	out vec2 X;											\n"
+					"	out vec2 UV;										\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		X[0] + u_X[0],									\n"
-					"		" + ratio + " * (X[1] + u_X[1]),				\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-					"		forward_UV = UV; }								\n"
+					"		in_X[0] + u_X[0],								\n"
+					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
+					"		in_X[2], in_X[3]);								\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		UV = in_UV; }									\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	layout (location = 1) in vec2 UV;					\n"
-				"	out vec2 forward_X;									\n"
-				"	out vec2 forward_UV;								\n"
-				"	uniform vec2 u_X;									\n"
-				"	void main() { gl_Position = vec4(					\n"
-				"		X[0] + u_X[0],									\n"
-				"		X[1] + u_X[1],									\n"
-				"		X[2], X[3]);									\n"
-				"		forward_X = vec2(X);							\n"
-				"		forward_UV = UV; }								\n"
+				"	#version 330 core						\n"
+				"	layout (location = 0) in vec4 in_X;		\n"
+				"	layout (location = 1) in vec2 in_UV;	\n"
+				"	out vec2 X;								\n"
+				"	out vec2 UV;							\n"
+				"	uniform vec2 u_X;						\n"
+				"	void main() { gl_Position = vec4(		\n"
+				"		in_X[0] + u_X[0],					\n"
+				"		in_X[1] + u_X[1],					\n"
+				"		in_X[2], in_X[3]);					\n"
+				"		X = vec2(in_X);						\n"
+				"		UV = in_UV; }						\n"
 				;
 		}
 	}
@@ -1986,16 +1990,16 @@ namespace lnd
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec2 UV;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec2 forward_UV;								\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec2 in_UV;				\n"
+					"	out vec2 X;											\n"
+					"	out vec2 UV;										\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		" + ratio + " * (u_X[2] * X[0] + u_X[0]),		\n"
-					"		u_X[2] * X[1] + u_X[1], X[2], X[3]);			\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);	\n"
-					"		forward_UV = UV; }								\n"
+					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
+					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);		\n"
+					"		UV = in_UV; }									\n"
 					;
 			}
 			else
@@ -2003,17 +2007,17 @@ namespace lnd
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
 					"	#version 330 core									\n"
-					"	layout (location = 0) in vec4 X;					\n"
-					"	layout (location = 1) in vec2 UV;					\n"
-					"	out vec2 forward_X;									\n"
-					"	out vec2 forward_UV;								\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec2 in_UV;				\n"
+					"	out vec2 X;											\n"
+					"	out vec2 UV;										\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
-					"		u_X[2] * X[0] + u_X[0],							\n"
-					"		" + ratio + " * (u_X[2] * X[1] + u_X[1]),		\n"
-					"		X[2], X[3]);									\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);	\n"
-					"		forward_UV = UV; }								\n"
+					"		u_X[2] * in_X[0] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
+					"		in_X[2], in_X[3]);								\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);		\n"
+					"		UV = in_UV; }									\n"
 					;
 			}
 		}
@@ -2021,17 +2025,17 @@ namespace lnd
 		{
 			return
 				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	layout (location = 1) in vec2 UV;					\n"
-				"	out vec2 forward_X;									\n"
-				"	out vec2 forward_UV;								\n"
+				"	layout (location = 0) in vec4 in_X;					\n"
+				"	layout (location = 1) in vec2 in_UV;				\n"
+				"	out vec2 X;											\n"
+				"	out vec2 UV;										\n"
 				"	uniform vec3 u_X;									\n"
 				"	void main() { gl_Position = vec4(					\n"
-				"		u_X[2] * X[0] + u_X[0],							\n"
-				"		u_X[2] * X[1] + u_X[1],							\n"
-				"		X[2], X[3]);									\n"
-				"		forward_X = vec2(X);							\n"
-				"		forward_UV = UV; }								\n"
+				"		u_X[2] * in_X[0] + u_X[0],						\n"
+				"		u_X[2] * in_X[1] + u_X[1],						\n"
+				"		in_X[2], in_X[3]);								\n"
+				"		X = vec2(in_X);									\n"
+				"		UV = in_UV; }									\n"
 				;
 		}
 	}
@@ -2043,35 +2047,35 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core												\n"
-					"	layout (location = 0) in vec4 X;								\n"
-					"	layout (location = 1) in vec2 UV;								\n"
-					"	out vec2 forward_X;												\n"
-					"	out vec2 forward_UV;											\n"
-					"	uniform vec4 u_X;												\n"
-					"	void main() { gl_Position = vec4(								\n"
-					"		" + ratio + " * (u_X[2] * X[0] - u_X[3] * X[1] + u_X[0]),	\n"
-					"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1], X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);				\n"
-					"		forward_UV = UV; }											\n"
+					"	#version 330 core														\n"
+					"	layout (location = 0) in vec4 in_X;										\n"
+					"	layout (location = 1) in vec2 in_UV;									\n"
+					"	out vec2 X;																\n"
+					"	out vec2 UV;															\n"
+					"	uniform vec4 u_X;														\n"
+					"	void main() { gl_Position = vec4(										\n"
+					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
+					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);							\n"
+					"		UV = in_UV; }														\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"	#version 330 core												\n"
-					"	layout (location = 0) in vec4 X;								\n"
-					"	layout (location = 1) in vec2 UV;								\n"
-					"	out vec2 forward_X;												\n"
-					"	out vec2 forward_UV;											\n"
-					"	uniform vec4 u_X;												\n"
-					"	void main() { gl_Position = vec4(								\n"
-					"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],						\n"
-					"		" + ratio + " * (u_X[3] * X[0] + u_X[2] * X[1] + u_X[1]),	\n"
-					"		X[2], X[3]);												\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);				\n"
-					"		forward_UV = UV; }											\n"
+					"	#version 330 core														\n"
+					"	layout (location = 0) in vec4 in_X;										\n"
+					"	layout (location = 1) in vec2 in_UV;									\n"
+					"	out vec2 X;																\n"
+					"	out vec2 UV;															\n"
+					"	uniform vec4 u_X;														\n"
+					"	void main() { gl_Position = vec4(										\n"
+					"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
+					"		in_X[2], in_X[3]);													\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);							\n"
+					"		UV = in_UV; }														\n"
 					;
 			}
 		}
@@ -2079,17 +2083,17 @@ namespace lnd
 		{
 			return
 				"	#version 330 core									\n"
-				"	layout (location = 0) in vec4 X;					\n"
-				"	layout (location = 1) in vec2 UV;					\n"
-				"	out vec2 forward_X;									\n"
-				"	out vec2 forward_UV;								\n"
+				"	layout (location = 0) in vec4 in_X;					\n"
+				"	layout (location = 1) in vec2 in_UV;				\n"
+				"	out vec2 X;											\n"
+				"	out vec2 UV;										\n"
 				"	uniform vec4 u_X;									\n"
 				"	void main() { gl_Position = vec4(					\n"
-				"		u_X[2] * X[0] - u_X[3] * X[1] + u_X[0],			\n"
-				"		u_X[3] * X[0] + u_X[2] * X[1] + u_X[1],			\n"
-				"		X[2], X[3]);									\n"
-				"		forward_X = vec2(gl_Position);					\n"
-				"		forward_UV = UV; }								\n"
+				"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],	\n"
+				"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1],	\n"
+				"		in_X[2], in_X[3]);								\n"
+				"		X = vec2(gl_Position);							\n"
+				"		UV = in_UV; }									\n"
 				;
 		}
 	}
@@ -2101,56 +2105,56 @@ namespace lnd
 			{
 				std::string ratio = std::to_string(screen_height / screen_width);
 				return
-					"	#version 330 core																			\n"
-					"	layout (location = 0) in vec4 X;															\n"
-					"	layout (location = 1) in vec2 UV;															\n"
-					"	out vec2 forward_X;																			\n"
-					"	out vec2 forward_UV;																		\n"
-					"	uniform vec4 u_X0;																			\n"
-					"	uniform vec4 u_X1;																			\n"
-					"	void main() { gl_Position  = vec4(															\n"
-					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3]))),	\n"
-					"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])), X[2], X[3]);		\n"
-					"		forward_X = vec2(" + ratio + " * X[0], X[1]);											\n"
-					"		forward_UV = UV; }																		\n"
+					"	#version 330 core																					\n"
+					"	layout (location = 0) in vec4 in_X;																	\n"
+					"	layout (location = 1) in vec2 in_UV;																\n"
+					"	out vec2 X;																							\n"
+					"	out vec2 UV;																						\n"
+					"	uniform vec4 u_X0;																					\n"
+					"	uniform vec4 u_X1;																					\n"
+					"	void main() { gl_Position  = vec4(																	\n"
+					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
+					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
+					"		X = vec2(" + ratio + " * in_X[0], in_X[1]);														\n"
+					"		UV = in_UV; }																					\n"
 					;
 			}
 			else
 			{
 				std::string ratio = std::to_string(screen_width / screen_height);
 				return
-					"	#version 330 core																			\n"
-					"	layout (location = 0) in vec4 X;															\n"
-					"	layout (location = 1) in vec2 UV;															\n"
-					"	out vec2 forward_X;																			\n"
-					"	out vec2 forward_UV;																		\n"
-					"	uniform vec4 u_X0;																			\n"
-					"	uniform vec4 u_X1;																			\n"
-					"	void main() { gl_Position  = vec4(															\n"
-					"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),					\n"
-					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3]))),	\n"
-					"		X[2], X[3]);																			\n"
-					"		forward_X = vec2(X[0], " + ratio + " * X[1]);											\n"
-					"		forward_UV = UV; }																		\n"
+					"	#version 330 core																					\n"
+					"	layout (location = 0) in vec4 in_X;																	\n"
+					"	layout (location = 1) in vec2 in_UV;																\n"
+					"	out vec2 X;																							\n"
+					"	out vec2 UV;																						\n"
+					"	uniform vec4 u_X0;																					\n"
+					"	uniform vec4 u_X1;																					\n"
+					"	void main() { gl_Position  = vec4(																	\n"
+					"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),						\n"
+					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
+					"		in_X[2], in_X[3]);																				\n"
+					"		X = vec2(in_X[0], " + ratio + " * in_X[1]);														\n"
+					"		UV = in_UV; }																					\n"
 					;
 			}
 		}
 		else
 		{
 			return
-				"	#version 330 core															\n"
-				"	layout (location = 0) in vec4 X;											\n"
-				"	layout (location = 1) in vec2 UV;											\n"
-				"	out vec2 forward_X;															\n"
-				"	out vec2 forward_UV;														\n"
-				"	uniform vec4 u_X0;															\n"
-				"	uniform vec4 u_X1;															\n"
-				"	void main() { gl_Position  = vec4(											\n"
-				"		u_X0[0] + (u_X1[0] * (X[0] - u_X0[2]) + u_X1[2] * (X[1] - u_X0[3])),	\n"
-				"		u_X0[1] + (u_X1[1] * (X[0] - u_X0[2]) + u_X1[3] * (X[1] - u_X0[3])),	\n"
-				"		X[2], X[3]);															\n"
-				"		forward_X = vec2(gl_Position);											\n"
-				"		forward_UV = UV; }														\n"
+				"	#version 330 core																\n"
+				"	layout (location = 0) in vec4 in_X;												\n"
+				"	layout (location = 1) in vec2 in_UV;											\n"
+				"	out vec2 X;																		\n"
+				"	out vec2 UV;																	\n"
+				"	uniform vec4 u_X0;																\n"
+				"	uniform vec4 u_X1;																\n"
+				"	void main() { gl_Position  = vec4(												\n"
+				"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),	\n"
+				"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])),	\n"
+				"		in_X[2], in_X[3]);															\n"
+				"		X = vec2(gl_Position);														\n"
+				"		UV = in_UV; }																\n"
 				;
 		}
 	}
@@ -2159,128 +2163,128 @@ namespace lnd
 	std::string source_vertex_3d()
 	{
 		return
-			"	#version 330 core									\n"
-			"	layout (location = 0) in vec3 X;					\n"
-			"	out vec3 forward_X;									\n"
-			"	uniform mat4 u_mvp_M;								\n"
-			"	void main() {										\n"
-			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-			"		forward_X = X; }								\n"
+			"	#version 330 core								\n"
+			"	layout (location = 0) in vec3 in_X;				\n"
+			"	out vec3 X;										\n"
+			"	uniform mat4 u_mvp_M;							\n"
+			"	void main() {									\n"
+			"		gl_Position = u_mvp_M * vec4(in_X, 1);		\n"
+			"		X = in_X; }									\n"
 			;
 	}
 	std::string source_vertex_RGB_3d()
 	{
 		return
-			"	#version 330 core									\n"
-			"	layout (location = 0) in vec3 X;					\n"
-			"	layout (location = 1) in vec3 C;					\n"
-			"	out vec3 forward_X;									\n"
-			"	out vec3 forward_C;									\n"
-			"	uniform mat4 u_mvp_M;								\n"
-			"	void main() {										\n"
-			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-			"		forward_X = X;									\n"
-			"		forward_C = C; }								\n"
+			"	#version 330 core								\n"
+			"	layout (location = 0) in vec3 in_X;				\n"
+			"	layout (location = 1) in vec3 in_C;				\n"
+			"	out vec3 X;										\n"
+			"	out vec3 C;										\n"
+			"	uniform mat4 u_mvp_M;							\n"
+			"	void main() {									\n"
+			"		gl_Position = u_mvp_M * vec4(in_X, 1);		\n"
+			"		X = in_X;									\n"
+			"		C = in_C; }									\n"
 			;
 	}
 	std::string source_vertex_RGBA_3d()
 	{
 		return
-			"	#version 330 core									\n"
-			"	layout (location = 0) in vec3 X;					\n"
-			"	layout (location = 1) in vec4 C;					\n"
-			"	out vec3 forward_X;									\n"
-			"	out vec4 forward_C;									\n"
-			"	uniform mat4 u_mvp_M;								\n"
-			"	void main() {										\n"
-			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-			"		forward_X = X;									\n"
-			"		forward_C = C; }								\n"
+			"	#version 330 core								\n"
+			"	layout (location = 0) in vec3 in_X;				\n"
+			"	layout (location = 1) in vec4 in_C;				\n"
+			"	out vec3 X;										\n"
+			"	out vec4 C;										\n"
+			"	uniform mat4 u_mvp_M;							\n"
+			"	void main() {									\n"
+			"		gl_Position = u_mvp_M * vec4(in_X, 1);		\n"
+			"		X = in_X;									\n"
+			"		C = in_C; }									\n"
 			;
 	}
 	std::string source_vertex_texture_3d()
 	{
 		return
-			"	#version 330 core									\n"
-			"	layout (location = 0) in vec3 X;					\n"
-			"	layout (location = 1) in vec2 UV;					\n"
-			"	out vec3 forward_X;									\n"
-			"	out vec2 forward_UV;								\n"
-			"	uniform mat4 u_mvp_M;								\n"
-			"	void main() {										\n"
-			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-			"		forward_X = X;									\n"
-			"		forward_UV = UV; }								\n"
+			"	#version 330 core								\n"
+			"	layout (location = 0) in vec3 in_X;				\n"
+			"	layout (location = 1) in vec2 in_UV;			\n"
+			"	out vec3 X;										\n"
+			"	out vec2 UV;									\n"
+			"	uniform mat4 u_mvp_M;							\n"
+			"	void main() {									\n"
+			"		gl_Position = u_mvp_M * vec4(in_X, 1);		\n"
+			"		X = in_X;									\n"
+			"		UV = in_UV; }								\n"
 			;
 	}
 
 	std::string source_vertex_normals_3d()
 	{
 		return
-			"	#version 330 core									\n"
-			"	layout (location = 0) in vec3 X;					\n"
-			"	layout (location = 1) in vec3 N;					\n"
-			"	out vec3 forward_X;									\n"
-			"	out vec3 forward_N;									\n"
-			"	uniform mat4 u_mvp_M;								\n"
-			"	void main() {										\n"
-			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-			"		forward_X = X;									\n"
-			"		forward_N = N; }								\n"
+			"	#version 330 core								\n"
+			"	layout (location = 0) in vec3 in_X;				\n"
+			"	layout (location = 1) in vec3 in_N;				\n"
+			"	out vec3 X;										\n"
+			"	out vec3 N;										\n"
+			"	uniform mat4 u_mvp_M;							\n"
+			"	void main() {									\n"
+			"		gl_Position = u_mvp_M * vec4(in_X, 1);		\n"
+			"		X = in_X;									\n"
+			"		N = in_N; }									\n"
 			;
 	}
 	std::string source_vertex_RGB_normals_3d()
 	{
 		return
-			"	#version 330 core									\n"
-			"	layout (location = 0) in vec3 X;					\n"
-			"	layout (location = 1) in vec3 C;					\n"
-			"	layout (location = 2) in vec3 N;					\n"
-			"	out vec3 forward_X;									\n"
-			"	out vec3 forward_C;									\n"
-			"	out vec3 forward_N;									\n"
-			"	uniform mat4 u_mvp_M;								\n"
-			"	void main() {										\n"
-			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-			"		forward_X = X;									\n"
-			"		forward_C = C;									\n"
-			"		forward_N = N; }								\n"
+			"	#version 330 core								\n"
+			"	layout (location = 0) in vec3 in_X;				\n"
+			"	layout (location = 1) in vec3 in_C;				\n"
+			"	layout (location = 2) in vec3 in_N;				\n"
+			"	out vec3 X;										\n"
+			"	out vec3 C;										\n"
+			"	out vec3 N;										\n"
+			"	uniform mat4 u_mvp_M;							\n"
+			"	void main() {									\n"
+			"		gl_Position = u_mvp_M * vec4(in_X, 1);		\n"
+			"		X = in_X;									\n"
+			"		C = in_C;									\n"
+			"		N = in_N; }									\n"
 			;
 	}
 	std::string source_vertex_RGBA_normals_3d()
 	{
 		return
-			"	#version 330 core									\n"
-			"	layout (location = 0) in vec3 X;					\n"
-			"	layout (location = 1) in vec4 C;					\n"
-			"	layout (location = 2) in vec3 N;					\n"
-			"	out vec3 forward_X;									\n"
-			"	out vec4 forward_C;									\n"
-			"	out vec3 forward_N;									\n"
-			"	uniform mat4 M;										\n"
-			"	void main() {										\n"
-			"		gl_Position = M * vec4(X, 1);					\n"
-			"		forward_X = X;									\n"
-			"		forward_C = C;									\n"
-			"		forward_N = N; }								\n"
+			"	#version 330 core								\n"
+			"	layout (location = 0) in vec3 in_X;				\n"
+			"	layout (location = 1) in vec4 in_C;				\n"
+			"	layout (location = 2) in vec3 in_N;				\n"
+			"	out vec3 X;										\n"
+			"	out vec4 C;										\n"
+			"	out vec3 N;										\n"
+			"	uniform mat4 M;									\n"
+			"	void main() {									\n"
+			"		gl_Position = M * vec4(in_X, 1);			\n"
+			"		X = in_X;									\n"
+			"		C = in_C;									\n"
+			"		N = in_N; }									\n"
 			;
 	}
 	std::string source_vertex_texture_normals_3d()
 	{
 		return
-			"	#version 330 core									\n"
-			"	layout (location = 0) in vec3 X;					\n"
-			"	layout (location = 1) in vec2 UV;					\n"
-			"	layout (location = 2) in vec3 N;					\n"
-			"	out vec2 forward_UV;								\n"
-			"	out vec3 forward_X;									\n"
-			"	out vec3 forward_N;									\n"
-			"	uniform mat4 u_mvp_M;								\n"
-			"	void main() {										\n"
-			"		gl_Position = u_mvp_M * vec4(X, 1);				\n"
-			"		forward_UV = UV;								\n"
-			"		forward_X = X;									\n"
-			"		forward_N = N; }								\n"
+			"	#version 330 core								\n"
+			"	layout (location = 0) in vec3 in_X;				\n"
+			"	layout (location = 1) in vec2 in_UV;			\n"
+			"	layout (location = 2) in vec3 in_N;				\n"
+			"	out vec2 UV;									\n"
+			"	out vec3 X;										\n"
+			"	out vec3 N;										\n"
+			"	uniform mat4 u_mvp_M;							\n"
+			"	void main() {									\n"
+			"		gl_Position = u_mvp_M * vec4(in_X, 1);		\n"
+			"		UV = in_UV;									\n"
+			"		X = in_X;									\n"
+			"		N = in_N; }									\n"
 			;
 	}
 
@@ -2301,38 +2305,38 @@ namespace lnd
 	std::string source_fragment_color()
 	{
 		return
-			"	#version 330 core									\n"
-			"	out vec4 color;										\n"
-			"	uniform vec4 u_C;									\n"
-			"	void main() { color = u_C; }						\n"
+			"	#version 330 core							\n"
+			"	out vec4 color;								\n"
+			"	uniform vec4 u_C;							\n"
+			"	void main() { color = u_C; }				\n"
 			;
 	}
 	std::string source_fragment_RGB()
 	{
 		return
-			"	#version 330 core									\n"
-			"	in vec3 forward_C;									\n"
-			"	out vec3 color;										\n"
-			"	void main() { color = forward_C; }					\n"
+			"	#version 330 core							\n"
+			"	in vec3 C;									\n"
+			"	out vec3 color;								\n"
+			"	void main() { color = C; }					\n"
 			;
 	}
 	std::string source_fragment_RGBA()
 	{
 		return
-			"	#version 330 core									\n"
-			"	in vec4 forward_C;									\n"
-			"	out vec4 color;										\n"
-			"	void main() { color = forward_C; }					\n"
+			"	#version 330 core							\n"
+			"	in vec4 C;									\n"
+			"	out vec4 color;								\n"
+			"	void main() { color = C; }					\n"
 			;
 	}
 	std::string source_fragment_texture()
 	{
 		return
-			"	#version 330 core									\n"
-			"	out vec4 color;										\n"
-			"	in vec2 forward_UV;									\n"
-			"	uniform sampler2D Tx;								\n"
-			"	void main() { color = texture(Tx, forward_UV); }	\n"
+			"	#version 330 core							\n"
+			"	out vec4 color;								\n"
+			"	in vec2 UV;									\n"
+			"	uniform sampler2D Tx;						\n"
+			"	void main() { color = texture(Tx, UV); }	\n"
 			;
 	}
 
@@ -2340,8 +2344,8 @@ namespace lnd
 	{
 		return
 			"	#version 330 core																	\n"
-			"	in vec3 forward_X;																	\n"
-			"	in vec3 forward_N;																	\n"
+			"	in vec3 X;																			\n"
+			"	in vec3 N;																			\n"
 			"	out vec4 color;																		\n"
 			"	uniform float u_diff;																\n"
 			"	uniform float u_spec;																\n"
@@ -2354,14 +2358,14 @@ namespace lnd
 			"	uniform vec4 u_C;																	\n"
 			"	void main()																			\n"
 			"	{																					\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 												\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 										\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);										\n"
 			"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
 
 			"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
 			"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-			"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
+			"			* pow(max(dot(normalize(u_view_pos - X),									\n"
 			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);							\n"
 			"		color = max(vec4((diff + spec)													\n"
 			"			* (u_slight_C * vec3(u_C)), u_C[3]), face * vec4(u_amb, 0.0));				\n"
@@ -2372,9 +2376,9 @@ namespace lnd
 	{
 		return
 			"	#version 330 core																	\n"
-			"	in vec3 forward_X;																	\n"
-			"	in vec3 forward_N;																	\n"
-			"	in vec3 forward_C;																	\n"
+			"	in vec3 X;																			\n"
+			"	in vec3 N;																			\n"
+			"	in vec3 C;																			\n"
 			"	out vec4 color;																		\n"
 			"	uniform float u_diff;																\n"
 			"	uniform float u_spec;																\n"
@@ -2386,17 +2390,17 @@ namespace lnd
 			"	uniform mat4 u_m_M;																	\n"
 			"	void main()																			\n"
 			"	{																					\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 												\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 										\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);										\n"
 			"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
 
 			"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
 			"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-			"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
-			"			reflect(u_slight_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
+			"			* pow(max(dot(normalize(u_view_pos - X),									\n"
+			"			reflect(u_slight_dir, mat3(u_m_M) * N)), 0.0), u_conc);						\n"
 			"		color = max(vec4((diff + spec)													\n"
-			"			* (u_slight_C * forward_C), 1.0), face * vec4(u_amb, 0.0));					\n"
+			"			* (u_slight_C * C), 1.0), face * vec4(u_amb, 0.0));							\n"
 			"	}																					\n"
 			;
 	}
@@ -2404,9 +2408,9 @@ namespace lnd
 	{
 		return
 			"	#version 330 core																	\n"
-			"	in vec3 forward_X;																	\n"
-			"	in vec3 forward_N;																	\n"
-			"	in vec4 forward_C;																	\n"
+			"	in vec3 X;																			\n"
+			"	in vec3 N;																			\n"
+			"	in vec4 C;																			\n"
 			"	out vec4 color;																		\n"
 			"	uniform float u_diff;																\n"
 			"	uniform float u_spec;																\n"
@@ -2418,17 +2422,17 @@ namespace lnd
 			"	uniform mat4 u_m_M;																	\n"
 			"	void main()																			\n"
 			"	{																					\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 												\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 										\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);										\n"
 			"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
 
 			"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
 			"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-			"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
-			"			reflect(u_slight_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
+			"			* pow(max(dot(normalize(u_view_pos - X),									\n"
+			"			reflect(u_slight_dir, mat3(u_m_M) * N)), 0.0), u_conc);						\n"
 			"		color = max(vec4((diff + spec)													\n"
-			"			* (u_slight_C * vec3(forward_C)), forward_C[3]), face * vec4(u_amb, 0.0));	\n"
+			"			* (u_slight_C * vec3(C)), C[3]), face * vec4(u_amb, 0.0));					\n"
 			"	}																					\n"
 			;
 	}
@@ -2436,9 +2440,9 @@ namespace lnd
 	{
 		return
 			"	#version 330 core																	\n"
-			"	in vec3 forward_X;																	\n"
-			"	in vec2 forward_UV;																	\n"
-			"	in vec3 forward_N;																	\n"
+			"	in vec3 X;																			\n"
+			"	in vec2 UV;																			\n"
+			"	in vec3 N;																			\n"
 			"	out vec4 color;																		\n"
 			"	uniform float u_diff;																\n"
 			"	uniform float u_spec;																\n"
@@ -2451,18 +2455,18 @@ namespace lnd
 			"	uniform sampler2D Tx;																\n"
 			"	void main()																			\n"
 			"	{																					\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 										\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 								\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);								\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 												\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 										\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);										\n"
 			"		float dot_diff = dot(rotated_N, u_slight_dir);									\n"
 
-			"		vec4 C = texture(Tx, forward_UV);												\n"
+			"		vec4 in_C = texture(Tx, UV);													\n"
 			"		float diff = u_diff * max(-dot_diff, 0.0);										\n"
 			"		float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
-			"			* pow(max(dot(normalize(u_view_pos - forward_X),							\n"
-			"			reflect(u_slight_dir, mat3(u_m_M) * forward_N)), 0.0), u_conc);				\n"
+			"			* pow(max(dot(normalize(u_view_pos - X),									\n"
+			"			reflect(u_slight_dir, mat3(u_m_M) * N)), 0.0), u_conc);						\n"
 			"		color = max(vec4((diff + spec)													\n"
-			"			* (u_slight_C * vec3(C)), C[3]), face * vec4(u_amb, 0.0));					\n"
+			"			* (u_slight_C * vec3(in_C)), in_C[3]), face * vec4(u_amb, 0.0));			\n"
 			"	}																					\n"
 			;
 	}
@@ -2473,8 +2477,8 @@ namespace lnd
 
 		return
 			"	#version 330 core																		\n"
-			"	in vec3 forward_X;																		\n"
-			"	in vec3 forward_N;																		\n"
+			"	in vec3 X;																				\n"
+			"	in vec3 N;																				\n"
 			"	out vec4 color;																			\n"
 			"	uniform float u_diff;																	\n"
 			"	uniform float u_spec;																	\n"
@@ -2493,16 +2497,16 @@ namespace lnd
 
 			"	void main()																				\n"
 			"	{																						\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 													\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 											\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);											\n"
 
 			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
 
 			"		for (int k = first_light; k < end_light; k++)										\n"
 			"		{																					\n"
-			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			vec3 light_dir = normalize(X - u_plight_pos[k]);								\n"
+			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
 			"			float dot_diff = dot(rotated_N, light_dir);										\n"
@@ -2522,9 +2526,9 @@ namespace lnd
 
 		return
 			"	#version 330 core																		\n"
-			"	in vec3 forward_X;																		\n"
-			"	in vec3 forward_C;																		\n"
-			"	in vec3 forward_N;																		\n"
+			"	in vec3 X;																				\n"
+			"	in vec3 C;																				\n"
+			"	in vec3 N;																				\n"
 			"	out vec4 color;																			\n"
 			"	uniform float u_diff;																	\n"
 			"	uniform float u_spec;																	\n"
@@ -2542,16 +2546,16 @@ namespace lnd
 
 			"	void main()																				\n"
 			"	{																						\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 													\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 											\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);											\n"
 
 			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
 
 			"		for (int k = first_light; k < end_light; k++)										\n"
 			"		{																					\n"
-			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			vec3 light_dir = normalize(X - u_plight_pos[k]);								\n"
+			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
 			"			float dot_diff = dot(rotated_N, light_dir);										\n"
@@ -2559,7 +2563,7 @@ namespace lnd
 			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
 			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C);			\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C);					\n"
 			"		}																					\n"
 			"		color = max(vec4(color3, 1.0), face * vec4(u_amb, 0.0));							\n"
 			"	}																						\n"
@@ -2571,9 +2575,9 @@ namespace lnd
 
 		return
 			"	#version 330 core																		\n"
-			"	in vec3 forward_X;																		\n"
-			"	in vec4 forward_C;																		\n"
-			"	in vec3 forward_N;																		\n"
+			"	in vec3 X;																				\n"
+			"	in vec4 C;																				\n"
+			"	in vec3 N;																				\n"
 			"	out vec4 color;																			\n"
 			"	uniform float u_diff;																	\n"
 			"	uniform float u_spec;																	\n"
@@ -2591,17 +2595,17 @@ namespace lnd
 
 			"	void main()																				\n"
 			"	{																						\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-			"		vec3 forward_C3 = vec3(forward_C);													\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 													\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 											\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);											\n"
+			"		vec3 C3 = vec3(C);																	\n"
 
 			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
 
 			"		for (int k = first_light; k < end_light; k++)										\n"
 			"		{																					\n"
-			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			vec3 light_dir = normalize(X - u_plight_pos[k]);								\n"
+			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
 			"			float dot_diff = dot(rotated_N, light_dir);										\n"
@@ -2609,9 +2613,9 @@ namespace lnd
 			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
 			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C3);			\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C3);					\n"
 			"		}																					\n"
-			"		color = max(vec4(color3, forward_C[3]), face * vec4(u_amb, 0.0));					\n"
+			"		color = max(vec4(color3, C[3]), face * vec4(u_amb, 0.0));							\n"
 			"	}																						\n"
 			;
 	}
@@ -2621,9 +2625,9 @@ namespace lnd
 
 		return
 			"	#version 330 core																		\n"
-			"	in vec3 forward_X;																		\n"
-			"	in vec2 forward_UV;																		\n"
-			"	in vec3 forward_N;																		\n"
+			"	in vec3 X;																				\n"
+			"	in vec2 UV;																				\n"
+			"	in vec3 N;																				\n"
 			"	out vec4 color;																			\n"
 			"	uniform float u_diff;																	\n"
 			"	uniform float u_spec;																	\n"
@@ -2642,18 +2646,18 @@ namespace lnd
 
 			"	void main()																				\n"
 			"	{																						\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-			"		vec4 C = texture(Tx, forward_UV);													\n"
-			"		vec3 C3 = vec3(C);																	\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 													\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 											\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);											\n"
+			"		vec4 in_C = texture(Tx, UV);														\n"
+			"		vec3 in_C3 = vec3(in_C);															\n"
 
 			"		vec3 color3 = vec3(0.0, 0.0, 0.0);													\n"
 
 			"		for (int k = first_light; k < end_light; k++)										\n"
 			"		{																					\n"
-			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			vec3 light_dir = normalize(X - u_plight_pos[k]);								\n"
+			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
 			"			float dot_diff = dot(rotated_N, light_dir);										\n"
@@ -2661,9 +2665,9 @@ namespace lnd
 			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
 			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C3);					\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * in_C3);				\n"
 			"		}																					\n"
-			"		color = max(vec4(color3, C[3]), face * vec4(u_amb, 0.0));							\n"
+			"		color = max(vec4(color3, in_C[3]), face * vec4(u_amb, 0.0));						\n"
 			"	}																						\n"
 			;
 	}
@@ -2674,8 +2678,8 @@ namespace lnd
 
 		return
 			"	#version 330 core																		\n"
-			"	in vec3 forward_X;																		\n"
-			"	in vec3 forward_N;																		\n"
+			"	in vec3 X;																				\n"
+			"	in vec3 N;																				\n"
 			"	out vec4 color;																			\n"
 			"	uniform float u_diff;																	\n"
 			"	uniform float u_spec;																	\n"
@@ -2697,21 +2701,21 @@ namespace lnd
 
 			"	void main()																				\n"
 			"	{																						\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 													\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 											\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);											\n"
 
 			"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
 			"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
 			"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-			"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
+			"			* pow(max(dot(normalize(u_view_pos - X),										\n"
 			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
 			"		vec3 color3 = (diff + spec) * (u_slight_C * vec3(u_C));								\n"
 
 			"		for (int k = first_light; k < end_light; k++)										\n"
 			"		{																					\n"
-			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			vec3 light_dir = normalize(X - u_plight_pos[k]);								\n"
+			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
 			"			dot_diff = dot(rotated_N, light_dir);											\n"
@@ -2731,9 +2735,9 @@ namespace lnd
 
 		return
 			"	#version 330 core																		\n"
-			"	in vec3 forward_X;																		\n"
-			"	in vec3 forward_C;																		\n"
-			"	in vec3 forward_N;																		\n"
+			"	in vec3 X;																				\n"
+			"	in vec3 C;																				\n"
+			"	in vec3 N;																				\n"
 			"	out vec4 color;																			\n"
 			"	uniform float u_diff;																	\n"
 			"	uniform float u_spec;																	\n"
@@ -2754,21 +2758,21 @@ namespace lnd
 
 			"	void main()																				\n"
 			"	{																						\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 													\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 											\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);											\n"
 
 			"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
 			"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
 			"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-			"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
+			"			* pow(max(dot(normalize(u_view_pos - X),										\n"
 			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
-			"		vec3 color3 = (diff + spec) * (u_slight_C * forward_C);								\n"
+			"		vec3 color3 = (diff + spec) * (u_slight_C * C);										\n"
 
 			"		for (int k = first_light; k < end_light; k++)										\n"
 			"		{																					\n"
-			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			vec3 light_dir = normalize(X - u_plight_pos[k]);								\n"
+			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
 			"			dot_diff = dot(rotated_N, light_dir);											\n"
@@ -2776,7 +2780,7 @@ namespace lnd
 			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
 			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C);			\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C);					\n"
 			"		}																					\n"
 			"		color = max(vec4(color3, 1.0), face * vec4(u_amb, 0.0));							\n"
 			"	}																						\n"
@@ -2788,9 +2792,9 @@ namespace lnd
 
 		return
 			"	#version 330 core																		\n"
-			"	in vec3 forward_X;																		\n"
-			"	in vec4 forward_C;																		\n"
-			"	in vec3 forward_N;																		\n"
+			"	in vec3 X;																				\n"
+			"	in vec4 C;																				\n"
+			"	in vec3 N;																				\n"
 			"	out vec4 color;																			\n"
 			"	uniform float u_diff;																	\n"
 			"	uniform float u_spec;																	\n"
@@ -2811,22 +2815,22 @@ namespace lnd
 
 			"	void main()																				\n"
 			"	{																						\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-			"		vec3 forward_C3 = vec3(forward_C);													\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 													\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 											\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);											\n"
+			"		vec3 C3 = vec3(C);																	\n"
 
 			"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
 			"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
 			"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-			"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
+			"			* pow(max(dot(normalize(u_view_pos - X),										\n"
 			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
-			"		vec3 color3 = (diff + spec) * (u_slight_C * forward_C3);							\n"
+			"		vec3 color3 = (diff + spec) * (u_slight_C * C3);									\n"
 
 			"		for (int k = first_light; k < end_light; k++)										\n"
 			"		{																					\n"
-			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			vec3 light_dir = normalize(X - u_plight_pos[k]);								\n"
+			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
 			"			dot_diff = dot(rotated_N, light_dir);											\n"
@@ -2834,9 +2838,9 @@ namespace lnd
 			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
 			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * forward_C3);			\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C3);					\n"
 			"		}																					\n"
-			"		color = max(vec4(color3, forward_C[3]), face * vec4(u_amb, 0.0));					\n"
+			"		color = max(vec4(color3, C[3]), face * vec4(u_amb, 0.0));							\n"
 			"	}																						\n"
 			;
 	}
@@ -2846,9 +2850,9 @@ namespace lnd
 
 		return
 			"	#version 330 core																		\n"
-			"	in vec3 forward_X;																		\n"
-			"	in vec2 forward_UV;																		\n"
-			"	in vec3 forward_N;																		\n"
+			"	in vec3 X;																				\n"
+			"	in vec2 UV;																				\n"
+			"	in vec3 N;																				\n"
 			"	out vec4 color;																			\n"
 			"	uniform float u_diff;																	\n"
 			"	uniform float u_spec;																	\n"
@@ -2870,23 +2874,23 @@ namespace lnd
 
 			"	void main()																				\n"
 			"	{																						\n"
-			"		vec3 rotated_N = mat3(u_m_M) * forward_N; 											\n"
-			"		vec3 view_dir = normalize(forward_X - u_view_pos); 									\n"
-			"		float face = 0.5 - 0.5 * dot(view_dir, forward_N);									\n"
-			"		vec4 C = texture(Tx, forward_UV);													\n"
-			"		vec3 C3 = vec3(C);																	\n"
+			"		vec3 rotated_N = mat3(u_m_M) * N; 													\n"
+			"		vec3 view_dir = normalize(X - u_view_pos); 											\n"
+			"		float face = 0.5 - 0.5 * dot(view_dir, N);											\n"
+			"		vec4 in_C = texture(Tx, UV);														\n"
+			"		vec3 in_C3 = vec3(in_C);															\n"
 
 			"		float dot_diff = dot(rotated_N, u_slight_dir);										\n"
 			"		float diff = u_diff * max(-dot_diff, 0.0);											\n"
 			"		float spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
-			"			* pow(max(dot(normalize(u_view_pos - forward_X),								\n"
+			"			* pow(max(dot(normalize(u_view_pos - X),										\n"
 			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);								\n"
-			"		vec3 color3 = (diff + spec) * (u_slight_C * C3);									\n"
+			"		vec3 color3 = (diff + spec) * (u_slight_C * in_C3);									\n"
 
 			"		for (int k = first_light; k < end_light; k++)										\n"
 			"		{																					\n"
-			"			vec3 light_dir = normalize(forward_X - u_plight_pos[k]);						\n"
-			"			float light_dist = length(forward_X - u_plight_pos[k]);							\n"
+			"			vec3 light_dir = normalize(X - u_plight_pos[k]);								\n"
+			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
 			"			dot_diff = dot(rotated_N, light_dir);											\n"
@@ -2894,9 +2898,9 @@ namespace lnd
 			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
 			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
-			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * C3);					\n"
+			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * in_C3);				\n"
 			"		}																					\n"
-			"		color = max(vec4(color3, C[3]), face * vec4(u_amb, 0.0));							\n"
+			"		color = max(vec4(color3, in_C[3]), face * vec4(u_amb, 0.0));						\n"
 			"	}																						\n"
 			;
 	}
@@ -4690,7 +4694,7 @@ namespace lnd
 			_vertex_texture_shift_scale.new_shader(lnd::source_vertex_texture_shift_scale(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
 			_vertex_texture_shift_rotate.new_shader(lnd::source_vertex_texture_shift_rotate(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
 			_vertex_texture_affine.new_shader(lnd::source_vertex_texture_affine(screen_width_ps, screen_height_ps, rescale_screen_coordinates));
-			
+
 
 			_vertex_3d.new_shader(lnd::source_vertex_3d());
 			_vertex_RGB_3d.new_shader(lnd::source_vertex_RGB_3d());
