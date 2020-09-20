@@ -2333,8 +2333,8 @@ namespace lnd
 	{
 		return
 			"	#version 330 core							\n"
-			"	out vec4 color;								\n"
 			"	in vec2 UV;									\n"
+			"	out vec4 color;								\n"
 			"	uniform sampler2D Tx;						\n"
 			"	void main() { color = texture(Tx, UV); }	\n"
 			;
