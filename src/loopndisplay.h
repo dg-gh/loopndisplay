@@ -2904,8 +2904,190 @@ namespace lnd
 			"	}																						\n"
 			;
 	}
+	
+	
+	inline const lnd::program& set_uniform_1f(const lnd::program& program, const char* const uniform_variable,
+		float u0)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform1f(location, u0);
+		return program;
+	}
+	inline const lnd::program& set_uniform_2f(const lnd::program& program, const char* const uniform_variable,
+		float u0, float u1)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform2f(location, u0, u1);
+		return program;
+	}
+	inline const lnd::program& set_uniform_3f(const lnd::program& program, const char* const uniform_variable,
+		float u0, float u1, float u2)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform3f(location, u0, u1, u2);
+		return program;
+	}
+	inline const lnd::program& set_uniform_4f(const lnd::program& program, const char* const uniform_variable,
+		float u0, float u1, float u2, float u3)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform4f(location, u0, u1, u2, u3);
+		return program;
+	}
 
+	inline const lnd::program& set_uniform_2fv(const lnd::program& program, const char* const uniform_variable,
+		const float* const values_ptr)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform2fv(location, 1, values_ptr);
+		return program;
+	}
+	inline const lnd::program& set_uniform_3fv(const lnd::program& program, const char* const uniform_variable,
+		const float* const values_ptr)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform3fv(location, 1, values_ptr);
+		return program;
+	}
+	inline const lnd::program& set_uniform_4fv(const lnd::program& program, const char* const uniform_variable,
+		const float* const values_ptr)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform4fv(location, 1, values_ptr);
+		return program;
+	}
 
+	inline const lnd::program& set_uniform_1i(const lnd::program& program, const char* const uniform_variable,
+		int u0)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform1i(location, u0);
+		return program;
+	}
+	inline const lnd::program& set_uniform_2i(const lnd::program& program, const char* const uniform_variable,
+		int u0, int u1)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform2i(location, u0, u1);
+		return program;
+	}
+	inline const lnd::program& set_uniform_3i(const lnd::program& program, const char* const uniform_variable,
+		int u0, int u1, int u2)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform3i(location, u0, u1, u2);
+		return program;
+	}
+	inline const lnd::program& set_uniform_4i(const lnd::program& program, const char* const uniform_variable,
+		int u0, int u1, int u2, int u3)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform4i(location, u0, u1, u2, u3);
+		return program;
+	}
+	inline const lnd::program& set_uniform_1ui(const lnd::program& program, const char* const uniform_variable,
+		unsigned int u0)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform1ui(location, u0);
+		return program;
+	}
+	inline const lnd::program& set_uniform_2ui(const lnd::program& program, const char* const uniform_variable,
+		unsigned int u0, unsigned int u1)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform2ui(location, u0, u1);
+		return program;
+	}
+	inline const lnd::program& set_uniform_3ui(const lnd::program& program, const char* const uniform_variable,
+		unsigned int u0, unsigned int u1, unsigned int u2)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform3ui(location, u0, u1, u2);
+		return program;
+	}
+	inline const lnd::program& set_uniform_4ui(const lnd::program& program, const char* const uniform_variable,
+		unsigned int u0, unsigned int u1, unsigned int u2, unsigned int u3)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform4ui(location, u0, u1, u2, u3);
+		return program;
+	}
+
+	inline const lnd::program& set_fragment_color(const lnd::program& program, float c0, float c1, float c2, float c3)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_C");
+		glUniform4f(location, c0, c1, c2, c3);
+		return program;
+	}
+	inline const lnd::program& set_fragment_color(const lnd::program& program, const float* const color_ptr)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_C");
+		glUniform4fv(location, 1, color_ptr);
+		return program;
+	}
+	inline const lnd::program& set_vertex_shift(const lnd::program& program, float T0, float T1)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_X");
+		glUniform2f(location, T0, T1);
+		return program;
+	}
+	inline const lnd::program& set_vertex_shift_scale(const lnd::program& program, float T0, float T1, float scale)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_X");
+		glUniform3f(location, T0, T1, scale);
+		return program;
+	}
+	inline const lnd::program& set_vertex_shift_rotate_rad(const lnd::program& program, float T0, float T1, float angle)
+	{
+		float C = LND_COS(angle);
+		float S = LND_SIN(angle);
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_X");
+		glUniform4f(location, T0, T1, C, S);
+		return program;
+	}
+	inline const lnd::program& set_vertex_shift_rotate_deg(const lnd::program& program, float T0, float T1, float angle)
+	{
+		constexpr float deg_to_float = 3.14159265358979323846f / 180.0f;
+		angle *= deg_to_float;
+		float C = LND_COS(angle);
+		float S = LND_SIN(angle);
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_X");
+		glUniform4f(location, T0, T1, C, S);
+		return program;
+	}
+	inline const lnd::program& set_vertex_affine(const lnd::program& program, float T0, float T1, float orig0, float orig1,
+		float A00, float A10, float A01, float A11)
+	{
+		program.use();
+		int location = glGetUniformLocation(program.get(), "u_X0");
+		glUniform4f(location, T0, T1, orig0, orig1);
+		location = glGetUniformLocation(program.get(), "u_X1");
+		glUniform4f(location, A00, A10, A01, A11);
+		return program;
+	}
+	
 	inline const lnd::program& set_mvp_matrix_3d(const lnd::program& program, const float* const mvp_matrix_ptr)
 	{
 		program.use();
@@ -4428,65 +4610,6 @@ namespace lnd
 		const inline lnd::program& program_RGB_skylight_3d() const noexcept { return _program_RGB_skylight_3d; } // takes uniforms
 		const inline lnd::program& program_RGBA_skylight_3d() const noexcept { return _program_RGBA_skylight_3d; } // takes uniforms
 		const inline lnd::program& program_texture_skylight_3d() const noexcept { return _program_texture_skylight_3d; } // takes uniforms
-
-		inline const lnd::program& set_fragment_color(const lnd::program& program, float c0, float c1, float c2, float c3)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_C");
-			glUniform4f(location, c0, c1, c2, c3);
-			return program;
-		}
-		inline const lnd::program& set_fragment_color(const lnd::program& program, const float* const color_ptr)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_C");
-			glUniform4fv(location, 1, color_ptr);
-			return program;
-		}
-		inline const lnd::program& set_vertex_shift(const lnd::program& program, float T0, float T1)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_X");
-			glUniform2f(location, T0, T1);
-			return program;
-		}
-		inline const lnd::program& set_vertex_shift_scale(const lnd::program& program, float T0, float T1, float scale)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_X");
-			glUniform3f(location, T0, T1, scale);
-			return program;
-		}
-		inline const lnd::program& set_vertex_shift_rotate_rad(const lnd::program& program, float T0, float T1, float angle)
-		{
-			float C = LND_COS(angle);
-			float S = LND_SIN(angle);
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_X");
-			glUniform4f(location, T0, T1, C, S);
-			return program;
-		}
-		inline const lnd::program& set_vertex_shift_rotate_deg(const lnd::program& program, float T0, float T1, float angle)
-		{
-			constexpr float deg_to_float = 3.14159265358979323846f / 180.0f;
-			angle *= deg_to_float;
-			float C = LND_COS(angle);
-			float S = LND_SIN(angle);
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_X");
-			glUniform4f(location, T0, T1, C, S);
-			return program;
-		}
-		inline const lnd::program& set_vertex_affine(const lnd::program& program,
-			float T0, float T1, float orig0, float orig1, float A00, float A10, float A01, float A11)
-		{
-			program.use();
-			int location = glGetUniformLocation(program.get(), "u_X0");
-			glUniform4f(location, T0, T1, orig0, orig1);
-			location = glGetUniformLocation(program.get(), "u_X1");
-			glUniform4f(location, A00, A10, A01, A11);
-			return program;
-		}
 
 
 		// CONSTRUCTORS AND DESTRUCTORS
