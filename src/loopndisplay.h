@@ -200,6 +200,7 @@ namespace lnd
 		std::atomic<bool> up_press{ false };
 		std::atomic<bool> alt_press{ false };
 		std::atomic<bool> shift_press{ false };
+		std::atomic<bool> ctrl_press{ false };
 
 		// event release
 
@@ -298,6 +299,7 @@ namespace lnd
 		std::atomic<bool> up_release{ false };
 		std::atomic<bool> alt_release{ false };
 		std::atomic<bool> shift_release{ false };
+		std::atomic<bool> ctrl_release{ false };
 
 
 		inline void reset_key_events()
@@ -661,17 +663,25 @@ namespace lnd
 			lnd::__user_key_input.alt_press.store(action == GLFW_PRESS);
 			lnd::__user_key_input.alt_release.store(action == GLFW_RELEASE);
 			break;
-		case GLFW_KEY_LEFT_SHIFT:
-			lnd::__user_key_input.shift_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.shift_release.store(action == GLFW_RELEASE);
-			break;
 		case GLFW_KEY_RIGHT_ALT:
 			lnd::__user_key_input.alt_press.store(action == GLFW_PRESS);
 			lnd::__user_key_input.alt_release.store(action == GLFW_RELEASE);
 			break;
+		case GLFW_KEY_LEFT_SHIFT:
+			lnd::__user_key_input.shift_press.store(action == GLFW_PRESS);
+			lnd::__user_key_input.shift_release.store(action == GLFW_RELEASE);
+			break;
 		case GLFW_KEY_RIGHT_SHIFT:
 			lnd::__user_key_input.shift_press.store(action == GLFW_PRESS);
 			lnd::__user_key_input.shift_release.store(action == GLFW_RELEASE);
+			break;
+		case GLFW_KEY_LEFT_CONTROL:
+			lnd::__user_key_input.ctrl_press.store(action == GLFW_PRESS);
+			lnd::__user_key_input.ctrl_release.store(action == GLFW_RELEASE);
+			break;
+		case GLFW_KEY_RIGHT_CONTROL:
+			lnd::__user_key_input.ctrl_press.store(action == GLFW_PRESS);
+			lnd::__user_key_input.ctrl_release.store(action == GLFW_RELEASE);
 			break;
 
 		default:
@@ -2904,8 +2914,8 @@ namespace lnd
 			"	}																						\n"
 			;
 	}
-	
-	
+
+
 	inline const lnd::program& set_uniform_1f(const lnd::program& program, const char* const uniform_variable,
 		float u0)
 	{
@@ -3087,7 +3097,7 @@ namespace lnd
 		glUniform4f(location, A00, A10, A01, A11);
 		return program;
 	}
-	
+
 	inline const lnd::program& set_mvp_matrix_3d(const lnd::program& program, const float* const mvp_matrix_ptr)
 	{
 		program.use();
@@ -3485,6 +3495,10 @@ namespace lnd
 			return (glfwGetKey(lnd::__window_ptr, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 				|| (glfwGetKey(lnd::__window_ptr, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS);
 		}
+		inline bool key_ctrl() const noexcept {
+			return (glfwGetKey(lnd::__window_ptr, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+				|| (glfwGetKey(lnd::__window_ptr, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS);
+		}
 
 
 		inline bool mouse_1_press() const noexcept { return lnd::__user_key_input.mouse_1_press.load(); }
@@ -3582,6 +3596,7 @@ namespace lnd
 		inline bool key_up_press() const noexcept { return __user_key_input.up_press.load(); }
 		inline bool key_alt_press() const noexcept { return __user_key_input.alt_press.load(); }
 		inline bool key_shift_press() const noexcept { return __user_key_input.shift_press.load(); }
+		inline bool key_ctrl_press() const noexcept { return __user_key_input.ctrl_press.load(); }
 
 
 		inline bool mouse_1_release() const noexcept { return lnd::__user_key_input.mouse_1_release.load(); }
@@ -3679,6 +3694,7 @@ namespace lnd
 		inline bool key_up_release() const noexcept { return __user_key_input.up_release.load(); }
 		inline bool key_alt_release() const noexcept { return __user_key_input.alt_release.load(); }
 		inline bool key_shift_release() const noexcept { return __user_key_input.shift_release.load(); }
+		inline bool key_ctrl_release() const noexcept { return __user_key_input.ctrl_release.load(); }
 
 
 		inline void reset_key_events() const noexcept { lnd::__user_key_input.reset_key_events(); }
