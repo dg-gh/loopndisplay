@@ -9505,6 +9505,10 @@ namespace lnd
 			m_matrix[13] = y;
 			m_matrix[14] = z;
 		}
+		inline void set_position(const float* const position_ptr) noexcept
+		{
+			memcpy(static_cast<float*>(m_matrix) + 12, position_ptr, 3 * sizeof(float));
+		}
 
 		inline void set_angles_rad(float yaw, float pitch, float roll) noexcept
 		{
