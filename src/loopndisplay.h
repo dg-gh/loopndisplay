@@ -4586,6 +4586,7 @@ namespace lnd
 		const inline lnd::shader_vertex& vertex_texture_shift_scale() const noexcept { return _vertex_texture_shift_scale; } // takes uniforms
 		const inline lnd::shader_vertex& vertex_texture_shift_rotate() const noexcept { return _vertex_texture_shift_rotate; } // takes uniforms
 		const inline lnd::shader_vertex& vertex_texture_affine() const noexcept { return _vertex_texture_affine; } // takes uniforms
+		const inline lnd::shader_vertex& vertex_texture_3d() const noexcept { return _vertex_texture_3d; } // takes uniforms
 		const inline lnd::shader_vertex& vertex_texture_normals_3d() const noexcept { return _vertex_texture_normals_3d; } // takes uniforms
 
 		const inline lnd::shader_fragment& fragment_black() const noexcept { return _fragment_black; }
