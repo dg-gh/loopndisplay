@@ -5081,7 +5081,7 @@ namespace lnd
 
 			this->_setup_auxiliary_threads(number_of_threads, task_buffer_size);
 			clock_sleep_time = static_cast<long long>(static_cast<double>(1000000000) * new_timeframe);
-			_start = std::chrono::high_resolution_clock::now();
+			_start = std::chrono::LND_CLOCK::now();
 
 			// loop
 
