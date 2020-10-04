@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 04 / 10 / 2020
+// loopndisplay.h - last update : 20 / 09 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW installed
@@ -65,6 +65,10 @@
 #ifndef LND_SQRT
 #define LND_SQRT std::sqrtf
 #endif // LND_SQRT
+
+#ifndef LND_ALLOCATOR
+#define LND_ALLOCATOR std::allocator
+#endif // LND_ALLOCATOR
 
 
 ////// INCLUDES //////
@@ -5359,7 +5363,7 @@ namespace lnd
 		}
 	};
 
-	template <size_t _index_count_pc, class _Allocator = std::allocator<lnd::cluster_index<_index_count_pc>>> class group_cluster_index
+	template <size_t _index_count_pc, class _Allocator = LND_ALLOCATOR<lnd::cluster_index<_index_count_pc>>> class group_cluster_index
 	{
 
 	private:
@@ -5542,7 +5546,7 @@ namespace lnd
 		}
 	};
 
-	template <class _Allocator = std::allocator<unsigned int>> class group_index
+	template <class _Allocator = LND_ALLOCATOR<unsigned int>> class group_index
 	{
 
 	private:
@@ -5771,7 +5775,7 @@ namespace lnd
 	};
 
 	template <size_t _color_count_pc, size_t _dim, class _Allocator
-		= std::allocator<lnd::cluster_color<_color_count_pc, _dim>>>
+		= LND_ALLOCATOR<lnd::cluster_color<_color_count_pc, _dim>>>
 		class group_cluster_color
 	{
 
@@ -5960,7 +5964,7 @@ namespace lnd
 		}
 	};
 
-	template <size_t _dim, class _Allocator = std::allocator<LND_COLOR(float, _dim)>> class group_color
+	template <size_t _dim, class _Allocator = LND_ALLOCATOR<LND_COLOR(float, _dim)>> class group_color
 	{
 
 	private:
@@ -6136,7 +6140,7 @@ namespace lnd
 
 	// TEXTURE STORAGE CLASSES
 
-	template <size_t _dim, class _texture_Allocator = std::allocator<LND_PIXEL(unsigned char, _dim)>> class texture
+	template <size_t _dim, class _texture_Allocator = LND_ALLOCATOR<LND_PIXEL(unsigned char, _dim)>> class texture
 	{
 
 	private:
@@ -6537,7 +6541,7 @@ namespace lnd
 	};
 
 	template <size_t _vertex_count_pc, size_t _dim, class _Allocator
-		= std::allocator<lnd::cluster_vertex<_vertex_count_pc, _dim>>>
+		= LND_ALLOCATOR<lnd::cluster_vertex<_vertex_count_pc, _dim>>>
 		class group_cluster_vertex
 	{
 
@@ -8277,7 +8281,7 @@ namespace lnd
 		}
 	};
 
-	template <size_t _dim, class _Allocator = std::allocator<LND_VERTEX(float, _dim)>> class group_vertex
+	template <size_t _dim, class _Allocator = LND_ALLOCATOR<LND_VERTEX(float, _dim)>> class group_vertex
 	{
 
 	private:
@@ -8803,7 +8807,7 @@ namespace lnd
 
 	// TEXT
 
-	template <class _vertex_Allocator = std::allocator<float>> class text
+	template <class _vertex_Allocator = LND_ALLOCATOR<float>> class text
 	{
 
 	private:
