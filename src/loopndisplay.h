@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 20 / 09 / 2020
+// loopndisplay.h - last update : 04 / 10 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW installed
@@ -779,8 +779,8 @@ namespace lnd
 	private:
 
 		buffer_vertex(const buffer_vertex&) = delete;
-		buffer_vertex(buffer_vertex&&) = delete;
 		buffer_vertex& operator=(const buffer_vertex&) = delete;
+		buffer_vertex(buffer_vertex&&) = delete;
 		buffer_vertex& operator=(buffer_vertex&&) = delete;
 	};
 
@@ -821,8 +821,8 @@ namespace lnd
 	private:
 
 		buffer_color(const buffer_color&) = delete;
-		buffer_color(buffer_color&&) = delete;
 		buffer_color& operator=(const buffer_color&) = delete;
+		buffer_color(buffer_color&&) = delete;
 		buffer_color& operator=(buffer_color&&) = delete;
 	};
 
@@ -863,8 +863,8 @@ namespace lnd
 	private:
 
 		buffer_index(const buffer_index&) = delete;
-		buffer_index(buffer_index&&) = delete;
 		buffer_index& operator=(const buffer_index&) = delete;
+		buffer_index(buffer_index&&) = delete;
 		buffer_index& operator=(buffer_index&&) = delete;
 	};
 
@@ -905,8 +905,8 @@ namespace lnd
 	private:
 
 		buffer_texture(const buffer_texture&) = delete;
-		buffer_texture(buffer_texture&&) = delete;
 		buffer_texture& operator=(const buffer_texture&) = delete;
+		buffer_texture(buffer_texture&&) = delete;
 		buffer_texture& operator=(buffer_texture&&) = delete;
 	};
 
@@ -953,8 +953,8 @@ namespace lnd
 	private:
 
 		shader_vertex(const shader_vertex&) = delete;
-		shader_vertex(shader_vertex&&) = delete;
 		shader_vertex& operator=(const shader_vertex&) = delete;
+		shader_vertex(shader_vertex&&) = delete;
 		shader_vertex& operator=(shader_vertex&&) = delete;
 	};
 
@@ -1001,8 +1001,8 @@ namespace lnd
 	private:
 
 		shader_fragment(const shader_fragment&) = delete;
-		shader_fragment(shader_fragment&&) = delete;
 		shader_fragment& operator=(const shader_fragment&) = delete;
+		shader_fragment(shader_fragment&&) = delete;
 		shader_fragment& operator=(shader_fragment&&) = delete;
 	};
 
@@ -1057,8 +1057,8 @@ namespace lnd
 	private:
 
 		program(const program&) = delete;
-		program(program&&) = delete;
 		program& operator=(const program&) = delete;
+		program(program&&) = delete;
 		program& operator=(program&&) = delete;
 	};
 
@@ -4633,10 +4633,10 @@ namespace lnd
 
 		looper() = default;
 		~looper() = default;
-		looper(const looper&) = default;
-		looper(looper&&) = default;
-		looper& operator=(const looper&) = default;
-		looper& operator=(looper&&) = default;
+		looper(const lnd::looper&) = delete;
+		lnd::looper& operator=(const lnd::looper&) = delete;
+		looper(lnd::looper&&) = delete;
+		lnd::looper& operator=(lnd::looper&&) = delete;
 
 
 		// LAUNCH ASYNC TASK
@@ -4674,8 +4674,8 @@ namespace lnd
 		float _max_Y = 1.0f;
 		float _pixel_X = 0.01f;
 		float _pixel_Y = 0.01f;
-		
-		
+
+
 		lnd::shader_vertex _vertex_identity;
 		lnd::shader_vertex _vertex_shift; // takes uniforms
 		lnd::shader_vertex _vertex_shift_scale; // takes uniforms
@@ -5162,7 +5162,7 @@ namespace lnd
 			else { task_buffer_size = 0; }
 		}
 
-		window() : clock_sleep_time(0), time_elapsed(0) {};
+		window() = default;
 		~window()
 		{
 			glfwInit();
@@ -5171,10 +5171,10 @@ namespace lnd
 			glfwTerminate();
 			static_cast<_looper*>(static_cast<void*>(this))->~_looper();
 		}
-		window(const window&) = default;
-		window(window&&) = default;
-		window& operator=(const window&) = default;
-		window& operator=(window&&) = default;
+		window(const lnd::window<_looper>&) = delete;
+		lnd::window<_looper>& operator=(const lnd::window<_looper>&) = delete;
+		window(lnd::window<_looper>&&) = delete;
+		lnd::window<_looper>& operator=(lnd::window<_looper>&&) = delete;
 
 	private:
 
@@ -5277,12 +5277,12 @@ namespace lnd
 		bool window_anti_aliasing = false;
 
 		// time elapsed since last frame
-		float time_elapsed;
+		float time_elapsed = 0.0f;
 
 		// clock
 		std::chrono::time_point<std::chrono::steady_clock> _start;
 		std::chrono::time_point<std::chrono::steady_clock> _stop;
-		long long clock_sleep_time;
+		long long clock_sleep_time = 0;
 
 		// other specs
 		size_t number_of_threads = 0;
@@ -5316,8 +5316,8 @@ namespace lnd
 		cluster_index() = default;
 		~cluster_index() = default;
 		cluster_index(const cluster_index<_index_count>&) = default;
-		cluster_index(cluster_index<_index_count>&&) = default;
 		cluster_index& operator=(const cluster_index<_index_count>&) = default;
+		cluster_index(cluster_index<_index_count>&&) = default;
 		cluster_index& operator=(cluster_index<_index_count>&&) = default;
 
 		cluster_index(std::initializer_list<unsigned int> L)
@@ -5383,14 +5383,14 @@ namespace lnd
 		{
 			m = rhs.m;
 		}
-		template <class _rhs_Allocator> group_cluster_index(group_cluster_index<_index_count_pc, _rhs_Allocator>&& rhs) noexcept
-		{
-			m = std::move(rhs.m);
-		}
 		template <class _rhs_Allocator> group_cluster_index& operator=(const group_cluster_index<_index_count_pc, _rhs_Allocator>& rhs)
 		{
 			m = rhs.m;
 			return *this;
+		}
+		template <class _rhs_Allocator> group_cluster_index(group_cluster_index<_index_count_pc, _rhs_Allocator>&& rhs) noexcept
+		{
+			m = std::move(rhs.m);
 		}
 		template <class _rhs_Allocator> group_cluster_index& operator=(group_cluster_index<_index_count_pc, _rhs_Allocator>&& rhs) noexcept
 		{
@@ -5566,14 +5566,14 @@ namespace lnd
 		{
 			m = rhs.m;
 		}
-		template <class _rhs_Allocator> group_index(group_index<_rhs_Allocator>&& rhs) noexcept
-		{
-			m = std::move(rhs.m);
-		}
 		template <class _rhs_Allocator> group_index& operator=(const group_index<_rhs_Allocator>& rhs)
 		{
 			m = rhs.m;
 			return *this;
+		}
+		template <class _rhs_Allocator> group_index(group_index<_rhs_Allocator>&& rhs) noexcept
+		{
+			m = std::move(rhs.m);
 		}
 		template <class _rhs_Allocator> group_index& operator=(group_index<_rhs_Allocator>&& rhs) noexcept
 		{
@@ -5706,8 +5706,8 @@ namespace lnd
 		cluster_color() = default;
 		~cluster_color() = default;
 		cluster_color(const cluster_color<_color_count_pc, _dim>&) = default;
-		cluster_color(cluster_color<_color_count_pc, _dim>&&) = default;
 		cluster_color& operator=(const cluster_color<_color_count_pc, _dim>&) = default;
+		cluster_color(cluster_color<_color_count_pc, _dim>&&) = default;
 		cluster_color& operator=(cluster_color<_color_count_pc, _dim>&&) = default;
 
 		cluster_color(std::initializer_list<float> L)
@@ -5796,14 +5796,14 @@ namespace lnd
 		{
 			m = rhs.m;
 		}
-		template <class _rhs_Allocator> group_cluster_color(group_cluster_color<_color_count_pc, _dim, _rhs_Allocator>&& rhs) noexcept
-		{
-			m = std::move(rhs.m);
-		}
 		template <class _rhs_Allocator> group_cluster_color& operator=(const group_cluster_color<_color_count_pc, _dim, _rhs_Allocator>& rhs)
 		{
 			m = rhs.m;
 			return *this;
+		}
+		template <class _rhs_Allocator> group_cluster_color(group_cluster_color<_color_count_pc, _dim, _rhs_Allocator>&& rhs) noexcept
+		{
+			m = std::move(rhs.m);
 		}
 		template <class _rhs_Allocator> group_cluster_color& operator=(group_cluster_color<_color_count_pc, _dim, _rhs_Allocator>&& rhs) noexcept
 		{
@@ -5984,14 +5984,14 @@ namespace lnd
 		{
 			m = rhs.m;
 		}
-		template <class _rhs_Allocator> group_color(group_color<_dim, _rhs_Allocator>&& rhs) noexcept
-		{
-			m = std::move(rhs.m);
-		}
 		template <class _rhs_Allocator> group_color& operator=(const group_color<_dim, _rhs_Allocator>& rhs)
 		{
 			m = rhs.m;
 			return *this;
+		}
+		template <class _rhs_Allocator> group_color(group_color<_dim, _rhs_Allocator>&& rhs) noexcept
+		{
+			m = std::move(rhs.m);
 		}
 		template <class _rhs_Allocator> group_color& operator=(group_color<_dim, _rhs_Allocator>&& rhs) noexcept
 		{
@@ -6171,18 +6171,18 @@ namespace lnd
 			_width = rhs._width;
 			_height = rhs._height;
 		}
-		template <class _rhs_Allocator> texture(texture<_dim, _rhs_Allocator>&& rhs) noexcept
-		{
-			m = std::move(rhs.m);
-			_width = rhs._width;
-			_height = rhs._height;
-		}
 		template <class _rhs_Allocator> texture& operator=(const texture<_dim, _rhs_Allocator>& rhs)
 		{
 			m = rhs.m;
 			_width = rhs._width;
 			_height = rhs._height;
 			return *this;
+		}
+		template <class _rhs_Allocator> texture(texture<_dim, _rhs_Allocator>&& rhs) noexcept
+		{
+			m = std::move(rhs.m);
+			_width = rhs._width;
+			_height = rhs._height;
 		}
 		template <class _rhs_Allocator> texture& operator=(texture<_dim, _rhs_Allocator>&& rhs) noexcept
 		{
@@ -6472,8 +6472,8 @@ namespace lnd
 		cluster_vertex() = default;
 		~cluster_vertex() = default;
 		cluster_vertex(const cluster_vertex<_vertex_count_pc, _dim>&) = default;
-		cluster_vertex(cluster_vertex<_vertex_count_pc, _dim>&&) = default;
 		cluster_vertex& operator=(const cluster_vertex<_vertex_count_pc, _dim>&) = default;
+		cluster_vertex(cluster_vertex<_vertex_count_pc, _dim>&&) = default;
 		cluster_vertex& operator=(cluster_vertex<_vertex_count_pc, _dim>&&) = default;
 
 		cluster_vertex(std::initializer_list<float> L)
@@ -6562,14 +6562,14 @@ namespace lnd
 		{
 			m = rhs.m;
 		}
-		template <class _rhs_Allocator> group_cluster_vertex(group_cluster_vertex<_vertex_count_pc, _dim, _rhs_Allocator>&& rhs) noexcept
-		{
-			m = std::move(rhs.m);
-		}
 		template <class _rhs_Allocator> group_cluster_vertex& operator=(const group_cluster_vertex<_vertex_count_pc, _dim, _rhs_Allocator>& rhs)
 		{
 			m = rhs.m;
 			return *this;
+		}
+		template <class _rhs_Allocator> group_cluster_vertex(group_cluster_vertex<_vertex_count_pc, _dim, _rhs_Allocator>&& rhs) noexcept
+		{
+			m = std::move(rhs.m);
 		}
 		template <class _rhs_Allocator> group_cluster_vertex& operator=(group_cluster_vertex<_vertex_count_pc, _dim, _rhs_Allocator>&& rhs) noexcept
 		{
@@ -6995,7 +6995,7 @@ namespace lnd
 			}
 		}
 
-		template <class _normal_Allocator> inline void draw_3d(
+		template <class _normal_Allocator> inline void draw_normals_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normal_Allocator>& normals)
 		{
@@ -7034,7 +7034,7 @@ namespace lnd
 		}
 
 
-		inline void draw(
+		inline void draw_ranged(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program)
@@ -7083,7 +7083,7 @@ namespace lnd
 			}
 		}
 
-		inline void draw_3d(
+		inline void draw_ranged_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program)
@@ -7132,7 +7132,7 @@ namespace lnd
 			}
 		}
 
-		template <class _normal_Allocator> inline void draw_3d(
+		template <class _normal_Allocator> inline void draw_ranged_normals_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -7175,7 +7175,7 @@ namespace lnd
 
 		// draw with RGB/RGBA gradient colors
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_RGBa(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
 		{
@@ -7239,7 +7239,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_3d(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_RGBa_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
 		{
@@ -7303,7 +7303,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_3d(
+		template <size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_RGBa_normals_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normal_Allocator>& normals)
@@ -7351,7 +7351,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_ranged_RGBa(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -7421,7 +7421,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_3d(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_ranged_RGBa_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -7491,7 +7491,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_3d(
+		template <size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_ranged_RGBa_normals_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -7545,7 +7545,7 @@ namespace lnd
 
 		// draw with textures
 
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw(
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_tex(
 			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
@@ -7588,7 +7588,7 @@ namespace lnd
 			}
 		}
 
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_tex_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
@@ -7631,7 +7631,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_3d(
+		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_tex_normals_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image,
@@ -7682,7 +7682,7 @@ namespace lnd
 		}
 
 
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw(
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_ranged_tex(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -7729,7 +7729,7 @@ namespace lnd
 			}
 		}
 
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_3d(
+		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_ranged_tex_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -7776,7 +7776,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_3d(
+		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_ranged_tex_normals_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -7831,7 +7831,7 @@ namespace lnd
 
 		// draw indexed clusters
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -7845,7 +7845,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_3d(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -7860,7 +7860,7 @@ namespace lnd
 		}
 
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_lines_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -7877,7 +7877,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_3d(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_lines_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -7895,7 +7895,7 @@ namespace lnd
 		}
 
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -7909,7 +7909,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_3d(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -7924,7 +7924,7 @@ namespace lnd
 		}
 
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_tris_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -7941,7 +7941,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_3d(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -7959,7 +7959,7 @@ namespace lnd
 		}
 
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -7973,7 +7973,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_3d(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -7988,7 +7988,7 @@ namespace lnd
 		}
 
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_quads_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8005,7 +8005,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_3d(
+		template <size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_quads_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8025,7 +8025,7 @@ namespace lnd
 
 		// draw indexed clusters with RGB/RGBA gradient colors
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_RGBa_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -8044,7 +8044,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_3d(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_RGBa_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -8064,7 +8064,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_lines_RGBa_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8086,7 +8086,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_3d(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_lines_RGBa_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8109,7 +8109,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_RGBa_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -8128,7 +8128,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_3d(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_RGBa_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -8148,7 +8148,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_tris_RGBa_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8170,7 +8170,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_3d(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_tris_RGBa_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8193,7 +8193,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_RGBa_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -8212,7 +8212,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_3d(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_RGBa_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -8232,7 +8232,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_quads_RGBa_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8254,7 +8254,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_3d(
+		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_quads_RGBa_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8451,7 +8451,7 @@ namespace lnd
 
 		// draw with solid colors
 
-		template <class _index_Allocator> inline void draw_lines(
+		template <class _index_Allocator> inline void draw_lines_indexed(
 			const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
@@ -8465,7 +8465,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <class _index_Allocator> inline void draw_lines_3d(
+		template <class _index_Allocator> inline void draw_lines_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
@@ -8480,7 +8480,7 @@ namespace lnd
 		}
 
 
-		template <class _index_Allocator> inline void draw_tris(
+		template <class _index_Allocator> inline void draw_tris_indexed(
 			const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
@@ -8494,7 +8494,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <class _index_Allocator> inline void draw_tris_3d(
+		template <class _index_Allocator> inline void draw_tris_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_index<_index_Allocator>& indexing)
 		{
@@ -8532,7 +8532,7 @@ namespace lnd
 		}
 
 
-		inline void draw_line_strip(
+		inline void draw_ranged_line_strip(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program)
@@ -8545,7 +8545,7 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		inline void draw_line_strip_3d(
+		inline void draw_ranged_line_strip_3d(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program)
@@ -8630,7 +8630,7 @@ namespace lnd
 
 		// draw with RGB/RGBA gradient colors
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_RGBa(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -8646,7 +8646,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_3d(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_RGBa_3d(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -8664,7 +8664,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_ranged_line_strip_RGBa(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program,
@@ -8682,7 +8682,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_3d(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_ranged_line_strip_RGBa_3d(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program,
@@ -8701,7 +8701,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop_RGBa(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -8717,7 +8717,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop_3d(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop_RGB_3d(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -8734,7 +8734,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_RGBa(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -8750,7 +8750,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_3d(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_RGBa_3d(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -8767,7 +8767,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_RGBa(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -8783,7 +8783,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_3d(
+		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_RGBa_3d(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -8872,10 +8872,10 @@ namespace lnd
 
 			_capacity = rhs._capacity;
 		}
-		template <class _rhs_Allocator> text(text<_rhs_Allocator>&& rhs) noexcept
+		template <class _rhs_Allocator> text& operator=(const text<_rhs_Allocator>& rhs)
 		{
-			screen_vertex = std::move(rhs.screen_vertex);
-			atlas_vertex = std::move(rhs.screen_vertex);
+			screen_vertex = rhs.screen_vertex;
+			atlas_vertex = rhs.screen_vertex;
 
 			X0 = rhs.X0;
 			Y0 = rhs.Y0;
@@ -8889,10 +8889,10 @@ namespace lnd
 
 			_capacity = rhs._capacity;
 		}
-		template <class _rhs_Allocator> text& operator=(const text<_rhs_Allocator>& rhs)
+		template <class _rhs_Allocator> text(text<_rhs_Allocator>&& rhs) noexcept
 		{
-			screen_vertex = rhs.screen_vertex;
-			atlas_vertex = rhs.screen_vertex;
+			screen_vertex = std::move(rhs.screen_vertex);
+			atlas_vertex = std::move(rhs.screen_vertex);
 
 			X0 = rhs.X0;
 			Y0 = rhs.Y0;
