@@ -9109,6 +9109,13 @@ namespace lnd
 
 	public:
 
+		camera_3d() = default;
+		~camera_3d() = default;
+		camera_3d(const lnd::camera_3d&) = default;
+		lnd::camera_3d& operator=(const lnd::camera_3d&) = default;
+		camera_3d(lnd::camera_3d&&) = default;
+		lnd::camera_3d& operator=(lnd::camera_3d&&) = default;
+
 		float position[4] = { 0.0f };
 		float direction[4] = { 1.0f };
 
@@ -9491,6 +9498,10 @@ namespace lnd
 
 		model_3d() = default;
 		~model_3d() = default;
+		model_3d(const lnd::model_3d&) = default;
+		lnd::model_3d& operator=(const lnd::model_3d&) = default;
+		model_3d(lnd::model_3d&&) = default;
+		lnd::model_3d& operator=(lnd::model_3d&&) = default;
 
 		inline const float* m_matrix_data() const noexcept
 		{
