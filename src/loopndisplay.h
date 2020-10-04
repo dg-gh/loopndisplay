@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 20 / 09 / 2020
+// loopndisplay.h - last update : 04 / 10 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW installed
