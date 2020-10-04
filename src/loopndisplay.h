@@ -4674,11 +4674,8 @@ namespace lnd
 		float _max_Y = 1.0f;
 		float _pixel_X = 0.01f;
 		float _pixel_Y = 0.01f;
-
-
-		unsigned int tri_hollow_index[6] = { 0, 1, 1, 2, 2, 0 };
-		unsigned int quad_hollow_index[8] = { 0, 1, 1, 2, 2, 3, 3, 0 };
-
+		
+		
 		lnd::shader_vertex _vertex_identity;
 		lnd::shader_vertex _vertex_shift; // takes uniforms
 		lnd::shader_vertex _vertex_shift_scale; // takes uniforms
