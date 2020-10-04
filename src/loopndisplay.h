@@ -2485,9 +2485,9 @@ namespace lnd
 			;
 	}
 
-	std::string source_fragment_color_pointlights_3d(int _number_of_pointlights)
+	std::string source_fragment_color_pointlights_3d(int number_of_pointlights)
 	{
-		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+		std::string _number_of_pointlights = std::to_string(number_of_pointlights);
 
 		return
 			"	#version 330 core																		\n"
@@ -2500,9 +2500,9 @@ namespace lnd
 			"	uniform vec3 u_view_pos;																\n"
 			"	uniform vec3 u_amb;																		\n"
 
-			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_pos[" + _number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];								\n"
 			"	uniform int first_light;																\n"
 			"	uniform int end_light;																	\n"
 
@@ -2534,9 +2534,9 @@ namespace lnd
 			"	}																						\n"
 			;
 	}
-	std::string source_fragment_RGB_pointlights_3d(int _number_of_pointlights)
+	std::string source_fragment_RGB_pointlights_3d(int number_of_pointlights)
 	{
-		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+		std::string _number_of_pointlights = std::to_string(number_of_pointlights);
 
 		return
 			"	#version 330 core																		\n"
@@ -2550,9 +2550,9 @@ namespace lnd
 			"	uniform vec3 u_view_pos;																\n"
 			"	uniform vec3 u_amb;																		\n"
 
-			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_pos[" + _number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];								\n"
 			"	uniform int first_light;																\n"
 			"	uniform int end_light;																	\n"
 
@@ -2583,9 +2583,9 @@ namespace lnd
 			"	}																						\n"
 			;
 	}
-	std::string source_fragment_RGBA_pointlights_3d(int _number_of_pointlights)
+	std::string source_fragment_RGBA_pointlights_3d(int number_of_pointlights)
 	{
-		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+		std::string _number_of_pointlights = std::to_string(number_of_pointlights);
 
 		return
 			"	#version 330 core																		\n"
@@ -2599,9 +2599,9 @@ namespace lnd
 			"	uniform vec3 u_view_pos;																\n"
 			"	uniform vec3 u_amb;																		\n"
 
-			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_pos[" + _number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];								\n"
 			"	uniform int first_light;																\n"
 			"	uniform int end_light;																	\n"
 
@@ -2633,9 +2633,9 @@ namespace lnd
 			"	}																						\n"
 			;
 	}
-	std::string source_fragment_texture_pointlights_3d(int _number_of_pointlights)
+	std::string source_fragment_texture_pointlights_3d(int number_of_pointlights)
 	{
-		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+		std::string _number_of_pointlights = std::to_string(number_of_pointlights);
 
 		return
 			"	#version 330 core																		\n"
@@ -2649,9 +2649,9 @@ namespace lnd
 			"	uniform vec3 u_view_pos;																\n"
 			"	uniform vec3 u_amb;																		\n"
 
-			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_pos[" + _number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];								\n"
 			"	uniform int first_light;																\n"
 			"	uniform int end_light;																	\n"
 
@@ -2686,9 +2686,9 @@ namespace lnd
 			;
 	}
 
-	std::string source_fragment_color_combolights_3d(int _number_of_pointlights)
+	std::string source_fragment_color_combolights_3d(int number_of_pointlights)
 	{
-		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+		std::string _number_of_pointlights = std::to_string(number_of_pointlights);
 
 		return
 			"	#version 330 core																		\n"
@@ -2704,9 +2704,9 @@ namespace lnd
 			"	uniform vec3 u_slight_dir;																\n"
 			"	uniform vec3 u_slight_C;																\n"
 
-			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_pos[" + _number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];								\n"
 			"	uniform int first_light;																\n"
 			"	uniform int end_light;																	\n"
 
@@ -2743,9 +2743,9 @@ namespace lnd
 			"	}																						\n"
 			;
 	}
-	std::string source_fragment_RGB_combolights_3d(int _number_of_pointlights)
+	std::string source_fragment_RGB_combolights_3d(int number_of_pointlights)
 	{
-		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+		std::string _number_of_pointlights = std::to_string(number_of_pointlights);
 
 		return
 			"	#version 330 core																		\n"
@@ -2762,9 +2762,9 @@ namespace lnd
 			"	uniform vec3 u_slight_dir;																\n"
 			"	uniform vec3 u_slight_C;																\n"
 
-			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_pos[" + _number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];								\n"
 			"	uniform int first_light;																\n"
 			"	uniform int end_light;																	\n"
 
@@ -2800,9 +2800,9 @@ namespace lnd
 			"	}																						\n"
 			;
 	}
-	std::string source_fragment_RGBA_combolights_3d(int _number_of_pointlights)
+	std::string source_fragment_RGBA_combolights_3d(int number_of_pointlights)
 	{
-		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+		std::string _number_of_pointlights = std::to_string(number_of_pointlights);
 
 		return
 			"	#version 330 core																		\n"
@@ -2819,9 +2819,9 @@ namespace lnd
 			"	uniform vec3 u_slight_dir;																\n"
 			"	uniform vec3 u_slight_C;																\n"
 
-			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_pos[" + _number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];								\n"
 			"	uniform int first_light;																\n"
 			"	uniform int end_light;																	\n"
 
@@ -2858,9 +2858,9 @@ namespace lnd
 			"	}																						\n"
 			;
 	}
-	std::string source_fragment_texture_combolights_3d(int _number_of_pointlights)
+	std::string source_fragment_texture_combolights_3d(int number_of_pointlights)
 	{
-		std::string number_of_pointlights = std::to_string(_number_of_pointlights);
+		std::string _number_of_pointlights = std::to_string(number_of_pointlights);
 
 		return
 			"	#version 330 core																		\n"
@@ -2877,9 +2877,9 @@ namespace lnd
 			"	uniform vec3 u_slight_dir;																\n"
 			"	uniform vec3 u_slight_C;																\n"
 
-			"	uniform vec3 u_plight_pos[" + number_of_pointlights + "];								\n"
-			"	uniform vec4 u_plight_C[" + number_of_pointlights + "];									\n"
-			"	uniform vec3 u_plight_att[" + number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_pos[" + _number_of_pointlights + "];								\n"
+			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];								\n"
+			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];								\n"
 			"	uniform int first_light;																\n"
 			"	uniform int end_light;																	\n"
 
