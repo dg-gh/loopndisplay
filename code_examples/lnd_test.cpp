@@ -159,6 +159,6 @@ int main()
 {
 	lnd::window<test_program> main_window;
 	main_window.set_anti_aliasing(true);
-	main_window.show(800, 600, true, 0.01, "Test program !");
+	main_window.show(800, 600, true, 0.01, "Test program");
 	return 0;
 }
