@@ -33,7 +33,7 @@ protected:
 	void setup();
 	inline void loop(float);
 	inline void display();
-	void exit() {};
+	void exit() { };
 	bool exit_condition() { return key_escape(); }
 };
 
