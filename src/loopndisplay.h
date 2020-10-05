@@ -6732,7 +6732,7 @@ namespace lnd
 
 		// makes normals
 
-		inline void make_normals_from(const lnd::group_cluster_vertex<_vertex_count_pc, _dim>& vertex, bool trigonometric_orientation) noexcept
+		inline void make_normals_from(const lnd::group_cluster_vertex<_vertex_count_pc, _dim>& vertex, bool counter_clockwise_orientation) noexcept
 		{
 			m.resize(vertex.m.size());
 			constexpr size_t _offset = _vertex_count_pc * _dim;
@@ -6741,7 +6741,7 @@ namespace lnd
 			float factor;
 			size_t n = m.size();
 
-			switch (trigonometric_orientation)
+			switch (counter_clockwise_orientation)
 			{
 
 			case true:
