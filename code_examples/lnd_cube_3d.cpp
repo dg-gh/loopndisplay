@@ -238,6 +238,6 @@ int main()
 {
 	lnd::window<cube_3d> main_window;
 	main_window.set_anti_aliasing(true);
-	main_window.show(1024, 768, true, 0.01, "Cube 3D");
+	main_window.show(1024, 768, true, 0.01, "Cube 3D (use WASD for moving and arrows for turning)");
 	return 0;
 }
