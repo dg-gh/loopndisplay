@@ -8811,25 +8811,7 @@ namespace lnd
 	{
 
 	private:
-
-		inline const float* data_screen_vertex() const noexcept
-		{
-			return screen_vertex.data();
-		}
-		inline float* data_screen_vertex() noexcept
-		{
-			return screen_vertex.data();
-		}
-
-		inline const float* data_atlas_vertex() const noexcept
-		{
-			return atlas_vertex.data();
-		}
-		inline float* data_atlas_vertex() noexcept
-		{
-			return atlas_vertex.data();
-		}
-
+		
 		std::vector<float, _vertex_Allocator> screen_vertex;
 		std::vector<float, _vertex_Allocator> atlas_vertex;
 
@@ -8926,6 +8908,24 @@ namespace lnd
 			atlas_h = rhs.atlas_h;
 
 			_capacity = rhs._capacity;
+		}
+		
+		inline const float* data_screen_vertex() const noexcept
+		{
+			return screen_vertex.data();
+		}
+		inline float* data_screen_vertex() noexcept
+		{
+			return screen_vertex.data();
+		}
+
+		inline const float* data_atlas_vertex() const noexcept
+		{
+			return atlas_vertex.data();
+		}
+		inline float* data_atlas_vertex() noexcept
+		{
+			return atlas_vertex.data();
 		}
 
 		inline void set_position_in_screen(float X, float Y, float delta_X) noexcept
