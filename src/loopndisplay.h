@@ -21,10 +21,35 @@
 // the method call_display() runs the method display(), must be called in the loop(float time_elapsed) method
 
 
-// as an example, you can enter the following code in the main:
+// as an example, you can enter the following code in the main function:
 
 // lnd::window<looper_derived_class> window_example;
 // window_example.show(640, 480, true, 0.02, "My program !");
+
+
+// the main cpp file would result in the following:
+
+//	#include "loopndisplay.h"
+//	
+//	class my_prog : protected lnd::looper
+//	{
+//	
+//	protected:
+//	
+//		void setup() { }
+//		inline void loop(float dt) { call_display(); }
+//		inline void display() { clear_window(); }
+//		void exit() { }
+//		bool exit_condition() { return key_escape(); }
+//	};
+//	
+//	int main()
+//	{
+//		lnd::window<my_prog> main_window;
+//		main_window.show(640, 480, true, 0.02,
+//			"My program ! (press escape to exit)");
+//		return 0;
+//	}
 
 
 
