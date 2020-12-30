@@ -1,4 +1,4 @@
-#include "loopndisplay.h"
+#include "loopndisplay.hpp"
 
 class beamforming : protected lnd::looper
 {
