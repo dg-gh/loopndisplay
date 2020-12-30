@@ -1,4 +1,4 @@
-// loopndisplay.h - last update : 30 / 12 / 2020
+// loopndisplay.hpp - last update : 30 / 12 / 2020
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW set up
@@ -29,7 +29,7 @@
 
 // the main cpp file would result in the following:
 
-//	#include "loopndisplay.h"
+//	#include "loopndisplay.hpp"
 //	
 //	class my_prog : protected lnd::looper
 //	{
@@ -9510,7 +9510,7 @@ namespace lnd
 #endif // LOOPNDISPLAY_H
 
 
-// loopndisplay.h
+// loopndisplay.hpp
 // 
 // This is free software released into the public domain.
 // 
