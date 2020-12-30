@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <ctime>
-#include "loopndisplay.h"
+#include "loopndisplay.hpp"
 
 class clock_program : protected lnd::looper
 {
