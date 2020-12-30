@@ -9,8 +9,8 @@
 
 ////// API //////
 
-// write the following methods in a derived class (looper_derived_class for an example)
-// putting the looper as protected:
+// write the following methods of my_prog in a derived class of lnd::looper
+// with lnd::looper as protected:
 
 // void setup() { your code here in the derived class ... }
 // inline void loop(float time_elapsed) { your code here in the derived class ... }
@@ -23,7 +23,7 @@
 
 // as an example, you can enter the following code in the main function:
 
-// lnd::window<looper_derived_class> window_example;
+// lnd::window<my_prog> window_example;
 // window_example.show(640, 480, true, 0.02, "My program !");
 
 
