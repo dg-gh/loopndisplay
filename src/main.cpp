@@ -1,4 +1,4 @@
-#include "loopndisplay.h"
+#include "loopndisplay.hpp"
 
 class my_prog : protected lnd::looper
 {
