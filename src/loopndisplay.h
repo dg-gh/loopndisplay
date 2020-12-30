@@ -9,7 +9,7 @@
 
 ////// API //////
 
-// write the following methods of my_prog in a derived class of lnd::looper
+// write the following methods of my_prog as a derived class of lnd::looper
 // with lnd::looper as protected:
 
 // void setup() { your code here in the derived class ... }
