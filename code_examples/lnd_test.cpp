@@ -1,6 +1,4 @@
-#include "loopndisplay.h"
-
-constexpr float pi = 3.14159265358979f;
+#include "loopndisplay.hpp"
 
 class test_program : protected lnd::looper
 {
@@ -26,7 +24,7 @@ private:
 	GLsizei first = 0;
 	GLsizei last = 0;
 
-	float coeff = 0.25f * pi / 180.0f;
+	float coeff = 0.25f * 3.14159265358979f / 180.0f;
 
 protected:
 
@@ -39,6 +37,8 @@ protected:
 
 inline void test_program::setup()
 {
+	constexpr float pi = 3.14159265358979f;
+
 	outer.resize_cluster_count(120);
 	for (size_t k = 0; k < 120; k++)
 	{
@@ -114,7 +114,7 @@ inline void test_program::setup()
 	prog.new_program(vertex_texture_shift_rotate(), fragment_texture());
 }
 
-inline void test_program::loop(float dt)
+inline void test_program::loop(float)
 {
 	count++;
 	if (count > 120) { count = 1; }
