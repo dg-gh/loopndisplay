@@ -1,5 +1,5 @@
 #define LND_INCLUDE_AVX
-#include "loopndisplay.h"
+#include "loopndisplay.hpp"
 
 constexpr float pi = 3.14159265358979f;
 
