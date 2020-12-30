@@ -1,4 +1,4 @@
-#include "loopndisplay.h"
+#include "loopndisplay.hpp"
 
 class julia_fractal : protected lnd::looper
 {
