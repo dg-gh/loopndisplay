@@ -2,14 +2,10 @@
 #include <ctime>
 #include "loopndisplay.h"
 
-constexpr float pi = 3.14159265358979f;
-
 class clock_program : protected lnd::looper
 {
 
 private:
-
-	int count = 5;
 
 	lnd::group_vertex<2> sec_needle;
 	lnd::program sec_program;
@@ -52,6 +48,8 @@ protected:
 
 void clock_program::setup()
 {
+	constexpr float pi = 3.14159265358979f;
+
 	sec.resize_cluster_count(60);
 	for (size_t k = 0; k < 60; k++)
 	{
