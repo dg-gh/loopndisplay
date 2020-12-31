@@ -181,6 +181,7 @@ void cube_3d::setup()
 inline void cube_3d::loop(float dt)
 {
 	constexpr float pi = 3.14159265358979f;
+	constexpr float pi2 = 2.0f * 3.14159265358979f;
 
 	P.compute_trig();
 
@@ -197,19 +198,19 @@ inline void cube_3d::loop(float dt)
 	if (key_right()) { P.turn_right_rad(dt); }
 
 	angle0 += dt;
-	if (angle0 > pi) { angle0 = -pi; }
+	if (angle0 > pi) { angle0 -= -pi2; }
 	light_position0[0] = 2.0f * cosf(angle0);
 	light_position0[1] = 2.0f * sinf(angle0);
 	P0.set_position(light_position0);
 
 	angle1 += dt;
-	if (angle1 > pi) { angle1 = -pi; }
+	if (angle1 > pi) { angle1 -= -pi2; }
 	light_position1[0] = 2.0f * cosf(angle1);
 	light_position1[1] = 2.0f * sinf(angle1);
 	P1.set_position(light_position1);
 
 	angle2 += dt;
-	if (angle2 > pi) { angle2 = -pi; }
+	if (angle2 > pi) { angle2 -=-pi2; }
 	light_position2[0] = 2.0f * cosf(angle2);
 	light_position2[1] = 2.0f * sinf(angle2);
 	P2.set_position(light_position2);
