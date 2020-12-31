@@ -10,7 +10,7 @@
 ////// API //////
 
 // write the following methods of my_prog as a derived class of lnd::looper
-// with lnd::looper as protected:
+// with lnd::looper as protected :
 
 // void setup() { your code here in the derived class ... }
 // inline void loop(float time_elapsed) { your code here in the derived class ... }
@@ -21,13 +21,13 @@
 // the method call_display() runs the method display(), must be called in the loop(float time_elapsed) method
 
 
-// as an example, you can enter the following code in the main function:
+// as an example, you can enter the following code in the main function :
 
 // lnd::window<my_prog> window_example;
 // window_example.show(640, 480, true, 0.02, "My program !");
 
 
-// the main cpp file would result in the following:
+// the main cpp file would result in the following :
 
 //	#include "loopndisplay.hpp"
 //	
