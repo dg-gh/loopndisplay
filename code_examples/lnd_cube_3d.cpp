@@ -45,6 +45,8 @@ protected:
 
 void cube_3d::setup()
 {
+	constexpr float pi = 3.14159265358979f;
+
 	lnd::enable_3d();
 	lnd::enable_transparency();
 
@@ -172,7 +174,7 @@ void cube_3d::setup()
 
 	lnd::set_pointlights_range_3d(prog, 0, 3);
 
-	P.compute_p_matrix(screen_ratio(), 0.5f * 3.14159f, 100.f, 0.1f);
+	P.compute_p_matrix(screen_ratio(), 0.5f * pi, 100.f, 0.1f);
 	P.position[0] = -2.0f;
 }
 
