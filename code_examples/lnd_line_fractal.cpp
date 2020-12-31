@@ -7,6 +7,20 @@
 #define START_ANGLE 1.4
 #define ITERATIONS 7
 
+/* #define SEED "F-F-F-F"
+#define SUBSTITUTION "F-F+F+F-F"
+#define FORWARD_CHAR 'F'
+#define TURN_ANGLE 3.14159265358979 / 2.0
+#define START_ANGLE 3.14159265358979 / 2.0
+#define ITERATIONS 8 */ 
+
+/* #define SEED "F--F"
+#define SUBSTITUTION "F-F+F+F-F"
+#define FORWARD_CHAR 'F'
+#define TURN_ANGLE 3.14159265358979 / 2.0
+#define START_ANGLE 1.4
+#define ITERATIONS 8 */
+
 
 class line_fractal : protected lnd::looper
 {
