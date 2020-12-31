@@ -1,7 +1,6 @@
 #define LND_INCLUDE_AVX
 #include "loopndisplay.hpp"
-
-constexpr float pi = 3.14159265358979f;
+#include <random>
 
 class cube_3d : protected lnd::looper
 {
@@ -30,10 +29,10 @@ private:
 	float angle0 = 0.0f;
 
 	float light_position1[3];
-	float angle1 = 2.0f / 3.0f * pi;
+	float angle1 = 2.0f / 3.0f * 3.14159265358979f;
 
 	float light_position2[3];
-	float angle2 = -2.0f / 3.0f * pi;
+	float angle2 = -2.0f / 3.0f * 3.14159265358979f;
 
 protected:
 
@@ -89,24 +88,30 @@ void cube_3d::setup()
 	cube_light.buffer_new_id();
 	cube_light.buffer_allocate();
 
-	tex.resize(256, 256);
+	tex.resize(1024, 1024);
 
-	for (size_t i = 0; i < 256; i++)
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<> distribution(0, 127);
+
+	for (size_t i = 0; i < 1024; i++)
 	{
-		for (size_t j = 0; j < 256; j++)
+		for (size_t j = 0; j < 1024; j++)
 		{
-			if ((i < 128 && j < 128) || (i >= 128 && j >= 128))
+			if ((i < 512 && j < 512) || (i >= 512 && j >= 512))
 			{
-				tex(i, j)[0] = static_cast<unsigned char>(255);
-				tex(i, j)[1] = static_cast<unsigned char>(255);
-				tex(i, j)[2] = static_cast<unsigned char>(255);
+				unsigned char x = static_cast<unsigned char>(distribution(mt) + 128);
+				tex(i, j)[0] = x;
+				tex(i, j)[1] = x;
+				tex(i, j)[2] = x;
 				tex(i, j)[3] = static_cast<unsigned char>(255);
 			}
 			else
 			{
-				tex(i, j)[0] = static_cast<unsigned char>(128);
-				tex(i, j)[1] = static_cast<unsigned char>(128);
-				tex(i, j)[2] = static_cast<unsigned char>(128);
+				unsigned char x = static_cast<unsigned char>(distribution(mt));
+				tex(i, j)[0] = x;
+				tex(i, j)[1] = x;
+				tex(i, j)[2] = x;
 				tex(i, j)[3] = static_cast<unsigned char>(255);
 			}
 		}
@@ -173,6 +178,8 @@ void cube_3d::setup()
 
 inline void cube_3d::loop(float dt)
 {
+	constexpr float pi = 3.14159265358979f;
+
 	P.compute_trig();
 
 	if (key_W()) { P.move_forward(dt); }
