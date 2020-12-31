@@ -53,8 +53,8 @@
 
 
 
-#ifndef LOOPNDISPLAY_H
-#define LOOPNDISPLAY_H
+#ifndef LOOPNDISPLAY_HPP
+#define LOOPNDISPLAY_HPP
 
 
 ////// OPTIONS //////
@@ -9507,7 +9507,7 @@ namespace lnd
 #undef LND_SQRT
 
 
-#endif // LOOPNDISPLAY_H
+#endif // LOOPNDISPLAY_HPP
 
 
 // loopndisplay.hpp
