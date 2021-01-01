@@ -7717,6 +7717,70 @@ namespace lnd
 				break;
 			}
 		}
+			
+		
+		template <size_t _pixel_dim, size_t _frame_dim, class _vertex_Allocator, class _texture_Allocator,
+			class _spec_Allocator, class _nmap_Allocator, class _frames_Allocator> inline void draw_material_3d(
+				const lnd::program& program,
+				const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+				const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image,
+				const lnd::texture<1, _spec_Allocator>& texture_spec,
+				const lnd::texture<3, _nmap_Allocator>& texture_nmap,
+				const lnd::group_cluster_vertex<_vertex_count_pc, _frame_dim, _frames_Allocator>& frames)
+		{
+			switch (_vertex_count_pc)
+			{
+
+			case 3:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				texture_coord.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				frames.buffer_bind();
+				glEnableVertexAttribArray(2);
+				glVertexAttribPointer(2, 9, GL_FLOAT, GL_FALSE, _frame_dim * sizeof(float), nullptr);
+				texture_image.buffer_bind(0);
+				texture_spec.buffer_bind(1);
+				texture_nmap.buffer_bind(2);
+				program.use();
+				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
+				buffer.unbind();
+				texture_coord.buffer_unbind();
+				texture_image.buffer_unbind(0);
+				texture_spec.buffer_unbind(1);
+				texture_nmap.buffer_unbind(2);
+				frames.buffer_unbind();
+				break;
+
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				texture_coord.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				frames.buffer_bind();
+				glEnableVertexAttribArray(2);
+				glVertexAttribPointer(2, 9, GL_FLOAT, GL_FALSE, _frame_dim * sizeof(float), nullptr);
+				texture_image.buffer_bind(0);
+				texture_spec.buffer_bind(1);
+				texture_nmap.buffer_bind(2);
+				program.use();
+				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
+				buffer.unbind();
+				texture_coord.buffer_unbind();
+				texture_image.buffer_unbind(0);
+				texture_spec.buffer_unbind(1);
+				texture_nmap.buffer_unbind(2);
+				frames.buffer_unbind();
+				break;
+
+			default:
+				break;
+			}
+		}
 
 
 		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_ranged_tex(
