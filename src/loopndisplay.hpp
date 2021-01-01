@@ -912,10 +912,9 @@ namespace lnd
 
 		inline unsigned int get() const noexcept { return buffer_index; }
 		inline void bind() const { glBindTexture(GL_TEXTURE_2D, buffer_index); }
-		inline void unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }
-		inline void bind(GLenum n) const
+		inline void bind(GLenum slot) const
 		{
-			switch (n)
+			switch (slot)
 			{
 			case 0: glActiveTexture(GL_TEXTURE0); break;
 			case 1: glActiveTexture(GL_TEXTURE1); break;
@@ -953,9 +952,10 @@ namespace lnd
 			}
 			glBindTexture(GL_TEXTURE_2D, buffer_index);
 		}
-		inline void unbind(GLenum n) const
+		inline void unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }
+		inline void unbind(GLenum slot) const
 		{
-			switch (n)
+			switch (slot)
 			{
 			case 0: glActiveTexture(GL_TEXTURE0); break;
 			case 1: glActiveTexture(GL_TEXTURE1); break;
@@ -6209,9 +6209,17 @@ namespace lnd
 		{
 			buffer.bind();
 		}
+		inline void buffer_bind(GLenum slot) const
+		{
+			buffer.bind(slot);
+		}
 		inline void buffer_unbind() const
 		{
 			buffer.unbind();
+		}
+		inline void buffer_unbind(GLenum slot) const
+		{
+			buffer.unbind(slot);
 		}
 		inline void buffer_allocate() const
 		{
