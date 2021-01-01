@@ -6841,7 +6841,7 @@ namespace lnd
 					{
 						*p = *(q + 1);
 						*(p + 1) = -*q;
-						factor = 1.0f / LND_SQRT((*p) * (*p) + (*q) * (*q));
+						factor = 1.0f / LND_SQRT((*p) * (*p) + (*(p + 1)) * (*(p + 1)));
 						*p *= factor;
 						*(p + 1) *= factor;
 						for (size_t k = 1; k < _vertex_count_pc; k++)
