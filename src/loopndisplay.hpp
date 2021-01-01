@@ -354,15 +354,15 @@ namespace lnd
 
 	// INSTANCES
 
-	int  padding0[8] = { 0 };
+	int padding0[8] = { 0 };
 	GLFWwindow* __window_ptr = nullptr;
-	int  padding1[8] = { 0 };
+	int padding1[8] = { 0 };
 	lnd::user_key_input __user_key_input;
-	int  padding2[8] = { 0 };
+	int padding2[8] = { 0 };
 	lnd::user_mouse_input __user_mouse_input;
-	int  padding3[8] = { 0 };
+	int padding3[8] = { 0 };
 	GLbitfield __clear_window = GL_COLOR_BUFFER_BIT;
-	int  padding4[8] = { 0 };
+	int padding4[8] = { 0 };
 
 
 	// ON CALLBACK
