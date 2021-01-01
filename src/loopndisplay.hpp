@@ -2395,8 +2395,8 @@ namespace lnd
 			"	layout (location = 0) in vec3 in_X;				\n"
 			"	layout (location = 1) in vec2 in_UV;			\n"
 			"	layout (location = 2) in vec3 in_N;				\n"
-			"	out vec2 UV;									\n"
 			"	out vec3 X;										\n"
+			"	out vec2 UV;									\n"
 			"	out vec3 N;										\n"
 			"	uniform mat4 u_mvp_M;							\n"
 			"	void main() {									\n"
@@ -2404,6 +2404,28 @@ namespace lnd
 			"		UV = in_UV;									\n"
 			"		X = in_X;									\n"
 			"		N = in_N; }									\n"
+			;
+	}
+	std::string source_vertex_material_3d()
+	{
+		return
+			"	#version 330 core								\n"
+			"	layout (location = 0) in vec3 in_X;				\n"
+			"	layout (location = 1) in vec2 in_UV;			\n"
+			"	layout (location = 2) in mat3 in_frame;			\n"
+			"	out vec3 X;										\n"
+			"	out vec2 UV;									\n"
+			"	out vec3 T0;									\n"
+			"	out vec3 T1;									\n"
+			"	out vec3 N;										\n"
+			"	uniform mat4 u_mvp_M;							\n"
+			"	void main() {									\n"
+			"		gl_Position = u_mvp_M * vec4(in_X, 1);		\n"
+			"		X = in_X;									\n"
+			"		UV = in_UV;									\n"
+			"		T0 = in_frame[0];							\n"
+			"		T1 = in_frame[1];							\n"
+			"		N = in_frame[2]; }							\n"
 			;
 	}
 
