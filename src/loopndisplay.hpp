@@ -6867,8 +6867,8 @@ namespace lnd
 					__m128 w;
 					for (size_t j = 0; j < n; j++)
 					{
-						w = _mm_loadu_ps(q);
-						u = _mm_sub_ps(_mm_loadu_ps(q + 3), w);
+						w = _mm_loadu_ps(q + 3);
+						u = _mm_sub_ps(w, _mm_loadu_ps(q));
 						v = _mm_sub_ps(_mm_loadu_ps(q + 6), w);
 						w = _mm_fnmadd_ps(_mm_shuffle_ps(u, u, _MM_SHUFFLE(3, 1, 0, 2)),
 							_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 0, 2, 1)),
@@ -6945,9 +6945,9 @@ namespace lnd
 					__m128 w;
 					for (size_t j = 0; j < n; j++)
 					{
-						w = _mm_loadu_ps(q);
+						w = _mm_loadu_ps(q + 3);
 						u = _mm_sub_ps(_mm_loadu_ps(q + 6), w);
-						v = _mm_sub_ps(_mm_loadu_ps(q + 3), w);
+						v = _mm_sub_ps(w, _mm_loadu_ps(q));
 						w = _mm_fnmadd_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 1, 0, 2)),
 							_mm_shuffle_ps(u, u, _MM_SHUFFLE(3, 0, 2, 1)),
 							_mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 0, 2, 1)),
