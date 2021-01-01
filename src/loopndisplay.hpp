@@ -7580,6 +7580,7 @@ namespace lnd
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
 				texture_coord.buffer_unbind();
+				texture_image.buffer_unbind();
 				normals.buffer_unbind();
 				break;
 
@@ -7598,6 +7599,7 @@ namespace lnd
 				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
 				texture_coord.buffer_unbind();
+				texture_image.buffer_unbind();
 				normals.buffer_unbind();
 				break;
 
@@ -7727,6 +7729,7 @@ namespace lnd
 				glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
 				buffer.unbind();
 				texture_coord.buffer_unbind();
+				texture_image.buffer_unbind();
 				normals.buffer_unbind();
 				break;
 
@@ -7745,6 +7748,7 @@ namespace lnd
 				glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
 				buffer.unbind();
 				texture_coord.buffer_unbind();
+				texture_image.buffer_unbind();
 				normals.buffer_unbind();
 				break;
 
