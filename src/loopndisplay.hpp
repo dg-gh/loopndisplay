@@ -6783,9 +6783,9 @@ namespace lnd
 				case 2:
 					for (size_t j = 0; j < n; j++)
 					{
-						*p = -*(q + 1);
-						*(p + 1) = *q;
-						factor = 1.0f / LND_SQRT((*p) * (*p) + (*q) * (*q));
+						*p = *(q + 1) - *(q + 3);
+						*(p + 1) = *(q + 2) - *q;
+						factor = 1.0f / LND_SQRT((*p) * (*p) + (*(p + 1)) * (*(p + 1)));
 						*p *= factor;
 						*(p + 1) *= factor;
 						for (size_t k = 1; k < _vertex_count_pc; k++)
@@ -6861,8 +6861,8 @@ namespace lnd
 				case 2:
 					for (size_t j = 0; j < n; j++)
 					{
-						*p = *(q + 1);
-						*(p + 1) = -*q;
+						*p = *(q + 3) - *(q + 1);
+						*(p + 1) = *q - *(q + 2);
 						factor = 1.0f / LND_SQRT((*p) * (*p) + (*(p + 1)) * (*(p + 1)));
 						*p *= factor;
 						*(p + 1) *= factor;
