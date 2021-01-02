@@ -6996,6 +6996,219 @@ namespace lnd
 				break;
 			}
 		}
+			
+		template <size_t _vertex_dim> inline void make_frames_from(
+			const lnd::group_cluster_vertex<_vertex_count_pc, _vertex_dim>& vertex,
+			bool counter_clockwise_orientation) noexcept
+		{
+			_storage.resize(vertex._storage.size());
+			constexpr size_t _offset = _vertex_count_pc * _dim;
+			constexpr size_t _vertex_offset = _vertex_count_pc * _vertex_dim;
+			float* p = static_cast<float*>(static_cast<void*>(_storage.data()));
+			const float* q = static_cast<const float*>(static_cast<const void*>(vertex._storage.data()));
+			float factor;
+			size_t n = _storage.size();
+
+			switch (counter_clockwise_orientation)
+			{
+
+			case true:
+
+				switch (_dim)
+				{
+
+				case 2:
+					for (size_t j = 0; j < n; j++)
+					{
+						*p = *(q + 2) - *q;
+						*(p + 1) = *(q + 3) - *(q + 1);
+						factor = 1.0f / LND_SQRT((*p) * (*p) + (*(p + 1)) * (*(p + 1)));
+						*p *= factor;
+						*(p + 1) *= factor;
+						*(p + 2) = -*p;
+						*(p + 3) = *(p + 1);
+						for (size_t k = 1; k < _vertex_count_pc; k++)
+						{
+							memcpy(p + 4 * k, p, 4 * sizeof(float));
+						}
+						p += _offset; q += _vertex_offset;
+					}
+					break;
+
+				case 3:
+#ifdef LND_INCLUDE_AVX
+					__m128 u;
+					__m128 v;
+					__m128 w;
+					for (size_t j = 0; j < n; j++)
+					{
+						w = _mm_loadu_ps(q + 3);
+						u = _mm_sub_ps(w, _mm_loadu_ps(q));
+						v = _mm_sub_ps(_mm_loadu_ps(q + 6), w);
+
+						_mm_storeu_ps(p, _mm_dp_ps(u, u, 0x7f));
+						u = _mm_mul_ps(u, _mm_set1_ps(1.0f / LND_SQRT(*p)));
+						_mm_storeu_ps(p, _mm_dp_ps(v, v, 0x7f));
+						v = _mm_mul_ps(v, _mm_set1_ps(1.0f / LND_SQRT(*p)));
+						_mm_store_ps(p, u);
+						_mm_store_ps(p + 3, v);
+
+						w = _mm_fnmadd_ps(_mm_shuffle_ps(u, u, _MM_SHUFFLE(3, 1, 0, 2)),
+							_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 0, 2, 1)),
+							_mm_mul_ps(_mm_shuffle_ps(u, u, _MM_SHUFFLE(3, 0, 2, 1)),
+								_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 1, 0, 2))));
+						_mm_storeu_ps(p, _mm_dp_ps(w, w, 0x7f));
+						w = _mm_mul_ps(w, _mm_set1_ps(1.0f / LND_SQRT(*p)));
+						_mm_storeu_ps(p, w);
+						for (size_t k = 1; k < _vertex_count_pc; k++)
+						{
+							memcpy(p + 9 * k, p, 9 * sizeof(float));
+						}
+						p += _offset; q += _vertex_offset;
+					}
+#else // LND_INCLUDE_AVX
+					for (size_t j = 0; j < n; j++)
+					{
+						*p = *(q + 3) - *(q);
+						*(p + 1) = *(q + 4) - *(q + 1);
+						*(p + 2) = *(q + 5) - *(q + 2);
+						factor = 1.0f / LND_SQRT((*p) * (*p)
+							+ (*(p + 1)) * (*(p + 1)) + (*(p + 2)) * (*(p + 2)));
+						*p *= factor;
+						*(p + 1) *= factor;
+						*(p + 2) *= factor;
+
+						*(p + 3) = *(q + 6) - *(q + 3);
+						*(p + 4) = *(q + 7) - *(q + 4);
+						*(p + 5) = *(q + 8) - *(q + 5);
+						factor = 1.0f / LND_SQRT((*(p + 3)) * (*(p + 3))
+							+ (*(p + 4)) * (*(p + 4)) + (*(p + 5)) * (*(p + 5)));
+						*(p + 3) *= factor;
+						*(p + 4) *= factor;
+						*(p + 5) *= factor;
+
+						*(p + 6) = (*(p + 1)) * (*(p + 5)) - (*(p + 2)) * (*(p + 4));
+						*(p + 7) = (*(p + 2)) * (*(p + 3)) - (*p) * (*(p + 5));
+						*(p + 8) = (*p) * (*(p + 4)) - (*(p + 1)) * (*p);
+						factor = 1.0f / LND_SQRT((*(p + 6)) * (*(p + 6))
+							+ (*(p + 7)) * (*(p + 7)) + (*(p + 8)) * (*(p + 8)));
+						*(p + 6) *= factor;
+						*(p + 7) *= factor;
+						*(p + 8) *= factor;
+						for (size_t k = 1; k < _vertex_count_pc; k++)
+						{
+							memcpy(p + 9 * k, p, 9 * sizeof(float));
+						}
+						p += _offset; q += _vertex_offset;
+					}
+#endif // LND_INCLUDE_AVX
+					break;
+
+				default:
+					break;
+				}
+
+				break;
+
+			case false:
+
+				switch (_dim)
+				{
+
+				case 2:
+					for (size_t j = 0; j < n; j++)
+					{
+						*p = *(q + 2) - *q;
+						*(p + 1) = *(q + 3) - *(q + 1);
+						factor = 1.0f / LND_SQRT((*p) * (*p) + (*(p + 1)) * (*(p + 1)));
+						*p *= factor;
+						*(p + 1) *= factor;
+						*(p + 2) = *p;
+						*(p + 3) = -*(p + 1);
+						for (size_t k = 1; k < _vertex_count_pc; k++)
+						{
+							memcpy(p + 4 * k, p, 4 * sizeof(float));
+						}
+						p += _offset; q += _vertex_offset;
+					}
+					break;
+
+				case 3:
+#ifdef LND_INCLUDE_AVX
+					__m128 v;
+					__m128 u;
+					__m128 w;
+					for (size_t j = 0; j < n; j++)
+					{
+						w = _mm_loadu_ps(q + 3);
+						u = _mm_sub_ps(_mm_loadu_ps(q + 6), w);
+						v = _mm_sub_ps(w, _mm_loadu_ps(q));
+
+						_mm_storeu_ps(p, _mm_dp_ps(u, u, 0x7f));
+						u = _mm_mul_ps(u, _mm_set1_ps(1.0f / LND_SQRT(*p)));
+						_mm_storeu_ps(p, _mm_dp_ps(v, v, 0x7f));
+						v = _mm_mul_ps(v, _mm_set1_ps(1.0f / LND_SQRT(*p)));
+						_mm_store_ps(p, u);
+						_mm_store_ps(p + 3, v);
+
+						w = _mm_fnmadd_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 1, 0, 2)),
+							_mm_shuffle_ps(u, u, _MM_SHUFFLE(3, 0, 2, 1)),
+							_mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 0, 2, 1)),
+								_mm_shuffle_ps(u, u, _MM_SHUFFLE(3, 1, 0, 2))));
+						_mm_storeu_ps(p, _mm_dp_ps(w, w, 0x7f));
+						w = _mm_mul_ps(w, _mm_set1_ps(1.0f / LND_SQRT(*p)));
+						_mm_storeu_ps(p, w);
+						for (size_t k = 1; k < _vertex_count_pc; k++)
+						{
+							memcpy(p + 9 * k, p, 9 * sizeof(float));
+						}
+						p += _offset; q += _vertex_offset;
+					}
+#else // LND_INCLUDE_AVX
+					for (size_t j = 0; j < n; j++)
+					{
+						*p = *(q + 3) - *(q);
+						*(p + 1) = *(q + 4) - *(q + 1);
+						*(p + 2) = *(q + 5) - *(q + 2);
+						factor = 1.0f / LND_SQRT((*p) * (*p)
+							+ (*(p + 1)) * (*(p + 1)) + (*(p + 2)) * (*(p + 2)));
+						*p *= factor;
+						*(p + 1) *= factor;
+						*(p + 2) *= factor;
+
+						*(p + 3) = *(q + 6) - *(q + 3);
+						*(p + 4) = *(q + 7) - *(q + 4);
+						*(p + 5) = *(q + 8) - *(q + 5);
+						factor = 1.0f / LND_SQRT((*(p + 3)) * (*(p + 3))
+							+ (*(p + 4)) * (*(p + 4)) + (*(p + 5)) * (*(p + 5)));
+						*(p + 3) *= factor;
+						*(p + 4) *= factor;
+						*(p + 5) *= factor;
+
+						*(p + 6) = (*(p + 2)) * (*(p + 4)) - (*(p + 1)) * (*(p + 5));
+						*(p + 7) = (*p) * (*(p + 5)) - (*(p + 2)) * (*(p + 3));
+						*(p + 8) = (*(p + 1)) * (*(p + 3)) - (*p) * (*(p + 4));
+						factor = 1.0f / LND_SQRT((*(p + 6)) * (*(p + 6))
+							+ (*(p + 7)) * (*(p + 7)) + (*(p + 8)) * (*(p + 8)));
+						*(p + 6) *= factor;
+						*(p + 7) *= factor;
+						*(p + 8) *= factor;
+						for (size_t k = 1; k < _vertex_count_pc; k++)
+						{
+							memcpy(p + 9 * k, p, 9 * sizeof(float));
+						}
+						p += _offset; q += _vertex_offset;
+					}
+#endif // LND_INCLUDE_AVX
+					break;
+
+				default:
+					break;
+				}
+
+				break;
+			}
+		}
 
 
 		// draw with solid colors
