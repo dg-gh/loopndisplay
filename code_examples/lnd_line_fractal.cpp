@@ -1,5 +1,6 @@
 #include "loopndisplay.hpp"
 
+// pentagon
 #define SEED "F++F++F++F++F"
 #define SUBSTITUTION "F++F++F+++++F-F++F"
 #define FORWARD_CHAR 'F'
@@ -7,32 +8,36 @@
 #define START_ANGLE 1.4
 #define ITERATIONS 7
 
-/* #define SEED "F-F-F-F"
+/* // cross
+#define SEED "F-F-F-F"
 #define SUBSTITUTION "F-F+F+F-F"
 #define FORWARD_CHAR 'F'
 #define TURN_ANGLE 3.14159265358979 / 2.0
 #define START_ANGLE 3.14159265358979 / 2.0
 #define ITERATIONS 8 */ 
 
-/* #define SEED "F--F"
+/* // square
+#define SEED "F--F"
 #define SUBSTITUTION "F-F+F+F-F"
 #define FORWARD_CHAR 'F'
 #define TURN_ANGLE 3.14159265358979 / 2.0
 #define START_ANGLE 1.4
 #define ITERATIONS 8 */
 
-/* #define SEED "F+F+F+F+F+F"
-#define SUBSTITUTION "F+F+F-F-F-F-F+F+F"
-#define FORWARD_CHAR 'F'
-#define TURN_ANGLE 3.14159265358979 / 3.0
-#define START_ANGLE 3.14159265358979 / 2.0
-#define ITERATIONS 6 */
-
-/* #define SEED "F++F++F"
+/* // hexagon
+#define SEED "F++F++F"
 #define SUBSTITUTION "F++F-F-F-F-F++F"
 #define FORWARD_CHAR 'F'
 #define TURN_ANGLE 3.14159265358979 / 3.0
 #define START_ANGLE 0.0
+#define ITERATIONS 6 */
+
+/* // snowflake
+#define SEED "F+F+F+F+F+F"
+#define SUBSTITUTION "F+F+F-F-F-F-F+F+F"
+#define FORWARD_CHAR 'F'
+#define TURN_ANGLE 3.14159265358979 / 3.0
+#define START_ANGLE 3.14159265358979 / 2.0
 #define ITERATIONS 6 */
 
 
