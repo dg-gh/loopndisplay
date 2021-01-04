@@ -2650,8 +2650,8 @@ namespace lnd
 			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			
 			"			float dot_diff = dot(rotated_N, light_dir);										\n"
-
 			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
 			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
@@ -2699,8 +2699,8 @@ namespace lnd
 			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			
 			"			float dot_diff = dot(rotated_N, light_dir);										\n"
-
 			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
 			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
@@ -2749,8 +2749,8 @@ namespace lnd
 			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			
 			"			float dot_diff = dot(rotated_N, light_dir);										\n"
-
 			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
 			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
@@ -2801,8 +2801,8 @@ namespace lnd
 			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			
 			"			float dot_diff = dot(rotated_N, light_dir);										\n"
-
 			"			float diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);		\n"
 			"			float spec = max(sign(-dot_diff), 0.0) * u_spec									\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
@@ -2859,8 +2859,8 @@ namespace lnd
 			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			
 			"			dot_diff = dot(rotated_N, light_dir);											\n"
-
 			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
 			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
@@ -2916,8 +2916,8 @@ namespace lnd
 			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			
 			"			dot_diff = dot(rotated_N, light_dir);											\n"
-
 			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
 			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
@@ -2974,8 +2974,8 @@ namespace lnd
 			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			
 			"			dot_diff = dot(rotated_N, light_dir);											\n"
-
 			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
 			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
@@ -3034,8 +3034,8 @@ namespace lnd
 			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			
 			"			dot_diff = dot(rotated_N, light_dir);											\n"
-
 			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
 			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
@@ -3098,8 +3098,8 @@ namespace lnd
 			"			float light_dist = length(X - u_plight_pos[k]);									\n"
 			"			float att = u_plight_att[k][0] / (1.0 + light_dist								\n"
 			"				* (u_plight_att[k][1] + light_dist * u_plight_att[k][2]));					\n"
+			
 			"			dot_diff = dot(rotated_N, light_dir);											\n"
-
 			"			diff = max(u_diff * max(-dot_diff, 0.0), face * u_plight_C[k][3]);				\n"
 			"			spec = max(sign(-dot_diff), 0.0) * u_spec										\n"
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);		\n"
