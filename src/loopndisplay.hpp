@@ -6826,8 +6826,9 @@ namespace lnd
 
 
 		// makes normals
-
-		inline void make_normals_from(const lnd::group_cluster_vertex<_vertex_count_pc, _dim>& vertex, bool counter_clockwise_orientation) noexcept
+		
+		template <class _vertex_Allocator>
+		inline void make_normals_from(const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _vertex_Allocator>& vertex, bool counter_clockwise_orientation) noexcept
 		{
 			_storage.resize(vertex._storage.size());
 			constexpr size_t _offset = _vertex_count_pc * _dim;
@@ -6997,8 +6998,8 @@ namespace lnd
 			}
 		}
 			
-		template <size_t _vertex_dim> inline void make_frames_from(
-			const lnd::group_cluster_vertex<_vertex_count_pc, _vertex_dim>& vertex,
+		template <size_t _vertex_dim, class _vertex_Allocator> inline void make_frames_from(
+			const lnd::group_cluster_vertex<_vertex_count_pc, _vertex_dim, _vertex_Allocator>& vertex,
 			bool counter_clockwise_orientation) noexcept
 		{
 			_storage.resize(vertex._storage.size());
