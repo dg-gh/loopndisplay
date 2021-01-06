@@ -59,6 +59,14 @@
 
 ////// OPTIONS //////
 
+#ifdef LND_AVX_EXT
+#include <immintrin.h>
+#endif // LND_AVX_EXT
+
+#ifndef LND_DEFAULT_ALLOCATOR
+#define LND_DEFAULT_ALLOCATOR std::allocator
+#endif // LND_DEFAULT_ALLOCATOR
+
 #ifndef LND_VERTEX
 #define LND_VERTEX(Ty, N) std::array<Ty, N>
 #endif // LND_VERTEX
@@ -91,10 +99,6 @@
 #define LND_SQRT std::sqrtf
 #endif // LND_SQRT
 
-#ifndef LND_ALLOCATOR
-#define LND_ALLOCATOR std::allocator
-#endif // LND_ALLOCATOR
-
 
 ////// INCLUDES //////
 
@@ -114,10 +118,6 @@
 #include <chrono>
 #include <condition_variable>
 #include <iostream>
-
-#ifdef LND_INCLUDE_AVX
-#include <immintrin.h>
-#endif // LND_INCLUDE_AVX
 
 
 ////// IMPLEMENTATION //////
@@ -5527,7 +5527,7 @@ namespace lnd
 		}
 	};
 
-	template <size_t _index_count_pc, class _Allocator = LND_ALLOCATOR<lnd::cluster_index<_index_count_pc>>> class group_cluster_index
+	template <size_t _index_count_pc, class _Allocator = LND_DEFAULT_ALLOCATOR<lnd::cluster_index<_index_count_pc>>> class group_cluster_index
 	{
 
 	private:
@@ -5710,7 +5710,7 @@ namespace lnd
 		}
 	};
 
-	template <class _Allocator = LND_ALLOCATOR<unsigned int>> class group_index
+	template <class _Allocator = LND_DEFAULT_ALLOCATOR<unsigned int>> class group_index
 	{
 
 	private:
@@ -5939,7 +5939,7 @@ namespace lnd
 	};
 
 	template <size_t _color_count_pc, size_t _dim, class _Allocator
-		= LND_ALLOCATOR<lnd::cluster_color<_color_count_pc, _dim>>>
+		= LND_DEFAULT_ALLOCATOR<lnd::cluster_color<_color_count_pc, _dim>>>
 		class group_cluster_color
 	{
 
@@ -6128,7 +6128,7 @@ namespace lnd
 		}
 	};
 
-	template <size_t _dim, class _Allocator = LND_ALLOCATOR<LND_COLOR(float, _dim)>> class group_color
+	template <size_t _dim, class _Allocator = LND_DEFAULT_ALLOCATOR<LND_COLOR(float, _dim)>> class group_color
 	{
 
 	private:
@@ -6304,7 +6304,7 @@ namespace lnd
 
 	// TEXTURE STORAGE CLASSES
 
-	template <size_t _dim, class _texture_Allocator = LND_ALLOCATOR<LND_PIXEL(unsigned char, _dim)>> class texture
+	template <size_t _dim, class _texture_Allocator = LND_DEFAULT_ALLOCATOR<LND_PIXEL(unsigned char, _dim)>> class texture
 	{
 
 	private:
@@ -6713,7 +6713,7 @@ namespace lnd
 	};
 
 	template <size_t _vertex_count_pc, size_t _dim, class _Allocator
-		= LND_ALLOCATOR<lnd::cluster_vertex<_vertex_count_pc, _dim>>>
+		= LND_DEFAULT_ALLOCATOR<lnd::cluster_vertex<_vertex_count_pc, _dim>>>
 		class group_cluster_vertex
 	{
 
@@ -6939,7 +6939,7 @@ namespace lnd
 					break;
 
 				case 3:
-#ifdef LND_INCLUDE_AVX
+#ifdef LND_AVX_EXT
 					__m128 u;
 					__m128 v;
 					__m128 w;
@@ -6961,7 +6961,7 @@ namespace lnd
 						}
 						p += _offset; q += _offset;
 					}
-#else // LND_INCLUDE_AVX
+#else // LND_AVX_EXT
 					float u3[3];
 					float v3[3];
 					for (size_t j = 0; j < n; j++)
@@ -6986,7 +6986,7 @@ namespace lnd
 						}
 						p += _offset; q += _offset;
 					}
-#endif // LND_INCLUDE_AVX
+#endif // LND_AVX_EXT
 					break;
 
 				default:
@@ -7017,7 +7017,7 @@ namespace lnd
 					break;
 
 				case 3:
-#ifdef LND_INCLUDE_AVX
+#ifdef LND_AVX_EXT
 					__m128 v;
 					__m128 u;
 					__m128 w;
@@ -7039,7 +7039,7 @@ namespace lnd
 						}
 						p += _offset; q += _offset;
 					}
-#else // LND_INCLUDE_AVX
+#else // LND_AVX_EXT
 					float u3[3];
 					float v3[3];
 					for (size_t j = 0; j < n; j++)
@@ -7064,7 +7064,7 @@ namespace lnd
 						}
 						p += _offset; q += _offset;
 					}
-#endif // LND_INCLUDE_AVX
+#endif // LND_AVX_EXT
 					break;
 
 				default:
@@ -7122,7 +7122,7 @@ namespace lnd
 					break;
 
 				case 3:
-#ifdef LND_INCLUDE_AVX
+#ifdef LND_AVX_EXT
 					__m128 u;
 					__m128 v;
 					__m128 w;
@@ -7168,7 +7168,7 @@ namespace lnd
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
-#else // LND_INCLUDE_AVX
+#else // LND_AVX_EXT
 					float vt[3];
 					for (size_t j = 0; j < n; j++)
 					{
@@ -7228,7 +7228,7 @@ namespace lnd
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
-#endif // LND_INCLUDE_AVX
+#endif // LND_AVX_EXT
 					break;
 
 				default:
@@ -7261,7 +7261,7 @@ namespace lnd
 					break;
 
 				case 3:
-#ifdef LND_INCLUDE_AVX
+#ifdef LND_AVX_EXT
 					__m128 u;
 					__m128 v;
 					__m128 w;
@@ -7307,7 +7307,7 @@ namespace lnd
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
-#else // LND_INCLUDE_AVX
+#else // LND_AVX_EXT
 					float vt[3];
 					for (size_t j = 0; j < n; j++)
 					{
@@ -7367,7 +7367,7 @@ namespace lnd
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
-#endif // LND_INCLUDE_AVX
+#endif // LND_AVX_EXT
 					break;
 
 				default:
@@ -8917,7 +8917,7 @@ namespace lnd
 		}
 	};
 
-	template <size_t _dim, class _Allocator = LND_ALLOCATOR<LND_VERTEX(float, _dim)>> class group_vertex
+	template <size_t _dim, class _Allocator = LND_DEFAULT_ALLOCATOR<LND_VERTEX(float, _dim)>> class group_vertex
 	{
 
 	private:
@@ -9443,7 +9443,7 @@ namespace lnd
 
 	// TEXT
 
-	template <class _vertex_Allocator = LND_ALLOCATOR<float>> class text
+	template <class _vertex_Allocator = LND_DEFAULT_ALLOCATOR<float>> class text
 	{
 
 	private:
@@ -10003,7 +10003,7 @@ namespace lnd
 
 		inline void m44xm44(float* const pC, const float* const pA, const float* const pB) noexcept
 		{
-#ifdef LND_INCLUDE_AVX
+#ifdef LND_AVX_EXT
 			__m128 vregA0 = _mm_loadu_ps(pA);
 			__m128 vregA1 = _mm_loadu_ps(pA + 4);
 			__m128 vregA2 = _mm_loadu_ps(pA + 8);
@@ -10032,7 +10032,7 @@ namespace lnd
 			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 14), vregC);
 			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 15), vregC);
 			_mm_storeu_ps(pC + 12, vregC);
-#else // LND_INCLUDE_AVX
+#else // LND_AVX_EXT
 			float regB0; float regB1; size_t offset;
 			for (size_t j = 0; j < 4; j++)
 			{
@@ -10058,11 +10058,11 @@ namespace lnd
 				pC[offset + 2] += pA[14] * regB1;
 				pC[offset + 3] += pA[15] * regB1;
 			}
-#endif // LND_INCLUDE_AVX
+#endif // LND_AVX_EXT
 		}
 		inline void m33hxm44(float* const pC, const float* const pA, const float* const pB) noexcept
 		{
-#ifdef LND_INCLUDE_AVX
+#ifdef LND_AVX_EXT
 			__m128 vregA0 = _mm_loadu_ps(pA);
 			__m128 vregA1 = _mm_loadu_ps(pA + 4);
 			__m128 vregA2 = _mm_loadu_ps(pA + 8);
@@ -10087,7 +10087,7 @@ namespace lnd
 			_mm_storeu_ps(pC + 8, vregC);
 
 			_mm_storeu_ps(pC + 12, vregA3);
-#else // LND_INCLUDE_AVX
+#else // LND_AVX_EXT
 			float regB0; float regB1; size_t offset;
 			for (size_t j = 0; j < 3; j++)
 			{
@@ -10114,7 +10114,7 @@ namespace lnd
 				pC[offset + 3] += pA[15] * regB1;
 			}
 			memcpy(pC + 12, pA + 12, 4 * sizeof(float));
-#endif // LND_INCLUDE_AVX
+#endif // LND_AVX_EXT
 		}
 	};
 
