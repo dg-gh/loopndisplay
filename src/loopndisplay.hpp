@@ -2406,13 +2406,15 @@ namespace lnd
 			"		N = in_N; }									\n"
 			;
 	}
-	std::string source_vertex_material_3d()
+	std::string source_vertex_mapped_frames_3d()
 	{
 		return
 			"	#version 330 core								\n"
 			"	layout (location = 0) in vec3 in_X;				\n"
 			"	layout (location = 1) in vec2 in_UV;			\n"
-			"	layout (location = 2) in mat3 in_frame;			\n"
+			"	layout (location = 2) in vec3 in_T0;			\n"
+			"	layout (location = 3) in vec3 in_T1;			\n"
+			"	layout (location = 4) in vec3 in_N;				\n"
 			"	out vec3 X;										\n"
 			"	out vec2 UV;									\n"
 			"	out vec3 T0;									\n"
@@ -2423,9 +2425,9 @@ namespace lnd
 			"		gl_Position = u_mvp_M * vec4(in_X, 1);		\n"
 			"		X = in_X;									\n"
 			"		UV = in_UV;									\n"
-			"		T0 = in_frame[0];							\n"
-			"		T1 = in_frame[1];							\n"
-			"		N = in_frame[2]; }							\n"
+			"		T0 = in_T0;									\n"
+			"		T1 = in_T1;									\n"
+			"		N = in_N; }									\n"
 			;
 	}
 
