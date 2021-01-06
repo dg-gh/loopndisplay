@@ -1,4 +1,4 @@
-#define LND_INCLUDE_AVX
+#define LND_AVX_EXT
 #include "loopndisplay.hpp"
 #include <random>
 
