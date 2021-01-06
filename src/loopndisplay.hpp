@@ -3141,6 +3141,7 @@ namespace lnd
 			"	layout (binding = 0) uniform sampler2D Tx;											\n"
 			"	layout (binding = 1) uniform sampler2D spec_Tx;										\n"
 			"	layout (binding = 2) uniform sampler2D nmap_Tx;										\n"
+			"	layout (binding = 3) uniform sampler2D lmap_Tx;										\n"
 
 			"	void main()																			\n"
 			"	{																					\n"
@@ -3180,7 +3181,8 @@ namespace lnd
 			"				* pow(max(-dot(view_dir, reflect(light_dir, rotated_N)), 0.0), u_conc);	\n"
 			"			color3 += (att * (diff + spec)) * (vec3(u_plight_C[k]) * in_C3);			\n"
 			"		}																				\n"
-			"		color = max(vec4(color3, in_C[3]), face * vec4(u_amb, 0.0));					\n"
+			"		color = max(vec4(color3, in_C[3]), face * vec4(u_amb, 0.0))						\n"
+			"			+ texture(lmap_Tx, UV) * in_C;												\n"
 			"	}																					\n"
 			;
 	}
@@ -8161,14 +8163,15 @@ namespace lnd
 			}
 		}
 
-		template <size_t _pixel_dim, size_t _spec_pixel_dim, size_t _frame_pixel_dim, size_t _vertex_count_pc2,
+		template <size_t _pixel_dim, size_t _spec_pixel_dim, size_t _frame_pixel_dim, size_t _light_pixel_dim, size_t _vertex_count_pc2,
 			class _vertex_Allocator, class _texture_Allocator, class _spec_tex_Allocator,
-			class _frame_tex_Allocator, class _frame_Allocator> inline void draw_mapped_3d(
+			class _frame_tex_Allocator, class _light_tex_Allocator, class _frame_Allocator> inline void draw_mapped_3d(
 				const lnd::program& program,
 				const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 				const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image,
 				const lnd::texture<_spec_pixel_dim, _spec_tex_Allocator>& spec_texture_image,
 				const lnd::texture<_frame_pixel_dim, _frame_tex_Allocator>& frame_texture_image,
+				const lnd::texture<_light_pixel_dim, _light_tex_Allocator>& light_texture_image,
 				const lnd::group_cluster_vertex<_vertex_count_pc2, _dim, _frame_Allocator>& frames)
 		{
 			switch (_vertex_count_pc)
@@ -8191,6 +8194,7 @@ namespace lnd
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
+				light_texture_image.buffer_bind(3);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -8198,6 +8202,7 @@ namespace lnd
 				texture_image.buffer_unbind(0);
 				spec_texture_image.buffer_unbind(1);
 				frame_texture_image.buffer_unbind(2);
+				light_texture_image.buffer_unbind(3);
 				frames.buffer_unbind();
 				break;
 
@@ -8218,6 +8223,7 @@ namespace lnd
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
+				light_texture_image.buffer_bind(3);
 				program.use();
 				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -8225,6 +8231,7 @@ namespace lnd
 				texture_image.buffer_unbind(0);
 				spec_texture_image.buffer_unbind(1);
 				frame_texture_image.buffer_unbind(2);
+				light_texture_image.buffer_unbind(3);
 				frames.buffer_unbind();
 				break;
 
@@ -8382,9 +8389,9 @@ namespace lnd
 			}
 		}
 
-		template <size_t _pixel_dim, size_t _spec_pixel_dim, size_t _frame_pixel_dim, size_t _vertex_count_pc2,
+		template <size_t _pixel_dim, size_t _spec_pixel_dim, size_t _frame_pixel_dim, size_t _light_pixel_dim, size_t _vertex_count_pc2,
 			class _vertex_Allocator, class _texture_Allocator, class _spec_tex_Allocator,
-			class _frame_tex_Allocator, class _frame_Allocator> inline void draw_ranged_mapped_3d(
+			class _frame_tex_Allocator, class _light_tex_Allocator, class _frame_Allocator> inline void draw_ranged_mapped_3d(
 				GLsizei first_cluster,
 				GLsizei end_cluster,
 				const lnd::program& program,
@@ -8392,6 +8399,7 @@ namespace lnd
 				const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image,
 				const lnd::texture<_spec_pixel_dim, _spec_tex_Allocator>& spec_texture_image,
 				const lnd::texture<_frame_pixel_dim, _frame_tex_Allocator>& frame_texture_image,
+				const lnd::texture<_light_pixel_dim, _light_tex_Allocator>& light_texture_image,
 				const lnd::group_cluster_vertex<_vertex_count_pc2, _dim, _frame_Allocator>& frames)
 		{
 			switch (_vertex_count_pc)
@@ -8414,6 +8422,7 @@ namespace lnd
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
+				light_texture_image.buffer_bind(3);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -8421,6 +8430,7 @@ namespace lnd
 				texture_image.buffer_unbind(0);
 				spec_texture_image.buffer_unbind(1);
 				frame_texture_image.buffer_unbind(2);
+				light_texture_image.buffer_unbind(3);
 				frames.buffer_unbind();
 				break;
 
@@ -8441,6 +8451,7 @@ namespace lnd
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
+				light_texture_image.buffer_bind(3);
 				program.use();
 				glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -8448,6 +8459,7 @@ namespace lnd
 				texture_image.buffer_unbind(0);
 				spec_texture_image.buffer_unbind(1);
 				frame_texture_image.buffer_unbind(2);
+				light_texture_image.buffer_unbind(3);
 				frames.buffer_unbind();
 				break;
 
