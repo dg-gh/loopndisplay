@@ -31,7 +31,7 @@
 
 //	#include "loopndisplay.hpp"
 //	
-//	class my_prog : protected lnd::looper
+//	class my_program : protected lnd::looper
 //	{
 //	
 //	protected:
@@ -45,7 +45,7 @@
 //	
 //	int main()
 //	{
-//		lnd::window<my_prog> main_window;
+//		lnd::window<my_program> main_window;
 //		main_window.show(640, 480, true, 0.02,
 //			"My program ! (press escape to exit)");
 //		return 0;
