@@ -27,7 +27,6 @@ private:
 	lnd::texture<4> tex;
 	lnd::texture<1> spec_tex;
 	lnd::texture<3> frame_tex;
-	lnd::texture<3> light_tex;
 	lnd::group_cluster_vertex<3, 2> tex_coord;
 
 	float light_position0[3];
@@ -120,7 +119,6 @@ void cube_mapped_3d::setup()
 	spec_tex.resize(1024, 1024);
 	frame_tex.resize(1024, 1024);
 
-	light_tex.resize(1024, 1024);
 
 	std::random_device rd;
 	std::mt19937 mt(rd());
@@ -187,9 +185,6 @@ void cube_mapped_3d::setup()
 	frame_tex.buffer_new_id();
 	frame_tex.buffer_allocate();
 
-	light_tex.map_linear();
-	light_tex.buffer_new_id();
-	light_tex.buffer_allocate();
 
 	lights_3d_vertex.new_shader(lnd::source_vertex_mapped_3d());
 	lights_3d_fragment.new_shader(lnd::source_fragment_mapped_3d(3));
@@ -280,7 +275,7 @@ inline void cube_mapped_3d::display()
 	lnd::set_pointlight_pos_3d(prog, 0, light_position0);
 	lnd::set_pointlight_pos_3d(prog, 1, light_position1);
 	lnd::set_pointlight_pos_3d(prog, 2, light_position2);
-	cube.draw_mapped_3d(prog, tex_coord, tex, spec_tex, frame_tex, light_tex, cube_normals);
+	cube.draw_mapped_3d(prog, tex_coord, tex, spec_tex, frame_tex, cube_normals);
 
 	P.compute_mvp_matrix(P0.m_matrix_data());
 	lnd::set_mvp_matrix_3d(prog0, P.mvp_matrix_data());
