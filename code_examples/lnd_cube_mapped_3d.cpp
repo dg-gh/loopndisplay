@@ -2,7 +2,7 @@
 #include "loopndisplay.hpp"
 #include <random>
 
-class cube_3d : protected lnd::looper
+class cube_mapped_3d : protected lnd::looper
 {
 
 private:
@@ -14,7 +14,7 @@ private:
 
 	lnd::shader_vertex lights_3d_vertex;
 	lnd::shader_fragment lights_3d_fragment;
-	
+
 	lnd::program prog;
 	lnd::program prog0;
 	lnd::program prog1;
@@ -48,7 +48,7 @@ protected:
 	bool exit_condition() { return key_escape(); }
 };
 
-void cube_3d::setup()
+void cube_mapped_3d::setup()
 {
 	constexpr float pi = 3.14159265358979f;
 
@@ -229,7 +229,7 @@ void cube_3d::setup()
 	P.position[0] = -2.0f;
 }
 
-inline void cube_3d::loop(float dt)
+inline void cube_mapped_3d::loop(float dt)
 {
 	constexpr float pi = 3.14159265358979f;
 	constexpr float pi2 = 2.0f * 3.14159265358979f;
@@ -269,7 +269,7 @@ inline void cube_3d::loop(float dt)
 	call_display();
 }
 
-inline void cube_3d::display()
+inline void cube_mapped_3d::display()
 {
 	clear_window();
 
@@ -297,7 +297,7 @@ inline void cube_3d::display()
 
 int main()
 {
-	lnd::window<cube_3d> main_window;
+	lnd::window<cube_mapped_3d> main_window;
 	main_window.set_anti_aliasing(true);
 	main_window.show(1024, 768, true, 0.01, "Mapped cube 3D (use WASD space and shift for moving and arrows for turning)");
 	return 0;
