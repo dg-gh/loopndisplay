@@ -108,6 +108,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <cstring>
 #include <vector>
 #include <array>
 #include <string>
