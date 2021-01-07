@@ -88,15 +88,15 @@
 #endif // LND_CLOCK
 
 #ifndef LND_COS
-#define LND_COS std::cosf
+#define LND_COS std::cos
 #endif // LND_COS
 
 #ifndef LND_SIN
-#define LND_SIN std::sinf
+#define LND_SIN std::sin
 #endif // LND_SIN
 
 #ifndef LND_SQRT
-#define LND_SQRT std::sqrtf
+#define LND_SQRT std::sqrt
 #endif // LND_SQRT
 
 
@@ -5573,7 +5573,7 @@ namespace lnd
 {
 	// INDEX STORAGE CLASSES
 
-	template <size_t _index_count> class cluster_index
+	template <std::size_t _index_count> class cluster_index
 	{
 
 	private:
@@ -5601,34 +5601,34 @@ namespace lnd
 
 		inline const unsigned int* data() const noexcept { return static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())); }
 		inline unsigned int* data() noexcept { return static_cast<unsigned int*>(static_cast<void*>(_storage.data())); }
-		inline const unsigned int& operator[](size_t offset) const noexcept
+		inline const unsigned int& operator[](std::size_t offset) const noexcept
 		{
 			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline unsigned int& operator[](size_t offset) noexcept
+		inline unsigned int& operator[](std::size_t offset) noexcept
 		{
 			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const unsigned int& operator()(size_t index) const noexcept
+		inline const unsigned int& operator()(std::size_t index) const noexcept
 		{
 			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + index);
 		}
-		inline unsigned int& operator()(size_t index) noexcept
+		inline unsigned int& operator()(std::size_t index) noexcept
 		{
 			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + index);
 		}
 
-		constexpr size_t index_count() const noexcept
+		constexpr std::size_t index_count() const noexcept
 		{
 			return _index_count;
 		}
-		constexpr size_t size() const noexcept
+		constexpr std::size_t size() const noexcept
 		{
 			return _index_count;
 		}
 	};
 
-	template <size_t _index_count_pc, class _Allocator = LND_DEFAULT_ALLOCATOR<lnd::cluster_index<_index_count_pc>>> class group_cluster_index
+	template <std::size_t _index_count_pc, class _Allocator = LND_DEFAULT_ALLOCATOR<lnd::cluster_index<_index_count_pc>>> class group_cluster_index
 	{
 
 	private:
@@ -5640,11 +5640,11 @@ namespace lnd
 
 		group_cluster_index() = default;
 		~group_cluster_index() = default;
-		group_cluster_index(size_t n)
+		group_cluster_index(std::size_t n)
 		{
 			_storage = std::vector<const lnd::cluster_index<_index_count_pc>>(n, lnd::cluster_index<_index_count_pc>());
 		}
-		group_cluster_index(size_t n, const lnd::cluster_index<_index_count_pc>& rhs)
+		group_cluster_index(std::size_t n, const lnd::cluster_index<_index_count_pc>& rhs)
 		{
 			_storage = std::vector<const lnd::cluster_index<_index_count_pc>>(n, rhs);
 		}
@@ -5689,9 +5689,9 @@ namespace lnd
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->size() * sizeof(unsigned int), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const unsigned int* const ptr, size_t cluster_count) const
+		inline void buffer_allocate_from(const unsigned int* const ptr, std::size_t cluster_count) const
 		{
-			constexpr size_t n = _index_count_pc * sizeof(unsigned int);
+			constexpr std::size_t n = _index_count_pc * sizeof(unsigned int);
 			buffer.bind();
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, n * cluster_count, ptr, GL_STATIC_DRAW);
 			buffer.unbind();
@@ -5700,28 +5700,28 @@ namespace lnd
 		{
 			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(unsigned int), this->data());
 		}
-		inline void buffer_update_from(const unsigned int* const ptr, size_t cluster_count) const
+		inline void buffer_update_from(const unsigned int* const ptr, std::size_t cluster_count) const
 		{
-			constexpr size_t n = _index_count_pc * sizeof(unsigned int);
+			constexpr std::size_t n = _index_count_pc * sizeof(unsigned int);
 			glNamedBufferSubData(buffer.get(), 0, n * cluster_count, ptr);
 		}
 
 
 		inline const unsigned int* data() const noexcept { return static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())); }
 		inline unsigned int* data() noexcept { return static_cast<unsigned int*>(static_cast<void*>(_storage.data())); }
-		inline const unsigned int& operator[](size_t offset) const noexcept
+		inline const unsigned int& operator[](std::size_t offset) const noexcept
 		{
 			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline unsigned int& operator[](size_t offset) noexcept
+		inline unsigned int& operator[](std::size_t offset) noexcept
 		{
 			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const unsigned int& operator()(size_t cluster, size_t index) const noexcept
+		inline const unsigned int& operator()(std::size_t cluster, std::size_t index) const noexcept
 		{
 			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + index + _index_count_pc * cluster);
 		}
-		inline unsigned int& operator()(size_t cluster, size_t index) noexcept
+		inline unsigned int& operator()(std::size_t cluster, std::size_t index) noexcept
 		{
 			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + index + _index_count_pc * cluster);
 		}
@@ -5734,20 +5734,20 @@ namespace lnd
 		{
 			return static_cast<lnd::cluster_index<_index_count_pc>*>(static_cast<void*>(_storage.data()));
 		}
-		inline const lnd::cluster_index<_index_count_pc>& operator()(size_t cluster) const noexcept
+		inline const lnd::cluster_index<_index_count_pc>& operator()(std::size_t cluster) const noexcept
 		{
 			return *(_storage.data() + cluster);
 		}
-		inline lnd::cluster_index<_index_count_pc>& operator()(size_t cluster) noexcept
+		inline lnd::cluster_index<_index_count_pc>& operator()(std::size_t cluster) noexcept
 		{
 			return *(_storage.data() + cluster);
 		}
 
-		inline void resize_cluster_count(size_t n)
+		inline void resize_cluster_count(std::size_t n)
 		{
 			_storage.resize(n);
 		}
-		inline void reserve_cluster_count(size_t n)
+		inline void reserve_cluster_count(std::size_t n)
 		{
 			_storage.reserve(n);
 		}
@@ -5767,23 +5767,23 @@ namespace lnd
 		{
 			_storage.pop_front();
 		}
-		inline size_t cluster_count() const noexcept
+		inline std::size_t cluster_count() const noexcept
 		{
 			return _storage.size();
 		}
-		inline size_t cluster_capacity() const noexcept
+		inline std::size_t cluster_capacity() const noexcept
 		{
 			return _storage.capacity();
 		}
-		inline size_t index_count() const noexcept
+		inline std::size_t index_count() const noexcept
 		{
 			return _index_count_pc * _storage.size();
 		}
-		constexpr size_t index_count_per_cluster() const noexcept
+		constexpr std::size_t index_count_per_cluster() const noexcept
 		{
 			return _index_count_pc;
 		}
-		inline size_t size() const noexcept
+		inline std::size_t size() const noexcept
 		{
 			return _index_count_pc * _storage.size();
 		}
@@ -5794,13 +5794,13 @@ namespace lnd
 
 		inline void propagate_with_offset(unsigned int offset)
 		{
-			size_t n = _storage.size();
-			size_t k;
+			std::size_t n = _storage.size();
+			std::size_t k;
 			unsigned int* pf = static_cast<unsigned int*>(static_cast<void*>(_storage.data()));
 			unsigned int* p;
 			unsigned int* q = pf + _index_count_pc;
 			unsigned int acc = 0;
-			for (size_t j = 1; j < n; j++)
+			for (std::size_t j = 1; j < n; j++)
 			{
 				p = pf; acc += offset;
 				for (k = 0; k < _index_count_pc; k++)
@@ -5823,11 +5823,11 @@ namespace lnd
 
 		group_index() = default;
 		~group_index() = default;
-		group_index(size_t n)
+		group_index(std::size_t n)
 		{
 			_storage = std::vector<unsigned int>(n, 0);
 		}
-		group_index(size_t n, unsigned int x)
+		group_index(std::size_t n, unsigned int x)
 		{
 			_storage = std::vector<unsigned int>(n, x);
 		}
@@ -5884,7 +5884,7 @@ namespace lnd
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->size() * sizeof(unsigned int), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const unsigned int* const ptr, size_t vertex_count) const
+		inline void buffer_allocate_from(const unsigned int* const ptr, std::size_t vertex_count) const
 		{
 			buffer.bind();
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertex_count * sizeof(unsigned int), this->data(), GL_STATIC_DRAW);
@@ -5894,35 +5894,35 @@ namespace lnd
 		{
 			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(unsigned int), this->data());
 		}
-		inline void buffer_update_from(const unsigned int* const ptr, size_t vertex_count) const
+		inline void buffer_update_from(const unsigned int* const ptr, std::size_t vertex_count) const
 		{
 			glNamedBufferSubData(buffer.get(), 0, vertex_count * sizeof(unsigned int), ptr);
 		}
 
 		inline const unsigned int* data() const noexcept { return static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())); }
 		inline unsigned int* data() noexcept { return static_cast<unsigned int*>(static_cast<void*>(_storage.data())); }
-		inline const unsigned int& operator[](size_t offset) const noexcept
+		inline const unsigned int& operator[](std::size_t offset) const noexcept
 		{
 			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline unsigned int& operator[](size_t offset) noexcept
+		inline unsigned int& operator[](std::size_t offset) noexcept
 		{
 			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const unsigned int& operator()(size_t index) const noexcept
+		inline const unsigned int& operator()(std::size_t index) const noexcept
 		{
 			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + index);
 		}
-		inline unsigned int& operator()(size_t index) noexcept
+		inline unsigned int& operator()(std::size_t index) noexcept
 		{
 			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + index);
 		}
 
-		inline void resize_index_count(size_t n)
+		inline void resize_index_count(std::size_t n)
 		{
 			_storage.resize(n);
 		}
-		inline void reserve_index_count(size_t n)
+		inline void reserve_index_count(std::size_t n)
 		{
 			_storage.reserve(n);
 		}
@@ -5942,15 +5942,15 @@ namespace lnd
 		{
 			_storage.pop_front();
 		}
-		inline size_t index_count() const noexcept
+		inline std::size_t index_count() const noexcept
 		{
 			return _storage.size();
 		}
-		inline size_t index_capacity() const noexcept
+		inline std::size_t index_capacity() const noexcept
 		{
 			return _storage.capacity();
 		}
-		inline size_t size() const noexcept
+		inline std::size_t size() const noexcept
 		{
 			return _storage.size();
 		}
@@ -5963,7 +5963,7 @@ namespace lnd
 
 	// COLOR STORAGE CLASSES
 
-	template <size_t _color_count_pc, size_t _dim> class cluster_color
+	template <std::size_t _color_count_pc, std::size_t _dim> class cluster_color
 	{
 
 	private:
@@ -5991,19 +5991,19 @@ namespace lnd
 
 		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
 		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](size_t offset) const noexcept
+		inline const float& operator[](std::size_t offset) const noexcept
 		{
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](size_t offset) noexcept
+		inline float& operator[](std::size_t offset) noexcept
 		{
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(size_t color, size_t coord) const noexcept
+		inline const float& operator()(std::size_t color, std::size_t coord) const noexcept
 		{
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * color);
 		}
-		inline float& operator()(size_t color, size_t coord) noexcept
+		inline float& operator()(std::size_t color, std::size_t coord) noexcept
 		{
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * color);
 		}
@@ -6016,30 +6016,30 @@ namespace lnd
 		{
 			return static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_COLOR(float, _dim)& operator()(size_t color) const noexcept
+		inline const LND_COLOR(float, _dim)& operator()(std::size_t color) const noexcept
 		{
 			return *(static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(_storage.data())) + color);
 		}
-		inline LND_COLOR(float, _dim)& operator()(size_t color) noexcept
+		inline LND_COLOR(float, _dim)& operator()(std::size_t color) noexcept
 		{
 			return *(static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data())) + color);
 		}
 
-		constexpr size_t color_count() const noexcept
+		constexpr std::size_t color_count() const noexcept
 		{
 			return _color_count_pc;
 		}
-		constexpr size_t dim() const noexcept
+		constexpr std::size_t dim() const noexcept
 		{
 			return _dim;
 		}
-		constexpr size_t size() const noexcept
+		constexpr std::size_t size() const noexcept
 		{
 			return _color_count_pc * _dim;
 		}
 	};
 
-	template <size_t _color_count_pc, size_t _dim, class _Allocator
+	template <std::size_t _color_count_pc, std::size_t _dim, class _Allocator
 		= LND_DEFAULT_ALLOCATOR<lnd::cluster_color<_color_count_pc, _dim>>>
 		class group_cluster_color
 	{
@@ -6053,11 +6053,11 @@ namespace lnd
 
 		group_cluster_color() = default;
 		~group_cluster_color() = default;
-		group_cluster_color(size_t n)
+		group_cluster_color(std::size_t n)
 		{
 			_storage = std::vector<const lnd::cluster_color<_color_count_pc, _dim>, _Allocator>(n, lnd::cluster_color<_color_count_pc, _dim>());
 		}
-		group_cluster_color(size_t n, const lnd::cluster_color<_color_count_pc, _dim>& rhs)
+		group_cluster_color(std::size_t n, const lnd::cluster_color<_color_count_pc, _dim>& rhs)
 		{
 			_storage = std::vector<const lnd::cluster_color<_color_count_pc, _dim>, _Allocator>(n, rhs);
 		}
@@ -6102,9 +6102,9 @@ namespace lnd
 			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(float), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const float* const ptr, size_t cluster_count) const
+		inline void buffer_allocate_from(const float* const ptr, std::size_t cluster_count) const
 		{
-			constexpr size_t n = _color_count_pc * _dim * sizeof(float);
+			constexpr std::size_t n = _color_count_pc * _dim * sizeof(float);
 			buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, n * cluster_count, ptr, GL_STATIC_DRAW);
 			buffer.unbind();
@@ -6113,30 +6113,30 @@ namespace lnd
 		{
 			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(float), this->data());
 		}
-		inline void buffer_update_from(const float* const ptr, size_t cluster_count) const
+		inline void buffer_update_from(const float* const ptr, std::size_t cluster_count) const
 		{
-			constexpr size_t n = _color_count_pc * _dim * sizeof(float);
+			constexpr std::size_t n = _color_count_pc * _dim * sizeof(float);
 			glNamedBufferSubData(buffer.get(), 0, n * cluster_count, ptr);
 		}
 
 		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
 		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](size_t offset) const noexcept
+		inline const float& operator[](std::size_t offset) const noexcept
 		{
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](size_t offset) noexcept
+		inline float& operator[](std::size_t offset) noexcept
 		{
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(size_t cluster, size_t color, size_t coord) const noexcept
+		inline const float& operator()(std::size_t cluster, std::size_t color, std::size_t coord) const noexcept
 		{
-			constexpr size_t n = _color_count_pc * _dim;
+			constexpr std::size_t n = _color_count_pc * _dim;
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * color + n * cluster);
 		}
-		inline float& operator()(size_t cluster, size_t color, size_t coord) noexcept
+		inline float& operator()(std::size_t cluster, std::size_t color, std::size_t coord) noexcept
 		{
-			constexpr size_t n = color_count * _dim;
+			constexpr std::size_t n = color_count * _dim;
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * color + n * cluster);
 		}
 
@@ -6148,11 +6148,11 @@ namespace lnd
 		{
 			return static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_COLOR(float, _dim)& operator()(size_t cluster, size_t color) const noexcept
+		inline const LND_COLOR(float, _dim)& operator()(std::size_t cluster, std::size_t color) const noexcept
 		{
 			return *(static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(_storage.data())) + color + _color_count_pc * cluster);
 		}
-		inline LND_COLOR(float, _dim)& operator()(size_t cluster, size_t color) noexcept
+		inline LND_COLOR(float, _dim)& operator()(std::size_t cluster, std::size_t color) noexcept
 		{
 			return *(static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data())) + color + _color_count_pc * cluster);
 		}
@@ -6165,20 +6165,20 @@ namespace lnd
 		{
 			return static_cast<lnd::cluster_color<_color_count_pc, _dim>*>(static_cast<void*>(_storage.data()));
 		}
-		inline const lnd::cluster_color<_color_count_pc, _dim>& operator()(size_t cluster) const noexcept
+		inline const lnd::cluster_color<_color_count_pc, _dim>& operator()(std::size_t cluster) const noexcept
 		{
 			return *(_storage.data() + cluster);
 		}
-		inline lnd::cluster_color<_color_count_pc, _dim>& operator()(size_t cluster) noexcept
+		inline lnd::cluster_color<_color_count_pc, _dim>& operator()(std::size_t cluster) noexcept
 		{
 			return *(_storage.data() + cluster);
 		}
 
-		inline void resize_cluster_count(size_t n)
+		inline void resize_cluster_count(std::size_t n)
 		{
 			_storage.resize(n);
 		}
-		inline void reserve_cluster_count(size_t n)
+		inline void reserve_cluster_count(std::size_t n)
 		{
 			_storage.reserve(n);
 		}
@@ -6198,29 +6198,29 @@ namespace lnd
 		{
 			_storage.pop_front();
 		}
-		inline size_t cluster_count() const noexcept
+		inline std::size_t cluster_count() const noexcept
 		{
 			return _storage.size();
 		}
-		inline size_t cluster_capacity() const noexcept
+		inline std::size_t cluster_capacity() const noexcept
 		{
 			return _storage.capacity();
 		}
-		inline size_t color_count() const noexcept
+		inline std::size_t color_count() const noexcept
 		{
 			return _color_count_pc * _storage.size();
 		}
-		constexpr size_t color_count_per_cluster() const noexcept
+		constexpr std::size_t color_count_per_cluster() const noexcept
 		{
 			return _color_count_pc;
 		}
-		constexpr size_t dim() const noexcept
+		constexpr std::size_t dim() const noexcept
 		{
 			return _dim;
 		}
-		inline size_t size() const noexcept
+		inline std::size_t size() const noexcept
 		{
-			constexpr size_t n = _color_count_pc * _dim;
+			constexpr std::size_t n = _color_count_pc * _dim;
 			return n * _storage.size();
 		}
 		inline void shrink_to_fit()
@@ -6229,7 +6229,7 @@ namespace lnd
 		}
 	};
 
-	template <size_t _dim, class _Allocator = LND_DEFAULT_ALLOCATOR<LND_COLOR(float, _dim)>> class group_color
+	template <std::size_t _dim, class _Allocator = LND_DEFAULT_ALLOCATOR<LND_COLOR(float, _dim)>> class group_color
 	{
 
 	private:
@@ -6241,11 +6241,11 @@ namespace lnd
 
 		group_color() = default;
 		~group_color() = default;
-		group_color(size_t n)
+		group_color(std::size_t n)
 		{
 			_storage = std::vector<LND_COLOR(float, _dim)>(n, 0.0f);
 		}
-		group_color(size_t n, const LND_COLOR(float, _dim)& x)
+		group_color(std::size_t n, const LND_COLOR(float, _dim)& x)
 		{
 			_storage = std::vector<unsigned int>(n, x);
 		}
@@ -6302,9 +6302,9 @@ namespace lnd
 			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(float), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const float* const ptr, size_t vertex_count) const
+		inline void buffer_allocate_from(const float* const ptr, std::size_t vertex_count) const
 		{
-			constexpr size_t n = _dim * sizeof(float);
+			constexpr std::size_t n = _dim * sizeof(float);
 			buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, n * vertex_count, ptr, GL_STATIC_DRAW);
 			buffer.unbind();
@@ -6313,28 +6313,28 @@ namespace lnd
 		{
 			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(float), this->data());
 		}
-		inline void buffer_update_from(const float* const ptr, size_t vertex_count) const
+		inline void buffer_update_from(const float* const ptr, std::size_t vertex_count) const
 		{
-			constexpr size_t n = _dim * sizeof(float);
+			constexpr std::size_t n = _dim * sizeof(float);
 			glNamedBufferSubData(buffer.get(), 0, n * vertex_count, ptr);
 		}
 
 
 		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
 		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](size_t offset) const noexcept
+		inline const float& operator[](std::size_t offset) const noexcept
 		{
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](size_t offset) noexcept
+		inline float& operator[](std::size_t offset) noexcept
 		{
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(size_t color, size_t coord) const noexcept
+		inline const float& operator()(std::size_t color, std::size_t coord) const noexcept
 		{
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * color);
 		}
-		inline float& operator()(size_t color, size_t coord) noexcept
+		inline float& operator()(std::size_t color, std::size_t coord) noexcept
 		{
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * color);
 		}
@@ -6347,20 +6347,20 @@ namespace lnd
 		{
 			return static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_COLOR(float, _dim)& operator()(size_t color) const noexcept
+		inline const LND_COLOR(float, _dim)& operator()(std::size_t color) const noexcept
 		{
 			return *(static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(_storage.data())) + color);
 		}
-		inline LND_COLOR(float, _dim)& operator()(size_t color) noexcept
+		inline LND_COLOR(float, _dim)& operator()(std::size_t color) noexcept
 		{
 			return *(static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data())) + color);
 		}
 
-		inline void resize_color_count(size_t n)
+		inline void resize_color_count(std::size_t n)
 		{
 			_storage.resize(n);
 		}
-		inline void reserve_color_count(size_t n)
+		inline void reserve_color_count(std::size_t n)
 		{
 			_storage.reserve(n);
 		}
@@ -6380,23 +6380,23 @@ namespace lnd
 		{
 			_storage.pop_front();
 		}
-		inline size_t color_count() const noexcept
+		inline std::size_t color_count() const noexcept
 		{
 			return _storage.size();
 		}
-		inline size_t color_capacity() const noexcept
+		inline std::size_t color_capacity() const noexcept
 		{
 			return _storage.capacity();
 		}
-		constexpr size_t dim() const noexcept
+		constexpr std::size_t dim() const noexcept
 		{
 			return _dim;
 		}
-		inline size_t size() const noexcept
+		inline std::size_t size() const noexcept
 		{
 			return _dim * _storage.size();
 		}
-		inline size_t shrink_to_fit()
+		inline std::size_t shrink_to_fit()
 		{
 			_storage.shrink_to_fit();
 		}
@@ -6405,14 +6405,14 @@ namespace lnd
 
 	// TEXTURE STORAGE CLASSES
 
-	template <size_t _dim, class _texture_Allocator = LND_DEFAULT_ALLOCATOR<LND_PIXEL(unsigned char, _dim)>> class texture
+	template <std::size_t _dim, class _texture_Allocator = LND_DEFAULT_ALLOCATOR<LND_PIXEL(unsigned char, _dim)>> class texture
 	{
 
 	private:
 
 		std::vector<LND_PIXEL(unsigned char, _dim), _texture_Allocator> _storage;
-		size_t _width = 0;
-		size_t _height = 0;
+		std::size_t _width = 0;
+		std::size_t _height = 0;
 		lnd::buffer_texture buffer;
 		int mapping = GL_NEAREST;
 		int edges = GL_REPEAT;
@@ -6421,14 +6421,14 @@ namespace lnd
 
 		texture() = default;
 		~texture() = default;
-		texture(size_t new_width, size_t new_height)
+		texture(std::size_t new_width, std::size_t new_height)
 		{
 			_storage = std::vector<LND_PIXEL(unsigned char, _dim)>(new_width * new_height,
 				LND_PIXEL(unsigned char, _dim){ static_cast<unsigned char>(0) });
 			_width = new_width;
 			_height = new_height;
 		}
-		texture(size_t new_width, size_t new_height, const LND_PIXEL(float, _dim)& x)
+		texture(std::size_t new_width, std::size_t new_height, const LND_PIXEL(float, _dim)& x)
 		{
 			_storage = std::vector<LND_PIXEL(unsigned char, _dim)>(new_width * new_height, x);
 			_width = new_width;
@@ -6647,17 +6647,17 @@ namespace lnd
 			edges = GL_CLAMP_TO_EDGE;
 		}
 
-		inline size_t width() const noexcept { return _width; }
-		inline size_t height() const noexcept { return _height; }
+		inline std::size_t width() const noexcept { return _width; }
+		inline std::size_t height() const noexcept { return _height; }
 
 		inline void flip()
 		{
 			LND_PIXEL(unsigned char, _dim) temp;
 			LND_PIXEL(unsigned char, _dim)* p = _storage.data();
 			LND_PIXEL(unsigned char, _dim)* q = _storage.data() + _width * (_height - 1);
-			size_t j;
-			size_t jump = 2 * _width;
-			for (size_t i = _height / 2; i > 0; i--)
+			std::size_t j;
+			std::size_t jump = 2 * _width;
+			for (std::size_t i = _height / 2; i > 0; i--)
 			{
 				for (j = _width; j > 0; j--)
 				{
@@ -6672,11 +6672,11 @@ namespace lnd
 
 		inline const unsigned char* data() const noexcept { return static_cast<const unsigned char*>(static_cast<const void*>(_storage.data())); }
 		inline unsigned char* data() noexcept { return static_cast<unsigned char*>(static_cast<void*>(_storage.data())); }
-		inline const unsigned char& operator[](size_t offset) const noexcept
+		inline const unsigned char& operator[](std::size_t offset) const noexcept
 		{
 			return *(static_cast<const unsigned char*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline unsigned char& operator[](size_t offset) noexcept
+		inline unsigned char& operator[](std::size_t offset) noexcept
 		{
 			return *(static_cast<unsigned char*>(static_cast<void*>(_storage.data())) + offset);
 		}
@@ -6689,42 +6689,42 @@ namespace lnd
 		{
 			return static_cast<LND_PIXEL(unsigned char, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_PIXEL(unsigned char, _dim)& operator()(size_t position) const noexcept
+		inline const LND_PIXEL(unsigned char, _dim)& operator()(std::size_t position) const noexcept
 		{
 			return *(static_cast<const LND_PIXEL(unsigned char, _dim)*>(static_cast<const void*>(_storage.data())) + position);
 		}
-		inline LND_PIXEL(unsigned char, _dim)& operator()(size_t position) noexcept
+		inline LND_PIXEL(unsigned char, _dim)& operator()(std::size_t position) noexcept
 		{
 			return *(static_cast<LND_PIXEL(unsigned char, _dim)*>(static_cast<void*>(_storage.data())) + position);
 		}
-		inline const LND_PIXEL(unsigned char, _dim)& operator()(size_t position_X, size_t position_Y) const noexcept
+		inline const LND_PIXEL(unsigned char, _dim)& operator()(std::size_t position_X, std::size_t position_Y) const noexcept
 		{
 			return *(static_cast<const LND_PIXEL(unsigned char, _dim)*>(static_cast<const void*>(_storage.data())) + position_X + _width * position_Y);
 		}
-		inline LND_PIXEL(unsigned char, _dim)& operator()(size_t position_X, size_t position_Y) noexcept
+		inline LND_PIXEL(unsigned char, _dim)& operator()(std::size_t position_X, std::size_t position_Y) noexcept
 		{
 			return *(static_cast<LND_PIXEL(unsigned char, _dim)*>(static_cast<void*>(_storage.data())) + position_X + _width * position_Y);
 		}
 
-		inline size_t size() const noexcept
+		inline std::size_t size() const noexcept
 		{
 			return _dim * _storage.size();
 		}
-		inline size_t pixel_count() const noexcept
+		inline std::size_t pixel_count() const noexcept
 		{
 			return _storage.size();
 		}
-		inline size_t pixel_capacity() const noexcept
+		inline std::size_t pixel_capacity() const noexcept
 		{
 			return _storage.capacity();
 		}
-		inline void resize(size_t new_width, size_t  new_height)
+		inline void resize(std::size_t new_width, std::size_t  new_height)
 		{
 			_storage.resize(new_width * new_height);
 			_width = new_width;
 			_height = new_height;
 		}
-		inline void reserve_pixel_count(size_t n)
+		inline void reserve_pixel_count(std::size_t n)
 		{
 			_storage.reserve(n);
 		}
@@ -6737,7 +6737,7 @@ namespace lnd
 
 	// VERTEX STORAGE CLASSES
 
-	template <size_t _vertex_count_pc, size_t _dim> class cluster_vertex
+	template <std::size_t _vertex_count_pc, std::size_t _dim> class cluster_vertex
 	{
 
 	private:
@@ -6765,19 +6765,19 @@ namespace lnd
 
 		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
 		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](size_t offset) const noexcept
+		inline const float& operator[](std::size_t offset) const noexcept
 		{
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](size_t offset) noexcept
+		inline float& operator[](std::size_t offset) noexcept
 		{
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(size_t vertex, size_t coord) const noexcept
+		inline const float& operator()(std::size_t vertex, std::size_t coord) const noexcept
 		{
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * vertex);
 		}
-		inline float& operator()(size_t vertex, size_t coord) noexcept
+		inline float& operator()(std::size_t vertex, std::size_t coord) noexcept
 		{
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * vertex);
 		}
@@ -6790,30 +6790,30 @@ namespace lnd
 		{
 			return static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_VERTEX(float, _dim)& operator()(size_t vertex) const noexcept
+		inline const LND_VERTEX(float, _dim)& operator()(std::size_t vertex) const noexcept
 		{
 			return *(static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(_storage.data())) + vertex);
 		}
-		inline LND_VERTEX(float, _dim)& operator()(size_t vertex) noexcept
+		inline LND_VERTEX(float, _dim)& operator()(std::size_t vertex) noexcept
 		{
 			return *(static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data())) + vertex);
 		}
 
-		constexpr size_t vertex_count() const noexcept
+		constexpr std::size_t vertex_count() const noexcept
 		{
 			return _vertex_count_pc;
 		}
-		constexpr size_t dim() const noexcept
+		constexpr std::size_t dim() const noexcept
 		{
 			return _dim;
 		}
-		constexpr size_t size() const noexcept
+		constexpr std::size_t size() const noexcept
 		{
 			return _vertex_count_pc * _dim;
 		}
 	};
 
-	template <size_t _vertex_count_pc, size_t _dim, class _Allocator
+	template <std::size_t _vertex_count_pc, std::size_t _dim, class _Allocator
 		= LND_DEFAULT_ALLOCATOR<lnd::cluster_vertex<_vertex_count_pc, _dim>>>
 		class group_cluster_vertex
 	{
@@ -6827,11 +6827,11 @@ namespace lnd
 
 		group_cluster_vertex() = default;
 		~group_cluster_vertex() = default;
-		group_cluster_vertex(size_t n)
+		group_cluster_vertex(std::size_t n)
 		{
 			_storage = std::vector<const lnd::cluster_vertex<_vertex_count_pc, _dim>, _Allocator>(n, lnd::cluster_vertex<_vertex_count_pc, _dim>());
 		}
-		group_cluster_vertex(size_t n, const lnd::cluster_vertex<_vertex_count_pc, _dim>& rhs)
+		group_cluster_vertex(std::size_t n, const lnd::cluster_vertex<_vertex_count_pc, _dim>& rhs)
 		{
 			_storage = std::vector<const lnd::cluster_vertex<_vertex_count_pc, _dim>, _Allocator>(n, rhs);
 		}
@@ -6876,9 +6876,9 @@ namespace lnd
 			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(float), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const float* const ptr, size_t cluster_count) const
+		inline void buffer_allocate_from(const float* const ptr, std::size_t cluster_count) const
 		{
-			constexpr size_t n = _vertex_count_pc * _dim * sizeof(float);
+			constexpr std::size_t n = _vertex_count_pc * _dim * sizeof(float);
 			buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, n * cluster_count, ptr, GL_STATIC_DRAW);
 			buffer.unbind();
@@ -6887,30 +6887,30 @@ namespace lnd
 		{
 			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(float), this->data());
 		}
-		inline void buffer_update_from(const float* const ptr, size_t cluster_count) const
+		inline void buffer_update_from(const float* const ptr, std::size_t cluster_count) const
 		{
-			constexpr size_t n = _vertex_count_pc * _dim * sizeof(float);
+			constexpr std::size_t n = _vertex_count_pc * _dim * sizeof(float);
 			glNamedBufferSubData(buffer.get(), 0, n * cluster_count, ptr);
 		}
 
 		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
 		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](size_t offset) const noexcept
+		inline const float& operator[](std::size_t offset) const noexcept
 		{
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](size_t offset) noexcept
+		inline float& operator[](std::size_t offset) noexcept
 		{
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(size_t cluster, size_t vertex, size_t coord) const noexcept
+		inline const float& operator()(std::size_t cluster, std::size_t vertex, std::size_t coord) const noexcept
 		{
-			constexpr size_t n = _vertex_count_pc * _dim;
+			constexpr std::size_t n = _vertex_count_pc * _dim;
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * vertex + n * cluster);
 		}
-		inline float& operator()(size_t cluster, size_t vertex, size_t coord) noexcept
+		inline float& operator()(std::size_t cluster, std::size_t vertex, std::size_t coord) noexcept
 		{
-			constexpr size_t n = _vertex_count_pc * _dim;
+			constexpr std::size_t n = _vertex_count_pc * _dim;
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * vertex + n * cluster);
 		}
 
@@ -6922,11 +6922,11 @@ namespace lnd
 		{
 			return static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_VERTEX(float, _dim)& operator()(size_t cluster, size_t vertex) const noexcept
+		inline const LND_VERTEX(float, _dim)& operator()(std::size_t cluster, std::size_t vertex) const noexcept
 		{
 			return *(static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(_storage.data())) + vertex + _vertex_count_pc * cluster);
 		}
-		inline LND_VERTEX(float, _dim)& operator()(size_t cluster, size_t vertex) noexcept
+		inline LND_VERTEX(float, _dim)& operator()(std::size_t cluster, std::size_t vertex) noexcept
 		{
 			return *(static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data())) + vertex + _vertex_count_pc * cluster);
 		}
@@ -6939,20 +6939,20 @@ namespace lnd
 		{
 			return static_cast<lnd::cluster_vertex<_vertex_count_pc, _dim>*>(static_cast<void*>(_storage.data()));
 		}
-		inline const lnd::cluster_vertex<_vertex_count_pc, _dim>& operator()(size_t cluster) const noexcept
+		inline const lnd::cluster_vertex<_vertex_count_pc, _dim>& operator()(std::size_t cluster) const noexcept
 		{
 			return *(_storage.data() + cluster);
 		}
-		inline lnd::cluster_vertex<_vertex_count_pc, _dim>& operator()(size_t cluster) noexcept
+		inline lnd::cluster_vertex<_vertex_count_pc, _dim>& operator()(std::size_t cluster) noexcept
 		{
 			return *(_storage.data() + cluster);
 		}
 
-		inline void resize_cluster_count(size_t n)
+		inline void resize_cluster_count(std::size_t n)
 		{
 			_storage.resize(n);
 		}
-		inline void reserve_cluster_count(size_t n)
+		inline void reserve_cluster_count(std::size_t n)
 		{
 			_storage.reserve(n);
 		}
@@ -6972,29 +6972,29 @@ namespace lnd
 		{
 			_storage.pop_front();
 		}
-		inline size_t cluster_count() const noexcept
+		inline std::size_t cluster_count() const noexcept
 		{
 			return _storage.size();
 		}
-		inline size_t cluster_capacity() const noexcept
+		inline std::size_t cluster_capacity() const noexcept
 		{
 			return _storage.capacity();
 		}
-		inline size_t vertex_count() const noexcept
+		inline std::size_t vertex_count() const noexcept
 		{
 			return _vertex_count_pc * _storage.size();
 		}
-		constexpr size_t vertex_count_per_cluster() const noexcept
+		constexpr std::size_t vertex_count_per_cluster() const noexcept
 		{
 			return _vertex_count_pc;
 		}
-		constexpr size_t dim() const noexcept
+		constexpr std::size_t dim() const noexcept
 		{
 			return _dim;
 		}
-		inline size_t size() const noexcept
+		inline std::size_t size() const noexcept
 		{
-			constexpr size_t n = _vertex_count_pc * _dim;
+			constexpr std::size_t n = _vertex_count_pc * _dim;
 			return n * _storage.size();
 		}
 		inline void shrink_to_fit()
@@ -7009,11 +7009,11 @@ namespace lnd
 		inline void make_normals_from(const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _vertex_Allocator>& vertex, bool counter_clockwise_orientation) noexcept
 		{
 			_storage.resize(vertex._storage.size());
-			constexpr size_t _offset = _vertex_count_pc * _dim;
+			constexpr std::size_t _offset = _vertex_count_pc * _dim;
 			float* p = static_cast<float*>(static_cast<void*>(_storage.data()));
 			const float* q = static_cast<const float*>(static_cast<const void*>(vertex._storage.data()));
 			float factor;
-			size_t n = _storage.size();
+			std::size_t n = _storage.size();
 
 			switch (counter_clockwise_orientation)
 			{
@@ -7024,14 +7024,14 @@ namespace lnd
 				{
 
 				case 2:
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						*p = *(q + 1) - *(q + 3);
 						*(p + 1) = *(q + 2) - *q;
 						factor = 1.0f / LND_SQRT((*p) * (*p) + (*(p + 1)) * (*(p + 1)));
 						*p *= factor;
 						*(p + 1) *= factor;
-						for (size_t k = 1; k < _vertex_count_pc; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
 							memcpy(p + 2 * k, p, 2 * sizeof(float));
 						}
@@ -7044,7 +7044,7 @@ namespace lnd
 					__m128 u;
 					__m128 v;
 					__m128 w;
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						w = _mm_loadu_ps(q + 3);
 						u = _mm_sub_ps(w, _mm_loadu_ps(q));
@@ -7056,7 +7056,7 @@ namespace lnd
 						_mm_storeu_ps(p, _mm_dp_ps(w, w, 0x7f));
 						w = _mm_mul_ps(w, _mm_set1_ps(1.0f / LND_SQRT(*p)));
 						_mm_storeu_ps(p, w);
-						for (size_t k = 1; k < _vertex_count_pc; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
 							memcpy(p + 3 * k, p, 3 * sizeof(float));
 						}
@@ -7065,7 +7065,7 @@ namespace lnd
 #else // LND_AVX_EXT
 					float u3[3];
 					float v3[3];
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						u3[0] = *(q + 3) - *(q);
 						u3[1] = *(q + 4) - *(q + 1);
@@ -7081,7 +7081,7 @@ namespace lnd
 						*p *= factor;
 						*(p + 1) *= factor;
 						*(p + 2) *= factor;
-						for (size_t k = 1; k < _vertex_count_pc; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
 							memcpy(p + 3 * k, p, 3 * sizeof(float));
 						}
@@ -7102,14 +7102,14 @@ namespace lnd
 				{
 
 				case 2:
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						*p = *(q + 3) - *(q + 1);
 						*(p + 1) = *q - *(q + 2);
 						factor = 1.0f / LND_SQRT((*p) * (*p) + (*(p + 1)) * (*(p + 1)));
 						*p *= factor;
 						*(p + 1) *= factor;
-						for (size_t k = 1; k < _vertex_count_pc; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
 							memcpy(p + 2 * k, p, 2 * sizeof(float));
 						}
@@ -7122,7 +7122,7 @@ namespace lnd
 					__m128 v;
 					__m128 u;
 					__m128 w;
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						w = _mm_loadu_ps(q + 3);
 						u = _mm_sub_ps(_mm_loadu_ps(q + 6), w);
@@ -7134,7 +7134,7 @@ namespace lnd
 						_mm_storeu_ps(p, _mm_dp_ps(w, w, 0x7f));
 						w = _mm_mul_ps(w, _mm_set1_ps(1.0f / LND_SQRT(*p)));
 						_mm_storeu_ps(p, w);
-						for (size_t k = 1; k < _vertex_count_pc; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
 							memcpy(p + 3 * k, p, 3 * sizeof(float));
 						}
@@ -7143,7 +7143,7 @@ namespace lnd
 #else // LND_AVX_EXT
 					float u3[3];
 					float v3[3];
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						u3[0] = *(q + 3) - *(q);
 						u3[1] = *(q + 4) - *(q + 1);
@@ -7159,7 +7159,7 @@ namespace lnd
 						*p *= factor;
 						*(p + 1) *= factor;
 						*(p + 2) *= factor;
-						for (size_t k = 1; k < _vertex_count_pc; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
 							memcpy(p + 3 * k, p, 3 * sizeof(float));
 						}
@@ -7179,22 +7179,22 @@ namespace lnd
 
 		// make frames
 
-		template <size_t _vertex_count_pc2, size_t _vertex_count_pc3, class _vertex_Allocator, class _tex_coord_Allocator> inline void make_frames_from(
+		template <std::size_t _vertex_count_pc2, std::size_t _vertex_count_pc3, class _vertex_Allocator, class _tex_coord_Allocator> inline void make_frames_from(
 			const lnd::group_cluster_vertex<_vertex_count_pc2, _dim, _vertex_Allocator>& vertex,
 			const lnd::group_cluster_vertex<_vertex_count_pc3, 2, _tex_coord_Allocator>& tex_coord,
 			bool counter_clockwise_orientation) noexcept
 		{
 			_storage.resize(vertex.cluster_count());
-			constexpr size_t _offset = _vertex_count_pc * _dim;
-			constexpr size_t _vertex_offset = _vertex_count_pc2 * _dim;
-			constexpr size_t _tex_coord_offset = _vertex_count_pc3 * 2;
+			constexpr std::size_t _offset = _vertex_count_pc * _dim;
+			constexpr std::size_t _vertex_offset = _vertex_count_pc2 * _dim;
+			constexpr std::size_t _tex_coord_offset = _vertex_count_pc3 * 2;
 			float* p = static_cast<float*>(static_cast<void*>(_storage.data()));
 			const float* q = static_cast<const float*>(static_cast<const void*>(vertex.data()));
 			const float* r = static_cast<const float*>(static_cast<const void*>(tex_coord.data()));
 			float temp;
 			float ut[4];
 
-			size_t n = _storage.size();
+			std::size_t n = _storage.size();
 
 			switch (counter_clockwise_orientation)
 			{
@@ -7205,7 +7205,7 @@ namespace lnd
 				{
 
 				case 2:
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						*p = *(q + 2) - *q;
 						*(p + 1) = *(q + 3) - *(q + 1);
@@ -7214,7 +7214,7 @@ namespace lnd
 						*(p + 1) *= temp;
 						*(p + 2) = -*p;
 						*(p + 3) = *(p + 1);
-						for (size_t k = 1; k < _vertex_count_pc2; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
 							memcpy(p + 4 * k, p, 4 * sizeof(float));
 						}
@@ -7231,7 +7231,7 @@ namespace lnd
 					__m128 b0;
 					__m128 a1;
 					__m128 b1;
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						_mm_storeu_ps(static_cast<float*>(ut), _mm_sub_ps(_mm_loadu_ps(r + 2), _mm_loadu_ps(r)));
 
@@ -7263,7 +7263,7 @@ namespace lnd
 						_mm_storeu_ps(p + 6, _mm_dp_ps(w, w, 0x7f));
 						w = _mm_mul_ps(w, _mm_set1_ps(1.0f / LND_SQRT(*(p + 6))));
 						_mm_storeu_ps(p + 6, w);
-						for (size_t k = 1; k < _vertex_count_pc2; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
 							memcpy(p + 9 * k, p, 9 * sizeof(float));
 						}
@@ -7271,7 +7271,7 @@ namespace lnd
 					}
 #else // LND_AVX_EXT
 					float vt[3];
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						ut[0] = *(r + 2) - *r;
 						ut[1] = *(r + 3) - *(r + 1);
@@ -7323,7 +7323,7 @@ namespace lnd
 						*(p + 7) *= temp;
 						*(p + 8) *= temp;
 
-						for (size_t k = 1; k < _vertex_count_pc2; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
 							memcpy(p + 9 * k, p, 9 * sizeof(float));
 						}
@@ -7344,7 +7344,7 @@ namespace lnd
 				{
 
 				case 2:
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						*p = *(q + 2) - *q;
 						*(p + 1) = *(q + 3) - *(q + 1);
@@ -7353,7 +7353,7 @@ namespace lnd
 						*(p + 1) *= temp;
 						*(p + 2) = *p;
 						*(p + 3) = -*(p + 1);
-						for (size_t k = 1; k < _vertex_count_pc2; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
 							memcpy(p + 4 * k, p, 4 * sizeof(float));
 						}
@@ -7370,7 +7370,7 @@ namespace lnd
 					__m128 b0;
 					__m128 a1;
 					__m128 b1;
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						_mm_storeu_ps(static_cast<float*>(ut), _mm_sub_ps(_mm_loadu_ps(r + 2), _mm_loadu_ps(r)));
 
@@ -7402,7 +7402,7 @@ namespace lnd
 						_mm_storeu_ps(p + 6, _mm_dp_ps(w, w, 0x7f));
 						w = _mm_mul_ps(w, _mm_set1_ps(1.0f / LND_SQRT(*(p + 6))));
 						_mm_storeu_ps(p + 6, w);
-						for (size_t k = 1; k < _vertex_count_pc2; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
 							memcpy(p + 9 * k, p, 9 * sizeof(float));
 						}
@@ -7410,7 +7410,7 @@ namespace lnd
 					}
 #else // LND_AVX_EXT
 					float vt[3];
-					for (size_t j = 0; j < n; j++)
+					for (std::size_t j = 0; j < n; j++)
 					{
 						ut[0] = *(r + 2) - *r;
 						ut[1] = *(r + 3) - *(r + 1);
@@ -7462,7 +7462,7 @@ namespace lnd
 						*(p + 7) *= temp;
 						*(p + 8) *= temp;
 
-						for (size_t k = 1; k < _vertex_count_pc2; k++)
+						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
 							memcpy(p + 9 * k, p, 9 * sizeof(float));
 						}
@@ -7756,7 +7756,7 @@ namespace lnd
 
 		// draw with RGB/RGBA gradient colors
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_RGBA(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_RGBA(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
 		{
@@ -7820,7 +7820,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_RGBA_3d(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_RGBA_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring)
 		{
@@ -7884,7 +7884,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_RGBA_normals_3d(
+		template <std::size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_RGBA_normals_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_vertex<_vertex_count_pc, _dim, _normal_Allocator>& normals)
@@ -7932,7 +7932,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_ranged_RGBA(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_RGBA(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8002,7 +8002,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_ranged_RGBA_3d(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_RGBA_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8072,7 +8072,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_ranged_RGBA_normals_3d(
+		template <std::size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_ranged_RGBA_normals_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8126,7 +8126,7 @@ namespace lnd
 
 		// draw with textures
 
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_tex(
+		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_tex(
 			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
@@ -8169,7 +8169,7 @@ namespace lnd
 			}
 		}
 
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_tex_3d(
+		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_tex_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image)
@@ -8212,7 +8212,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_tex_normals_3d(
+		template <std::size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_tex_normals_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
 			const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image,
@@ -8264,7 +8264,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _pixel_dim, size_t _spec_pixel_dim, size_t _frame_pixel_dim, size_t _vertex_count_pc2,
+		template <std::size_t _pixel_dim, std::size_t _spec_pixel_dim, std::size_t _frame_pixel_dim, std::size_t _vertex_count_pc2,
 			class _vertex_Allocator, class _texture_Allocator, class _spec_tex_Allocator,
 			class _frame_tex_Allocator, class _frame_Allocator> inline void draw_mapped_3d(
 				const lnd::program& program,
@@ -8336,7 +8336,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _pixel_dim, size_t _spec_pixel_dim, size_t _frame_pixel_dim, size_t _light_pixel_dim, size_t _vertex_count_pc2,
+		template <std::size_t _pixel_dim, std::size_t _spec_pixel_dim, std::size_t _frame_pixel_dim, std::size_t _light_pixel_dim, std::size_t _vertex_count_pc2,
 			class _vertex_Allocator, class _light_vertex_Allocator, class _texture_Allocator, class _spec_tex_Allocator,
 			class _frame_tex_Allocator, class _light_tex_Allocator, class _frame_Allocator> inline void draw_lightmapped_3d(
 				const lnd::program& program,
@@ -8423,7 +8423,7 @@ namespace lnd
 		}
 
 
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_ranged_tex(
+		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_ranged_tex(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8470,7 +8470,7 @@ namespace lnd
 			}
 		}
 
-		template <class _vertex_Allocator, size_t _pixel_dim, class _texture_Allocator> inline void draw_ranged_tex_3d(
+		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_ranged_tex_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8517,7 +8517,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_ranged_tex_normals_3d(
+		template <std::size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_ranged_tex_normals_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8572,7 +8572,7 @@ namespace lnd
 		}
 
 
-		template <size_t _pixel_dim, size_t _spec_pixel_dim, size_t _frame_pixel_dim, size_t _vertex_count_pc2,
+		template <std::size_t _pixel_dim, std::size_t _spec_pixel_dim, std::size_t _frame_pixel_dim, std::size_t _vertex_count_pc2,
 			class _vertex_Allocator, class _texture_Allocator, class _spec_tex_Allocator,
 			class _frame_tex_Allocator, class _frame_Allocator> inline void draw_ranged_mapped_3d(
 				GLsizei first_cluster,
@@ -8646,7 +8646,7 @@ namespace lnd
 			}
 		}
 
-		template <size_t _pixel_dim, size_t _spec_pixel_dim, size_t _frame_pixel_dim, size_t _light_pixel_dim, size_t _vertex_count_pc2,
+		template <std::size_t _pixel_dim, std::size_t _spec_pixel_dim, std::size_t _frame_pixel_dim, std::size_t _light_pixel_dim, std::size_t _vertex_count_pc2,
 			class _vertex_Allocator, class _light_vertex_Allocator, class _texture_Allocator, class _spec_tex_Allocator,
 			class _frame_tex_Allocator, class _light_tex_Allocator, class _frame_Allocator> inline void draw_ranged_lightmapped_3d(
 				GLsizei first_cluster,
@@ -8737,7 +8737,7 @@ namespace lnd
 
 		// draw indexed clusters
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_lines_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -8751,7 +8751,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_lines_indexed_3d(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_lines_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -8766,7 +8766,7 @@ namespace lnd
 		}
 
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_lines_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_lines_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8783,7 +8783,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_lines_indexed_3d(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_lines_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8801,7 +8801,7 @@ namespace lnd
 		}
 
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_tris_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -8815,7 +8815,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_indexed_3d(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_tris_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -8830,7 +8830,7 @@ namespace lnd
 		}
 
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_tris_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_tris_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8847,7 +8847,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_tris_indexed_3d(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_tris_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8865,7 +8865,7 @@ namespace lnd
 		}
 
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_quads_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -8879,7 +8879,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_quads_indexed_3d(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_quads_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
 		{
@@ -8894,7 +8894,7 @@ namespace lnd
 		}
 
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_quads_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_quads_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8911,7 +8911,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_quads_indexed_3d(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_quads_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8931,7 +8931,7 @@ namespace lnd
 
 		// draw indexed clusters with RGB/RGBA gradient colors
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_RGBA_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -8950,7 +8950,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_lines_RGBA_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -8970,7 +8970,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_lines_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_lines_RGBA_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8992,7 +8992,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_lines_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_lines_RGBA_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9015,7 +9015,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_RGBA_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -9034,7 +9034,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_tris_RGBA_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -9054,7 +9054,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_tris_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_tris_RGBA_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9076,7 +9076,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_tris_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_tris_RGBA_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9099,7 +9099,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_RGBA_indexed(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -9118,7 +9118,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_quads_RGBA_indexed_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_color<_vertex_count_pc, _color_dim, _color_Allocator>& coloring,
 			const lnd::group_cluster_index<_index_count_pc, _index_Allocator>& indexing)
@@ -9138,7 +9138,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_quads_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_quads_RGBA_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9160,7 +9160,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <size_t _color_dim, size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_quads_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_quads_RGBA_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9183,7 +9183,7 @@ namespace lnd
 		}
 	};
 
-	template <size_t _dim, class _Allocator = LND_DEFAULT_ALLOCATOR<LND_VERTEX(float, _dim)>> class group_vertex
+	template <std::size_t _dim, class _Allocator = LND_DEFAULT_ALLOCATOR<LND_VERTEX(float, _dim)>> class group_vertex
 	{
 
 	private:
@@ -9195,11 +9195,11 @@ namespace lnd
 
 		group_vertex() = default;
 		~group_vertex() = default;
-		group_vertex(size_t n)
+		group_vertex(std::size_t n)
 		{
 			_storage = std::vector<LND_VERTEX(float, _dim)>(n, LND_VERTEX(float, _dim){ 0.0f });
 		}
-		group_vertex(size_t n, const LND_VERTEX(float, _dim)& x)
+		group_vertex(std::size_t n, const LND_VERTEX(float, _dim)& x)
 		{
 			_storage = std::vector<LND_VERTEX(float, _dim)>(n, x);
 		}
@@ -9256,9 +9256,9 @@ namespace lnd
 			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(float), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const float* const ptr, size_t vertex_count) const
+		inline void buffer_allocate_from(const float* const ptr, std::size_t vertex_count) const
 		{
-			constexpr size_t n = _dim * sizeof(float);
+			constexpr std::size_t n = _dim * sizeof(float);
 			buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, n * vertex_count, ptr, GL_STATIC_DRAW);
 			buffer.unbind();
@@ -9267,27 +9267,27 @@ namespace lnd
 		{
 			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(float), this->data());
 		}
-		inline void buffer_update_from(const float* const ptr, size_t vertex_count) const
+		inline void buffer_update_from(const float* const ptr, std::size_t vertex_count) const
 		{
-			constexpr size_t n = _dim * sizeof(float);
+			constexpr std::size_t n = _dim * sizeof(float);
 			glNamedBufferSubData(buffer.get(), 0, n * vertex_count, ptr);
 		}
 
 		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
 		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](size_t offset) const noexcept
+		inline const float& operator[](std::size_t offset) const noexcept
 		{
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](size_t offset) noexcept
+		inline float& operator[](std::size_t offset) noexcept
 		{
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(size_t vertex, size_t coord) const noexcept
+		inline const float& operator()(std::size_t vertex, std::size_t coord) const noexcept
 		{
 			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * vertex);
 		}
-		inline float& operator()(size_t vertex, size_t coord) noexcept
+		inline float& operator()(std::size_t vertex, std::size_t coord) noexcept
 		{
 			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * vertex);
 		}
@@ -9300,20 +9300,20 @@ namespace lnd
 		{
 			return static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_VERTEX(float, _dim)& operator()(size_t vertex) const noexcept
+		inline const LND_VERTEX(float, _dim)& operator()(std::size_t vertex) const noexcept
 		{
 			return *(static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(_storage.data())) + vertex);
 		}
-		inline LND_VERTEX(float, _dim)& operator()(size_t vertex) noexcept
+		inline LND_VERTEX(float, _dim)& operator()(std::size_t vertex) noexcept
 		{
 			return *(static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data())) + vertex);
 		}
 
-		inline void resize_vertex_count(size_t n)
+		inline void resize_vertex_count(std::size_t n)
 		{
 			_storage.resize(n);
 		}
-		inline void reserve_vertex_count(size_t n)
+		inline void reserve_vertex_count(std::size_t n)
 		{
 			_storage.reserve(n);
 		}
@@ -9333,19 +9333,19 @@ namespace lnd
 		{
 			_storage.pop_front();
 		}
-		inline size_t vertex_count() const noexcept
+		inline std::size_t vertex_count() const noexcept
 		{
 			return _storage.size();
 		}
-		inline size_t vertex_capacity() const noexcept
+		inline std::size_t vertex_capacity() const noexcept
 		{
 			return _storage.capacity();
 		}
-		constexpr size_t dim() const noexcept
+		constexpr std::size_t dim() const noexcept
 		{
 			return _dim;
 		}
-		inline size_t size() const noexcept
+		inline std::size_t size() const noexcept
 		{
 			return _dim * _storage.size();
 		}
@@ -9536,7 +9536,7 @@ namespace lnd
 
 		// draw with RGB/RGBA gradient colors
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_RGBA(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_line_strip_RGBA(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -9552,7 +9552,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_strip_RGBA_3d(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_line_strip_RGBA_3d(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -9570,7 +9570,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_ranged_line_strip_RGBA(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_line_strip_RGBA(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program,
@@ -9588,7 +9588,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_ranged_line_strip_RGBA_3d(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_line_strip_RGBA_3d(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program,
@@ -9607,7 +9607,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop_RGBA(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_line_loop_RGBA(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -9623,7 +9623,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_line_loop_RGB_3d(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_line_loop_RGB_3d(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -9640,7 +9640,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_RGBA(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_RGBA(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -9656,7 +9656,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_RGBA_3d(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_tri_strip_RGBA_3d(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -9673,7 +9673,7 @@ namespace lnd
 		}
 
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_RGBA(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_RGBA(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -9689,7 +9689,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_RGBA_3d(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_tri_fan_RGBA_3d(
 			const lnd::program& program,
 			const lnd::group_color<_color_dim, _color_Allocator>& coloring)
 		{
@@ -9720,8 +9720,8 @@ namespace lnd
 		lnd::buffer_vertex buffer_screen_vertex;
 		lnd::buffer_vertex buffer_atlas_vertex;
 
-		size_t _capacity = 0;
-		size_t _size = 0;
+		std::size_t _capacity = 0;
+		std::size_t _size = 0;
 
 		float X0 = 0.0f;
 		float Y0 = 0.0f;
@@ -9737,7 +9737,7 @@ namespace lnd
 
 		text() = default;
 		~text() = default;
-		text(size_t n)
+		text(std::size_t n)
 		{
 			_capacity = n;
 			screen_vertex = std::vector<float, _vertex_Allocator>(n, 0.0f);
@@ -9847,15 +9847,15 @@ namespace lnd
 			atlas_h = new_height;
 		}
 
-		inline size_t capacity() const noexcept
+		inline std::size_t capacity() const noexcept
 		{
 			return _capacity;
 		}
-		inline size_t size() const noexcept
+		inline std::size_t size() const noexcept
 		{
 			return _size;
 		}
-		inline void reserve(size_t new_capacity)
+		inline void reserve(std::size_t new_capacity)
 		{
 			_capacity = new_capacity;
 			screen_vertex.resize(8 * new_capacity);
@@ -9890,7 +9890,7 @@ namespace lnd
 			float* ptr = screen_vertex.data();
 			float X;
 
-			for (size_t k = 0; k < _capacity; k++)
+			for (std::size_t k = 0; k < _capacity; k++)
 			{
 				X = X0 + static_cast<float>(k) * dX;
 
@@ -9921,7 +9921,7 @@ namespace lnd
 			float* ptr = screen_vertex.data();
 			float X;
 
-			for (size_t k = 0; k < _capacity; k++)
+			for (std::size_t k = 0; k < _capacity; k++)
 			{
 				X = X0 + static_cast<float>(k) * dX;
 
@@ -9941,14 +9941,14 @@ namespace lnd
 		}
 
 		template <typename Ty, class data_to_atlas>
-		inline void buffer_update_atlas_vertex(const Ty* text_ptr, size_t text_size, data_to_atlas atlas_XY)
+		inline void buffer_update_atlas_vertex(const Ty* text_ptr, std::size_t text_size, data_to_atlas atlas_XY)
 		{
 			atlas_vertex.resize(8 * text_size);
 			float* ptr = atlas_vertex.data();
 			float X;
 			float Y;
 
-			for (size_t k = text_size; k > 0; k--)
+			for (std::size_t k = text_size; k > 0; k--)
 			{
 				LND_VERTEX(float, 2) XY = atlas_XY(*text_ptr);
 
@@ -9969,7 +9969,7 @@ namespace lnd
 			glNamedBufferSubData(buffer_atlas_vertex.get(), 0, text_size * (8 * sizeof(float)), atlas_vertex.data());
 		}
 
-		template <size_t _dim, class _atlas_Allocator> inline  void draw(const lnd::program& program,
+		template <std::size_t _dim, class _atlas_Allocator> inline  void draw(const lnd::program& program,
 			const lnd::texture<_dim, _atlas_Allocator>& atlas)
 		{
 			buffer_screen_vertex.bind();
@@ -10299,8 +10299,8 @@ namespace lnd
 			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 15), vregC);
 			_mm_storeu_ps(pC + 12, vregC);
 #else // LND_AVX_EXT
-			float regB0; float regB1; size_t offset;
-			for (size_t j = 0; j < 4; j++)
+			float regB0; float regB1; std::size_t offset;
+			for (std::size_t j = 0; j < 4; j++)
 			{
 				offset = 4 * j;
 				regB0 = *(pB + offset);
@@ -10354,8 +10354,8 @@ namespace lnd
 
 			_mm_storeu_ps(pC + 12, vregA3);
 #else // LND_AVX_EXT
-			float regB0; float regB1; size_t offset;
-			for (size_t j = 0; j < 3; j++)
+			float regB0; float regB1; std::size_t offset;
+			for (std::size_t j = 0; j < 3; j++)
 			{
 				offset = 4 * j;
 				regB0 = *(pB + offset);
