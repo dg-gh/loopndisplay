@@ -5392,6 +5392,14 @@ namespace lnd
 		bool show(int new_screen_width, int new_screen_height, bool rescale_screen_coordinates,
 			double new_timeframe, const char* new_title)
 		{
+			constexpr double factor_s_per_tick = static_cast<double>(
+				std::chrono::LND_CLOCK::duration::period::den
+				/ std::chrono::LND_CLOCK::duration::period::num);
+
+			constexpr double factor_tick_per_s =
+				static_cast<double>(std::chrono::LND_CLOCK::duration::period::num)
+				/ static_cast<double>(std::chrono::LND_CLOCK::duration::period::den);
+
 			this->_setup_basic_infos(new_screen_width, new_screen_height,
 				rescale_screen_coordinates, static_cast<float>(new_timeframe));
 
@@ -5434,7 +5442,7 @@ namespace lnd
 				return false;
 			}
 
-			clock_sleep_time = static_cast<long long>(static_cast<double>(1000000000) * new_timeframe);
+			clock_sleep_time = static_cast<std::chrono::time_point<std::chrono::LND_CLOCK>::rep>(factor_s_per_tick * new_timeframe);
 			_start = std::chrono::LND_CLOCK::now();
 
 			// loop
@@ -5452,7 +5460,7 @@ namespace lnd
 					{
 						_stop = std::chrono::LND_CLOCK::now();
 					}
-					time_elapsed = 0.000000001f * static_cast<float>((_stop - _start).count());
+					time_elapsed = factor_tick_per_s * static_cast<float>((_stop - _start).count());
 					_start = std::chrono::LND_CLOCK::now();
 
 					// loop content
@@ -5473,7 +5481,7 @@ namespace lnd
 				{
 					// frame
 					_stop = std::chrono::LND_CLOCK::now();
-					time_elapsed = 0.000000001f * static_cast<float>((_stop - _start).count());
+					time_elapsed = factor_tick_per_s * static_cast<float>((_stop - _start).count());
 					_start = std::chrono::LND_CLOCK::now();
 
 					// loop content
@@ -5626,9 +5634,9 @@ namespace lnd
 		float time_elapsed = 0.0f;
 
 		// clock
-		std::chrono::time_point<std::chrono::steady_clock> _start;
-		std::chrono::time_point<std::chrono::steady_clock> _stop;
-		long long clock_sleep_time = 0;
+		std::chrono::time_point<std::chrono::LND_CLOCK> _start;
+		std::chrono::time_point<std::chrono::LND_CLOCK> _stop;
+		std::chrono::time_point<std::chrono::LND_CLOCK>::rep clock_sleep_time = 0;
 
 		//display
 		std::thread display_thread;
