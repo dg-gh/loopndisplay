@@ -1,4 +1,4 @@
-// loopndisplay.hpp - last update : 06 / 01 / 2021
+// loopndisplay.hpp - last update : 08 / 01 / 2021
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW set up
@@ -3623,7 +3623,7 @@ namespace lnd
 		glUniform1f(location, concentration_coeff);
 		return program;
 	}
-	inline const lnd::program& set_pointlight_pos_3d(lnd::program& program, GLint light_number, const GLfloat* const light_position_ptr)
+	inline const lnd::program& set_pointlight_position_3d(lnd::program& program, GLint light_number, const GLfloat* const light_position_ptr)
 	{
 		std::string light_number_str = std::to_string(light_number);
 		program.use();
@@ -3631,7 +3631,7 @@ namespace lnd
 		glUniform3fv(location, 1, light_position_ptr);
 		return program;
 	}
-	inline const lnd::program& set_pointlight_prop_3d(lnd::program& program, GLint light_number, const GLfloat* const light_color_ptr,
+	inline const lnd::program& set_pointlight_properties_3d(lnd::program& program, GLint light_number, const GLfloat* const light_color_ptr,
 		const GLfloat* const light_attenuation_ptr)
 	{
 		std::string light_number_str = std::to_string(light_number);
@@ -3651,7 +3651,7 @@ namespace lnd
 		}
 		return program;
 	}
-	inline const lnd::program& set_pointlights_range_3d(lnd::program& program, GLint first_light, GLint end_light)
+	inline const lnd::program& set_pointlights_index_range_3d(lnd::program& program, GLint first_light, GLint end_light)
 	{
 		program.use();
 		GLint location = glGetUniformLocation(program.get(), "first_light");
