@@ -777,8 +777,8 @@ namespace lnd
 
 	private:
 
-		unsigned int buffer_index = 0;
-		int objects = 0;
+		GLuint buffer_index = 0;
+		GLsizei objects = 0;
 
 	public:
 
@@ -789,7 +789,7 @@ namespace lnd
 		inline void bind() const { glBindBuffer(GL_ARRAY_BUFFER, buffer_index); }
 		inline void unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 
-		inline void new_id(int number_of_objects)
+		inline void new_id(GLsizei number_of_objects)
 		{
 			if (buffer_index == 0)
 			{
@@ -819,8 +819,8 @@ namespace lnd
 
 	private:
 
-		unsigned int buffer_index = 0;
-		int objects = 0;
+		GLuint buffer_index = 0;
+		GLsizei objects = 0;
 
 	public:
 
@@ -831,7 +831,7 @@ namespace lnd
 		inline void bind() const { glBindBuffer(GL_ARRAY_BUFFER, buffer_index); }
 		inline void unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 
-		inline void new_id(int number_of_objects)
+		inline void new_id(GLsizei number_of_objects)
 		{
 			if (buffer_index == 0)
 			{
@@ -861,8 +861,8 @@ namespace lnd
 
 	private:
 
-		unsigned int _buffer_index = 0;
-		int objects = 0;
+		GLuint _buffer_index = 0;
+		GLsizei objects = 0;
 
 	public:
 
@@ -873,7 +873,7 @@ namespace lnd
 		inline void bind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _buffer_index); }
 		inline void unbind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
 
-		void new_id(int number_of_objects)
+		void new_id(GLsizei number_of_objects)
 		{
 			if (_buffer_index == 0)
 			{
@@ -903,8 +903,8 @@ namespace lnd
 
 	private:
 
-		unsigned int buffer_index = 0;
-		int objects = 0;
+		GLuint buffer_index = 0;
+		GLsizei objects = 0;
 
 	public:
 
@@ -995,7 +995,7 @@ namespace lnd
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
-		inline void new_id(int number_of_objects)
+		inline void new_id(GLsizei number_of_objects)
 		{
 			if (buffer_index == 0)
 			{
@@ -1025,14 +1025,14 @@ namespace lnd
 
 	private:
 
-		unsigned int shader_index = 0;
+		GLuint shader_index = 0;
 
 	public:
 
 		shader_vertex() = default;
 		~shader_vertex() { delete_shader(); }
 
-		inline unsigned int get() const noexcept { return shader_index; }
+		inline GLuint get() const noexcept { return shader_index; }
 
 		void new_shader(const std::string& shader_text)
 		{
@@ -1041,7 +1041,7 @@ namespace lnd
 			glShaderSource(shader_index, 1, &src, nullptr);
 			glCompileShader(shader_index);
 
-			int result;
+			GLint result;
 			glGetShaderiv(shader_index, GL_COMPILE_STATUS, &result);
 
 			if (result == 0)
@@ -1073,14 +1073,14 @@ namespace lnd
 
 	private:
 
-		unsigned int shader_index = 0;
+		GLuint shader_index = 0;
 
 	public:
 
 		shader_fragment() = default;
 		~shader_fragment() { delete_shader(); }
 
-		inline unsigned int get() const noexcept { return shader_index; }
+		inline GLuint get() const noexcept { return shader_index; }
 
 		void new_shader(const std::string& shader_text)
 		{
@@ -1089,7 +1089,7 @@ namespace lnd
 			glShaderSource(shader_index, 1, &src, nullptr);
 			glCompileShader(shader_index);
 
-			int result;
+			GLint result;
 			glGetShaderiv(shader_index, GL_COMPILE_STATUS, &result);
 
 			if (result == 0)
@@ -1121,16 +1121,16 @@ namespace lnd
 
 	private:
 
-		unsigned int program_index = 0;
-		unsigned int vertex_shader_index = 0;
-		unsigned int fragment_shader_index = 0;
+		GLuint program_index = 0;
+		GLuint vertex_shader_index = 0;
+		GLuint fragment_shader_index = 0;
 
 	public:
 
 		program() = default;
 		~program() { delete_program(); }
 
-		inline unsigned int get() const noexcept { return program_index; }
+		inline GLuint get() const noexcept { return program_index; }
 		inline void use() const { glUseProgram(program_index); }
 
 		void new_program(const lnd::shader_vertex& vertex_shader, const lnd::shader_fragment& fragment_shader)
@@ -3290,224 +3290,296 @@ namespace lnd
 	}
 
 
-	inline const lnd::program& set_uniform_1f(const lnd::program& program, const char* const uniform_variable,
-		float u0)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_1f(const program_Ty& program, const char* const uniform_variable,
+		GLfloat u0)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform1f(location, u0);
 		return program;
 	}
-	inline const lnd::program& set_uniform_2f(const lnd::program& program, const char* const uniform_variable,
-		float u0, float u1)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_2f(const program_Ty& program, const char* const uniform_variable,
+		GLfloat u0, GLfloat u1)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform2f(location, u0, u1);
 		return program;
 	}
-	inline const lnd::program& set_uniform_3f(const lnd::program& program, const char* const uniform_variable,
-		float u0, float u1, float u2)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_3f(const program_Ty& program, const char* const uniform_variable,
+		GLfloat u0, GLfloat u1, GLfloat u2)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform3f(location, u0, u1, u2);
 		return program;
 	}
-	inline const lnd::program& set_uniform_4f(const lnd::program& program, const char* const uniform_variable,
-		float u0, float u1, float u2, float u3)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_4f(const program_Ty& program, const char* const uniform_variable,
+		GLfloat u0, GLfloat u1, GLfloat u2, GLfloat u3)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform4f(location, u0, u1, u2, u3);
 		return program;
 	}
 
-	inline const lnd::program& set_uniform_2fv(const lnd::program& program, const char* const uniform_variable,
-		const float* const values_ptr)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_2fv(const program_Ty& program, const char* const uniform_variable,
+		const GLfloat* const values_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform2fv(location, 1, values_ptr);
 		return program;
 	}
-	inline const lnd::program& set_uniform_3fv(const lnd::program& program, const char* const uniform_variable,
-		const float* const values_ptr)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_3fv(const program_Ty& program, const char* const uniform_variable,
+		const GLfloat* const values_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform3fv(location, 1, values_ptr);
 		return program;
 	}
-	inline const lnd::program& set_uniform_4fv(const lnd::program& program, const char* const uniform_variable,
-		const float* const values_ptr)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_4fv(const program_Ty& program, const char* const uniform_variable,
+		const GLfloat* const values_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform4fv(location, 1, values_ptr);
 		return program;
 	}
 
-	inline const lnd::program& set_uniform_1i(const lnd::program& program, const char* const uniform_variable,
-		int u0)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_1i(const program_Ty& program, const char* const uniform_variable,
+		GLint u0)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform1i(location, u0);
 		return program;
 	}
-	inline const lnd::program& set_uniform_2i(const lnd::program& program, const char* const uniform_variable,
-		int u0, int u1)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_2i(const program_Ty& program, const char* const uniform_variable,
+		GLint u0, GLint u1)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform2i(location, u0, u1);
 		return program;
 	}
-	inline const lnd::program& set_uniform_3i(const lnd::program& program, const char* const uniform_variable,
-		int u0, int u1, int u2)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_3i(const program_Ty& program, const char* const uniform_variable,
+		GLint u0, GLint u1, GLint u2)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform3i(location, u0, u1, u2);
 		return program;
 	}
-	inline const lnd::program& set_uniform_4i(const lnd::program& program, const char* const uniform_variable,
-		int u0, int u1, int u2, int u3)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_4i(const program_Ty& program, const char* const uniform_variable,
+		GLint u0, GLint u1, GLint u2, GLint u3)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform4i(location, u0, u1, u2, u3);
 		return program;
 	}
-	inline const lnd::program& set_uniform_1ui(const lnd::program& program, const char* const uniform_variable,
-		unsigned int u0)
+
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_2iv(const program_Ty& program, const char* const uniform_variable,
+		const GLint* const values_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform2iv(location, 1, values_ptr);
+		return program;
+	}
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_3iv(const program_Ty& program, const char* const uniform_variable,
+		const GLint* const values_ptr)
+	{
+		program.use();
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform3iv(location, 1, values_ptr);
+		return program;
+	}
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_4iv(const program_Ty& program, const char* const uniform_variable,
+		const GLint* const values_ptr)
+	{
+		program.use();
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform4iv(location, 1, values_ptr);
+		return program;
+	}
+
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_1ui(const program_Ty& program, const char* const uniform_variable,
+		GLuint u0)
+	{
+		program.use();
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform1ui(location, u0);
 		return program;
 	}
-	inline const lnd::program& set_uniform_2ui(const lnd::program& program, const char* const uniform_variable,
-		unsigned int u0, unsigned int u1)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_2ui(const program_Ty& program, const char* const uniform_variable,
+		GLuint u0, GLuint u1)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform2ui(location, u0, u1);
 		return program;
 	}
-	inline const lnd::program& set_uniform_3ui(const lnd::program& program, const char* const uniform_variable,
-		unsigned int u0, unsigned int u1, unsigned int u2)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_3ui(const program_Ty& program, const char* const uniform_variable,
+		GLuint u0, GLuint u1, GLuint u2)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform3ui(location, u0, u1, u2);
 		return program;
 	}
-	inline const lnd::program& set_uniform_4ui(const lnd::program& program, const char* const uniform_variable,
-		unsigned int u0, unsigned int u1, unsigned int u2, unsigned int u3)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_4ui(const program_Ty& program, const char* const uniform_variable,
+		GLuint u0, GLuint u1, GLuint u2, GLuint u3)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), uniform_variable);
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
 		glUniform4ui(location, u0, u1, u2, u3);
 		return program;
 	}
 
-	inline const lnd::program& set_fragment_color(const lnd::program& program, float c0, float c1, float c2, float c3)
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_2uiv(const program_Ty& program, const char* const uniform_variable,
+		const GLuint* const values_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_C");
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform2uiv(location, 1, values_ptr);
+		return program;
+	}
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_3uiv(const program_Ty& program, const char* const uniform_variable,
+		const GLuint* const values_ptr)
+	{
+		program.use();
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform3uiv(location, 1, values_ptr);
+		return program;
+	}
+	template <class program_Ty>
+	inline const program_Ty& set_uniform_4uiv(const program_Ty& program, const char* const uniform_variable,
+		const GLuint* const values_ptr)
+	{
+		program.use();
+		GLint location = glGetUniformLocation(program.get(), uniform_variable);
+		glUniform4uiv(location, 1, values_ptr);
+		return program;
+	}
+
+	inline const lnd::program& set_fragment_color(const lnd::program& program, GLfloat c0, GLfloat c1, GLfloat c2, GLfloat c3)
+	{
+		program.use();
+		GLint location = glGetUniformLocation(program.get(), "u_C");
 		glUniform4f(location, c0, c1, c2, c3);
 		return program;
 	}
-	inline const lnd::program& set_fragment_color(const lnd::program& program, const float* const color_ptr)
+	inline const lnd::program& set_fragment_color(const lnd::program& program, const GLfloat* const color_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_C");
+		GLint location = glGetUniformLocation(program.get(), "u_C");
 		glUniform4fv(location, 1, color_ptr);
 		return program;
 	}
-	inline const lnd::program& set_vertex_shift(const lnd::program& program, float T0, float T1)
+	inline const lnd::program& set_vertex_shift(const lnd::program& program, GLfloat T0, GLfloat T1)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_X");
+		GLint location = glGetUniformLocation(program.get(), "u_X");
 		glUniform2f(location, T0, T1);
 		return program;
 	}
-	inline const lnd::program& set_vertex_shift_scale(const lnd::program& program, float T0, float T1, float scale)
+	inline const lnd::program& set_vertex_shift_scale(const lnd::program& program, GLfloat T0, GLfloat T1, GLfloat scale)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_X");
+		GLint location = glGetUniformLocation(program.get(), "u_X");
 		glUniform3f(location, T0, T1, scale);
 		return program;
 	}
-	inline const lnd::program& set_vertex_shift_rotate_rad(const lnd::program& program, float T0, float T1, float angle)
+	inline const lnd::program& set_vertex_shift_rotate_rad(const lnd::program& program, GLfloat T0, GLfloat T1, GLfloat angle)
 	{
-		float C = LND_COS(angle);
-		float S = LND_SIN(angle);
+		GLfloat C = LND_COS(angle);
+		GLfloat S = LND_SIN(angle);
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_X");
+		GLint location = glGetUniformLocation(program.get(), "u_X");
 		glUniform4f(location, T0, T1, C, S);
 		return program;
 	}
-	inline const lnd::program& set_vertex_shift_rotate_deg(const lnd::program& program, float T0, float T1, float angle)
+	inline const lnd::program& set_vertex_shift_rotate_deg(const lnd::program& program, GLfloat T0, GLfloat T1, GLfloat angle)
 	{
-		constexpr float deg_to_float = 3.14159265358979323846f / 180.0f;
-		angle *= deg_to_float;
-		float C = LND_COS(angle);
-		float S = LND_SIN(angle);
+		constexpr GLfloat deg_to_GLfloat = 3.14159265358979323846f / 180.0f;
+		angle *= deg_to_GLfloat;
+		GLfloat C = LND_COS(angle);
+		GLfloat S = LND_SIN(angle);
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_X");
+		GLint location = glGetUniformLocation(program.get(), "u_X");
 		glUniform4f(location, T0, T1, C, S);
 		return program;
 	}
-	inline const lnd::program& set_vertex_affine(const lnd::program& program, float T0, float T1, float orig0, float orig1,
-		float A00, float A10, float A01, float A11)
+	inline const lnd::program& set_vertex_affine(const lnd::program& program, GLfloat T0, GLfloat T1, GLfloat orig0, GLfloat orig1,
+		GLfloat A00, GLfloat A10, GLfloat A01, GLfloat A11)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_X0");
+		GLint location = glGetUniformLocation(program.get(), "u_X0");
 		glUniform4f(location, T0, T1, orig0, orig1);
 		location = glGetUniformLocation(program.get(), "u_X1");
 		glUniform4f(location, A00, A10, A01, A11);
 		return program;
 	}
 
-	inline const lnd::program& set_mvp_matrix_3d(const lnd::program& program, const float* const mvp_matrix_ptr)
+	inline const lnd::program& set_mvp_matrix_3d(const lnd::program& program, const GLfloat* const mvp_matrix_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_mvp_M");
+		GLint location = glGetUniformLocation(program.get(), "u_mvp_M");
 		glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
 		return program;
 	}
-	inline const lnd::program& set_m_matrix_3d(const lnd::program& program, const float* const m_matrix_ptr)
+	inline const lnd::program& set_m_matrix_3d(const lnd::program& program, const GLfloat* const m_matrix_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_m_M");
+		GLint location = glGetUniformLocation(program.get(), "u_m_M");
 		glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
 		return program;
 	}
-	inline const lnd::program& set_position_3d(const lnd::program& program, const float* const position_ptr)
+	inline const lnd::program& set_position_3d(const lnd::program& program, const GLfloat* const position_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_view_pos");
+		GLint location = glGetUniformLocation(program.get(), "u_view_pos");
 		glUniform3fv(location, 1, position_ptr);
 		return program;
 	}
-	inline const lnd::program& set_mvp_position_3d(const lnd::program& program, const float* const mvp_matrix_ptr,
-		const float* const position_ptr)
+	inline const lnd::program& set_mvp_position_3d(const lnd::program& program, const GLfloat* const mvp_matrix_ptr,
+		const GLfloat* const position_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_mvp_M");
+		GLint location = glGetUniformLocation(program.get(), "u_mvp_M");
 		glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
 		location = glGetUniformLocation(program.get(), "u_view_pos");
 		glUniform3fv(location, 1, position_ptr);
 		return program;
 	}
-	inline const lnd::program& set_mvp_m_position_3d(const lnd::program& program, const float* const mvp_matrix_ptr,
-		const float* const m_matrix_ptr, const float* const position_ptr)
+	inline const lnd::program& set_mvp_m_position_3d(const lnd::program& program, const GLfloat* const mvp_matrix_ptr,
+		const GLfloat* const m_matrix_ptr, const GLfloat* const position_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_mvp_M");
+		GLint location = glGetUniformLocation(program.get(), "u_mvp_M");
 		glUniformMatrix4fv(location, 1, GL_FALSE, mvp_matrix_ptr);
 		location = glGetUniformLocation(program.get(), "u_m_M");
 		glUniformMatrix4fv(location, 1, GL_FALSE, m_matrix_ptr);
@@ -3515,35 +3587,35 @@ namespace lnd
 		glUniform3fv(location, 1, position_ptr);
 		return program;
 	}
-	inline const lnd::program& set_ambient_light_3d(const lnd::program& program, const float* const ambient_light_ptr)
+	inline const lnd::program& set_ambient_light_3d(const lnd::program& program, const GLfloat* const ambient_light_ptr)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_amb");
+		GLint location = glGetUniformLocation(program.get(), "u_amb");
 		glUniform3fv(location, 1, ambient_light_ptr);
 		return program;
 	}
-	inline const lnd::program& set_skylight_3d(const lnd::program& program, const float* const light_direction_ptr,
-		const float* const light_color_ptr)
+	inline const lnd::program& set_skylight_3d(const lnd::program& program, const GLfloat* const light_direction_ptr,
+		const GLfloat* const light_color_ptr)
 	{
-		float factor = 1.0f / LND_SQRT(light_direction_ptr[0] * light_direction_ptr[0]
+		GLfloat factor = 1.0f / LND_SQRT(light_direction_ptr[0] * light_direction_ptr[0]
 			+ light_direction_ptr[1] * light_direction_ptr[1]
 			+ light_direction_ptr[2] * light_direction_ptr[2]);
-		float light_direction_normalized[3] = {
+		GLfloat light_direction_normalized[3] = {
 			factor * light_direction_ptr[0],
 			factor * light_direction_ptr[1],
 			factor * light_direction_ptr[2]
 		};
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_slight_dir");
-		glUniform3fv(location, 1, static_cast<float*>(light_direction_normalized));
+		GLint location = glGetUniformLocation(program.get(), "u_slight_dir");
+		glUniform3fv(location, 1, static_cast<GLfloat*>(light_direction_normalized));
 		location = glGetUniformLocation(program.get(), "u_slight_C");
 		glUniform3fv(location, 1, light_color_ptr);
 		return program;
 	}
-	inline const lnd::program& set_material_3d(const lnd::program& program, float diff_coeff, float spec_coeff, float concentration_coeff)
+	inline const lnd::program& set_material_3d(const lnd::program& program, GLfloat diff_coeff, GLfloat spec_coeff, GLfloat concentration_coeff)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "u_diff");
+		GLint location = glGetUniformLocation(program.get(), "u_diff");
 		glUniform1f(location, diff_coeff);
 		location = glGetUniformLocation(program.get(), "u_spec");
 		glUniform1f(location, spec_coeff);
@@ -3551,38 +3623,38 @@ namespace lnd
 		glUniform1f(location, concentration_coeff);
 		return program;
 	}
-	inline const lnd::program& set_pointlight_pos_3d(lnd::program& program, unsigned int light_number, const float* const light_position_ptr)
+	inline const lnd::program& set_pointlight_pos_3d(lnd::program& program, GLint light_number, const GLfloat* const light_position_ptr)
 	{
 		std::string light_number_str = std::to_string(light_number);
 		program.use();
-		int location = glGetUniformLocation(program.get(), ("u_plight_pos[" + light_number_str + "]").c_str());
+		GLint location = glGetUniformLocation(program.get(), ("u_plight_pos[" + light_number_str + "]").c_str());
 		glUniform3fv(location, 1, light_position_ptr);
 		return program;
 	}
-	inline const lnd::program& set_pointlight_prop_3d(lnd::program& program, int light_number, const float* const light_color_ptr,
-		const float* const light_attenuation_ptr)
+	inline const lnd::program& set_pointlight_prop_3d(lnd::program& program, GLint light_number, const GLfloat* const light_color_ptr,
+		const GLfloat* const light_attenuation_ptr)
 	{
 		std::string light_number_str = std::to_string(light_number);
 		program.use();
 		if ((light_color_ptr != nullptr) && (light_attenuation_ptr != nullptr))
 		{
-			int location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
+			GLint location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
 			glUniform4fv(location, 1, light_color_ptr);
 			location = glGetUniformLocation(program.get(), ("u_plight_att[" + light_number_str + "]").c_str());
 			glUniform3fv(location, 1, light_attenuation_ptr);
 		}
 		else
 		{
-			float null_array[4] = { 0.0f };
-			int location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
-			glUniform4fv(location, 1, static_cast<float*>(null_array));
+			GLfloat null_array[4] = { 0.0f };
+			GLint location = glGetUniformLocation(program.get(), ("u_plight_C[" + light_number_str + "]").c_str());
+			glUniform4fv(location, 1, static_cast<GLfloat*>(null_array));
 		}
 		return program;
 	}
-	inline const lnd::program& set_pointlights_range_3d(lnd::program& program, int first_light, int end_light)
+	inline const lnd::program& set_pointlights_range_3d(lnd::program& program, GLint first_light, GLint end_light)
 	{
 		program.use();
-		int location = glGetUniformLocation(program.get(), "first_light");
+		GLint location = glGetUniformLocation(program.get(), "first_light");
 		glUniform1i(location, first_light);
 		location = glGetUniformLocation(program.get(), "end_light");
 		glUniform1i(location, end_light);
@@ -5579,7 +5651,7 @@ namespace lnd
 
 	private:
 
-		LND_INDEX(unsigned int, _index_count) _storage;
+		LND_INDEX(GLuint, _index_count) _storage;
 
 	public:
 
@@ -5590,33 +5662,33 @@ namespace lnd
 		cluster_index(cluster_index<_index_count>&&) = default;
 		cluster_index& operator=(cluster_index<_index_count>&&) = default;
 
-		cluster_index(std::initializer_list<unsigned int> L)
+		cluster_index(std::initializer_list<GLuint> L)
 		{
-			std::copy(L.begin(), L.end(), static_cast<unsigned int*>(static_cast<void*>(_storage.data())));
+			std::copy(L.begin(), L.end(), static_cast<GLuint*>(static_cast<void*>(_storage.data())));
 		}
-		cluster_index& operator=(std::initializer_list<unsigned int> L)
+		cluster_index& operator=(std::initializer_list<GLuint> L)
 		{
-			std::copy(L.begin(), L.end(), static_cast<unsigned int*>(static_cast<void*>(_storage.data())));
+			std::copy(L.begin(), L.end(), static_cast<GLuint*>(static_cast<void*>(_storage.data())));
 			return *this;
 		}
 
-		inline const unsigned int* data() const noexcept { return static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())); }
-		inline unsigned int* data() noexcept { return static_cast<unsigned int*>(static_cast<void*>(_storage.data())); }
-		inline const unsigned int& operator[](std::size_t offset) const noexcept
+		inline const GLuint* data() const noexcept { return static_cast<const GLuint*>(static_cast<const void*>(_storage.data())); }
+		inline GLuint* data() noexcept { return static_cast<GLuint*>(static_cast<void*>(_storage.data())); }
+		inline const GLuint& operator[](std::size_t offset) const noexcept
 		{
-			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + offset);
+			return *(static_cast<const GLuint*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline unsigned int& operator[](std::size_t offset) noexcept
+		inline GLuint& operator[](std::size_t offset) noexcept
 		{
-			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + offset);
+			return *(static_cast<GLuint*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const unsigned int& operator()(std::size_t index) const noexcept
+		inline const GLuint& operator()(std::size_t index) const noexcept
 		{
-			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + index);
+			return *(static_cast<const GLuint*>(static_cast<const void*>(_storage.data())) + index);
 		}
-		inline unsigned int& operator()(std::size_t index) noexcept
+		inline GLuint& operator()(std::size_t index) noexcept
 		{
-			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + index);
+			return *(static_cast<GLuint*>(static_cast<void*>(_storage.data())) + index);
 		}
 
 		constexpr std::size_t index_count() const noexcept
@@ -5687,44 +5759,44 @@ namespace lnd
 		inline void buffer_allocate() const
 		{
 			buffer.bind();
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->size() * sizeof(unsigned int), this->data(), GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->size() * sizeof(GLuint), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const unsigned int* const ptr, std::size_t cluster_count) const
+		inline void buffer_allocate_from(const GLuint* const ptr, std::size_t cluster_count) const
 		{
-			constexpr std::size_t n = _index_count_pc * sizeof(unsigned int);
+			constexpr std::size_t n = _index_count_pc * sizeof(GLuint);
 			buffer.bind();
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, n * cluster_count, ptr, GL_STATIC_DRAW);
 			buffer.unbind();
 		}
 		inline void buffer_update() const
 		{
-			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(unsigned int), this->data());
+			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(GLuint), this->data());
 		}
-		inline void buffer_update_from(const unsigned int* const ptr, std::size_t cluster_count) const
+		inline void buffer_update_from(const GLuint* const ptr, std::size_t cluster_count) const
 		{
-			constexpr std::size_t n = _index_count_pc * sizeof(unsigned int);
+			constexpr std::size_t n = _index_count_pc * sizeof(GLuint);
 			glNamedBufferSubData(buffer.get(), 0, n * cluster_count, ptr);
 		}
 
 
-		inline const unsigned int* data() const noexcept { return static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())); }
-		inline unsigned int* data() noexcept { return static_cast<unsigned int*>(static_cast<void*>(_storage.data())); }
-		inline const unsigned int& operator[](std::size_t offset) const noexcept
+		inline const GLuint* data() const noexcept { return static_cast<const GLuint*>(static_cast<const void*>(_storage.data())); }
+		inline GLuint* data() noexcept { return static_cast<GLuint*>(static_cast<void*>(_storage.data())); }
+		inline const GLuint& operator[](std::size_t offset) const noexcept
 		{
-			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + offset);
+			return *(static_cast<const GLuint*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline unsigned int& operator[](std::size_t offset) noexcept
+		inline GLuint& operator[](std::size_t offset) noexcept
 		{
-			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + offset);
+			return *(static_cast<GLuint*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const unsigned int& operator()(std::size_t cluster, std::size_t index) const noexcept
+		inline const GLuint& operator()(std::size_t cluster, std::size_t index) const noexcept
 		{
-			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + index + _index_count_pc * cluster);
+			return *(static_cast<const GLuint*>(static_cast<const void*>(_storage.data())) + index + _index_count_pc * cluster);
 		}
-		inline unsigned int& operator()(std::size_t cluster, std::size_t index) noexcept
+		inline GLuint& operator()(std::size_t cluster, std::size_t index) noexcept
 		{
-			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + index + _index_count_pc * cluster);
+			return *(static_cast<GLuint*>(static_cast<void*>(_storage.data())) + index + _index_count_pc * cluster);
 		}
 
 		inline const lnd::cluster_index<_index_count_pc>* data_cluster() const noexcept
@@ -5793,14 +5865,14 @@ namespace lnd
 			_storage.shrink_to_fit();
 		}
 
-		inline void propagate_with_offset(unsigned int offset)
+		inline void propagate_with_offset(GLuint offset)
 		{
 			std::size_t n = _storage.size();
 			std::size_t k;
-			unsigned int* pf = static_cast<unsigned int*>(static_cast<void*>(_storage.data()));
-			unsigned int* p;
-			unsigned int* q = pf + _index_count_pc;
-			unsigned int acc = 0;
+			GLuint* pf = static_cast<GLuint*>(static_cast<void*>(_storage.data()));
+			GLuint* p;
+			GLuint* q = pf + _index_count_pc;
+			GLuint acc = 0;
 			for (std::size_t j = 1; j < n; j++)
 			{
 				p = pf; acc += offset;
@@ -5812,12 +5884,12 @@ namespace lnd
 		}
 	};
 
-	template <class _Allocator = LND_DEFAULT_ALLOCATOR<unsigned int>> class group_index
+	template <class _Allocator = LND_DEFAULT_ALLOCATOR<GLuint>> class group_index
 	{
 
 	private:
 
-		std::vector<unsigned int, _Allocator> _storage;
+		std::vector<GLuint, _Allocator> _storage;
 		lnd::buffer_index buffer;
 
 	public:
@@ -5826,11 +5898,11 @@ namespace lnd
 		~group_index() = default;
 		group_index(std::size_t n)
 		{
-			_storage = std::vector<unsigned int>(n, 0);
+			_storage = std::vector<GLuint>(n, 0);
 		}
-		group_index(std::size_t n, unsigned int x)
+		group_index(std::size_t n, GLuint x)
 		{
-			_storage = std::vector<unsigned int>(n, x);
+			_storage = std::vector<GLuint>(n, x);
 		}
 		template <class _rhs_Allocator> group_index(const group_index<_rhs_Allocator>& rhs)
 		{
@@ -5851,15 +5923,15 @@ namespace lnd
 			return *this;
 		}
 
-		group_index(std::initializer_list<unsigned int> L)
+		group_index(std::initializer_list<GLuint> L)
 		{
-			_storage = std::vector<unsigned int, _Allocator>(L.size());
-			std::copy(L.begin(), L.end(), static_cast<unsigned int*>(static_cast<void*>(_storage.data())));
+			_storage = std::vector<GLuint, _Allocator>(L.size());
+			std::copy(L.begin(), L.end(), static_cast<GLuint*>(static_cast<void*>(_storage.data())));
 		}
-		group_index& operator=(std::initializer_list<unsigned int> L)
+		group_index& operator=(std::initializer_list<GLuint> L)
 		{
 			_storage.resize(L.size());
-			std::copy(L.begin(), L.end(), static_cast<unsigned int*>(static_cast<void*>(_storage.data())));
+			std::copy(L.begin(), L.end(), static_cast<GLuint*>(static_cast<void*>(_storage.data())));
 			return *this;
 		}
 
@@ -5882,41 +5954,41 @@ namespace lnd
 		inline void buffer_allocate() const
 		{
 			buffer.bind();
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->size() * sizeof(unsigned int), this->data(), GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->size() * sizeof(GLuint), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const unsigned int* const ptr, std::size_t vertex_count) const
+		inline void buffer_allocate_from(const GLuint* const ptr, std::size_t vertex_count) const
 		{
 			buffer.bind();
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertex_count * sizeof(unsigned int), this->data(), GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertex_count * sizeof(GLuint), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
 		inline void buffer_update() const
 		{
-			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(unsigned int), this->data());
+			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(GLuint), this->data());
 		}
-		inline void buffer_update_from(const unsigned int* const ptr, std::size_t vertex_count) const
+		inline void buffer_update_from(const GLuint* const ptr, std::size_t vertex_count) const
 		{
-			glNamedBufferSubData(buffer.get(), 0, vertex_count * sizeof(unsigned int), ptr);
+			glNamedBufferSubData(buffer.get(), 0, vertex_count * sizeof(GLuint), ptr);
 		}
 
-		inline const unsigned int* data() const noexcept { return static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())); }
-		inline unsigned int* data() noexcept { return static_cast<unsigned int*>(static_cast<void*>(_storage.data())); }
-		inline const unsigned int& operator[](std::size_t offset) const noexcept
+		inline const GLuint* data() const noexcept { return static_cast<const GLuint*>(static_cast<const void*>(_storage.data())); }
+		inline GLuint* data() noexcept { return static_cast<GLuint*>(static_cast<void*>(_storage.data())); }
+		inline const GLuint& operator[](std::size_t offset) const noexcept
 		{
-			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + offset);
+			return *(static_cast<const GLuint*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline unsigned int& operator[](std::size_t offset) noexcept
+		inline GLuint& operator[](std::size_t offset) noexcept
 		{
-			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + offset);
+			return *(static_cast<GLuint*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const unsigned int& operator()(std::size_t index) const noexcept
+		inline const GLuint& operator()(std::size_t index) const noexcept
 		{
-			return *(static_cast<const unsigned int*>(static_cast<const void*>(_storage.data())) + index);
+			return *(static_cast<const GLuint*>(static_cast<const void*>(_storage.data())) + index);
 		}
-		inline unsigned int& operator()(std::size_t index) noexcept
+		inline GLuint& operator()(std::size_t index) noexcept
 		{
-			return *(static_cast<unsigned int*>(static_cast<void*>(_storage.data())) + index);
+			return *(static_cast<GLuint*>(static_cast<void*>(_storage.data())) + index);
 		}
 
 		inline void resize_index_count(std::size_t n)
@@ -5927,11 +5999,11 @@ namespace lnd
 		{
 			_storage.reserve(n);
 		}
-		inline void push_back_index(unsigned int new_index)
+		inline void push_back_index(GLuint new_index)
 		{
 			_storage.push_back(new_index);
 		}
-		inline void push_front_index(unsigned int new_index)
+		inline void push_front_index(GLuint new_index)
 		{
 			_storage.push_front(new_index);
 		}
@@ -5961,7 +6033,6 @@ namespace lnd
 		}
 	};
 
-
 	// COLOR STORAGE CLASSES
 
 	template <std::size_t _color_count_pc, std::size_t _dim> class cluster_color
@@ -5969,7 +6040,7 @@ namespace lnd
 
 	private:
 
-		std::array<LND_COLOR(float, _dim), _color_count_pc> _storage;
+		std::array<LND_COLOR(GLfloat, _dim), _color_count_pc> _storage;
 
 	public:
 
@@ -5980,50 +6051,50 @@ namespace lnd
 		cluster_color(cluster_color<_color_count_pc, _dim>&&) = default;
 		cluster_color& operator=(cluster_color<_color_count_pc, _dim>&&) = default;
 
-		cluster_color(std::initializer_list<float> L)
+		cluster_color(std::initializer_list<GLfloat> L)
 		{
-			std::copy(L.begin(), L.end(), static_cast<float*>(static_cast<void*>(_storage.data())));
+			std::copy(L.begin(), L.end(), static_cast<GLfloat*>(static_cast<void*>(_storage.data())));
 		}
-		cluster_color& operator=(std::initializer_list<float> L)
+		cluster_color& operator=(std::initializer_list<GLfloat> L)
 		{
-			std::copy(L.begin(), L.end(), static_cast<float*>(static_cast<void*>(_storage.data())));
+			std::copy(L.begin(), L.end(), static_cast<GLfloat*>(static_cast<void*>(_storage.data())));
 			return *this;
 		}
 
-		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
-		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](std::size_t offset) const noexcept
+		inline const GLfloat* data() const noexcept { return static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())); }
+		inline GLfloat* data() noexcept { return static_cast<GLfloat*>(static_cast<void*>(_storage.data())); }
+		inline const GLfloat& operator[](std::size_t offset) const noexcept
 		{
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](std::size_t offset) noexcept
+		inline GLfloat& operator[](std::size_t offset) noexcept
 		{
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(std::size_t color, std::size_t coord) const noexcept
+		inline const GLfloat& operator()(std::size_t color, std::size_t coord) const noexcept
 		{
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * color);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + coord + _dim * color);
 		}
-		inline float& operator()(std::size_t color, std::size_t coord) noexcept
+		inline GLfloat& operator()(std::size_t color, std::size_t coord) noexcept
 		{
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * color);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + coord + _dim * color);
 		}
 
-		inline const LND_COLOR(float, _dim)* data_color() const noexcept
+		inline const LND_COLOR(GLfloat, _dim)* data_color() const noexcept
 		{
-			return static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(_storage.data()));
+			return static_cast<const LND_COLOR(GLfloat, _dim)*>(static_cast<const void*>(_storage.data()));
 		}
-		inline LND_COLOR(float, _dim)* data_color() noexcept
+		inline LND_COLOR(GLfloat, _dim)* data_color() noexcept
 		{
-			return static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data()));
+			return static_cast<LND_COLOR(GLfloat, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_COLOR(float, _dim)& operator()(std::size_t color) const noexcept
+		inline const LND_COLOR(GLfloat, _dim)& operator()(std::size_t color) const noexcept
 		{
-			return *(static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(_storage.data())) + color);
+			return *(static_cast<const LND_COLOR(GLfloat, _dim)*>(static_cast<const void*>(_storage.data())) + color);
 		}
-		inline LND_COLOR(float, _dim)& operator()(std::size_t color) noexcept
+		inline LND_COLOR(GLfloat, _dim)& operator()(std::size_t color) noexcept
 		{
-			return *(static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data())) + color);
+			return *(static_cast<LND_COLOR(GLfloat, _dim)*>(static_cast<void*>(_storage.data())) + color);
 		}
 
 		constexpr std::size_t color_count() const noexcept
@@ -6100,62 +6171,62 @@ namespace lnd
 		inline void buffer_allocate() const
 		{
 			buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(float), this->data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(GLfloat), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const float* const ptr, std::size_t cluster_count) const
+		inline void buffer_allocate_from(const GLfloat* const ptr, std::size_t cluster_count) const
 		{
-			constexpr std::size_t n = _color_count_pc * _dim * sizeof(float);
+			constexpr std::size_t n = _color_count_pc * _dim * sizeof(GLfloat);
 			buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, n * cluster_count, ptr, GL_STATIC_DRAW);
 			buffer.unbind();
 		}
 		inline void buffer_update() const
 		{
-			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(float), this->data());
+			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(GLfloat), this->data());
 		}
-		inline void buffer_update_from(const float* const ptr, std::size_t cluster_count) const
+		inline void buffer_update_from(const GLfloat* const ptr, std::size_t cluster_count) const
 		{
-			constexpr std::size_t n = _color_count_pc * _dim * sizeof(float);
+			constexpr std::size_t n = _color_count_pc * _dim * sizeof(GLfloat);
 			glNamedBufferSubData(buffer.get(), 0, n * cluster_count, ptr);
 		}
 
-		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
-		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](std::size_t offset) const noexcept
+		inline const GLfloat* data() const noexcept { return static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())); }
+		inline GLfloat* data() noexcept { return static_cast<GLfloat*>(static_cast<void*>(_storage.data())); }
+		inline const GLfloat& operator[](std::size_t offset) const noexcept
 		{
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](std::size_t offset) noexcept
+		inline GLfloat& operator[](std::size_t offset) noexcept
 		{
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(std::size_t cluster, std::size_t color, std::size_t coord) const noexcept
+		inline const GLfloat& operator()(std::size_t cluster, std::size_t color, std::size_t coord) const noexcept
 		{
 			constexpr std::size_t n = _color_count_pc * _dim;
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * color + n * cluster);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + coord + _dim * color + n * cluster);
 		}
-		inline float& operator()(std::size_t cluster, std::size_t color, std::size_t coord) noexcept
+		inline GLfloat& operator()(std::size_t cluster, std::size_t color, std::size_t coord) noexcept
 		{
 			constexpr std::size_t n = color_count * _dim;
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * color + n * cluster);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + coord + _dim * color + n * cluster);
 		}
 
-		inline const LND_COLOR(float, _dim)* data_color() const noexcept
+		inline const LND_COLOR(GLfloat, _dim)* data_color() const noexcept
 		{
-			return static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(_storage.data()));
+			return static_cast<const LND_COLOR(GLfloat, _dim)*>(static_cast<const void*>(_storage.data()));
 		}
-		inline LND_COLOR(float, _dim)* data_color() noexcept
+		inline LND_COLOR(GLfloat, _dim)* data_color() noexcept
 		{
-			return static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data()));
+			return static_cast<LND_COLOR(GLfloat, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_COLOR(float, _dim)& operator()(std::size_t cluster, std::size_t color) const noexcept
+		inline const LND_COLOR(GLfloat, _dim)& operator()(std::size_t cluster, std::size_t color) const noexcept
 		{
-			return *(static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(_storage.data())) + color + _color_count_pc * cluster);
+			return *(static_cast<const LND_COLOR(GLfloat, _dim)*>(static_cast<const void*>(_storage.data())) + color + _color_count_pc * cluster);
 		}
-		inline LND_COLOR(float, _dim)& operator()(std::size_t cluster, std::size_t color) noexcept
+		inline LND_COLOR(GLfloat, _dim)& operator()(std::size_t cluster, std::size_t color) noexcept
 		{
-			return *(static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data())) + color + _color_count_pc * cluster);
+			return *(static_cast<LND_COLOR(GLfloat, _dim)*>(static_cast<void*>(_storage.data())) + color + _color_count_pc * cluster);
 		}
 
 		inline const lnd::cluster_color<_color_count_pc, _dim>* data_cluster() const noexcept
@@ -6230,12 +6301,12 @@ namespace lnd
 		}
 	};
 
-	template <std::size_t _dim, class _Allocator = LND_DEFAULT_ALLOCATOR<LND_COLOR(float, _dim)>> class group_color
+	template <std::size_t _dim, class _Allocator = LND_DEFAULT_ALLOCATOR<LND_COLOR(GLfloat, _dim)>> class group_color
 	{
 
 	private:
 
-		std::vector<LND_COLOR(float, _dim), _Allocator> _storage;
+		std::vector<LND_COLOR(GLfloat, _dim), _Allocator> _storage;
 		lnd::buffer_color buffer;
 
 	public:
@@ -6244,9 +6315,9 @@ namespace lnd
 		~group_color() = default;
 		group_color(std::size_t n)
 		{
-			_storage = std::vector<LND_COLOR(float, _dim)>(n, 0.0f);
+			_storage = std::vector<LND_COLOR(GLfloat, _dim)>(n, 0.0f);
 		}
-		group_color(std::size_t n, const LND_COLOR(float, _dim)& x)
+		group_color(std::size_t n, const LND_COLOR(GLfloat, _dim)& x)
 		{
 			_storage = std::vector<unsigned int>(n, x);
 		}
@@ -6269,15 +6340,15 @@ namespace lnd
 			return *this;
 		}
 
-		group_color(std::initializer_list<float> L)
+		group_color(std::initializer_list<GLfloat> L)
 		{
-			_storage = std::vector<LND_COLOR(float, _dim), _Allocator>(L.size() / _dim);
-			std::copy(L.begin(), L.end(), static_cast<float*>(static_cast<void*>(_storage.data())));
+			_storage = std::vector<LND_COLOR(GLfloat, _dim), _Allocator>(L.size() / _dim);
+			std::copy(L.begin(), L.end(), static_cast<GLfloat*>(static_cast<void*>(_storage.data())));
 		}
-		group_color& operator=(std::initializer_list<float> L)
+		group_color& operator=(std::initializer_list<GLfloat> L)
 		{
 			_storage.resize(L.size() / _dim);
-			std::copy(L.begin(), L.end(), static_cast<float*>(static_cast<void*>(_storage.data())));
+			std::copy(L.begin(), L.end(), static_cast<GLfloat*>(static_cast<void*>(_storage.data())));
 			return *this;
 		}
 
@@ -6300,61 +6371,61 @@ namespace lnd
 		inline void buffer_allocate() const
 		{
 			buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(float), this->data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(GLfloat), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const float* const ptr, std::size_t vertex_count) const
+		inline void buffer_allocate_from(const GLfloat* const ptr, std::size_t vertex_count) const
 		{
-			constexpr std::size_t n = _dim * sizeof(float);
+			constexpr std::size_t n = _dim * sizeof(GLfloat);
 			buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, n * vertex_count, ptr, GL_STATIC_DRAW);
 			buffer.unbind();
 		}
 		inline void buffer_update() const
 		{
-			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(float), this->data());
+			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(GLfloat), this->data());
 		}
-		inline void buffer_update_from(const float* const ptr, std::size_t vertex_count) const
+		inline void buffer_update_from(const GLfloat* const ptr, std::size_t vertex_count) const
 		{
-			constexpr std::size_t n = _dim * sizeof(float);
+			constexpr std::size_t n = _dim * sizeof(GLfloat);
 			glNamedBufferSubData(buffer.get(), 0, n * vertex_count, ptr);
 		}
 
 
-		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
-		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](std::size_t offset) const noexcept
+		inline const GLfloat* data() const noexcept { return static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())); }
+		inline GLfloat* data() noexcept { return static_cast<GLfloat*>(static_cast<void*>(_storage.data())); }
+		inline const GLfloat& operator[](std::size_t offset) const noexcept
 		{
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](std::size_t offset) noexcept
+		inline GLfloat& operator[](std::size_t offset) noexcept
 		{
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(std::size_t color, std::size_t coord) const noexcept
+		inline const GLfloat& operator()(std::size_t color, std::size_t coord) const noexcept
 		{
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * color);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + coord + _dim * color);
 		}
-		inline float& operator()(std::size_t color, std::size_t coord) noexcept
+		inline GLfloat& operator()(std::size_t color, std::size_t coord) noexcept
 		{
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * color);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + coord + _dim * color);
 		}
 
-		inline const LND_COLOR(float, _dim)* data_color() const noexcept
+		inline const LND_COLOR(GLfloat, _dim)* data_color() const noexcept
 		{
-			return static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(_storage.data()));
+			return static_cast<const LND_COLOR(GLfloat, _dim)*>(static_cast<const void*>(_storage.data()));
 		}
-		inline LND_COLOR(float, _dim)* data_color() noexcept
+		inline LND_COLOR(GLfloat, _dim)* data_color() noexcept
 		{
-			return static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data()));
+			return static_cast<LND_COLOR(GLfloat, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_COLOR(float, _dim)& operator()(std::size_t color) const noexcept
+		inline const LND_COLOR(GLfloat, _dim)& operator()(std::size_t color) const noexcept
 		{
-			return *(static_cast<const LND_COLOR(float, _dim)*>(static_cast<const void*>(_storage.data())) + color);
+			return *(static_cast<const LND_COLOR(GLfloat, _dim)*>(static_cast<const void*>(_storage.data())) + color);
 		}
-		inline LND_COLOR(float, _dim)& operator()(std::size_t color) noexcept
+		inline LND_COLOR(GLfloat, _dim)& operator()(std::size_t color) noexcept
 		{
-			return *(static_cast<LND_COLOR(float, _dim)*>(static_cast<void*>(_storage.data())) + color);
+			return *(static_cast<LND_COLOR(GLfloat, _dim)*>(static_cast<void*>(_storage.data())) + color);
 		}
 
 		inline void resize_color_count(std::size_t n)
@@ -6365,11 +6436,11 @@ namespace lnd
 		{
 			_storage.reserve(n);
 		}
-		inline void push_back_color(const LND_COLOR(float, _dim)& new_color)
+		inline void push_back_color(const LND_COLOR(GLfloat, _dim)& new_color)
 		{
 			_storage.push_back(new_color);
 		}
-		inline void push_front_color(const LND_COLOR(float, _dim)& new_color)
+		inline void push_front_color(const LND_COLOR(GLfloat, _dim)& new_color)
 		{
 			_storage.push_front(new_color);
 		}
@@ -6429,7 +6500,7 @@ namespace lnd
 			_width = new_width;
 			_height = new_height;
 		}
-		texture(std::size_t new_width, std::size_t new_height, const LND_PIXEL(float, _dim)& x)
+		texture(std::size_t new_width, std::size_t new_height, const LND_PIXEL(unsigned char, _dim)& x)
 		{
 			_storage = std::vector<LND_PIXEL(unsigned char, _dim)>(new_width * new_height, x);
 			_width = new_width;
@@ -6743,7 +6814,7 @@ namespace lnd
 
 	private:
 
-		std::array<LND_VERTEX(float, _dim), _vertex_count_pc> _storage;
+		std::array<LND_VERTEX(GLfloat, _dim), _vertex_count_pc> _storage;
 
 	public:
 
@@ -6754,50 +6825,50 @@ namespace lnd
 		cluster_vertex(cluster_vertex<_vertex_count_pc, _dim>&&) = default;
 		cluster_vertex& operator=(cluster_vertex<_vertex_count_pc, _dim>&&) = default;
 
-		cluster_vertex(std::initializer_list<float> L)
+		cluster_vertex(std::initializer_list<GLfloat> L)
 		{
-			std::copy(L.begin(), L.end(), static_cast<float*>(static_cast<void*>(_storage.data())));
+			std::copy(L.begin(), L.end(), static_cast<GLfloat*>(static_cast<void*>(_storage.data())));
 		}
-		cluster_vertex& operator=(std::initializer_list<float> L)
+		cluster_vertex& operator=(std::initializer_list<GLfloat> L)
 		{
-			std::copy(L.begin(), L.end(), static_cast<float*>(static_cast<void*>(_storage.data())));
+			std::copy(L.begin(), L.end(), static_cast<GLfloat*>(static_cast<void*>(_storage.data())));
 			return *this;
 		}
 
-		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
-		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](std::size_t offset) const noexcept
+		inline const GLfloat* data() const noexcept { return static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())); }
+		inline GLfloat* data() noexcept { return static_cast<GLfloat*>(static_cast<void*>(_storage.data())); }
+		inline const GLfloat& operator[](std::size_t offset) const noexcept
 		{
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](std::size_t offset) noexcept
+		inline GLfloat& operator[](std::size_t offset) noexcept
 		{
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(std::size_t vertex, std::size_t coord) const noexcept
+		inline const GLfloat& operator()(std::size_t vertex, std::size_t coord) const noexcept
 		{
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * vertex);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + coord + _dim * vertex);
 		}
-		inline float& operator()(std::size_t vertex, std::size_t coord) noexcept
+		inline GLfloat& operator()(std::size_t vertex, std::size_t coord) noexcept
 		{
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * vertex);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + coord + _dim * vertex);
 		}
 
-		inline const LND_VERTEX(float, _dim)* data_vertex() const noexcept
+		inline const LND_VERTEX(GLfloat, _dim)* data_vertex() const noexcept
 		{
-			return static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(_storage.data()));
+			return static_cast<const LND_VERTEX(GLfloat, _dim)*>(static_cast<const void*>(_storage.data()));
 		}
-		inline LND_VERTEX(float, _dim)* data_vertex() noexcept
+		inline LND_VERTEX(GLfloat, _dim)* data_vertex() noexcept
 		{
-			return static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data()));
+			return static_cast<LND_VERTEX(GLfloat, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_VERTEX(float, _dim)& operator()(std::size_t vertex) const noexcept
+		inline const LND_VERTEX(GLfloat, _dim)& operator()(std::size_t vertex) const noexcept
 		{
-			return *(static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(_storage.data())) + vertex);
+			return *(static_cast<const LND_VERTEX(GLfloat, _dim)*>(static_cast<const void*>(_storage.data())) + vertex);
 		}
-		inline LND_VERTEX(float, _dim)& operator()(std::size_t vertex) noexcept
+		inline LND_VERTEX(GLfloat, _dim)& operator()(std::size_t vertex) noexcept
 		{
-			return *(static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data())) + vertex);
+			return *(static_cast<LND_VERTEX(GLfloat, _dim)*>(static_cast<void*>(_storage.data())) + vertex);
 		}
 
 		constexpr std::size_t vertex_count() const noexcept
@@ -6874,62 +6945,62 @@ namespace lnd
 		inline void buffer_allocate() const
 		{
 			buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(float), this->data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(GLfloat), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const float* const ptr, std::size_t cluster_count) const
+		inline void buffer_allocate_from(const GLfloat* const ptr, std::size_t cluster_count) const
 		{
-			constexpr std::size_t n = _vertex_count_pc * _dim * sizeof(float);
+			constexpr std::size_t n = _vertex_count_pc * _dim * sizeof(GLfloat);
 			buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, n * cluster_count, ptr, GL_STATIC_DRAW);
 			buffer.unbind();
 		}
 		inline void buffer_update() const
 		{
-			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(float), this->data());
+			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(GLfloat), this->data());
 		}
-		inline void buffer_update_from(const float* const ptr, std::size_t cluster_count) const
+		inline void buffer_update_from(const GLfloat* const ptr, std::size_t cluster_count) const
 		{
-			constexpr std::size_t n = _vertex_count_pc * _dim * sizeof(float);
+			constexpr std::size_t n = _vertex_count_pc * _dim * sizeof(GLfloat);
 			glNamedBufferSubData(buffer.get(), 0, n * cluster_count, ptr);
 		}
 
-		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
-		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](std::size_t offset) const noexcept
+		inline const GLfloat* data() const noexcept { return static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())); }
+		inline GLfloat* data() noexcept { return static_cast<GLfloat*>(static_cast<void*>(_storage.data())); }
+		inline const GLfloat& operator[](std::size_t offset) const noexcept
 		{
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](std::size_t offset) noexcept
+		inline GLfloat& operator[](std::size_t offset) noexcept
 		{
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(std::size_t cluster, std::size_t vertex, std::size_t coord) const noexcept
+		inline const GLfloat& operator()(std::size_t cluster, std::size_t vertex, std::size_t coord) const noexcept
 		{
 			constexpr std::size_t n = _vertex_count_pc * _dim;
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * vertex + n * cluster);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + coord + _dim * vertex + n * cluster);
 		}
-		inline float& operator()(std::size_t cluster, std::size_t vertex, std::size_t coord) noexcept
+		inline GLfloat& operator()(std::size_t cluster, std::size_t vertex, std::size_t coord) noexcept
 		{
 			constexpr std::size_t n = _vertex_count_pc * _dim;
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * vertex + n * cluster);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + coord + _dim * vertex + n * cluster);
 		}
 
-		inline const LND_VERTEX(float, _dim)* data_vertex() const noexcept
+		inline const LND_VERTEX(GLfloat, _dim)* data_vertex() const noexcept
 		{
-			return static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(_storage.data()));
+			return static_cast<const LND_VERTEX(GLfloat, _dim)*>(static_cast<const void*>(_storage.data()));
 		}
-		inline LND_VERTEX(float, _dim)* data_vertex() noexcept
+		inline LND_VERTEX(GLfloat, _dim)* data_vertex() noexcept
 		{
-			return static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data()));
+			return static_cast<LND_VERTEX(GLfloat, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_VERTEX(float, _dim)& operator()(std::size_t cluster, std::size_t vertex) const noexcept
+		inline const LND_VERTEX(GLfloat, _dim)& operator()(std::size_t cluster, std::size_t vertex) const noexcept
 		{
-			return *(static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(_storage.data())) + vertex + _vertex_count_pc * cluster);
+			return *(static_cast<const LND_VERTEX(GLfloat, _dim)*>(static_cast<const void*>(_storage.data())) + vertex + _vertex_count_pc * cluster);
 		}
-		inline LND_VERTEX(float, _dim)& operator()(std::size_t cluster, std::size_t vertex) noexcept
+		inline LND_VERTEX(GLfloat, _dim)& operator()(std::size_t cluster, std::size_t vertex) noexcept
 		{
-			return *(static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data())) + vertex + _vertex_count_pc * cluster);
+			return *(static_cast<LND_VERTEX(GLfloat, _dim)*>(static_cast<void*>(_storage.data())) + vertex + _vertex_count_pc * cluster);
 		}
 
 		inline const lnd::cluster_vertex<_vertex_count_pc, _dim>* data_cluster() const noexcept
@@ -7011,9 +7082,9 @@ namespace lnd
 		{
 			_storage.resize(vertex._storage.size());
 			constexpr std::size_t _offset = _vertex_count_pc * _dim;
-			float* p = static_cast<float*>(static_cast<void*>(_storage.data()));
-			const float* q = static_cast<const float*>(static_cast<const void*>(vertex._storage.data()));
-			float factor;
+			GLfloat* p = static_cast<GLfloat*>(static_cast<void*>(_storage.data()));
+			const GLfloat* q = static_cast<const GLfloat*>(static_cast<const void*>(vertex._storage.data()));
+			GLfloat factor;
 			std::size_t n = _storage.size();
 
 			switch (counter_clockwise_orientation)
@@ -7034,7 +7105,7 @@ namespace lnd
 						*(p + 1) *= factor;
 						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
-							memcpy(p + 2 * k, p, 2 * sizeof(float));
+							memcpy(p + 2 * k, p, 2 * sizeof(GLfloat));
 						}
 						p += _offset; q += _offset;
 					}
@@ -7059,13 +7130,13 @@ namespace lnd
 						_mm_storeu_ps(p, w);
 						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
-							memcpy(p + 3 * k, p, 3 * sizeof(float));
+							memcpy(p + 3 * k, p, 3 * sizeof(GLfloat));
 						}
 						p += _offset; q += _offset;
 					}
 #else // LND_AVX_EXT
-					float u3[3];
-					float v3[3];
+					GLfloat u3[3];
+					GLfloat v3[3];
 					for (std::size_t j = 0; j < n; j++)
 					{
 						u3[0] = *(q + 3) - *(q);
@@ -7084,7 +7155,7 @@ namespace lnd
 						*(p + 2) *= factor;
 						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
-							memcpy(p + 3 * k, p, 3 * sizeof(float));
+							memcpy(p + 3 * k, p, 3 * sizeof(GLfloat));
 						}
 						p += _offset; q += _offset;
 					}
@@ -7112,7 +7183,7 @@ namespace lnd
 						*(p + 1) *= factor;
 						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
-							memcpy(p + 2 * k, p, 2 * sizeof(float));
+							memcpy(p + 2 * k, p, 2 * sizeof(GLfloat));
 						}
 						p += _offset; q += _offset;
 					}
@@ -7137,13 +7208,13 @@ namespace lnd
 						_mm_storeu_ps(p, w);
 						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
-							memcpy(p + 3 * k, p, 3 * sizeof(float));
+							memcpy(p + 3 * k, p, 3 * sizeof(GLfloat));
 						}
 						p += _offset; q += _offset;
 					}
 #else // LND_AVX_EXT
-					float u3[3];
-					float v3[3];
+					GLfloat u3[3];
+					GLfloat v3[3];
 					for (std::size_t j = 0; j < n; j++)
 					{
 						u3[0] = *(q + 3) - *(q);
@@ -7162,7 +7233,7 @@ namespace lnd
 						*(p + 2) *= factor;
 						for (std::size_t k = 1; k < _vertex_count_pc; k++)
 						{
-							memcpy(p + 3 * k, p, 3 * sizeof(float));
+							memcpy(p + 3 * k, p, 3 * sizeof(GLfloat));
 						}
 						p += _offset; q += _offset;
 					}
@@ -7189,11 +7260,11 @@ namespace lnd
 			constexpr std::size_t _offset = _vertex_count_pc * _dim;
 			constexpr std::size_t _vertex_offset = _vertex_count_pc2 * _dim;
 			constexpr std::size_t _tex_coord_offset = _vertex_count_pc3 * 2;
-			float* p = static_cast<float*>(static_cast<void*>(_storage.data()));
-			const float* q = static_cast<const float*>(static_cast<const void*>(vertex.data()));
-			const float* r = static_cast<const float*>(static_cast<const void*>(tex_coord.data()));
-			float temp;
-			float ut[4];
+			GLfloat* p = static_cast<GLfloat*>(static_cast<void*>(_storage.data()));
+			const GLfloat* q = static_cast<const GLfloat*>(static_cast<const void*>(vertex.data()));
+			const GLfloat* r = static_cast<const GLfloat*>(static_cast<const void*>(tex_coord.data()));
+			GLfloat temp;
+			GLfloat ut[4];
 
 			std::size_t n = _storage.size();
 
@@ -7217,7 +7288,7 @@ namespace lnd
 						*(p + 3) = *(p + 1);
 						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
-							memcpy(p + 4 * k, p, 4 * sizeof(float));
+							memcpy(p + 4 * k, p, 4 * sizeof(GLfloat));
 						}
 						p += _offset; q += _vertex_offset;
 					}
@@ -7234,7 +7305,7 @@ namespace lnd
 					__m128 b1;
 					for (std::size_t j = 0; j < n; j++)
 					{
-						_mm_storeu_ps(static_cast<float*>(ut), _mm_sub_ps(_mm_loadu_ps(r + 2), _mm_loadu_ps(r)));
+						_mm_storeu_ps(static_cast<GLfloat*>(ut), _mm_sub_ps(_mm_loadu_ps(r + 2), _mm_loadu_ps(r)));
 
 						temp = 1.0f / (ut[0] * ut[3] - ut[1] * ut[2]);
 
@@ -7266,12 +7337,12 @@ namespace lnd
 						_mm_storeu_ps(p + 6, w);
 						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
-							memcpy(p + 9 * k, p, 9 * sizeof(float));
+							memcpy(p + 9 * k, p, 9 * sizeof(GLfloat));
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
 #else // LND_AVX_EXT
-					float vt[3];
+					GLfloat vt[3];
 					for (std::size_t j = 0; j < n; j++)
 					{
 						ut[0] = *(r + 2) - *r;
@@ -7281,10 +7352,10 @@ namespace lnd
 
 						temp = 1.0f / (ut[0] * ut[3] - ut[1] * ut[2]);
 
-						float a0 = ut[3] * temp;
-						float b0 = -ut[1] * temp;
-						float a1 = -ut[2] * temp;
-						float b1 = ut[0] * temp;
+						GLfloat a0 = ut[3] * temp;
+						GLfloat b0 = -ut[1] * temp;
+						GLfloat a1 = -ut[2] * temp;
+						GLfloat b1 = ut[0] * temp;
 
 						ut[0] = *(q + 3) - *(q);
 						ut[1] = *(q + 4) - *(q + 1);
@@ -7326,7 +7397,7 @@ namespace lnd
 
 						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
-							memcpy(p + 9 * k, p, 9 * sizeof(float));
+							memcpy(p + 9 * k, p, 9 * sizeof(GLfloat));
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
@@ -7356,7 +7427,7 @@ namespace lnd
 						*(p + 3) = -*(p + 1);
 						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
-							memcpy(p + 4 * k, p, 4 * sizeof(float));
+							memcpy(p + 4 * k, p, 4 * sizeof(GLfloat));
 						}
 						p += _offset; q += _vertex_offset;
 					}
@@ -7373,7 +7444,7 @@ namespace lnd
 					__m128 b1;
 					for (std::size_t j = 0; j < n; j++)
 					{
-						_mm_storeu_ps(static_cast<float*>(ut), _mm_sub_ps(_mm_loadu_ps(r + 2), _mm_loadu_ps(r)));
+						_mm_storeu_ps(static_cast<GLfloat*>(ut), _mm_sub_ps(_mm_loadu_ps(r + 2), _mm_loadu_ps(r)));
 
 						temp = 1.0f / (ut[0] * ut[3] - ut[1] * ut[2]);
 
@@ -7405,12 +7476,12 @@ namespace lnd
 						_mm_storeu_ps(p + 6, w);
 						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
-							memcpy(p + 9 * k, p, 9 * sizeof(float));
+							memcpy(p + 9 * k, p, 9 * sizeof(GLfloat));
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
 #else // LND_AVX_EXT
-					float vt[3];
+					GLfloat vt[3];
 					for (std::size_t j = 0; j < n; j++)
 					{
 						ut[0] = *(r + 2) - *r;
@@ -7420,10 +7491,10 @@ namespace lnd
 
 						temp = 1.0f / (ut[0] * ut[3] - ut[1] * ut[2]);
 
-						float a0 = ut[3] * temp;
-						float b0 = -ut[1] * temp;
-						float a1 = -ut[2] * temp;
-						float b1 = ut[0] * temp;
+						GLfloat a0 = ut[3] * temp;
+						GLfloat b0 = -ut[1] * temp;
+						GLfloat a1 = -ut[2] * temp;
+						GLfloat b1 = ut[0] * temp;
 
 						ut[0] = *(q + 3) - *(q);
 						ut[1] = *(q + 4) - *(q + 1);
@@ -7465,7 +7536,7 @@ namespace lnd
 
 						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
-							memcpy(p + 9 * k, p, 9 * sizeof(float));
+							memcpy(p + 9 * k, p, 9 * sizeof(GLfloat));
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
@@ -7492,7 +7563,7 @@ namespace lnd
 			case 1:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7501,7 +7572,7 @@ namespace lnd
 			case 2:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7510,7 +7581,7 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7519,7 +7590,7 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7539,7 +7610,7 @@ namespace lnd
 			case 1:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7548,7 +7619,7 @@ namespace lnd
 			case 2:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7557,7 +7628,7 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7566,7 +7637,7 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7587,10 +7658,10 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7600,10 +7671,10 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7627,7 +7698,7 @@ namespace lnd
 			case 1:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_POINTS, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -7636,7 +7707,7 @@ namespace lnd
 			case 2:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_LINES, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -7645,7 +7716,7 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -7654,7 +7725,7 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -7676,7 +7747,7 @@ namespace lnd
 			case 1:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_POINTS, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -7685,7 +7756,7 @@ namespace lnd
 			case 2:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_LINES, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -7694,7 +7765,7 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -7703,7 +7774,7 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -7726,10 +7797,10 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -7739,10 +7810,10 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
 				buffer.unbind();
@@ -7767,10 +7838,10 @@ namespace lnd
 			case 1:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7780,10 +7851,10 @@ namespace lnd
 			case 2:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7793,10 +7864,10 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7806,10 +7877,10 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7831,10 +7902,10 @@ namespace lnd
 			case 1:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7844,10 +7915,10 @@ namespace lnd
 			case 2:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7857,10 +7928,10 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7870,10 +7941,10 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7896,13 +7967,13 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7913,13 +7984,13 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
 				buffer.unbind();
@@ -7945,10 +8016,10 @@ namespace lnd
 			case 1:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_POINTS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
 					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
@@ -7959,10 +8030,10 @@ namespace lnd
 			case 2:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_LINES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
 					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
@@ -7973,10 +8044,10 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
 					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
@@ -7987,10 +8058,10 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
 					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
@@ -8015,10 +8086,10 @@ namespace lnd
 			case 1:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_POINTS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
 					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
@@ -8029,10 +8100,10 @@ namespace lnd
 			case 2:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_LINES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
 					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
@@ -8043,10 +8114,10 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
 					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
@@ -8057,10 +8128,10 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
 					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
@@ -8086,13 +8157,13 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_TRIANGLES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
 					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
@@ -8104,13 +8175,13 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				coloring.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+				glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				program.use();
 				glDrawArrays(GL_QUADS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
 					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
@@ -8138,10 +8209,10 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
@@ -8153,10 +8224,10 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
@@ -8181,10 +8252,10 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
@@ -8196,10 +8267,10 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
@@ -8225,13 +8296,13 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
@@ -8244,13 +8315,13 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
@@ -8281,17 +8352,17 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
@@ -8308,17 +8379,17 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
@@ -8355,20 +8426,20 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				lightmap_coord.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), nullptr);
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(5);
-				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float)));
+				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
@@ -8388,20 +8459,20 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				lightmap_coord.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), nullptr);
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(5);
-				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float)));
+				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
@@ -8437,10 +8508,10 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_TRIANGLES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
@@ -8453,10 +8524,10 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_QUADS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
@@ -8484,10 +8555,10 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_TRIANGLES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
@@ -8500,10 +8571,10 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_QUADS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
@@ -8532,13 +8603,13 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_TRIANGLES, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
@@ -8551,13 +8622,13 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				normals.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_image.buffer_bind();
 				program.use();
 				glDrawArrays(GL_QUADS, _vertex_count_pc * first_cluster, _vertex_count_pc * (end_cluster - first_cluster));
@@ -8591,17 +8662,17 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
@@ -8618,17 +8689,17 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
@@ -8667,20 +8738,20 @@ namespace lnd
 			case 3:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				lightmap_coord.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), nullptr);
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(5);
-				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float)));
+				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
@@ -8700,20 +8771,20 @@ namespace lnd
 			case 4:
 				buffer.bind();
 				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 				texture_coord.buffer_bind();
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				lightmap_coord.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), nullptr);
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(5);
-				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float)));
+				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
@@ -8744,7 +8815,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_LINES, static_cast<GLsizei>(indexing.size()), GL_UNSIGNED_INT, nullptr);
@@ -8758,7 +8829,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_LINES, static_cast<GLsizei>(indexing.size()), GL_UNSIGNED_INT, nullptr);
@@ -8775,7 +8846,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_LINES, static_cast<GLsizei>(_index_count_pc) * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -8792,7 +8863,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_LINES, static_cast<GLsizei>(_index_count_pc) * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -8808,7 +8879,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_TRIANGLES, indexing.size(), GL_UNSIGNED_INT, nullptr);
@@ -8822,7 +8893,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_TRIANGLES, indexing.size(), GL_UNSIGNED_INT, nullptr);
@@ -8839,7 +8910,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_TRIANGLES, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -8856,7 +8927,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_TRIANGLES, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -8872,7 +8943,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_QUADS, indexing.size(), GL_UNSIGNED_INT, nullptr);
@@ -8886,7 +8957,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_QUADS, indexing.size(), GL_UNSIGNED_INT, nullptr);
@@ -8903,7 +8974,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_QUADS, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -8920,7 +8991,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_QUADS, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -8939,10 +9010,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_LINES, indexing.size(), GL_UNSIGNED_INT, nullptr);
@@ -8958,10 +9029,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_LINES, indexing.size(), GL_UNSIGNED_INT, nullptr);
@@ -8980,10 +9051,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_LINES, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -9002,10 +9073,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_LINES, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -9023,10 +9094,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_TRIANGLES, indexing.size(), GL_UNSIGNED_INT, nullptr);
@@ -9042,10 +9113,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_TRIANGLES, indexing.size(), GL_UNSIGNED_INT, nullptr);
@@ -9064,10 +9135,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_TRIANGLES, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -9086,10 +9157,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_TRIANGLES, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -9107,10 +9178,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_QUADS, indexing.size(), GL_UNSIGNED_INT, nullptr);
@@ -9126,10 +9197,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_QUADS, indexing.size(), GL_UNSIGNED_INT, nullptr);
@@ -9148,10 +9219,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_QUADS, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -9170,10 +9241,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			indexing.buffer_bind();
 			program.use();
 			glDrawElements(GL_QUADS, _index_count_pc * (end_cluster - first_cluster), GL_UNSIGNED_INT,
@@ -9184,12 +9255,12 @@ namespace lnd
 		}
 	};
 
-	template <std::size_t _dim, class _Allocator = LND_DEFAULT_ALLOCATOR<LND_VERTEX(float, _dim)>> class group_vertex
+	template <std::size_t _dim, class _Allocator = LND_DEFAULT_ALLOCATOR<LND_VERTEX(GLfloat, _dim)>> class group_vertex
 	{
 
 	private:
 
-		std::vector<LND_VERTEX(float, _dim), _Allocator> _storage;
+		std::vector<LND_VERTEX(GLfloat, _dim), _Allocator> _storage;
 		lnd::buffer_vertex buffer;
 
 	public:
@@ -9198,11 +9269,11 @@ namespace lnd
 		~group_vertex() = default;
 		group_vertex(std::size_t n)
 		{
-			_storage = std::vector<LND_VERTEX(float, _dim)>(n, LND_VERTEX(float, _dim){ 0.0f });
+			_storage = std::vector<LND_VERTEX(GLfloat, _dim)>(n, LND_VERTEX(GLfloat, _dim){ 0.0f });
 		}
-		group_vertex(std::size_t n, const LND_VERTEX(float, _dim)& x)
+		group_vertex(std::size_t n, const LND_VERTEX(GLfloat, _dim)& x)
 		{
-			_storage = std::vector<LND_VERTEX(float, _dim)>(n, x);
+			_storage = std::vector<LND_VERTEX(GLfloat, _dim)>(n, x);
 		}
 		template <class _rhs_Allocator> group_vertex(const group_vertex<_dim, _rhs_Allocator>& rhs)
 		{
@@ -9223,15 +9294,15 @@ namespace lnd
 			return *this;
 		}
 
-		group_vertex(std::initializer_list<float> L)
+		group_vertex(std::initializer_list<GLfloat> L)
 		{
-			_storage = std::vector<LND_VERTEX(float, _dim), _Allocator>(L.size() / _dim);
-			std::copy(L.begin(), L.end(), static_cast<float*>(static_cast<void*>(_storage.data())));
+			_storage = std::vector<LND_VERTEX(GLfloat, _dim), _Allocator>(L.size() / _dim);
+			std::copy(L.begin(), L.end(), static_cast<GLfloat*>(static_cast<void*>(_storage.data())));
 		}
-		group_vertex& operator=(std::initializer_list<float> L)
+		group_vertex& operator=(std::initializer_list<GLfloat> L)
 		{
 			_storage.resize(L.size() / _dim);
-			std::copy(L.begin(), L.end(), static_cast<float*>(static_cast<void*>(_storage.data())));
+			std::copy(L.begin(), L.end(), static_cast<GLfloat*>(static_cast<void*>(_storage.data())));
 			return *this;
 		}
 
@@ -9254,60 +9325,60 @@ namespace lnd
 		inline void buffer_allocate() const
 		{
 			buffer.bind();
-			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(float), this->data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, this->size() * sizeof(GLfloat), this->data(), GL_STATIC_DRAW);
 			buffer.unbind();
 		}
-		inline void buffer_allocate_from(const float* const ptr, std::size_t vertex_count) const
+		inline void buffer_allocate_from(const GLfloat* const ptr, std::size_t vertex_count) const
 		{
-			constexpr std::size_t n = _dim * sizeof(float);
+			constexpr std::size_t n = _dim * sizeof(GLfloat);
 			buffer.bind();
 			glBufferData(GL_ARRAY_BUFFER, n * vertex_count, ptr, GL_STATIC_DRAW);
 			buffer.unbind();
 		}
 		inline void buffer_update() const
 		{
-			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(float), this->data());
+			glNamedBufferSubData(buffer.get(), 0, this->size() * sizeof(GLfloat), this->data());
 		}
-		inline void buffer_update_from(const float* const ptr, std::size_t vertex_count) const
+		inline void buffer_update_from(const GLfloat* const ptr, std::size_t vertex_count) const
 		{
-			constexpr std::size_t n = _dim * sizeof(float);
+			constexpr std::size_t n = _dim * sizeof(GLfloat);
 			glNamedBufferSubData(buffer.get(), 0, n * vertex_count, ptr);
 		}
 
-		inline const float* data() const noexcept { return static_cast<const float*>(static_cast<const void*>(_storage.data())); }
-		inline float* data() noexcept { return static_cast<float*>(static_cast<void*>(_storage.data())); }
-		inline const float& operator[](std::size_t offset) const noexcept
+		inline const GLfloat* data() const noexcept { return static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())); }
+		inline GLfloat* data() noexcept { return static_cast<GLfloat*>(static_cast<void*>(_storage.data())); }
+		inline const GLfloat& operator[](std::size_t offset) const noexcept
 		{
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + offset);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + offset);
 		}
-		inline float& operator[](std::size_t offset) noexcept
+		inline GLfloat& operator[](std::size_t offset) noexcept
 		{
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + offset);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + offset);
 		}
-		inline const float& operator()(std::size_t vertex, std::size_t coord) const noexcept
+		inline const GLfloat& operator()(std::size_t vertex, std::size_t coord) const noexcept
 		{
-			return *(static_cast<const float*>(static_cast<const void*>(_storage.data())) + coord + _dim * vertex);
+			return *(static_cast<const GLfloat*>(static_cast<const void*>(_storage.data())) + coord + _dim * vertex);
 		}
-		inline float& operator()(std::size_t vertex, std::size_t coord) noexcept
+		inline GLfloat& operator()(std::size_t vertex, std::size_t coord) noexcept
 		{
-			return *(static_cast<float*>(static_cast<void*>(_storage.data())) + coord + _dim * vertex);
+			return *(static_cast<GLfloat*>(static_cast<void*>(_storage.data())) + coord + _dim * vertex);
 		}
 
-		inline const LND_VERTEX(float, _dim)* data_vertex() const noexcept
+		inline const LND_VERTEX(GLfloat, _dim)* data_vertex() const noexcept
 		{
-			return static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(_storage.data()));
+			return static_cast<const LND_VERTEX(GLfloat, _dim)*>(static_cast<const void*>(_storage.data()));
 		}
-		inline LND_VERTEX(float, _dim)* data_vertex() noexcept
+		inline LND_VERTEX(GLfloat, _dim)* data_vertex() noexcept
 		{
-			return static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data()));
+			return static_cast<LND_VERTEX(GLfloat, _dim)*>(static_cast<void*>(_storage.data()));
 		}
-		inline const LND_VERTEX(float, _dim)& operator()(std::size_t vertex) const noexcept
+		inline const LND_VERTEX(GLfloat, _dim)& operator()(std::size_t vertex) const noexcept
 		{
-			return *(static_cast<const LND_VERTEX(float, _dim)*>(static_cast<const void*>(_storage.data())) + vertex);
+			return *(static_cast<const LND_VERTEX(GLfloat, _dim)*>(static_cast<const void*>(_storage.data())) + vertex);
 		}
-		inline LND_VERTEX(float, _dim)& operator()(std::size_t vertex) noexcept
+		inline LND_VERTEX(GLfloat, _dim)& operator()(std::size_t vertex) noexcept
 		{
-			return *(static_cast<LND_VERTEX(float, _dim)*>(static_cast<void*>(_storage.data())) + vertex);
+			return *(static_cast<LND_VERTEX(GLfloat, _dim)*>(static_cast<void*>(_storage.data())) + vertex);
 		}
 
 		inline void resize_vertex_count(std::size_t n)
@@ -9318,11 +9389,11 @@ namespace lnd
 		{
 			_storage.reserve(n);
 		}
-		inline void push_back_vertex(const LND_VERTEX(float, _dim)& new_vertex)
+		inline void push_back_vertex(const LND_VERTEX(GLfloat, _dim)& new_vertex)
 		{
 			_storage.push_back(new_vertex);
 		}
-		inline void push_front_vertex(const LND_VERTEX(float, _dim)& new_vertex)
+		inline void push_front_vertex(const LND_VERTEX(GLfloat, _dim)& new_vertex)
 		{
 			_storage.push_front(new_vertex);
 		}
@@ -9364,7 +9435,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			indexing.buffer_bind();
 			glDrawElements(GL_LINES, static_cast<GLsizei>(indexing.size()), GL_UNSIGNED_INT, nullptr);
@@ -9378,7 +9449,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			indexing.buffer_bind();
 			glDrawElements(GL_LINES, static_cast<GLsizei>(indexing.size()), GL_UNSIGNED_INT, nullptr);
@@ -9393,7 +9464,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			indexing.buffer_bind();
 			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indexing.size()), GL_UNSIGNED_INT, nullptr);
@@ -9407,7 +9478,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			indexing.buffer_bind();
 			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indexing.size()), GL_UNSIGNED_INT, nullptr);
@@ -9421,7 +9492,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
@@ -9432,7 +9503,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
@@ -9446,7 +9517,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_STRIP, first_vertex, last_vertex - first_vertex);
 			buffer.unbind();
@@ -9459,7 +9530,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_STRIP, first_vertex, last_vertex - first_vertex);
 			buffer.unbind();
@@ -9471,7 +9542,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_LOOP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
@@ -9482,7 +9553,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_LOOP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
@@ -9494,7 +9565,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
@@ -9505,7 +9576,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
@@ -9517,7 +9588,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
@@ -9528,7 +9599,7 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
@@ -9543,10 +9614,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_STRIP, 0, this->vertex_count());
 			buffer.unbind();
@@ -9559,10 +9630,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_STRIP, 0, this->vertex_count());
 			buffer.unbind();
@@ -9579,10 +9650,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_STRIP, first_vertex, last_vertex - first_vertex);
 			buffer.unbind();
@@ -9597,10 +9668,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_STRIP, first_vertex, last_vertex - first_vertex);
 			buffer.unbind();
@@ -9614,10 +9685,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_LOOP, 0, this->vertex_count());
 			buffer.unbind();
@@ -9630,10 +9701,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_LINE_LOOP, 0, this->vertex_count());
 			buffer.unbind();
@@ -9647,10 +9718,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, this->vertex_count());
 			buffer.unbind();
@@ -9663,10 +9734,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, this->vertex_count());
 			buffer.unbind();
@@ -9680,10 +9751,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
@@ -9696,10 +9767,10 @@ namespace lnd
 		{
 			buffer.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
 			coloring.buffer_bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(float), nullptr);
+			glVertexAttribPointer(1, _color_dim, GL_FLOAT, GL_FALSE, _color_dim * sizeof(GLfloat), nullptr);
 			program.use();
 			glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(this->vertex_count()));
 			buffer.unbind();
@@ -9710,13 +9781,13 @@ namespace lnd
 
 	// TEXT
 
-	template <class _vertex_Allocator = LND_DEFAULT_ALLOCATOR<float>> class text
+	template <class _vertex_Allocator = LND_DEFAULT_ALLOCATOR<GLfloat>> class text
 	{
 
 	private:
 
-		std::vector<float, _vertex_Allocator> screen_vertex;
-		std::vector<float, _vertex_Allocator> atlas_vertex;
+		std::vector<GLfloat, _vertex_Allocator> screen_vertex;
+		std::vector<GLfloat, _vertex_Allocator> atlas_vertex;
 
 		lnd::buffer_vertex buffer_screen_vertex;
 		lnd::buffer_vertex buffer_atlas_vertex;
@@ -9724,15 +9795,15 @@ namespace lnd
 		std::size_t _capacity = 0;
 		std::size_t _size = 0;
 
-		float X0 = 0.0f;
-		float Y0 = 0.0f;
-		float dX = 0.0f;
+		GLfloat X0 = 0.0f;
+		GLfloat Y0 = 0.0f;
+		GLfloat dX = 0.0f;
 
-		float screen_w = 0.0f;
-		float screen_h = 0.0f;
+		GLfloat screen_w = 0.0f;
+		GLfloat screen_h = 0.0f;
 
-		float atlas_w = 0.0f;
-		float atlas_h = 0.0f;
+		GLfloat atlas_w = 0.0f;
+		GLfloat atlas_h = 0.0f;
 
 	public:
 
@@ -9741,8 +9812,8 @@ namespace lnd
 		text(std::size_t n)
 		{
 			_capacity = n;
-			screen_vertex = std::vector<float, _vertex_Allocator>(n, 0.0f);
-			atlas_vertex = std::vector<float, _vertex_Allocator>(n, 0.0f);
+			screen_vertex = std::vector<GLfloat, _vertex_Allocator>(n, 0.0f);
+			atlas_vertex = std::vector<GLfloat, _vertex_Allocator>(n, 0.0f);
 		}
 		template <class _rhs_Allocator> text(const text<_rhs_Allocator>& rhs)
 		{
@@ -9813,36 +9884,36 @@ namespace lnd
 			_capacity = rhs._capacity;
 		}
 
-		inline const float* data_screen_vertex() const noexcept
+		inline const GLfloat* data_screen_vertex() const noexcept
 		{
 			return screen_vertex.data();
 		}
-		inline float* data_screen_vertex() noexcept
+		inline GLfloat* data_screen_vertex() noexcept
 		{
 			return screen_vertex.data();
 		}
 
-		inline const float* data_atlas_vertex() const noexcept
+		inline const GLfloat* data_atlas_vertex() const noexcept
 		{
 			return atlas_vertex.data();
 		}
-		inline float* data_atlas_vertex() noexcept
+		inline GLfloat* data_atlas_vertex() noexcept
 		{
 			return atlas_vertex.data();
 		}
 
-		inline void set_position_in_screen(float X, float Y, float delta_X) noexcept
+		inline void set_position_in_screen(GLfloat X, GLfloat Y, GLfloat delta_X) noexcept
 		{
 			X0 = X;
 			Y0 = Y;
 			dX = delta_X;
 		}
-		inline void set_size_in_screen(float new_width, float new_height) noexcept
+		inline void set_size_in_screen(GLfloat new_width, GLfloat new_height) noexcept
 		{
 			screen_w = new_width;
 			screen_h = new_height;
 		}
-		inline void set_size_in_atlas(float new_width, float new_height) noexcept
+		inline void set_size_in_atlas(GLfloat new_width, GLfloat new_height) noexcept
 		{
 			atlas_w = new_width;
 			atlas_h = new_height;
@@ -9888,12 +9959,12 @@ namespace lnd
 		inline void buffer_allocate()
 		{
 			screen_vertex.resize(8 * _capacity);
-			float* ptr = screen_vertex.data();
-			float X;
+			GLfloat* ptr = screen_vertex.data();
+			GLfloat X;
 
 			for (std::size_t k = 0; k < _capacity; k++)
 			{
-				X = X0 + static_cast<float>(k) * dX;
+				X = X0 + static_cast<GLfloat>(k) * dX;
 
 				*ptr = X;
 				*(ptr + 1) = Y0;
@@ -9908,23 +9979,23 @@ namespace lnd
 			}
 
 			buffer_screen_vertex.bind();
-			glBufferData(GL_ARRAY_BUFFER, _capacity * (8 * sizeof(float)), screen_vertex.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, _capacity * (8 * sizeof(GLfloat)), screen_vertex.data(), GL_STATIC_DRAW);
 			buffer_screen_vertex.unbind();
 
 			buffer_atlas_vertex.bind();
-			glBufferData(GL_ARRAY_BUFFER, _capacity * (8 * sizeof(float)), atlas_vertex.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, _capacity * (8 * sizeof(GLfloat)), atlas_vertex.data(), GL_STATIC_DRAW);
 			buffer_atlas_vertex.unbind();
 		}
 
 		inline void buffer_update_screen_vertex() const
 		{
 			screen_vertex.resize(8 * _capacity);
-			float* ptr = screen_vertex.data();
-			float X;
+			GLfloat* ptr = screen_vertex.data();
+			GLfloat X;
 
 			for (std::size_t k = 0; k < _capacity; k++)
 			{
-				X = X0 + static_cast<float>(k) * dX;
+				X = X0 + static_cast<GLfloat>(k) * dX;
 
 				*ptr = X;
 				*(ptr + 1) = Y0;
@@ -9938,20 +10009,20 @@ namespace lnd
 				ptr += 8;
 			}
 
-			glNamedBufferSubData(buffer_screen_vertex.get(), 0, _capacity * (8 * sizeof(float)), screen_vertex.data());
+			glNamedBufferSubData(buffer_screen_vertex.get(), 0, _capacity * (8 * sizeof(GLfloat)), screen_vertex.data());
 		}
 
 		template <typename Ty, class data_to_atlas>
 		inline void buffer_update_atlas_vertex(const Ty* text_ptr, std::size_t text_size, data_to_atlas atlas_XY)
 		{
 			atlas_vertex.resize(8 * text_size);
-			float* ptr = atlas_vertex.data();
-			float X;
-			float Y;
+			GLfloat* ptr = atlas_vertex.data();
+			GLfloat X;
+			GLfloat Y;
 
 			for (std::size_t k = text_size; k > 0; k--)
 			{
-				LND_VERTEX(float, 2) XY = atlas_XY(*text_ptr);
+				LND_VERTEX(GLfloat, 2) XY = atlas_XY(*text_ptr);
 
 				*ptr = XY[0];
 				*(ptr + 1) = XY[1];
@@ -9967,7 +10038,7 @@ namespace lnd
 
 			_size = text_size;
 
-			glNamedBufferSubData(buffer_atlas_vertex.get(), 0, text_size * (8 * sizeof(float)), atlas_vertex.data());
+			glNamedBufferSubData(buffer_atlas_vertex.get(), 0, text_size * (8 * sizeof(GLfloat)), atlas_vertex.data());
 		}
 
 		template <std::size_t _dim, class _atlas_Allocator> inline  void draw(const lnd::program& program,
@@ -9975,10 +10046,10 @@ namespace lnd
 		{
 			buffer_screen_vertex.bind();
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 			buffer_atlas_vertex.bind();
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 			atlas.buffer_bind();
 			program.use();
 			glDrawArrays(GL_QUADS, 0, 4 * static_cast<GLsizei>(_size));
@@ -9999,16 +10070,16 @@ namespace lnd
 
 	private:
 
-		float mvp_matrix[16] = { 0.0f };
-		float vp_matrix[16] = { 0.0f };
-		float p_matrix[16] = {
+		GLfloat mvp_matrix[16] = { 0.0f };
+		GLfloat vp_matrix[16] = { 0.0f };
+		GLfloat p_matrix[16] = {
 			0.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
 		};
-		float v_matrix[16] = { 0.0f };
-		float mskybox_matrix[16] = { 0.0f };
-		float skybox_matrix[16] = { 0.0f };
+		GLfloat v_matrix[16] = { 0.0f };
+		GLfloat mskybox_matrix[16] = { 0.0f };
+		GLfloat skybox_matrix[16] = { 0.0f };
 
 	public:
 
@@ -10019,18 +10090,18 @@ namespace lnd
 		camera_3d(lnd::camera_3d&&) = default;
 		lnd::camera_3d& operator=(lnd::camera_3d&&) = default;
 
-		float position[4] = { 0.0f };
-		float direction[4] = { 1.0f };
+		GLfloat position[4] = { 0.0f };
+		GLfloat direction[4] = { 1.0f };
 
-		float yaw = 0.0f;
-		float pitch = 0.0f;
+		GLfloat yaw = 0.0f;
+		GLfloat pitch = 0.0f;
 
 	private:
 
-		float cos_yaw = 1.0f;
-		float sin_yaw = 0.0f;
-		float cos_pitch = 1.0f;
-		float sin_pitch = 0.0f;
+		GLfloat cos_yaw = 1.0f;
+		GLfloat sin_yaw = 0.0f;
+		GLfloat cos_pitch = 1.0f;
+		GLfloat sin_pitch = 0.0f;
 
 	public:
 
@@ -10046,12 +10117,12 @@ namespace lnd
 			direction[2] = sin_pitch;
 		}
 
-		inline void compute_p_matrix(float screen_ratio, float fov, float z_far, float z_near) noexcept
+		inline void compute_p_matrix(GLfloat screen_ratio, GLfloat fov, GLfloat z_far, GLfloat z_near) noexcept
 		{
 			if (screen_ratio >= 1.0f)
 			{
-				float tan_half_fov_y = std::tanf(0.5f * fov);
-				float dz_inv = 1.0f / (z_far - z_near);
+				GLfloat tan_half_fov_y = std::tanf(0.5f * fov);
+				GLfloat dz_inv = 1.0f / (z_far - z_near);
 				p_matrix[0] = 1.0f / (screen_ratio * tan_half_fov_y);
 				p_matrix[5] = 1.0f / tan_half_fov_y;
 				p_matrix[10] = (z_far + z_near) * dz_inv;
@@ -10059,8 +10130,8 @@ namespace lnd
 			}
 			else
 			{
-				float tan_half_fov_x = std::tanf(0.5f * fov);
-				float dz_inv = 1.0f / (z_far - z_near);
+				GLfloat tan_half_fov_x = std::tanf(0.5f * fov);
+				GLfloat dz_inv = 1.0f / (z_far - z_near);
 				p_matrix[0] = 1.0f / tan_half_fov_x;
 				p_matrix[5] = screen_ratio / tan_half_fov_x;
 				p_matrix[10] = (z_far + z_near) * dz_inv;
@@ -10091,184 +10162,184 @@ namespace lnd
 		}
 		inline void compute_vp_matrix() noexcept
 		{
-			m44xm44(static_cast<float*>(vp_matrix), static_cast<const float*>(p_matrix),
-				static_cast<const float*>(v_matrix));
+			m44xm44(static_cast<GLfloat*>(vp_matrix), static_cast<const GLfloat*>(p_matrix),
+				static_cast<const GLfloat*>(v_matrix));
 		}
-		inline void compute_mvp_matrix(const float* const m_matrix_ptr) noexcept
+		inline void compute_mvp_matrix(const GLfloat* const m_matrix_ptr) noexcept
 		{
-			m44xm44(static_cast<float*>(mvp_matrix), static_cast<const float*>(vp_matrix), m_matrix_ptr);
+			m44xm44(static_cast<GLfloat*>(mvp_matrix), static_cast<const GLfloat*>(vp_matrix), m_matrix_ptr);
 		}
 		inline void compute_skybox_matrix() noexcept
 		{
-			m33hxm44(static_cast<float*>(skybox_matrix), static_cast<const float*>(p_matrix),
-				static_cast<const float*>(v_matrix));
+			m33hxm44(static_cast<GLfloat*>(skybox_matrix), static_cast<const GLfloat*>(p_matrix),
+				static_cast<const GLfloat*>(v_matrix));
 		}
-		inline void compute_mskybox_matrix(const float* const m_matrix_ptr) noexcept
+		inline void compute_mskybox_matrix(const GLfloat* const m_matrix_ptr) noexcept
 		{
-			m44xm44(static_cast<float*>(mskybox_matrix), static_cast<const float*>(skybox_matrix), m_matrix_ptr);
+			m44xm44(static_cast<GLfloat*>(mskybox_matrix), static_cast<const GLfloat*>(skybox_matrix), m_matrix_ptr);
 		}
 
-		inline const float* position_data() const noexcept
+		inline const GLfloat* position_data() const noexcept
 		{
-			return static_cast<const float*>(position);
+			return static_cast<const GLfloat*>(position);
 		}
-		inline float* position_data() noexcept
+		inline GLfloat* position_data() noexcept
 		{
-			return static_cast<float*>(position);
-		}
-
-		inline const float* direction_data() const noexcept
-		{
-			return static_cast<const float*>(direction);
-		}
-		inline float* direction_data() noexcept
-		{
-			return static_cast<float*>(direction);
+			return static_cast<GLfloat*>(position);
 		}
 
-		inline const float* v_matrix_data() const noexcept
+		inline const GLfloat* direction_data() const noexcept
 		{
-			return static_cast<const float*>(v_matrix);
+			return static_cast<const GLfloat*>(direction);
 		}
-		inline float* v_matrix_data() noexcept
+		inline GLfloat* direction_data() noexcept
 		{
-			return static_cast<float*>(v_matrix);
-		}
-
-		inline const float* p_matrix_data() const noexcept
-		{
-			return static_cast<const float*>(p_matrix);
-		}
-		inline float* p_matrix_data() noexcept
-		{
-			return static_cast<float*>(p_matrix);
+			return static_cast<GLfloat*>(direction);
 		}
 
-		inline const float* vp_matrix_data() const noexcept
+		inline const GLfloat* v_matrix_data() const noexcept
 		{
-			return static_cast<const float*>(vp_matrix);
+			return static_cast<const GLfloat*>(v_matrix);
 		}
-		inline float* vp_matrix_data() noexcept
+		inline GLfloat* v_matrix_data() noexcept
 		{
-			return static_cast<float*>(vp_matrix);
-		}
-
-		inline const float* mvp_matrix_data() const noexcept
-		{
-			return static_cast<const float*>(mvp_matrix);
-		}
-		inline float* mvp_matrix_data() noexcept
-		{
-			return static_cast<float*>(mvp_matrix);
+			return static_cast<GLfloat*>(v_matrix);
 		}
 
-		inline const float* skybox_matrix_data() const noexcept
+		inline const GLfloat* p_matrix_data() const noexcept
 		{
-			return static_cast<const float*>(skybox_matrix);
+			return static_cast<const GLfloat*>(p_matrix);
 		}
-		inline float* skybox_matrix_data() noexcept
+		inline GLfloat* p_matrix_data() noexcept
 		{
-			return static_cast<float*>(skybox_matrix);
-		}
-
-		inline const float* mskybox_matrix_data() const noexcept
-		{
-			return static_cast<const float*>(mskybox_matrix);
-		}
-		inline float* mskybox_matrix_data() noexcept
-		{
-			return static_cast<float*>(mskybox_matrix);
+			return static_cast<GLfloat*>(p_matrix);
 		}
 
-		inline void move_forward(float distance) noexcept
+		inline const GLfloat* vp_matrix_data() const noexcept
+		{
+			return static_cast<const GLfloat*>(vp_matrix);
+		}
+		inline GLfloat* vp_matrix_data() noexcept
+		{
+			return static_cast<GLfloat*>(vp_matrix);
+		}
+
+		inline const GLfloat* mvp_matrix_data() const noexcept
+		{
+			return static_cast<const GLfloat*>(mvp_matrix);
+		}
+		inline GLfloat* mvp_matrix_data() noexcept
+		{
+			return static_cast<GLfloat*>(mvp_matrix);
+		}
+
+		inline const GLfloat* skybox_matrix_data() const noexcept
+		{
+			return static_cast<const GLfloat*>(skybox_matrix);
+		}
+		inline GLfloat* skybox_matrix_data() noexcept
+		{
+			return static_cast<GLfloat*>(skybox_matrix);
+		}
+
+		inline const GLfloat* mskybox_matrix_data() const noexcept
+		{
+			return static_cast<const GLfloat*>(mskybox_matrix);
+		}
+		inline GLfloat* mskybox_matrix_data() noexcept
+		{
+			return static_cast<GLfloat*>(mskybox_matrix);
+		}
+
+		inline void move_forward(GLfloat distance) noexcept
 		{
 			position[0] += distance * cos_yaw;
 			position[1] += distance * sin_yaw;
 		}
-		inline void move_backward(float distance) noexcept
+		inline void move_backward(GLfloat distance) noexcept
 		{
 			position[0] -= distance * cos_yaw;
 			position[1] -= distance * sin_yaw;
 		}
-		inline void move_left(float distance) noexcept
+		inline void move_left(GLfloat distance) noexcept
 		{
 			position[0] -= distance * sin_yaw;
 			position[1] += distance * cos_yaw;
 		}
-		inline void move_right(float distance) noexcept
+		inline void move_right(GLfloat distance) noexcept
 		{
 			position[0] += distance * sin_yaw;
 			position[1] -= distance * cos_yaw;
 		}
-		inline void move_up(float distance) noexcept
+		inline void move_up(GLfloat distance) noexcept
 		{
 			position[2] += distance;
 		}
-		inline void move_down(float distance) noexcept
+		inline void move_down(GLfloat distance) noexcept
 		{
 			position[2] -= distance;
 		}
 
-		inline void turn_up_rad(float angle) noexcept
+		inline void turn_up_rad(GLfloat angle) noexcept
 		{
-			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
+			constexpr GLfloat pi_d2 = 0.5f * 3.14159265358979f;
 			pitch += angle;
 			if (pitch > pi_d2) { pitch = pi_d2; }
 		}
-		inline void turn_down_rad(float angle) noexcept
+		inline void turn_down_rad(GLfloat angle) noexcept
 		{
-			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
+			constexpr GLfloat pi_d2 = 0.5f * 3.14159265358979f;
 			pitch -= angle;
 			if (pitch < -pi_d2) { pitch = -pi_d2; }
 		}
-		inline void turn_left_rad(float angle) noexcept
+		inline void turn_left_rad(GLfloat angle) noexcept
 		{
-			constexpr float pi = 3.14159265358979f;
-			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
+			constexpr GLfloat pi = 3.14159265358979f;
+			constexpr GLfloat pi_m2 = 2.0f * 3.14159265358979f;
 			yaw += angle;
 			if (yaw > pi) { yaw -= pi_m2; }
 		}
-		inline void turn_right_rad(float angle) noexcept
+		inline void turn_right_rad(GLfloat angle) noexcept
 		{
-			constexpr float pi = 3.14159265358979f;
-			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
+			constexpr GLfloat pi = 3.14159265358979f;
+			constexpr GLfloat pi_m2 = 2.0f * 3.14159265358979f;
 			yaw -= angle;
 			if (yaw < -pi) { yaw += pi_m2; }
 		}
-		inline void turn_up_deg(float angle) noexcept
+		inline void turn_up_deg(GLfloat angle) noexcept
 		{
-			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
-			constexpr float coeff = 3.14159265358979f / 180.0f;
+			constexpr GLfloat pi_d2 = 0.5f * 3.14159265358979f;
+			constexpr GLfloat coeff = 3.14159265358979f / 180.0f;
 			pitch += coeff * angle;
 			if (pitch > pi_d2) { pitch = pi_d2; }
 		}
-		inline void turn_down_deg(float angle) noexcept
+		inline void turn_down_deg(GLfloat angle) noexcept
 		{
-			constexpr float pi_d2 = 0.5f * 3.14159265358979f;
-			constexpr float coeff = 3.14159265358979f / 180.0f;
+			constexpr GLfloat pi_d2 = 0.5f * 3.14159265358979f;
+			constexpr GLfloat coeff = 3.14159265358979f / 180.0f;
 			pitch -= coeff * angle;
 			if (pitch < -pi_d2) { pitch = -pi_d2; }
 		}
-		inline void turn_left_deg(float angle) noexcept
+		inline void turn_left_deg(GLfloat angle) noexcept
 		{
-			constexpr float pi = 3.14159265358979f;
-			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
-			constexpr float coeff = 3.14159265358979f / 180.0f;
+			constexpr GLfloat pi = 3.14159265358979f;
+			constexpr GLfloat pi_m2 = 2.0f * 3.14159265358979f;
+			constexpr GLfloat coeff = 3.14159265358979f / 180.0f;
 			yaw += coeff * angle;
 			if (yaw > pi) { yaw -= pi_m2; }
 		}
-		inline void turn_right_deg(float angle) noexcept
+		inline void turn_right_deg(GLfloat angle) noexcept
 		{
-			constexpr float pi = 3.14159265358979f;
-			constexpr float pi_m2 = 2.0f * 3.14159265358979f;
-			constexpr float coeff = 3.14159265358979f / 180.0f;
+			constexpr GLfloat pi = 3.14159265358979f;
+			constexpr GLfloat pi_m2 = 2.0f * 3.14159265358979f;
+			constexpr GLfloat coeff = 3.14159265358979f / 180.0f;
 			yaw -= coeff * angle;
 			if (yaw < -pi) { yaw += pi_m2; }
 		}
 
 	private:
 
-		inline void m44xm44(float* const pC, const float* const pA, const float* const pB) noexcept
+		inline void m44xm44(GLfloat* const pC, const GLfloat* const pA, const GLfloat* const pB) noexcept
 		{
 #ifdef LND_AVX_EXT
 			__m128 vregA0 = _mm_loadu_ps(pA);
@@ -10300,7 +10371,7 @@ namespace lnd
 			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 15), vregC);
 			_mm_storeu_ps(pC + 12, vregC);
 #else // LND_AVX_EXT
-			float regB0; float regB1; std::size_t offset;
+			GLfloat regB0; GLfloat regB1; std::size_t offset;
 			for (std::size_t j = 0; j < 4; j++)
 			{
 				offset = 4 * j;
@@ -10327,7 +10398,7 @@ namespace lnd
 			}
 #endif // LND_AVX_EXT
 		}
-		inline void m33hxm44(float* const pC, const float* const pA, const float* const pB) noexcept
+		inline void m33hxm44(GLfloat* const pC, const GLfloat* const pA, const GLfloat* const pB) noexcept
 		{
 #ifdef LND_AVX_EXT
 			__m128 vregA0 = _mm_loadu_ps(pA);
@@ -10355,7 +10426,7 @@ namespace lnd
 
 			_mm_storeu_ps(pC + 12, vregA3);
 #else // LND_AVX_EXT
-			float regB0; float regB1; std::size_t offset;
+			GLfloat regB0; GLfloat regB1; std::size_t offset;
 			for (std::size_t j = 0; j < 3; j++)
 			{
 				offset = 4 * j;
@@ -10380,7 +10451,7 @@ namespace lnd
 				*(pC + (offset + 2)) += *(pA + 14) * regB1;
 				*(pC + (offset + 3)) += *(pA + 15) * regB1;
 			}
-			memcpy(pC + 12, pA + 12, 4 * sizeof(float));
+			memcpy(pC + 12, pA + 12, 4 * sizeof(GLfloat));
 #endif // LND_AVX_EXT
 		}
 	};
@@ -10390,7 +10461,7 @@ namespace lnd
 
 	private:
 
-		float m_matrix[16] = {
+		GLfloat m_matrix[16] = {
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
@@ -10406,36 +10477,36 @@ namespace lnd
 		model_3d(lnd::model_3d&&) = default;
 		lnd::model_3d& operator=(lnd::model_3d&&) = default;
 
-		inline const float* m_matrix_data() const noexcept
+		inline const GLfloat* m_matrix_data() const noexcept
 		{
-			return static_cast<const float*>(m_matrix);
+			return static_cast<const GLfloat*>(m_matrix);
 		}
-		inline float* m_matrix_data() noexcept
+		inline GLfloat* m_matrix_data() noexcept
 		{
-			return static_cast<float*>(m_matrix);
+			return static_cast<GLfloat*>(m_matrix);
 		}
 
-		inline void set_position(float x, float y, float z) noexcept
+		inline void set_position(GLfloat x, GLfloat y, GLfloat z) noexcept
 		{
 			m_matrix[12] = x;
 			m_matrix[13] = y;
 			m_matrix[14] = z;
 		}
-		inline void set_position(const float* const position_ptr)
+		inline void set_position(const GLfloat* const position_ptr)
 		{
-			memcpy(static_cast<float*>(m_matrix) + 12, position_ptr, 3 * sizeof(float));
+			memcpy(static_cast<GLfloat*>(m_matrix) + 12, position_ptr, 3 * sizeof(GLfloat));
 		}
 
-		inline void set_angles_rad(float yaw, float pitch, float roll) noexcept
+		inline void set_angles_rad(GLfloat yaw, GLfloat pitch, GLfloat roll) noexcept
 		{
-			float cos_yaw = LND_COS(yaw);
-			float sin_yaw = LND_SIN(yaw);
+			GLfloat cos_yaw = LND_COS(yaw);
+			GLfloat sin_yaw = LND_SIN(yaw);
 
-			float cos_pitch = LND_COS(pitch);
-			float sin_pitch = LND_SIN(pitch);
+			GLfloat cos_pitch = LND_COS(pitch);
+			GLfloat sin_pitch = LND_SIN(pitch);
 
-			float cos_roll = LND_COS(roll);
-			float sin_roll = LND_SIN(roll);
+			GLfloat cos_roll = LND_COS(roll);
+			GLfloat sin_roll = LND_SIN(roll);
 
 			m_matrix[0] = cos_yaw * cos_pitch;
 			m_matrix[1] = sin_yaw * cos_pitch;
@@ -10449,22 +10520,22 @@ namespace lnd
 			m_matrix[9] = cos_yaw * sin_roll - sin_yaw * sin_pitch * cos_roll;
 			m_matrix[10] = cos_pitch * cos_roll;
 		}
-		inline void set_angles_deg(float yaw, float pitch, float roll) noexcept
+		inline void set_angles_deg(GLfloat yaw, GLfloat pitch, GLfloat roll) noexcept
 		{
-			constexpr float coeff = 3.14159265358979f / 180.0f;
+			constexpr GLfloat coeff = 3.14159265358979f / 180.0f;
 
 			yaw *= coeff;
 			pitch *= coeff;
 			roll *= coeff;
 
-			float cos_yaw = LND_COS(yaw);
-			float sin_yaw = LND_SIN(yaw);
+			GLfloat cos_yaw = LND_COS(yaw);
+			GLfloat sin_yaw = LND_SIN(yaw);
 
-			float cos_pitch = LND_COS(pitch);
-			float sin_pitch = LND_SIN(pitch);
+			GLfloat cos_pitch = LND_COS(pitch);
+			GLfloat sin_pitch = LND_SIN(pitch);
 
-			float cos_roll = LND_COS(roll);
-			float sin_roll = LND_SIN(roll);
+			GLfloat cos_roll = LND_COS(roll);
+			GLfloat sin_roll = LND_SIN(roll);
 
 			m_matrix[0] = cos_yaw * cos_pitch;
 			m_matrix[1] = sin_yaw * cos_pitch;
