@@ -94,7 +94,7 @@ void cube_3d::setup()
 
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_int_distribution<> distribution(0, 127);
+	std::uniform_int_distribution<> distribution(0, 31);
 
 	for (size_t i = 0; i < 1024; i++)
 	{
@@ -102,7 +102,7 @@ void cube_3d::setup()
 		{
 			if ((i < 512 && j < 512) || (i >= 512 && j >= 512))
 			{
-				unsigned char x = static_cast<unsigned char>(distribution(mt) + 128);
+				unsigned char x = static_cast<unsigned char>(distribution(mt) + 192);
 				tex(i, j)[0] = x;
 				tex(i, j)[1] = x;
 				tex(i, j)[2] = x;
@@ -110,7 +110,7 @@ void cube_3d::setup()
 			}
 			else
 			{
-				unsigned char x = static_cast<unsigned char>(distribution(mt));
+				unsigned char x = static_cast<unsigned char>(distribution(mt) + 96);
 				tex(i, j)[0] = x;
 				tex(i, j)[1] = x;
 				tex(i, j)[2] = x;
@@ -162,17 +162,17 @@ void cube_3d::setup()
 	light_position1[2] = 1.0f;
 	light_position2[2] = 1.0f;
 
-	lnd::set_pointlight_prop_3d(prog, 0,
+	lnd::set_pointlight_properties_3d(prog, 0,
 		std::array<float, 4>{1.0f, 0.0f, 0.0f, 0.2f}.data(),
 		std::array<float, 3>{1.0f, 0.01f, 0.001f}.data());
-	lnd::set_pointlight_prop_3d(prog, 1,
+	lnd::set_pointlight_properties_3d(prog, 1,
 		std::array<float, 4>{0.0f, 1.0f, 0.0f, 0.2f}.data(),
 		std::array<float, 3>{1.0f, 0.01f, 0.001f}.data());
-	lnd::set_pointlight_prop_3d(prog, 2,
+	lnd::set_pointlight_properties_3d(prog, 2,
 		std::array<float, 4>{0.0f, 0.0f, 1.0f, 0.2f}.data(),
 		std::array<float, 3>{1.0f, 0.01f, 0.001f}.data());
 
-	lnd::set_pointlights_range_3d(prog, 0, 3);
+	lnd::set_pointlights_index_range_3d(prog, 0, 3);
 
 	P.compute_p_matrix(screen_ratio(), 0.5f * pi, 100.f, 0.1f);
 	P.position[0] = -2.0f;
@@ -226,9 +226,9 @@ inline void cube_3d::display()
 	P.compute_vp_matrix();
 
 	lnd::set_mvp_position_3d(prog, P.vp_matrix_data(), P.position_data());
-	lnd::set_pointlight_pos_3d(prog, 0, light_position0);
-	lnd::set_pointlight_pos_3d(prog, 1, light_position1);
-	lnd::set_pointlight_pos_3d(prog, 2, light_position2);
+	lnd::set_pointlight_position_3d(prog, 0, light_position0);
+	lnd::set_pointlight_position_3d(prog, 1, light_position1);
+	lnd::set_pointlight_position_3d(prog, 2, light_position2);
 	cube.draw_tex_normals_3d(prog, tex_coord, tex, cube_normals);
 
 	P.compute_mvp_matrix(P0.m_matrix_data());
