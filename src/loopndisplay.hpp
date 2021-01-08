@@ -5392,11 +5392,11 @@ namespace lnd
 		bool show(int new_screen_width, int new_screen_height, bool rescale_screen_coordinates,
 			double new_timeframe, const char* new_title)
 		{
-			constexpr double factor_s_per_tick = static_cast<double>(
+			constexpr double factor_tick_per_s = static_cast<double>(
 				std::chrono::LND_CLOCK::duration::period::den
 				/ std::chrono::LND_CLOCK::duration::period::num);
 
-			constexpr double factor_tick_per_s =
+			constexpr double factor_s_per_tick =
 				static_cast<double>(std::chrono::LND_CLOCK::duration::period::num)
 				/ static_cast<double>(std::chrono::LND_CLOCK::duration::period::den);
 
@@ -5442,7 +5442,7 @@ namespace lnd
 				return false;
 			}
 
-			clock_sleep_time = static_cast<std::chrono::time_point<std::chrono::LND_CLOCK>::rep>(factor_s_per_tick * new_timeframe);
+			clock_sleep_time = static_cast<std::chrono::time_point<std::chrono::LND_CLOCK>::rep>(factor_tick_per_s * new_timeframe);
 			_start = std::chrono::LND_CLOCK::now();
 
 			// loop
@@ -5460,7 +5460,7 @@ namespace lnd
 					{
 						_stop = std::chrono::LND_CLOCK::now();
 					}
-					time_elapsed = factor_tick_per_s * static_cast<float>((_stop - _start).count());
+					time_elapsed = factor_s_per_tick * static_cast<float>((_stop - _start).count());
 					_start = std::chrono::LND_CLOCK::now();
 
 					// loop content
@@ -5481,7 +5481,7 @@ namespace lnd
 				{
 					// frame
 					_stop = std::chrono::LND_CLOCK::now();
-					time_elapsed = factor_tick_per_s * static_cast<float>((_stop - _start).count());
+					time_elapsed = factor_s_per_tick * static_cast<float>((_stop - _start).count());
 					_start = std::chrono::LND_CLOCK::now();
 
 					// loop content
