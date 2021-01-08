@@ -76,8 +76,8 @@ void clock_program::setup()
 	hour.resize_cluster_count(12);
 	for (size_t k = 0; k < 12; k++)
 	{
-		float c = std::cosf(pi / 6.0f * static_cast<float>(k));
-		float s = std::sinf(pi / 6.0f * static_cast<float>(k));
+		float c = std::cos(pi / 6.0f * static_cast<float>(k));
+		float s = std::sin(pi / 6.0f * static_cast<float>(k));
 
 		hour(k) = {
 			c * (-0.02f) - s * (0.91f), s * (-0.02f) + c * (0.91f),
@@ -251,11 +251,11 @@ inline void clock_program::display()
 	clear_window();
 
 	sec.draw(program_cyan());
-	hour.draw_RGBa(program_RGB(), hour_color);
+	hour.draw_RGBA(program_RGB(), hour_color);
 	hour.draw_lines_indexed(program_cyan(), contour);
-	hour_needle.draw_tri_fan_RGBa(lnd::set_vertex_shift_rotate_deg(hour_program, 0.0f, 0.0f, hour_counter * (-0.5f)), hour_needle_color);
+	hour_needle.draw_tri_fan_RGBA(lnd::set_vertex_shift_rotate_deg(hour_program, 0.0f, 0.0f, hour_counter * (-0.5f)), hour_needle_color);
 	hour_needle.draw_line_loop(lnd::set_vertex_shift_rotate_deg(hour_contour_program, 0.0f, 0.0f, hour_counter * (-0.5f)));
-	min_needle.draw_tri_fan_RGBa(lnd::set_vertex_shift_rotate_deg(min_program, 0.0f, 0.0f, min_counter * (-6.0f)), min_needle_color);
+	min_needle.draw_tri_fan_RGBA(lnd::set_vertex_shift_rotate_deg(min_program, 0.0f, 0.0f, min_counter * (-6.0f)), min_needle_color);
 	min_needle.draw_line_loop(lnd::set_vertex_shift_rotate_deg(min_contour_program, 0.0f, 0.0f, min_counter * (-6.0f)));
 	sec_needle.draw_tri_fan(lnd::set_vertex_shift_rotate_deg(sec_program, 0.0f, 0.0f, sec_counter * (-6.0f)));
 	center.draw_tri_fan(program_black());
