@@ -1,4 +1,4 @@
-// loopndisplay.hpp - last update : 08 / 01 / 2021
+// loopndisplay.hpp - last update : 09 / 01 / 2021
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW set up
@@ -4167,7 +4167,7 @@ namespace lnd
 
 
 		// BASIC DRAW CALLS
-		
+
 		inline void draw_line(const GLfloat* const vertex_ptr, const lnd::program& program)
 		{
 			lnd::__default_vertex_buffer.bind();
