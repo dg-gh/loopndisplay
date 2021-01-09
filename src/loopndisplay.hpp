@@ -5034,6 +5034,7 @@ namespace lnd
 		const inline lnd::shader_vertex& vertex_texture_affine() const noexcept { return _vertex_texture_affine; } // takes uniforms
 		const inline lnd::shader_vertex& vertex_texture_3d() const noexcept { return _vertex_texture_3d; } // takes uniforms
 		const inline lnd::shader_vertex& vertex_texture_normals_3d() const noexcept { return _vertex_texture_normals_3d; } // takes uniforms
+		const inline lnd::shader_vertex& vertex_mapped_3d() const noexcept { return _vertex_mapped_3d; } // takes uniforms
 
 		const inline lnd::shader_fragment& fragment_black() const noexcept { return _fragment_black; }
 		const inline lnd::shader_fragment& fragment_red() const noexcept { return _fragment_red; }
@@ -5130,6 +5131,7 @@ namespace lnd
 		lnd::shader_vertex _vertex_texture_affine; // takes uniforms
 		lnd::shader_vertex _vertex_texture_3d; // takes uniforms
 		lnd::shader_vertex _vertex_texture_normals_3d; // takes uniforms
+		lnd::shader_vertex _vertex_mapped_3d; // takes uniforms
 
 		lnd::shader_fragment _fragment_black;
 		lnd::shader_fragment _fragment_red;
@@ -5269,6 +5271,7 @@ namespace lnd
 			_fragment_RGB.new_shader(lnd::source_fragment_RGB());
 			_fragment_RGBA.new_shader(lnd::source_fragment_RGBA());
 			_fragment_texture.new_shader(lnd::source_fragment_texture());
+			_vertex_mapped_3d.new_shader(lnd::source_vertex_mapped_3d());
 
 			_fragment_color_skylight_3d.new_shader(lnd::source_fragment_color_skylight_3d());
 			_fragment_RGB_skylight_3d.new_shader(lnd::source_fragment_RGB_skylight_3d());
