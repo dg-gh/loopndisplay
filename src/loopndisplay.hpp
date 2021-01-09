@@ -7107,6 +7107,7 @@ namespace lnd
 				{
 
 				case 2:
+				{
 					for (std::size_t j = 0; j < n; j++)
 					{
 						*p = *(q + 1) - *(q + 3);
@@ -7120,10 +7121,12 @@ namespace lnd
 						}
 						p += _offset; q += _offset;
 					}
-					break;
+				}
+				break;
 
 				case 3:
 #ifdef LND_AVX_EXT
+				{
 					__m128 u;
 					__m128 v;
 					__m128 w;
@@ -7145,12 +7148,14 @@ namespace lnd
 						}
 						p += _offset; q += _offset;
 					}
+				}
 #else // LND_AVX_EXT
+				{
 					GLfloat u3[3];
 					GLfloat v3[3];
 					for (std::size_t j = 0; j < n; j++)
 					{
-						u3[0] = *(q + 3) - *(q);
+						u3[0] = *(q + 3) - *q;
 						u3[1] = *(q + 4) - *(q + 1);
 						u3[2] = *(q + 5) - *(q + 2);
 						v3[0] = *(q + 6) - *(q + 3);
@@ -7170,8 +7175,9 @@ namespace lnd
 						}
 						p += _offset; q += _offset;
 					}
+				}
 #endif // LND_AVX_EXT
-					break;
+				break;
 
 				default:
 					break;
@@ -7185,6 +7191,7 @@ namespace lnd
 				{
 
 				case 2:
+				{
 					for (std::size_t j = 0; j < n; j++)
 					{
 						*p = *(q + 3) - *(q + 1);
@@ -7198,10 +7205,12 @@ namespace lnd
 						}
 						p += _offset; q += _offset;
 					}
-					break;
+				}
+				break;
 
 				case 3:
 #ifdef LND_AVX_EXT
+				{
 					__m128 v;
 					__m128 u;
 					__m128 w;
@@ -7223,12 +7232,14 @@ namespace lnd
 						}
 						p += _offset; q += _offset;
 					}
+				}
 #else // LND_AVX_EXT
+				{
 					GLfloat u3[3];
 					GLfloat v3[3];
 					for (std::size_t j = 0; j < n; j++)
 					{
-						u3[0] = *(q + 3) - *(q);
+						u3[0] = *(q + 3) - *q;
 						u3[1] = *(q + 4) - *(q + 1);
 						u3[2] = *(q + 5) - *(q + 2);
 						v3[0] = *(q + 6) - *(q + 3);
@@ -7248,8 +7259,9 @@ namespace lnd
 						}
 						p += _offset; q += _offset;
 					}
+				}
 #endif // LND_AVX_EXT
-					break;
+				break;
 
 				default:
 					break;
@@ -7288,25 +7300,57 @@ namespace lnd
 				{
 
 				case 2:
+				{
+					GLfloat a0;
+					GLfloat b0;
+					GLfloat a1;
+					GLfloat b1;
 					for (std::size_t j = 0; j < n; j++)
 					{
-						*p = *(q + 2) - *q;
-						*(p + 1) = *(q + 3) - *(q + 1);
+						ut[0] = *(r + 2) - *r;
+						ut[1] = *(r + 3) - *(r + 1);
+						ut[2] = *(r + 4) - *(r + 2);
+						ut[3] = *(r + 5) - *(r + 3);
+
+						temp = 1.0f / (ut[0] * ut[3] - ut[1] * ut[2]);
+
+						a0 = ut[3] * temp;
+						b0 = -ut[1] * temp;
+						a1 = -ut[2] * temp;
+						b1 = ut[0] * temp;
+
+						ut[0] = *(q + 2) - *q;
+						ut[1] = *(q + 3) - *(q + 1);
+
+						ut[2] = *(q + 4) - *(q + 2);
+						ut[3] = *(q + 5) - *(q + 3);
+
+						*p = a0 * ut[0] + b0 * ut[2];
+						*(p + 1) = a0 * ut[1] + b0 * ut[3];
+
 						temp = 1.0f / LND_SQRT((*p) * (*p) + (*(p + 1)) * (*(p + 1)));
 						*p *= temp;
 						*(p + 1) *= temp;
-						*(p + 2) = -*p;
-						*(p + 3) = *(p + 1);
+
+						*(p + 2) = a1 * ut[0] + b1 * ut[2];
+						*(p + 3) = a1 * ut[1] + b1 * ut[3];
+
+						temp = 1.0f / LND_SQRT((*(p + 2)) * (*(p + 2)) + (*(p + 3)) * (*(p + 3)));
+						*(p + 2) *= temp;
+						*(p + 3) *= temp;
+
 						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
 							memcpy(p + 4 * k, p, 4 * sizeof(GLfloat));
 						}
-						p += _offset; q += _vertex_offset;
+						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
-					break;
+				}
+				break;
 
 				case 3:
 #ifdef LND_AVX_EXT
+				{
 					__m128 u;
 					__m128 v;
 					__m128 w;
@@ -7352,7 +7396,13 @@ namespace lnd
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
+				}
 #else // LND_AVX_EXT
+				{
+					GLfloat a0;
+					GLfloat b0;
+					GLfloat a1;
+					GLfloat b1;
 					GLfloat vt[3];
 					for (std::size_t j = 0; j < n; j++)
 					{
@@ -7363,12 +7413,12 @@ namespace lnd
 
 						temp = 1.0f / (ut[0] * ut[3] - ut[1] * ut[2]);
 
-						GLfloat a0 = ut[3] * temp;
-						GLfloat b0 = -ut[1] * temp;
-						GLfloat a1 = -ut[2] * temp;
-						GLfloat b1 = ut[0] * temp;
+						a0 = ut[3] * temp;
+						b0 = -ut[1] * temp;
+						a1 = -ut[2] * temp;
+						b1 = ut[0] * temp;
 
-						ut[0] = *(q + 3) - *(q);
+						ut[0] = *(q + 3) - *q;
 						ut[1] = *(q + 4) - *(q + 1);
 						ut[2] = *(q + 5) - *(q + 2);
 
@@ -7376,7 +7426,7 @@ namespace lnd
 						vt[1] = *(q + 7) - *(q + 4);
 						vt[2] = *(q + 8) - *(q + 5);
 
-						*(p + 0) = a0 * ut[0] + b0 * vt[0];
+						*p = a0 * ut[0] + b0 * vt[0];
 						*(p + 1) = a0 * ut[1] + b0 * vt[1];
 						*(p + 2) = a0 * ut[2] + b0 * vt[2];
 
@@ -7412,8 +7462,9 @@ namespace lnd
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
+				}
 #endif // LND_AVX_EXT
-					break;
+				break;
 
 				default:
 					break;
@@ -7427,25 +7478,57 @@ namespace lnd
 				{
 
 				case 2:
+				{
+					GLfloat a0;
+					GLfloat b0;
+					GLfloat a1;
+					GLfloat b1;
 					for (std::size_t j = 0; j < n; j++)
 					{
-						*p = *(q + 2) - *q;
-						*(p + 1) = *(q + 3) - *(q + 1);
+						ut[0] = *(r + 2) - *r;
+						ut[1] = *(r + 3) - *(r + 1);
+						ut[2] = *(r + 4) - *(r + 2);
+						ut[3] = *(r + 5) - *(r + 3);
+
+						temp = 1.0f / (ut[0] * ut[3] - ut[1] * ut[2]);
+
+						a0 = ut[3] * temp;
+						b0 = -ut[1] * temp;
+						a1 = -ut[2] * temp;
+						b1 = ut[0] * temp;
+
+						ut[0] = *(q + 2) - *(q);
+						ut[1] = *(q + 3) - *(q + 1);
+
+						ut[2] = *(q + 4) - *(q + 2);
+						ut[3] = *(q + 5) - *(q + 3);
+
+						*p = a0 * ut[0] + b0 * ut[2];
+						*(p + 1) = a0 * ut[1] + b0 * ut[3];
+
 						temp = 1.0f / LND_SQRT((*p) * (*p) + (*(p + 1)) * (*(p + 1)));
 						*p *= temp;
 						*(p + 1) *= temp;
-						*(p + 2) = *p;
-						*(p + 3) = -*(p + 1);
+
+						*(p + 2) = a1 * ut[0] + b1 * ut[2];
+						*(p + 3) = a1 * ut[1] + b1 * ut[3];
+
+						temp = 1.0f / LND_SQRT((*(p + 2)) * (*(p + 2)) + (*(p + 3)) * (*(p + 3)));
+						*(p + 2) *= temp;
+						*(p + 3) *= temp;
+
 						for (std::size_t k = 1; k < _vertex_count_pc2; k++)
 						{
 							memcpy(p + 4 * k, p, 4 * sizeof(GLfloat));
 						}
-						p += _offset; q += _vertex_offset;
+						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
-					break;
+				}
+				break;
 
 				case 3:
 #ifdef LND_AVX_EXT
+				{
 					__m128 u;
 					__m128 v;
 					__m128 w;
@@ -7491,7 +7574,13 @@ namespace lnd
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
+				}
 #else // LND_AVX_EXT
+				{
+					GLfloat a0;
+					GLfloat b0;
+					GLfloat a1;
+					GLfloat b1;
 					GLfloat vt[3];
 					for (std::size_t j = 0; j < n; j++)
 					{
@@ -7502,10 +7591,10 @@ namespace lnd
 
 						temp = 1.0f / (ut[0] * ut[3] - ut[1] * ut[2]);
 
-						GLfloat a0 = ut[3] * temp;
-						GLfloat b0 = -ut[1] * temp;
-						GLfloat a1 = -ut[2] * temp;
-						GLfloat b1 = ut[0] * temp;
+						a0 = ut[3] * temp;
+						b0 = -ut[1] * temp;
+						a1 = -ut[2] * temp;
+						b1 = ut[0] * temp;
 
 						ut[0] = *(q + 3) - *(q);
 						ut[1] = *(q + 4) - *(q + 1);
@@ -7515,7 +7604,7 @@ namespace lnd
 						vt[1] = *(q + 7) - *(q + 4);
 						vt[2] = *(q + 8) - *(q + 5);
 
-						*(p + 0) = a0 * ut[0] + b0 * vt[0];
+						*p = a0 * ut[0] + b0 * vt[0];
 						*(p + 1) = a0 * ut[1] + b0 * vt[1];
 						*(p + 2) = a0 * ut[2] + b0 * vt[2];
 
@@ -7551,8 +7640,9 @@ namespace lnd
 						}
 						p += _offset; q += _vertex_offset; r += _tex_coord_offset;
 					}
+				}
 #endif // LND_AVX_EXT
-					break;
+				break;
 
 				default:
 					break;
