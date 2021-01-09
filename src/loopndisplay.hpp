@@ -2278,6 +2278,394 @@ namespace lnd
 				;
 		}
 	}
+	
+	std::string source_vertex_mapped_identity(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core											\n"
+					"	layout (location = 0) in vec4 in_X;							\n"
+					"	layout (location = 1) in vec2 in_UV;						\n"
+					"	layout (location = 2) in vec2 in_T0;						\n"
+					"	layout (location = 3) in vec2 in_T1;						\n"
+					"	out vec2 X;													\n"
+					"	out vec2 UV;												\n"
+					"   out vec2 T0;												\n"
+					"   out vec2 T1;												\n"
+					"	void main() { gl_Position = vec4(							\n"
+					"		" + ratio + " * in_X[0], in_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(in_X);											\n"
+					"		UV = in_UV;												\n"
+					"		T0 = in_T0;												\n"
+					"		T1 = in_T1; }											\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"   #version 330 core											\n"
+					"   layout (location = 0) in vec4 in_X;							\n"
+					"   layout (location = 1) in vec2 in_UV;						\n"
+					"	layout (location = 2) in vec2 in_T0;						\n"
+					"	layout (location = 3) in vec2 in_T1;						\n"
+					"	out vec2 X;													\n"
+					"   out vec2 UV;												\n"
+					"   out vec2 T0;												\n"
+					"   out vec2 T1;												\n"
+					"	void main() { gl_Position = vec4(							\n"
+					"		in_X[0], " + ratio + " * in_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(in_X);											\n"
+					"		UV = in_UV;												\n"
+					"		T0 = in_T0;												\n"
+					"		T1 = in_T1; }											\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core						\n"
+				"	layout (location = 0) in vec4 in_X;		\n"
+				"	layout (location = 1) in vec2 in_UV;	\n"
+				"	layout (location = 2) in vec2 in_T0;	\n"
+				"	layout (location = 3) in vec2 in_T1;	\n"
+				"	out vec2 X;								\n"
+				"	out vec2 UV;							\n"
+				"   out vec2 T0;							\n"
+				"   out vec2 T1;							\n"
+				"	void main() {							\n"
+				"		gl_Position = in_X;					\n"
+				"		X = vec2(in_X);						\n"
+				"		UV = in_UV;							\n"
+				"		T0 = in_T0;							\n"
+				"		T1 = in_T1; }						\n"
+				;
+		}
+	}
+	std::string source_vertex_mapped_shift(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec2 in_UV;				\n"
+					"	layout (location = 2) in vec2 in_T0;				\n"
+					"	layout (location = 3) in vec2 in_T1;				\n"
+					"	out vec2 X;											\n"
+					"	out vec2 UV;										\n"
+					"   out vec2 T0;										\n"
+					"   out vec2 T1;										\n"
+					"	uniform vec2 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * (in_X[0] + u_X[0]),				\n"
+					"		in_X[1] + u_X[1], in_X[2], in_X[3]);			\n"
+					"		X = vec2(in_X);									\n"
+					"		UV = in_UV;										\n"
+					"		T0 = in_T0;										\n"
+					"		T1 = in_T1; }									\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec2 in_UV;				\n"
+					"	layout (location = 2) in vec2 in_T0;				\n"
+					"	layout (location = 3) in vec2 in_T1;				\n"
+					"	out vec2 X;											\n"
+					"	out vec2 UV;										\n"
+					"   out vec2 T0;										\n"
+					"   out vec2 T1;										\n"
+					"	uniform vec2 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		in_X[0] + u_X[0],								\n"
+					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
+					"		in_X[2], in_X[3]);								\n"
+					"		X = vec2(in_X);									\n"
+					"		UV = in_UV;										\n"
+					"		T0 = in_T0;										\n"
+					"		T1 = in_T1; }									\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core						\n"
+				"	layout (location = 0) in vec4 in_X;		\n"
+				"	layout (location = 1) in vec2 in_UV;	\n"
+				"	layout (location = 2) in vec2 in_T0;	\n"
+				"	layout (location = 3) in vec2 in_T1;	\n"
+				"	out vec2 X;								\n"
+				"	out vec2 UV;							\n"
+				"   out vec2 T0;							\n"
+				"   out vec2 T1;							\n"
+				"	uniform vec2 u_X;						\n"
+				"	void main() { gl_Position = vec4(		\n"
+				"		in_X[0] + u_X[0],					\n"
+				"		in_X[1] + u_X[1],					\n"
+				"		in_X[2], in_X[3]);					\n"
+				"		X = vec2(in_X);						\n"
+				"		UV = in_UV;							\n"
+				"		T0 = in_T0;							\n"
+				"		T1 = in_T1; }						\n"
+				;
+		}
+	}
+	std::string source_vertex_mapped_shift_scale(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec2 in_UV;				\n"
+					"	layout (location = 2) in vec2 in_T0;				\n"
+					"	layout (location = 3) in vec2 in_T1;				\n"
+					"	out vec2 X;											\n"
+					"	out vec2 UV;										\n"
+					"   out vec2 T0;										\n"
+					"   out vec2 T1;										\n"
+					"	uniform vec3 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
+					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(in_X);									\n"
+					"		UV = in_UV;										\n"
+					"		T0 = in_T0;										\n"
+					"		T1 = in_T1; }									\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core									\n"
+					"	layout (location = 0) in vec4 in_X;					\n"
+					"	layout (location = 1) in vec2 in_UV;				\n"
+					"	layout (location = 2) in vec2 in_T0;				\n"
+					"	layout (location = 3) in vec2 in_T1;				\n"
+					"	out vec2 X;											\n"
+					"	out vec2 UV;										\n"
+					"   out vec2 T0;										\n"
+					"   out vec2 T1;										\n"
+					"	uniform vec3 u_X;									\n"
+					"	void main() { gl_Position = vec4(					\n"
+					"		u_X[2] * in_X[0] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
+					"		in_X[2], in_X[3]);								\n"
+					"		X = vec2(in_X);									\n"
+					"		UV = in_UV;										\n"
+					"		T1 = in_T1;										\n"
+					"		T0 = in_T0; }									\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core									\n"
+				"	layout (location = 0) in vec4 in_X;					\n"
+				"	layout (location = 1) in vec2 in_UV;				\n"
+				"	layout (location = 2) in vec2 in_T0;				\n"
+				"	layout (location = 3) in vec2 in_T1;				\n"
+				"	out vec2 X;											\n"
+				"	out vec2 UV;										\n"
+				"   out vec2 T0;										\n"
+				"   out vec2 T1;										\n"
+				"	uniform vec3 u_X;									\n"
+				"	void main() { gl_Position = vec4(					\n"
+				"		u_X[2] * in_X[0] + u_X[0],						\n"
+				"		u_X[2] * in_X[1] + u_X[1],						\n"
+				"		in_X[2], in_X[3]);								\n"
+				"		X = vec2(in_X);									\n"
+				"		UV = in_UV;										\n"
+				"		T1 = in_T1;										\n"
+				"		T0 = in_T0; }									\n"
+				;
+		}
+	}
+	std::string source_vertex_mapped_shift_rotate(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core														\n"
+					"	layout (location = 0) in vec4 in_X;										\n"
+					"	layout (location = 1) in vec2 in_UV;									\n"
+					"	layout (location = 2) in vec2 in_T0;									\n"
+					"	layout (location = 3) in vec2 in_T1;									\n"
+					"	out vec2 X;																\n"
+					"	out vec2 UV;															\n"
+					"   out vec2 T0;															\n"
+					"   out vec2 T1;															\n"
+					"	uniform vec4 u_X;														\n"
+					"	void main() { gl_Position = vec4(										\n"
+					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
+					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
+					"		X = vec2(in_X);														\n"
+					"		UV = in_UV;															\n"
+					"		T0 = vec2(u_X[2] * in_T0[0] - u_X[3] * in_T0[1],					\n"
+					"			u_X[3] * in_T0[0] + u_X[2] * in_T0[1]);							\n"
+					"		T1 = vec2(u_X[2] * in_T1[0] - u_X[3] * in_T1[1],					\n"
+					"			u_X[3] * in_T1[0] + u_X[2] * in_T1[1]); }						\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core														\n"
+					"	layout (location = 0) in vec4 in_X;										\n"
+					"	layout (location = 1) in vec2 in_UV;									\n"
+					"	layout (location = 2) in vec2 in_T0;									\n"
+					"	layout (location = 3) in vec2 in_T1;									\n"
+					"	out vec2 X;																\n"
+					"	out vec2 UV;															\n"
+					"   out vec2 T0;															\n"
+					"   out vec2 T1;															\n"
+					"	uniform vec4 u_X;														\n"
+					"	void main() { gl_Position = vec4(										\n"
+					"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],						\n"
+					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
+					"		in_X[2], in_X[3]);													\n"
+					"		X = vec2(in_X);														\n"
+					"		UV = in_UV;															\n"
+					"		T0 = vec2(u_X[2] * in_T0[0] - u_X[3] * in_T0[1],					\n"
+					"			u_X[3] * in_T0[0] + u_X[2] * in_T0[1]);							\n"
+					"		T1 = vec2(u_X[2] * in_T1[0] - u_X[3] * in_T1[1],					\n"
+					"			u_X[3] * in_T1[0] + u_X[2] * in_T1[1]); }						\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core										\n"
+				"	layout (location = 0) in vec4 in_X;						\n"
+				"	layout (location = 1) in vec2 in_UV;					\n"
+				"	layout (location = 2) in vec2 in_T0;					\n"
+				"	layout (location = 3) in vec2 in_T1;					\n"
+				"	out vec2 X;												\n"
+				"	out vec2 UV;											\n"
+				"   out vec2 T0;											\n"
+				"   out vec2 T1;											\n"
+				"	uniform vec4 u_X;										\n"
+				"	void main() { gl_Position = vec4(						\n"
+				"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],		\n"
+				"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1],		\n"
+				"		in_X[2], in_X[3]);									\n"
+				"		X = vec2(in_X);										\n"
+				"		UV = in_UV;											\n"
+				"		T0 = vec2(u_X[2] * in_T0[0] - u_X[3] * in_T0[1],	\n"
+				"			u_X[3] * in_T0[0] + u_X[2] * in_T0[1]);			\n"
+				"		T1 = vec2(u_X[2] * in_T1[0] - u_X[3] * in_T1[1],	\n"
+				"			u_X[3] * in_T1[0] + u_X[2] * in_T1[1]); }		\n"
+				;
+		}
+	}
+	std::string source_vertex_mapped_affine(float screen_width, float screen_height, bool rescale_screen_coordinates)
+	{
+		if (rescale_screen_coordinates)
+		{
+			if (screen_width >= screen_height)
+			{
+				std::string ratio = std::to_string(screen_height / screen_width);
+				return
+					"	#version 330 core																					\n"
+					"	layout (location = 0) in vec4 in_X;																	\n"
+					"	layout (location = 1) in vec2 in_UV;																\n"
+					"	layout (location = 2) in vec2 in_T0;																\n"
+					"	layout (location = 3) in vec2 in_T1;																\n"
+					"	out vec2 X;																							\n"
+					"	out vec2 UV;																						\n"
+					"   out vec2 T0;																						\n"
+					"   out vec2 T1;																						\n"
+					"	uniform vec4 u_X0;																					\n"
+					"	uniform vec4 u_X1;																					\n"
+					"	void main() { gl_Position  = vec4(																	\n"
+					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
+					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
+					"		X = vec2(in_X);																					\n"
+					"		UV = in_UV;																						\n"
+					"		T0 = vec2(u_X1[0] * in_T0[0] + u_X1[2] * in_T0[1],												\n"
+					"			u_X1[1] * in_T0[0] + u_X1[3] * in_T0[1]);													\n"
+					"		T1 = vec2(u_X1[0] * in_T1[0] + u_X1[2] * in_T1[1],												\n"
+					"			u_X1[1] * in_T1[0] + u_X1[3] * in_T1[1]); }													\n"
+					;
+			}
+			else
+			{
+				std::string ratio = std::to_string(screen_width / screen_height);
+				return
+					"	#version 330 core																					\n"
+					"	layout (location = 0) in vec4 in_X;																	\n"
+					"	layout (location = 1) in vec2 in_UV;																\n"
+					"	layout (location = 2) in vec2 in_T0;																\n"
+					"	layout (location = 3) in vec2 in_T1;																\n"
+					"	out vec2 X;																							\n"
+					"	out vec2 UV;																						\n"
+					"   out vec2 T0;																						\n"
+					"   out vec2 T1;																						\n"
+					"	uniform vec4 u_X0;																					\n"
+					"	uniform vec4 u_X1;																					\n"
+					"	void main() { gl_Position  = vec4(																	\n"
+					"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),						\n"
+					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
+					"		in_X[2], in_X[3]);																				\n"
+					"		X = vec2(in_X);																					\n"
+					"		UV = in_UV;																						\n"
+					"		T0 = vec2(u_X1[0] * in_T0[0] + u_X1[2] * in_T0[1],												\n"
+					"			u_X1[1] * in_T0[0] + u_X1[3] * in_T0[1]);													\n"
+					"		T1 = vec2(u_X1[0] * in_T1[0] + u_X1[2] * in_T1[1],												\n"
+					"			u_X1[1] * in_T1[0] + u_X1[3] * in_T1[1]); }													\n"
+					;
+			}
+		}
+		else
+		{
+			return
+				"	#version 330 core																\n"
+				"	layout (location = 0) in vec4 in_X;												\n"
+				"	layout (location = 1) in vec2 in_UV;											\n"
+				"	layout (location = 2) in vec2 in_T0;											\n"
+				"	layout (location = 3) in vec2 in_T1;											\n"
+				"	out vec2 X;																		\n"
+				"	out vec2 UV;																	\n"
+				"   out vec2 T0;																	\n"
+				"   out vec2 T1;																	\n"
+				"	uniform vec4 u_X0;																\n"
+				"	uniform vec4 u_X1;																\n"
+				"	void main() { gl_Position  = vec4(												\n"
+				"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),	\n"
+				"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])),	\n"
+				"		in_X[2], in_X[3]);															\n"
+				"		X = vec2(in_X);																\n"
+				"		UV = in_UV;																	\n"
+				"		T0 = vec2(u_X1[0] * in_T0[0] + u_X1[2] * in_T0[1],							\n"
+				"			u_X1[1] * in_T0[0] + u_X1[3] * in_T0[1]);								\n"
+				"		T1 = vec2(u_X1[0] * in_T1[0] + u_X1[2] * in_T1[1],							\n"
+				"			u_X1[1] * in_T1[0] + u_X1[3] * in_T1[1]); }								\n"
+				;
+		}
+	}
 
 
 	std::string source_vertex_3d()
