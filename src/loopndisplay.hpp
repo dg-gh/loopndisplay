@@ -3982,7 +3982,7 @@ namespace lnd
 		glUniform3fv(location, 1, ambient_light_ptr);
 		return program;
 	}
-	inline const lnd::program& set_skylight_3d(const lnd::program& program, const GLfloat* const light_direction_ptr,
+	inline const lnd::program& set_skylight(const lnd::program& program, const GLfloat* const light_direction_ptr,
 		const GLfloat* const light_color_ptr)
 	{
 		GLfloat factor = 1.0f / LND_SQRT(light_direction_ptr[0] * light_direction_ptr[0]
