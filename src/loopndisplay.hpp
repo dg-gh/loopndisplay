@@ -2898,6 +2898,32 @@ namespace lnd
 			"	void main() { color = texture(Tx, UV); }	\n"
 			;
 	}
+	std::string source_fragment_mapped_skylight()
+	{
+		return
+			"	#version 420 core																		\n"
+			"	in vec2 UV;																				\n"
+			"	in vec2 T0;																				\n"
+			"	in vec2 T1;																				\n"
+			"	out vec4 color;																			\n"
+			"	layout (binding = 0) uniform sampler2D Tx;												\n"
+			"	layout (binding = 1) uniform sampler2D nmap_Tx;											\n"
+			"	uniform vec3 u_slight_dir;																\n"
+			"	uniform vec3 u_slight_C;																\n"
+			"	void main() 																			\n"
+			"	{																						\n"
+			"		vec4 nmap = texture(nmap_Tx, UV);													\n"
+			"		vec3 N;																				\n"
+			"		{																					\n"
+			"			float coeff_T0 = nmap[0] + nmap[0] - 1.0;										\n"
+			"			float coeff_T1 = nmap[1] + nmap[1] - 1.0;										\n"
+			"			float coeff_2 = nmap[2] + nmap[2] - 1.0;										\n"
+			"			N = normalize(vec3(coeff_T0 * T0 + coeff_T1 * T1, coeff_2));					\n"
+			"		}																					\n"
+			"		color = max(0.0, -dot(N, u_slight_dir)) * vec4(u_slight_C, 1.0) * texture(Tx, UV);	\n"
+			"	}																						\n"
+			;
+	}
 
 	std::string source_fragment_color_skylight_3d()
 	{
