@@ -145,14 +145,14 @@ inline void test_program::display()
 	}
 	tex.buffer_update();
 
-	small_quad.draw_RGBa(set_vertex_shift_rotate_deg(small_prog, 0.3f * std::cosf(coeff * phi), 0.3f * std::sinf(-coeff * phi), phi), color);
+	small_quad.draw_RGBA(set_vertex_shift_rotate_deg(small_prog, 0.3f * std::cosf(coeff * phi), 0.3f * std::sinf(-coeff * phi), phi), color);
 
 	lnd::enable_transparency();
 	quad.draw_tex(set_vertex_shift_rotate_deg(prog, 0.0f, 0.0f, theta), tex_coord, tex);
 	lnd::disable_transparency();
 
 	outer.draw_ranged(0, count, program_cyan());
-	line.draw_ranged_line_strip_RGBa(first, last, program_RGB(), line_color);
+	line.draw_ranged_line_strip_RGBA(first, last, program_RGB(), line_color);
 }
 
 int main()
