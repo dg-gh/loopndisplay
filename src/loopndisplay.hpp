@@ -10924,29 +10924,27 @@ namespace lnd
 			__m128 vregA2 = _mm_loadu_ps(pA + 8);
 			__m128 vregA3 = _mm_loadu_ps(pA + 12);
 
-			__m128 vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB));
-			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 1), vregC);
-			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 2), vregC);
-			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 3), vregC);
-			_mm_storeu_ps(pC, vregC);
+			__m128 vregC0 = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB));
+			__m128 vregC1 = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 4));
+			vregC0 = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 1), vregC0);
+			vregC1 = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 5), vregC1);
+			vregC0 = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 2), vregC0);
+			vregC1 = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 6), vregC1);
+			vregC0 = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 3), vregC0);
+			vregC1 = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 7), vregC1);
+			_mm_storeu_ps(pC, vregC0);	
+			_mm_storeu_ps(pC + 4, vregC1);
 
-			vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 4));
-			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 5), vregC);
-			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 6), vregC);
-			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 7), vregC);
-			_mm_storeu_ps(pC + 4, vregC);
-
-			vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 8));
-			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 9), vregC);
-			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 10), vregC);
-			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 11), vregC);
-			_mm_storeu_ps(pC + 8, vregC);
-
-			vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 12));
-			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 13), vregC);
-			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 14), vregC);
-			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 15), vregC);
-			_mm_storeu_ps(pC + 12, vregC);
+			vregC0 = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 8));
+			vregC1 = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 12));
+			vregC0 = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 9), vregC0);
+			vregC1 = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 13), vregC1);
+			vregC0 = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 10), vregC0);
+			vregC1 = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 14), vregC1);
+			vregC0 = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 11), vregC0);
+			vregC1 = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 15), vregC1);
+			_mm_storeu_ps(pC + 8, vregC0);
+			_mm_storeu_ps(pC + 12, vregC1);
 #else // LND_AVX_EXT
 			GLfloat regB0; GLfloat regB1; std::size_t offset;
 			for (std::size_t j = 0; j < 4; j++)
@@ -10983,25 +10981,23 @@ namespace lnd
 			__m128 vregA2 = _mm_loadu_ps(pA + 8);
 			__m128 vregA3 = _mm_loadu_ps(pA + 12);
 
-			__m128 vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB));
-			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 1), vregC);
-			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 2), vregC);
-			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 3), vregC);
-			_mm_storeu_ps(pC, vregC);
+			__m128 vregC0 = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB));
+			__m128 vregC1 = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 4));
+			vregC0 = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 1), vregC0);
+			vregC1 = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 5), vregC1);
+			vregC0 = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 2), vregC0);
+			vregC1 = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 6), vregC1);
+			vregC0 = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 3), vregC0);
+			vregC1 = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 7), vregC1);
+			_mm_storeu_ps(pC, vregC0);
+			_mm_storeu_ps(pC + 4, vregC1);
 
-			vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 4));
-			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 5), vregC);
-			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 6), vregC);
-			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 7), vregC);
-			_mm_storeu_ps(pC + 4, vregC);
-
-			vregC = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 8));
-			vregC = _mm_fmadd_ps(vregA1, _mm_broadcast_ss(pB + 9), vregC);
-			vregC = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 10), vregC);
-			vregC = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 11), vregC);
-			_mm_storeu_ps(pC + 8, vregC);
-
+			vregC0 = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 8));
+			vregC1 = _mm_mul_ps(vregA1, _mm_broadcast_ss(pB + 9));
+			vregC0 = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 10), vregC0);
+			vregC1 = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 11), vregC1);
 			_mm_storeu_ps(pC + 12, vregA3);
+			_mm_storeu_ps(pC + 8, _mm_add_ps(vregC0, vregC1));
 #else // LND_AVX_EXT
 			GLfloat regB0; GLfloat regB1; std::size_t offset;
 			for (std::size_t j = 0; j < 3; j++)
