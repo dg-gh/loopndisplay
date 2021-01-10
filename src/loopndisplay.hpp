@@ -8729,7 +8729,69 @@ namespace lnd
 				break;
 			}
 		}
+		
+		template <std::size_t _pixel_dim, std::size_t _frame_pixel_dim, std::size_t _vertex_count_pc2,
+			class _vertex_Allocator, class _texture_Allocator, class _frame_tex_Allocator, class _frame_Allocator> inline void draw_mapped(
+				const lnd::program& program,
+				const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+				const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image,
+				const lnd::texture<_frame_pixel_dim, _frame_tex_Allocator>& frame_texture_image,
+				const lnd::group_cluster_vertex<_vertex_count_pc2, _dim, _frame_Allocator>& frames)
+		{
+			switch (_vertex_count_pc)
+			{
 
+			case 3:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
+				texture_coord.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
+				frames.buffer_bind();
+				glEnableVertexAttribArray(2);
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr);
+				glEnableVertexAttribArray(3);
+				glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<void*>(2 * sizeof(GLfloat)));
+				texture_image.buffer_bind(0);
+				frame_texture_image.buffer_bind(1);
+				program.use();
+				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertex_count()));
+				buffer.unbind();
+				texture_coord.buffer_unbind();
+				texture_image.buffer_unbind(0);
+				frame_texture_image.buffer_unbind(1);
+				frames.buffer_unbind();
+				break;
+
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
+				texture_coord.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
+				frames.buffer_bind();
+				glEnableVertexAttribArray(2);
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr);
+				glEnableVertexAttribArray(3);
+				glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<void*>(2 * sizeof(GLfloat)));
+				texture_image.buffer_bind(0);
+				frame_texture_image.buffer_bind(1);
+				program.use();
+				glDrawArrays(GL_QUADS, 0, static_cast<GLsizei>(this->vertex_count()));
+				buffer.unbind();
+				texture_coord.buffer_unbind();
+				texture_image.buffer_unbind(0);
+				frame_texture_image.buffer_unbind(1);
+				frames.buffer_unbind();
+				break;
+
+			default:
+				break;
+			}
+		}
+		
 		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_tex_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
@@ -8874,11 +8936,11 @@ namespace lnd
 				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
@@ -8957,11 +9019,11 @@ namespace lnd
 				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), nullptr);
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(5);
-				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
+				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
@@ -9184,11 +9246,11 @@ namespace lnd
 				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), nullptr);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
@@ -9269,11 +9331,11 @@ namespace lnd
 				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
 				frames.buffer_bind();
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), nullptr);
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), nullptr);
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 				glEnableVertexAttribArray(5);
-				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
+				glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), reinterpret_cast<void*>(6 * sizeof(GLfloat)));
 				texture_image.buffer_bind(0);
 				spec_texture_image.buffer_bind(1);
 				frame_texture_image.buffer_bind(2);
