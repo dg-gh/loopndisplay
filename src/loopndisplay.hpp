@@ -1234,11 +1234,13 @@ namespace lnd
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (in_X[0] + u_X[0]),				\n"
 					"		in_X[1] + u_X[1], in_X[2], in_X[3]);			\n"
-					"		X = vec2(in_X); }								\n"
+					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position); }					\n"
 					;
 			}
 			else
@@ -1248,12 +1250,14 @@ namespace lnd
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		in_X[0] + u_X[0],								\n"
 					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
 					"		in_X[2], in_X[3]);								\n"
-					"		X = vec2(in_X); }								\n"
+					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position); }					\n"
 					;
 			}
 		}
@@ -1263,12 +1267,14 @@ namespace lnd
 				"	#version 330 core						\n"
 				"	layout (location = 0) in vec4 in_X;		\n"
 				"	out vec2 X;								\n"
+				"	out vec2 X_mov;							\n"
 				"	uniform vec2 u_X;						\n"
 				"	void main() { gl_Position = vec4(		\n"
 				"		in_X[0] + u_X[0],					\n"
 				"		in_X[1] + u_X[1],					\n"
 				"		in_X[2], in_X[3]);					\n"
-				"		X = vec2(in_X); }					\n"
+				"		X = vec2(in_X);						\n"
+				"		X_mov = vec2(gl_Position); }		\n"
 				;
 		}
 	}
@@ -1283,11 +1289,13 @@ namespace lnd
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
 					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(in_X); }								\n"
+					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position); }					\n"
 					;
 			}
 			else
@@ -1297,12 +1305,14 @@ namespace lnd
 					"	#version 330 core									\n"
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		u_X[2] * in_X[0] + u_X[0],						\n"
 					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
 					"		in_X[2], in_X[3]);								\n"
-					"		X = vec2(in_X); }								\n"
+					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position); }					\n"
 					;
 			}
 		}
@@ -1312,12 +1322,14 @@ namespace lnd
 				"	#version 330 core						\n"
 				"	layout (location = 0) in vec4 in_X;		\n"
 				"	out vec2 X;								\n"
+				"	out vec2 X_mov;							\n"
 				"	uniform vec3 u_X;						\n"
 				"	void main() { gl_Position = vec4(		\n"
 				"		u_X[2] * in_X[0] + u_X[0],			\n"
 				"		u_X[2] * in_X[1] + u_X[1],			\n"
 				"		in_X[2], in_X[3]);					\n"
-				"		X = vec2(in_X); }					\n"
+				"		X = vec2(in_X);						\n"
+				"		X_mov = vec2(gl_Position); }		\n"
 				;
 		}
 	}
@@ -1332,11 +1344,13 @@ namespace lnd
 					"	#version 330 core														\n"
 					"	layout (location = 0) in vec4 in_X;										\n"
 					"	out vec2 X;																\n"
+					"	out vec2 X_mov;															\n"
 					"	uniform vec4 u_X;														\n"
 					"	void main() { gl_Position = vec4(										\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
 					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
-					"		X = vec2(in_X); }													\n"
+					"		X = vec2(in_X);														\n"
+					"		X_mov = vec2(gl_Position); }										\n"
 					;
 			}
 			else
@@ -1346,12 +1360,14 @@ namespace lnd
 					"	#version 330 core														\n"
 					"	layout (location = 0) in vec4 in_X;										\n"
 					"	out vec2 X;																\n"
+					"	out vec2 X_mov;															\n"
 					"	uniform vec4 u_X;														\n"
 					"	void main() { gl_Position = vec4(										\n"
 					"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],						\n"
 					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
 					"		in_X[2], in_X[3]);													\n"
-					"		X = vec2(in_X); }													\n"
+					"		X = vec2(in_X);														\n"
+					"		X_mov = vec2(gl_Position); }										\n"
 					;
 			}
 		}
@@ -1361,12 +1377,14 @@ namespace lnd
 				"	#version 330 core									\n"
 				"	layout (location = 0) in vec4 in_X;					\n"
 				"	out vec2 X;											\n"
+				"	out vec2 X_mov;										\n"
 				"	uniform vec4 u_X;									\n"
 				"	void main() { gl_Position = vec4(					\n"
 				"		u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0],	\n"
 				"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1],	\n"
 				"		in_X[2], in_X[3]);								\n"
-				"		X = vec2(in_X); }								\n"
+				"		X = vec2(in_X);									\n"
+				"		X_mov = vec2(gl_Position); }					\n"
 				;
 		}
 	}
@@ -1381,12 +1399,14 @@ namespace lnd
 					"	#version 330 core																					\n"
 					"	layout (location = 0) in vec4 in_X;																	\n"
 					"	out vec2 X;																							\n"
+					"	out vec2 X_mov;																						\n"
 					"	uniform vec4 u_X0;																					\n"
 					"	uniform vec4 u_X1;																					\n"
 					"	void main() { gl_Position  = vec4(																	\n"
 					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
 					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
-					"		X = vec2(in_X); }																				\n"
+					"		X = vec2(in_X);																					\n"
+					"		X_mov = vec2(gl_Position); }																	\n"
 					;
 			}
 			else
@@ -1396,13 +1416,15 @@ namespace lnd
 					"	#version 330 core																					\n"
 					"	layout (location = 0) in vec4 in_X;																	\n"
 					"	out vec2 X;																							\n"
+					"	out vec2 X_mov;																						\n"
 					"	uniform vec4 u_X0;																					\n"
 					"	uniform vec4 u_X1;																					\n"
 					"	void main() { gl_Position  = vec4(																	\n"
 					"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),						\n"
 					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
 					"		in_X[2], in_X[3]);																				\n"
-					"		X = vec2(in_X); }																				\n"
+					"		X = vec2(in_X);																					\n"
+					"		X_mov = vec2(gl_Position); }																	\n"
 					;
 			}
 		}
@@ -1412,13 +1434,15 @@ namespace lnd
 				"	#version 330 core																\n"
 				"	layout (location = 0) in vec4 in_X;												\n"
 				"	out vec2 X;																		\n"
+				"	out vec2 X_mov;																	\n"
 				"	uniform vec4 u_X0;																\n"
 				"	uniform vec4 u_X1;																\n"
 				"	void main() { gl_Position  = vec4(												\n"
 				"		u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3])),	\n"
 				"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])),	\n"
 				"		in_X[2], in_X[3]);															\n"
-				"		X = vec2(in_X); }															\n"
+				"		X = vec2(in_X);																\n"
+				"		X_mov = vec2(gl_Position); }												\n"
 				;
 		}
 	}
@@ -1434,7 +1458,7 @@ namespace lnd
 					"	#version 330 core											\n"
 					"	layout (location = 0) in vec4 in_X;							\n"
 					"	layout (location = 1) in vec3 in_C;							\n"
-					"	out vec2 X;													\n"
+					"	out vec2 X;												\n"
 					"	out vec3 C;													\n"
 					"	void main() { gl_Position = vec4(							\n"
 					"		" + ratio + " * in_X[0], in_X[1], in_X[2], in_X[3]);	\n"
@@ -1484,12 +1508,14 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;						\n"
 					"	layout (location = 1) in vec3 in_C;						\n"
 					"	out vec2 X;												\n"
+					"	out vec2 X_mov;											\n"
 					"	out vec3 C;												\n"
 					"	uniform vec2 u_X;										\n"
 					"	void main() { gl_Position = vec4(						\n"
 					"		" + ratio + " * (in_X[0] + u_X[0]),					\n"
 					"		in_X[1] + u_X[1], in_X[2], in_X[3]);				\n"
 					"		X = vec2(in_X);										\n"
+					"		X_mov = vec2(gl_Position);							\n"
 					"		C = in_C; }											\n"
 					;
 			}
@@ -1501,6 +1527,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	layout (location = 1) in vec3 in_C;					\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec3 C;											\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
@@ -1508,6 +1535,7 @@ namespace lnd
 					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
 					"		in_X[2], in_X[3]);								\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1519,6 +1547,7 @@ namespace lnd
 				"   layout (location = 0) in vec4 in_X;		\n"
 				"   layout (location = 1) in vec3 in_C;		\n"
 				"	out vec2 X;								\n"
+				"	out vec2 X_mov;							\n"
 				"   out vec3 C;								\n"
 				"   uniform vec2 u_X;						\n"
 				"   void main() { gl_Position = vec4(		\n"
@@ -1526,6 +1555,7 @@ namespace lnd
 				"       in_X[1] + u_X[1],					\n"
 				"		in_X[2], in_X[3]);					\n"
 				"		X = vec2(in_X);						\n"
+				"		X_mov = vec2(gl_Position);			\n"
 				"		C = in_C; }							\n"
 				;
 		}
@@ -1542,12 +1572,14 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	layout (location = 1) in vec3 in_C;					\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec3 C;											\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
 					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1559,6 +1591,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	layout (location = 1) in vec3 in_C;					\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec3 C;											\n"
 					"	uniform vec4 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
@@ -1566,6 +1599,7 @@ namespace lnd
 					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
 					"		in_X[2], in_X[3]);								\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1577,6 +1611,7 @@ namespace lnd
 				"   layout (location = 0) in vec4 in_X;		\n"
 				"   layout (location = 1) in vec3 in_C;		\n"
 				"	out vec2 X;								\n"
+				"	out vec2 X_mov;							\n"
 				"   out vec3 C;								\n"
 				"   uniform vec2 u_X;						\n"
 				"   void main() { gl_Position = vec4(		\n"
@@ -1584,6 +1619,7 @@ namespace lnd
 				"       in_X[1] + u_X[1],					\n"
 				"		in_X[2], in_X[3]);					\n"
 				"		X = vec2(in_X);						\n"
+				"		X_mov = vec2(gl_Position);			\n"
 				"		C = in_C; }							\n"
 				;
 		}
@@ -1600,12 +1636,14 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;										\n"
 					"	layout (location = 1) in vec3 in_C;										\n"
 					"	out vec2 X;																\n"
+					"	out vec2 X_mov;															\n"
 					"	out vec3 C;																\n"
 					"	uniform vec4 u_X;														\n"
 					"	void main() { gl_Position = vec4(										\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
 					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);														\n"
+					"		X_mov = vec2(gl_Position);											\n"
 					"		C = in_C; }															\n"
 					;
 			}
@@ -1617,6 +1655,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;										\n"
 					"	layout (location = 1) in vec3 in_C;										\n"
 					"	out vec2 X;																\n"
+					"	out vec2 X_mov;															\n"
 					"	out vec3 C;																\n"
 					"	uniform vec4 u_X;														\n"
 					"	void main() { gl_Position = vec4(										\n"
@@ -1624,6 +1663,7 @@ namespace lnd
 					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
 					"		in_X[2], in_X[3]);													\n"
 					"		X = vec2(in_X);														\n"
+					"		X_mov = vec2(gl_Position);											\n"
 					"		C = in_C; }															\n"
 					;
 			}
@@ -1635,6 +1675,7 @@ namespace lnd
 				"	layout (location = 0) in vec4 in_X;					\n"
 				"	layout (location = 1) in vec3 in_C;					\n"
 				"	out vec2 X;											\n"
+				"	out vec2 X_mov;										\n"
 				"	out vec3 C;											\n"
 				"	uniform vec4 u_X;									\n"
 				"	void main() { gl_Position = vec4(					\n"
@@ -1642,6 +1683,7 @@ namespace lnd
 				"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1],	\n"
 				"		in_X[2], in_X[3]);								\n"
 				"		X = vec2(in_X);									\n"
+				"		X_mov = vec2(gl_Position);						\n"
 				"		C = in_C; }										\n"
 				;
 		}
@@ -1658,6 +1700,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;																	\n"
 					"	layout (location = 1) in vec3 in_C;																	\n"
 					"	out vec2 X;																							\n"
+					"	out vec2 X_mov;																						\n"
 					"	out vec3 C;																							\n"
 					"	uniform vec4 u_X0;																					\n"
 					"	uniform vec4 u_X1;																					\n"
@@ -1665,6 +1708,7 @@ namespace lnd
 					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
 					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);																					\n"
+					"		X_mov = vec2(gl_Position);																		\n"
 					"		C = in_C; }																						\n"
 					;
 			}
@@ -1676,6 +1720,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;																	\n"
 					"	layout (location = 1) in vec3 in_C;																	\n"
 					"	out vec2 X;																							\n"
+					"	out vec2 X_mov;																						\n"
 					"	out vec3 C;																							\n"
 					"	uniform vec4 u_X0;																					\n"
 					"	uniform vec4 u_X1;																					\n"
@@ -1684,6 +1729,7 @@ namespace lnd
 					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
 					"		in_X[2], in_X[3]);																				\n"
 					"		X = vec2(in_X);																					\n"
+					"		X_mov = vec2(gl_Position);																		\n"
 					"		C = in_C; }																						\n"
 					;
 			}
@@ -1695,6 +1741,7 @@ namespace lnd
 				"	layout (location = 0) in vec4 in_X;												\n"
 				"	layout (location = 1) in vec3 in_C;												\n"
 				"	out vec2 X;																		\n"
+				"	out vec2 X_mov;																	\n"
 				"	out vec3 C;																		\n"
 				"	uniform vec4 u_X0;																\n"
 				"	uniform vec4 u_X1;																\n"
@@ -1703,6 +1750,7 @@ namespace lnd
 				"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])),	\n"
 				"		in_X[2], in_X[3]);															\n"
 				"		X = vec2(in_X);																\n"
+				"		X_mov = vec2(gl_Position);													\n"
 				"		C = in_C; }																	\n"
 				;
 		}
@@ -1769,12 +1817,14 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	layout (location = 1) in vec4 in_C;					\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec4 C;											\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (in_X[0] + u_X[0]),				\n"
 					"		in_X[1] + u_X[1], in_X[2], in_X[3]);			\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1786,6 +1836,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	layout (location = 1) in vec4 in_C;					\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec4 C;											\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
@@ -1793,6 +1844,7 @@ namespace lnd
 					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
 					"		in_X[2], in_X[3]);								\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1804,6 +1856,7 @@ namespace lnd
 				"   layout (location = 0) in vec4 in_X;		\n"
 				"   layout (location = 1) in vec4 in_C;		\n"
 				"	out vec2 X;								\n"
+				"	out vec2 X_mov;							\n"
 				"   out vec4 C;								\n"
 				"   uniform vec2 u_X;						\n"
 				"   void main() { gl_Position = vec4(		\n"
@@ -1811,6 +1864,7 @@ namespace lnd
 				"       in_X[1] + u_X[1],					\n"
 				"		in_X[2], in_X[3]);					\n"
 				"		X = vec2(in_X);						\n"
+				"		X_mov = vec2(gl_Position);			\n"
 				"		C = in_C; }							\n"
 				;
 		}
@@ -1827,12 +1881,14 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	layout (location = 1) in vec4 in_C;					\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec4 C;											\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
 					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1844,6 +1900,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	layout (location = 1) in vec4 in_C;					\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec4 C;											\n"
 					"	uniform vec4 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
@@ -1851,6 +1908,7 @@ namespace lnd
 					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
 					"		in_X[2], in_X[3]);								\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		C = in_C; }										\n"
 					;
 			}
@@ -1862,6 +1920,7 @@ namespace lnd
 				"   layout (location = 0) in vec4 in_X;		\n"
 				"   layout (location = 1) in vec4 in_C;		\n"
 				"	out vec2 X;								\n"
+				"	out vec2 X_mov;							\n"
 				"   out vec4 C;								\n"
 				"   uniform vec2 u_X;						\n"
 				"   void main() { gl_Position = vec4(		\n"
@@ -1869,6 +1928,7 @@ namespace lnd
 				"       in_X[1] + u_X[1],					\n"
 				"		in_X[2], in_X[3]);					\n"
 				"		X = vec2(in_X);						\n"
+				"		X_mov = vec2(gl_Position);			\n"
 				"		C = in_C; }							\n"
 				;
 		}
@@ -1885,12 +1945,14 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;										\n"
 					"	layout (location = 1) in vec4 in_C;										\n"
 					"	out vec2 X;																\n"
+					"	out vec2 X_mov;															\n"
 					"	out vec4 C;																\n"
 					"	uniform vec4 u_X;														\n"
 					"	void main() { gl_Position = vec4(										\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
 					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);														\n"
+					"		X_mov = vec2(gl_Position);											\n"
 					"		C = in_C; }															\n"
 					;
 			}
@@ -1902,6 +1964,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;										\n"
 					"	layout (location = 1) in vec4 in_C;										\n"
 					"	out vec2 X;																\n"
+					"	out vec2 X_mov;															\n"
 					"	out vec4 C;																\n"
 					"	uniform vec4 u_X;														\n"
 					"	void main() { gl_Position = vec4(										\n"
@@ -1909,6 +1972,7 @@ namespace lnd
 					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
 					"		in_X[2], in_X[3]);													\n"
 					"		X = vec2(in_X);														\n"
+					"		X_mov = vec2(gl_Position);											\n"
 					"		C = in_C; }															\n"
 					;
 			}
@@ -1920,6 +1984,7 @@ namespace lnd
 				"	layout (location = 0) in vec4 in_X;					\n"
 				"	layout (location = 1) in vec4 in_C;					\n"
 				"	out vec2 X;											\n"
+				"	out vec2 X_mov;										\n"
 				"	out vec4 C;											\n"
 				"	uniform vec4 u_X;									\n"
 				"	void main() { gl_Position = vec4(					\n"
@@ -1927,6 +1992,7 @@ namespace lnd
 				"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1],	\n"
 				"		in_X[2], in_X[3]);								\n"
 				"		X = vec2(in_X);									\n"
+				"		X_mov = vec2(gl_Position);						\n"
 				"		C = in_C; }										\n"
 				;
 		}
@@ -1943,6 +2009,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;																	\n"
 					"	layout (location = 1) in vec4 in_C;																	\n"
 					"	out vec2 X;																							\n"
+					"	out vec2 X_mov;																						\n"
 					"	out vec4 C;																							\n"
 					"	uniform vec4 u_X0;																					\n"
 					"	uniform vec4 u_X1;																					\n"
@@ -1950,6 +2017,7 @@ namespace lnd
 					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
 					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);																					\n"
+					"		X_mov = vec2(gl_Position);																		\n"
 					"		C = in_C; }																						\n"
 					;
 			}
@@ -1961,6 +2029,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;																	\n"
 					"	layout (location = 1) in vec4 in_C;																	\n"
 					"	out vec2 X;																							\n"
+					"	out vec2 X_mov;																						\n"
 					"	out vec4 C;																							\n"
 					"	uniform vec4 u_X0;																					\n"
 					"	uniform vec4 u_X1;																					\n"
@@ -1969,6 +2038,7 @@ namespace lnd
 					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
 					"		in_X[2], in_X[3]);																				\n"
 					"		X = vec2(in_X);																					\n"
+					"		X_mov = vec2(gl_Position);																		\n"
 					"		C = in_C; }																						\n"
 					;
 			}
@@ -1980,6 +2050,7 @@ namespace lnd
 				"	layout (location = 0) in vec4 in_X;												\n"
 				"	layout (location = 1) in vec4 in_C;												\n"
 				"	out vec2 X;																		\n"
+				"	out vec2 X_mov;																	\n"
 				"	out vec4 C;																		\n"
 				"	uniform vec4 u_X0;																\n"
 				"	uniform vec4 u_X1;																\n"
@@ -1988,6 +2059,7 @@ namespace lnd
 				"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])),	\n"
 				"		in_X[2], in_X[3]);															\n"
 				"		X = vec2(in_X);																\n"
+				"		X_mov = vec2(gl_Position);													\n"
 				"		C = in_C; }																	\n"
 				;
 		}
@@ -2055,12 +2127,14 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	layout (location = 1) in vec2 in_UV;				\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec2 UV;										\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (in_X[0] + u_X[0]),				\n"
 					"		in_X[1] + u_X[1], in_X[2], in_X[3]);			\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		UV = in_UV; }									\n"
 					;
 			}
@@ -2072,6 +2146,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	layout (location = 1) in vec2 in_UV;				\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec2 UV;										\n"
 					"	uniform vec2 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
@@ -2079,6 +2154,7 @@ namespace lnd
 					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
 					"		in_X[2], in_X[3]);								\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		UV = in_UV; }									\n"
 					;
 			}
@@ -2090,6 +2166,7 @@ namespace lnd
 				"	layout (location = 0) in vec4 in_X;		\n"
 				"	layout (location = 1) in vec2 in_UV;	\n"
 				"	out vec2 X;								\n"
+				"	out vec2 X_mov;							\n"
 				"	out vec2 UV;							\n"
 				"	uniform vec2 u_X;						\n"
 				"	void main() { gl_Position = vec4(		\n"
@@ -2097,6 +2174,7 @@ namespace lnd
 				"		in_X[1] + u_X[1],					\n"
 				"		in_X[2], in_X[3]);					\n"
 				"		X = vec2(in_X);						\n"
+				"		X_mov = vec2(gl_Position);			\n"
 				"		UV = in_UV; }						\n"
 				;
 		}
@@ -2113,12 +2191,14 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	layout (location = 1) in vec2 in_UV;				\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec2 UV;										\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
 					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		UV = in_UV; }									\n"
 					;
 			}
@@ -2130,6 +2210,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;					\n"
 					"	layout (location = 1) in vec2 in_UV;				\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec2 UV;										\n"
 					"	uniform vec3 u_X;									\n"
 					"	void main() { gl_Position = vec4(					\n"
@@ -2137,6 +2218,7 @@ namespace lnd
 					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
 					"		in_X[2], in_X[3]);								\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		UV = in_UV; }									\n"
 					;
 			}
@@ -2148,6 +2230,7 @@ namespace lnd
 				"	layout (location = 0) in vec4 in_X;					\n"
 				"	layout (location = 1) in vec2 in_UV;				\n"
 				"	out vec2 X;											\n"
+				"	out vec2 X_mov;										\n"
 				"	out vec2 UV;										\n"
 				"	uniform vec3 u_X;									\n"
 				"	void main() { gl_Position = vec4(					\n"
@@ -2155,6 +2238,7 @@ namespace lnd
 				"		u_X[2] * in_X[1] + u_X[1],						\n"
 				"		in_X[2], in_X[3]);								\n"
 				"		X = vec2(in_X);									\n"
+				"		X_mov = vec2(gl_Position);						\n"
 				"		UV = in_UV; }									\n"
 				;
 		}
@@ -2171,12 +2255,14 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;										\n"
 					"	layout (location = 1) in vec2 in_UV;									\n"
 					"	out vec2 X;																\n"
+					"	out vec2 X_mov;															\n"
 					"	out vec2 UV;															\n"
 					"	uniform vec4 u_X;														\n"
 					"	void main() { gl_Position = vec4(										\n"
 					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
 					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);														\n"
+					"		X_mov = vec2(gl_Position);											\n"
 					"		UV = in_UV; }														\n"
 					;
 			}
@@ -2188,6 +2274,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;										\n"
 					"	layout (location = 1) in vec2 in_UV;									\n"
 					"	out vec2 X;																\n"
+					"	out vec2 X_mov;															\n"
 					"	out vec2 UV;															\n"
 					"	uniform vec4 u_X;														\n"
 					"	void main() { gl_Position = vec4(										\n"
@@ -2195,6 +2282,7 @@ namespace lnd
 					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
 					"		in_X[2], in_X[3]);													\n"
 					"		X = vec2(in_X);														\n"
+					"		X_mov = vec2(gl_Position);											\n"
 					"		UV = in_UV; }														\n"
 					;
 			}
@@ -2206,6 +2294,7 @@ namespace lnd
 				"	layout (location = 0) in vec4 in_X;					\n"
 				"	layout (location = 1) in vec2 in_UV;				\n"
 				"	out vec2 X;											\n"
+				"	out vec2 X_mov;										\n"
 				"	out vec2 UV;										\n"
 				"	uniform vec4 u_X;									\n"
 				"	void main() { gl_Position = vec4(					\n"
@@ -2213,6 +2302,7 @@ namespace lnd
 				"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1],	\n"
 				"		in_X[2], in_X[3]);								\n"
 				"		X = vec2(in_X);									\n"
+				"		X_mov = vec2(gl_Position);						\n"
 				"		UV = in_UV; }									\n"
 				;
 		}
@@ -2229,6 +2319,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;																	\n"
 					"	layout (location = 1) in vec2 in_UV;																\n"
 					"	out vec2 X;																							\n"
+					"	out vec2 X_mov;																						\n"
 					"	out vec2 UV;																						\n"
 					"	uniform vec4 u_X0;																					\n"
 					"	uniform vec4 u_X1;																					\n"
@@ -2236,6 +2327,7 @@ namespace lnd
 					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
 					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);																					\n"
+					"		X_mov = vec2(gl_Position);																		\n"
 					"		UV = in_UV; }																					\n"
 					;
 			}
@@ -2247,6 +2339,7 @@ namespace lnd
 					"	layout (location = 0) in vec4 in_X;																	\n"
 					"	layout (location = 1) in vec2 in_UV;																\n"
 					"	out vec2 X;																							\n"
+					"	out vec2 X_mov;																						\n"
 					"	out vec2 UV;																						\n"
 					"	uniform vec4 u_X0;																					\n"
 					"	uniform vec4 u_X1;																					\n"
@@ -2255,6 +2348,7 @@ namespace lnd
 					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
 					"		in_X[2], in_X[3]);																				\n"
 					"		X = vec2(in_X);																					\n"
+					"		X_mov = vec2(gl_Position);																		\n"
 					"		UV = in_UV; }																					\n"
 					;
 			}
@@ -2266,6 +2360,7 @@ namespace lnd
 				"	layout (location = 0) in vec4 in_X;												\n"
 				"	layout (location = 1) in vec2 in_UV;											\n"
 				"	out vec2 X;																		\n"
+				"	out vec2 X_mov;																	\n"
 				"	out vec2 UV;																	\n"
 				"	uniform vec4 u_X0;																\n"
 				"	uniform vec4 u_X1;																\n"
@@ -2274,11 +2369,12 @@ namespace lnd
 				"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])),	\n"
 				"		in_X[2], in_X[3]);															\n"
 				"		X = vec2(in_X);																\n"
+				"		X_mov = vec2(gl_Position);													\n"
 				"		UV = in_UV; }																\n"
 				;
 		}
 	}
-	
+
 	std::string source_vertex_mapped_identity(float screen_width, float screen_height, bool rescale_screen_coordinates)
 	{
 		if (rescale_screen_coordinates)
@@ -2361,6 +2457,7 @@ namespace lnd
 					"	layout (location = 2) in vec2 in_T0;				\n"
 					"	layout (location = 3) in vec2 in_T1;				\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec2 UV;										\n"
 					"   out vec2 T0;										\n"
 					"   out vec2 T1;										\n"
@@ -2369,6 +2466,7 @@ namespace lnd
 					"		" + ratio + " * (in_X[0] + u_X[0]),				\n"
 					"		in_X[1] + u_X[1], in_X[2], in_X[3]);			\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		UV = in_UV;										\n"
 					"		T0 = in_T0;										\n"
 					"		T1 = in_T1; }									\n"
@@ -2384,6 +2482,7 @@ namespace lnd
 					"	layout (location = 2) in vec2 in_T0;				\n"
 					"	layout (location = 3) in vec2 in_T1;				\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec2 UV;										\n"
 					"   out vec2 T0;										\n"
 					"   out vec2 T1;										\n"
@@ -2393,6 +2492,7 @@ namespace lnd
 					"		" + ratio + " * (in_X[1] + u_X[1]),				\n"
 					"		in_X[2], in_X[3]);								\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		UV = in_UV;										\n"
 					"		T0 = in_T0;										\n"
 					"		T1 = in_T1; }									\n"
@@ -2408,6 +2508,7 @@ namespace lnd
 				"	layout (location = 2) in vec2 in_T0;	\n"
 				"	layout (location = 3) in vec2 in_T1;	\n"
 				"	out vec2 X;								\n"
+				"	out vec2 X_mov;							\n"
 				"	out vec2 UV;							\n"
 				"   out vec2 T0;							\n"
 				"   out vec2 T1;							\n"
@@ -2417,6 +2518,7 @@ namespace lnd
 				"		in_X[1] + u_X[1],					\n"
 				"		in_X[2], in_X[3]);					\n"
 				"		X = vec2(in_X);						\n"
+				"		X_mov = vec2(gl_Position);			\n"
 				"		UV = in_UV;							\n"
 				"		T0 = in_T0;							\n"
 				"		T1 = in_T1; }						\n"
@@ -2437,6 +2539,7 @@ namespace lnd
 					"	layout (location = 2) in vec2 in_T0;				\n"
 					"	layout (location = 3) in vec2 in_T1;				\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec2 UV;										\n"
 					"   out vec2 T0;										\n"
 					"   out vec2 T1;										\n"
@@ -2445,6 +2548,7 @@ namespace lnd
 					"		" + ratio + " * (u_X[2] * in_X[0] + u_X[0]),	\n"
 					"		u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		UV = in_UV;										\n"
 					"		T0 = in_T0;										\n"
 					"		T1 = in_T1; }									\n"
@@ -2460,6 +2564,7 @@ namespace lnd
 					"	layout (location = 2) in vec2 in_T0;				\n"
 					"	layout (location = 3) in vec2 in_T1;				\n"
 					"	out vec2 X;											\n"
+					"	out vec2 X_mov;										\n"
 					"	out vec2 UV;										\n"
 					"   out vec2 T0;										\n"
 					"   out vec2 T1;										\n"
@@ -2469,6 +2574,7 @@ namespace lnd
 					"		" + ratio + " * (u_X[2] * in_X[1] + u_X[1]),	\n"
 					"		in_X[2], in_X[3]);								\n"
 					"		X = vec2(in_X);									\n"
+					"		X_mov = vec2(gl_Position);						\n"
 					"		UV = in_UV;										\n"
 					"		T1 = in_T1;										\n"
 					"		T0 = in_T0; }									\n"
@@ -2484,6 +2590,7 @@ namespace lnd
 				"	layout (location = 2) in vec2 in_T0;				\n"
 				"	layout (location = 3) in vec2 in_T1;				\n"
 				"	out vec2 X;											\n"
+				"	out vec2 X_mov;										\n"
 				"	out vec2 UV;										\n"
 				"   out vec2 T0;										\n"
 				"   out vec2 T1;										\n"
@@ -2493,6 +2600,7 @@ namespace lnd
 				"		u_X[2] * in_X[1] + u_X[1],						\n"
 				"		in_X[2], in_X[3]);								\n"
 				"		X = vec2(in_X);									\n"
+				"		X_mov = vec2(gl_Position);						\n"
 				"		UV = in_UV;										\n"
 				"		T1 = in_T1;										\n"
 				"		T0 = in_T0; }									\n"
@@ -2513,6 +2621,7 @@ namespace lnd
 					"	layout (location = 2) in vec2 in_T0;									\n"
 					"	layout (location = 3) in vec2 in_T1;									\n"
 					"	out vec2 X;																\n"
+					"	out vec2 X_mov;															\n"
 					"	out vec2 UV;															\n"
 					"   out vec2 T0;															\n"
 					"   out vec2 T1;															\n"
@@ -2521,6 +2630,7 @@ namespace lnd
 					"		" + ratio + " * (u_X[2] * in_X[0] - u_X[3] * in_X[1] + u_X[0]),		\n"
 					"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1], in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);														\n"
+					"		X_mov = vec2(gl_Position);											\n"
 					"		UV = in_UV;															\n"
 					"		T0 = vec2(u_X[2] * in_T0[0] - u_X[3] * in_T0[1],					\n"
 					"			u_X[3] * in_T0[0] + u_X[2] * in_T0[1]);							\n"
@@ -2538,6 +2648,7 @@ namespace lnd
 					"	layout (location = 2) in vec2 in_T0;									\n"
 					"	layout (location = 3) in vec2 in_T1;									\n"
 					"	out vec2 X;																\n"
+					"	out vec2 X_mov;															\n"
 					"	out vec2 UV;															\n"
 					"   out vec2 T0;															\n"
 					"   out vec2 T1;															\n"
@@ -2547,6 +2658,7 @@ namespace lnd
 					"		" + ratio + " * (u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1]),		\n"
 					"		in_X[2], in_X[3]);													\n"
 					"		X = vec2(in_X);														\n"
+					"		X_mov = vec2(gl_Position);											\n"
 					"		UV = in_UV;															\n"
 					"		T0 = vec2(u_X[2] * in_T0[0] - u_X[3] * in_T0[1],					\n"
 					"			u_X[3] * in_T0[0] + u_X[2] * in_T0[1]);							\n"
@@ -2564,6 +2676,7 @@ namespace lnd
 				"	layout (location = 2) in vec2 in_T0;					\n"
 				"	layout (location = 3) in vec2 in_T1;					\n"
 				"	out vec2 X;												\n"
+				"	out vec2 X_mov;											\n"
 				"	out vec2 UV;											\n"
 				"   out vec2 T0;											\n"
 				"   out vec2 T1;											\n"
@@ -2573,6 +2686,7 @@ namespace lnd
 				"		u_X[3] * in_X[0] + u_X[2] * in_X[1] + u_X[1],		\n"
 				"		in_X[2], in_X[3]);									\n"
 				"		X = vec2(in_X);										\n"
+				"		X_mov = vec2(gl_Position);							\n"
 				"		UV = in_UV;											\n"
 				"		T0 = vec2(u_X[2] * in_T0[0] - u_X[3] * in_T0[1],	\n"
 				"			u_X[3] * in_T0[0] + u_X[2] * in_T0[1]);			\n"
@@ -2595,6 +2709,7 @@ namespace lnd
 					"	layout (location = 2) in vec2 in_T0;																\n"
 					"	layout (location = 3) in vec2 in_T1;																\n"
 					"	out vec2 X;																							\n"
+					"	out vec2 X_mov;																						\n"
 					"	out vec2 UV;																						\n"
 					"   out vec2 T0;																						\n"
 					"   out vec2 T1;																						\n"
@@ -2604,6 +2719,7 @@ namespace lnd
 					"		" + ratio + " * (u_X0[0] + (u_X1[0] * (in_X[0] - u_X0[2]) + u_X1[2] * (in_X[1] - u_X0[3]))),	\n"
 					"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])), in_X[2], in_X[3]);	\n"
 					"		X = vec2(in_X);																					\n"
+					"		X_mov = vec2(gl_Position);																		\n"
 					"		UV = in_UV;																						\n"
 					"		T0 = vec2(u_X1[0] * in_T0[0] + u_X1[2] * in_T0[1],												\n"
 					"			u_X1[1] * in_T0[0] + u_X1[3] * in_T0[1]);													\n"
@@ -2621,6 +2737,7 @@ namespace lnd
 					"	layout (location = 2) in vec2 in_T0;																\n"
 					"	layout (location = 3) in vec2 in_T1;																\n"
 					"	out vec2 X;																							\n"
+					"	out vec2 X_mov;																						\n"
 					"	out vec2 UV;																						\n"
 					"   out vec2 T0;																						\n"
 					"   out vec2 T1;																						\n"
@@ -2631,6 +2748,7 @@ namespace lnd
 					"		" + ratio + " * (u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3]))),	\n"
 					"		in_X[2], in_X[3]);																				\n"
 					"		X = vec2(in_X);																					\n"
+					"		X_mov = vec2(gl_Position);																		\n"
 					"		UV = in_UV;																						\n"
 					"		T0 = vec2(u_X1[0] * in_T0[0] + u_X1[2] * in_T0[1],												\n"
 					"			u_X1[1] * in_T0[0] + u_X1[3] * in_T0[1]);													\n"
@@ -2648,6 +2766,7 @@ namespace lnd
 				"	layout (location = 2) in vec2 in_T0;											\n"
 				"	layout (location = 3) in vec2 in_T1;											\n"
 				"	out vec2 X;																		\n"
+				"	out vec2 X_mov;																	\n"
 				"	out vec2 UV;																	\n"
 				"   out vec2 T0;																	\n"
 				"   out vec2 T1;																	\n"
@@ -2658,6 +2777,7 @@ namespace lnd
 				"		u_X0[1] + (u_X1[1] * (in_X[0] - u_X0[2]) + u_X1[3] * (in_X[1] - u_X0[3])),	\n"
 				"		in_X[2], in_X[3]);															\n"
 				"		X = vec2(in_X);																\n"
+				"		X_mov = vec2(gl_Position);													\n"
 				"		UV = in_UV;																	\n"
 				"		T0 = vec2(u_X1[0] * in_T0[0] + u_X1[2] * in_T0[1],							\n"
 				"			u_X1[1] * in_T0[0] + u_X1[3] * in_T0[1]);								\n"
@@ -8755,7 +8875,7 @@ namespace lnd
 				break;
 			}
 		}
-		
+
 		template <std::size_t _pixel_dim, std::size_t _frame_pixel_dim, std::size_t _vertex_count_pc2,
 			class _vertex_Allocator, class _texture_Allocator, class _frame_tex_Allocator, class _frame_Allocator> inline void draw_mapped(
 				const lnd::program& program,
@@ -8817,7 +8937,7 @@ namespace lnd
 				break;
 			}
 		}
-		
+
 		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_tex_3d(
 			const lnd::program& program,
 			const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
@@ -10932,7 +11052,7 @@ namespace lnd
 			vregC1 = _mm_fmadd_ps(vregA2, _mm_broadcast_ss(pB + 6), vregC1);
 			vregC0 = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 3), vregC0);
 			vregC1 = _mm_fmadd_ps(vregA3, _mm_broadcast_ss(pB + 7), vregC1);
-			_mm_storeu_ps(pC, vregC0);	
+			_mm_storeu_ps(pC, vregC0);
 			_mm_storeu_ps(pC + 4, vregC1);
 
 			vregC0 = _mm_mul_ps(vregA0, _mm_broadcast_ss(pB + 8));
