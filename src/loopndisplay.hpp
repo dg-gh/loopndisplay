@@ -1,4 +1,4 @@
-// loopndisplay.hpp - last update : 09 / 01 / 2021
+// loopndisplay.hpp - last update : 11 / 01 / 2021
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW set up
