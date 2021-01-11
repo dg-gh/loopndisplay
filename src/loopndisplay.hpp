@@ -3065,7 +3065,7 @@ namespace lnd
 			"	uniform vec3 u_plight_C[" + _number_of_pointlights + "];								\n"
 			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];								\n"
 			"	uniform int u_first_light;																\n"
-			"	uniform int u_end_light;																	\n"
+			"	uniform int u_end_light;																\n"
 			"	void main() 																			\n"
 			"	{																						\n"
 			"		vec4 nmap = texture(nmap_Tx, UV);													\n"
@@ -3083,7 +3083,7 @@ namespace lnd
 			"		vec3 color3 = max(-dot(N, u_slight_dir), 0.0) * u_slight_C * vec3(in_C);			\n"
 			"		vec3 X_mov3 = vec3(X_mov, 0.0);														\n"
 
-			"		for (int k = u_first_light; k < u_end_light; k++)										\n"
+			"		for (int k = u_first_light; k < u_end_light; k++)									\n"
 			"		{																					\n"
 			"			vec3 light_dir = normalize(X_mov3 - u_plight_pos[k]);							\n"
 			"			float light_dist = length(X_mov3 - u_plight_pos[k]);							\n"
@@ -3246,7 +3246,7 @@ namespace lnd
 			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];							\n"
 			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];							\n"
 			"	uniform int u_first_light;															\n"
-			"	uniform int u_end_light;																\n"
+			"	uniform int u_end_light;															\n"
 
 			"	uniform mat4 u_m_M;																	\n"
 			"	uniform vec4 u_C;																	\n"
@@ -3259,7 +3259,7 @@ namespace lnd
 
 			"		vec3 color3 = vec3(0.0, 0.0, 0.0);												\n"
 
-			"		for (int k = u_first_light; k < u_end_light; k++)									\n"
+			"		for (int k = u_first_light; k < u_end_light; k++)								\n"
 			"		{																				\n"
 			"			vec3 light_dir = normalize(X - u_plight_pos[k]);							\n"
 			"			float light_dist = length(X - u_plight_pos[k]);								\n"
@@ -3296,7 +3296,7 @@ namespace lnd
 			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];							\n"
 			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];							\n"
 			"	uniform int u_first_light;															\n"
-			"	uniform int u_end_light;																\n"
+			"	uniform int u_end_light;															\n"
 
 			"	uniform mat4 u_m_M;																	\n"
 
@@ -3308,7 +3308,7 @@ namespace lnd
 
 			"		vec3 color3 = vec3(0.0, 0.0, 0.0);												\n"
 
-			"		for (int k = u_first_light; k < u_end_light; k++)									\n"
+			"		for (int k = u_first_light; k < u_end_light; k++)								\n"
 			"		{																				\n"
 			"			vec3 light_dir = normalize(X - u_plight_pos[k]);							\n"
 			"			float light_dist = length(X - u_plight_pos[k]);								\n"
@@ -3345,7 +3345,7 @@ namespace lnd
 			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];							\n"
 			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];							\n"
 			"	uniform int u_first_light;															\n"
-			"	uniform int u_end_light;																\n"
+			"	uniform int u_end_light;															\n"
 
 			"	uniform mat4 u_m_M;																	\n"
 
@@ -3358,7 +3358,7 @@ namespace lnd
 
 			"		vec3 color3 = vec3(0.0, 0.0, 0.0);												\n"
 
-			"		for (int k = u_first_light; k < u_end_light; k++)									\n"
+			"		for (int k = u_first_light; k < u_end_light; k++)								\n"
 			"		{																				\n"
 			"			vec3 light_dir = normalize(X - u_plight_pos[k]);							\n"
 			"			float light_dist = length(X - u_plight_pos[k]);								\n"
@@ -3395,7 +3395,7 @@ namespace lnd
 			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];							\n"
 			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];							\n"
 			"	uniform int u_first_light;															\n"
-			"	uniform int u_end_light;																\n"
+			"	uniform int u_end_light;															\n"
 
 			"	uniform mat4 u_m_M;																	\n"
 			"	uniform sampler2D Tx;																\n"
@@ -3410,7 +3410,7 @@ namespace lnd
 
 			"		vec3 color3 = vec3(0.0, 0.0, 0.0);												\n"
 
-			"		for (int k = u_first_light; k < u_end_light; k++)									\n"
+			"		for (int k = u_first_light; k < u_end_light; k++)								\n"
 			"		{																				\n"
 			"			vec3 light_dir = normalize(X - u_plight_pos[k]);							\n"
 			"			float light_dist = length(X - u_plight_pos[k]);								\n"
@@ -3450,7 +3450,7 @@ namespace lnd
 			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];							\n"
 			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];							\n"
 			"	uniform int u_first_light;															\n"
-			"	uniform int u_end_light;																\n"
+			"	uniform int u_end_light;															\n"
 
 			"	uniform mat4 u_m_M;																	\n"
 			"	uniform vec4 u_C;																	\n"
@@ -3468,7 +3468,7 @@ namespace lnd
 			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);							\n"
 			"		vec3 color3 = (diff + spec) * (u_slight_C * vec3(u_C));							\n"
 
-			"		for (int k = u_first_light; k < u_end_light; k++)									\n"
+			"		for (int k = u_first_light; k < u_end_light; k++)								\n"
 			"		{																				\n"
 			"			vec3 light_dir = normalize(X - u_plight_pos[k]);							\n"
 			"			float light_dist = length(X - u_plight_pos[k]);								\n"
@@ -3508,7 +3508,7 @@ namespace lnd
 			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];							\n"
 			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];							\n"
 			"	uniform int u_first_light;															\n"
-			"	uniform int u_end_light;																\n"
+			"	uniform int u_end_light;															\n"
 
 			"	uniform mat4 u_m_M;																	\n"
 
@@ -3525,7 +3525,7 @@ namespace lnd
 			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);							\n"
 			"		vec3 color3 = (diff + spec) * (u_slight_C * C);									\n"
 
-			"		for (int k = u_first_light; k < u_end_light; k++)									\n"
+			"		for (int k = u_first_light; k < u_end_light; k++)								\n"
 			"		{																				\n"
 			"			vec3 light_dir = normalize(X - u_plight_pos[k]);							\n"
 			"			float light_dist = length(X - u_plight_pos[k]);								\n"
@@ -3565,7 +3565,7 @@ namespace lnd
 			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];							\n"
 			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];							\n"
 			"	uniform int u_first_light;															\n"
-			"	uniform int u_end_light;																\n"
+			"	uniform int u_end_light;															\n"
 
 			"	uniform mat4 u_m_M;																	\n"
 
@@ -3583,7 +3583,7 @@ namespace lnd
 			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);							\n"
 			"		vec3 color3 = (diff + spec) * (u_slight_C * C3);								\n"
 
-			"		for (int k = u_first_light; k < u_end_light; k++)									\n"
+			"		for (int k = u_first_light; k < u_end_light; k++)								\n"
 			"		{																				\n"
 			"			vec3 light_dir = normalize(X - u_plight_pos[k]);							\n"
 			"			float light_dist = length(X - u_plight_pos[k]);								\n"
@@ -3623,7 +3623,7 @@ namespace lnd
 			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];							\n"
 			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];							\n"
 			"	uniform int u_first_light;															\n"
-			"	uniform int u_end_light;																\n"
+			"	uniform int u_end_light;															\n"
 
 			"	uniform mat4 u_m_M;																	\n"
 			"	uniform sampler2D Tx;																\n"
@@ -3643,7 +3643,7 @@ namespace lnd
 			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);							\n"
 			"		vec3 color3 = (diff + spec) * (u_slight_C * in_C3);								\n"
 
-			"		for (int k = u_first_light; k < u_end_light; k++)									\n"
+			"		for (int k = u_first_light; k < u_end_light; k++)								\n"
 			"		{																				\n"
 			"			vec3 light_dir = normalize(X - u_plight_pos[k]);							\n"
 			"			float light_dist = length(X - u_plight_pos[k]);								\n"
@@ -3685,7 +3685,7 @@ namespace lnd
 			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];							\n"
 			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];							\n"
 			"	uniform int u_first_light;															\n"
-			"	uniform int u_end_light;																\n"
+			"	uniform int u_end_light;															\n"
 
 			"	uniform mat4 u_m_M;																	\n"
 			"	layout (binding = 0) uniform sampler2D Tx;											\n"
@@ -3717,7 +3717,7 @@ namespace lnd
 			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);							\n"
 			"		vec3 color3 = (diff + spec) * (u_slight_C * in_C3);								\n"
 
-			"		for (int k = u_first_light; k < u_end_light; k++)									\n"
+			"		for (int k = u_first_light; k < u_end_light; k++)								\n"
 			"		{																				\n"
 			"			vec3 light_dir = normalize(X - u_plight_pos[k]);							\n"
 			"			float light_dist = length(X - u_plight_pos[k]);								\n"
@@ -3759,7 +3759,7 @@ namespace lnd
 			"	uniform vec4 u_plight_C[" + _number_of_pointlights + "];							\n"
 			"	uniform vec3 u_plight_att[" + _number_of_pointlights + "];							\n"
 			"	uniform int u_first_light;															\n"
-			"	uniform int u_end_light;																\n"
+			"	uniform int u_end_light;															\n"
 
 			"	uniform mat4 u_m_M;																	\n"
 			"	layout (binding = 0) uniform sampler2D Tx;											\n"
@@ -3792,7 +3792,7 @@ namespace lnd
 			"			reflect(u_slight_dir, rotated_N)), 0.0), u_conc);							\n"
 			"		vec3 color3 = (diff + spec) * (u_slight_C * in_C3);								\n"
 
-			"		for (int k = u_first_light; k < u_end_light; k++)									\n"
+			"		for (int k = u_first_light; k < u_end_light; k++)								\n"
 			"		{																				\n"
 			"			vec3 light_dir = normalize(X - u_plight_pos[k]);							\n"
 			"			float light_dist = length(X - u_plight_pos[k]);								\n"
