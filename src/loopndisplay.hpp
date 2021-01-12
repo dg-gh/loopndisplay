@@ -1,4 +1,4 @@
-// loopndisplay.hpp - last update : 12 / 01 / 2021
+// loopndisplay.hpp - last update : 11 / 01 / 2021
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW set up
@@ -8316,7 +8316,7 @@ namespace lnd
 		}
 
 
-		inline void draw_range(
+		inline void draw_ranged(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program)
@@ -8365,7 +8365,7 @@ namespace lnd
 			}
 		}
 
-		inline void draw_range_3d(
+		inline void draw_ranged_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program)
@@ -8414,7 +8414,7 @@ namespace lnd
 			}
 		}
 
-		template <class _normal_Allocator> inline void draw_range_normals_3d(
+		template <class _normal_Allocator> inline void draw_ranged_normals_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8633,7 +8633,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _color_dim, class _color_Allocator> inline void draw_range_RGBA(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_RGBA(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8703,7 +8703,7 @@ namespace lnd
 			}
 		}
 
-		template <std::size_t _color_dim, class _color_Allocator> inline void draw_range_RGBA_3d(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_RGBA_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8773,7 +8773,7 @@ namespace lnd
 			}
 		}
 
-		template <std::size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_range_RGBA_normals_3d(
+		template <std::size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_ranged_RGBA_normals_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9186,7 +9186,7 @@ namespace lnd
 		}
 
 
-		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_range_tex(
+		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_ranged_tex(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9234,7 +9234,7 @@ namespace lnd
 		}
 
 		template <std::size_t _pixel_dim, std::size_t _frame_pixel_dim, std::size_t _vertex_count_pc2,
-			class _vertex_Allocator, class _texture_Allocator, class _frame_tex_Allocator, class _frame_Allocator> inline void draw_range_mapped(
+			class _vertex_Allocator, class _texture_Allocator, class _frame_tex_Allocator, class _frame_Allocator> inline void draw_ranged_mapped(
 				GLsizei first_cluster,
 				GLsizei end_cluster,
 				const lnd::program& program,
@@ -9299,7 +9299,7 @@ namespace lnd
 			}
 		}
 
-		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_range_tex_3d(
+		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_ranged_tex_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9346,7 +9346,7 @@ namespace lnd
 			}
 		}
 
-		template <std::size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_range_tex_normals_3d(
+		template <std::size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_ranged_tex_normals_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9403,7 +9403,7 @@ namespace lnd
 
 		template <std::size_t _pixel_dim, std::size_t _spec_pixel_dim, std::size_t _frame_pixel_dim, std::size_t _vertex_count_pc2,
 			class _vertex_Allocator, class _texture_Allocator, class _spec_tex_Allocator,
-			class _frame_tex_Allocator, class _frame_Allocator> inline void draw_range_mapped_3d(
+			class _frame_tex_Allocator, class _frame_Allocator> inline void draw_ranged_mapped_3d(
 				GLsizei first_cluster,
 				GLsizei end_cluster,
 				const lnd::program& program,
@@ -9477,7 +9477,7 @@ namespace lnd
 
 		template <std::size_t _pixel_dim, std::size_t _spec_pixel_dim, std::size_t _frame_pixel_dim, std::size_t _light_pixel_dim, std::size_t _vertex_count_pc2,
 			class _vertex_Allocator, class _light_vertex_Allocator, class _texture_Allocator, class _spec_tex_Allocator,
-			class _frame_tex_Allocator, class _light_tex_Allocator, class _frame_Allocator> inline void draw_range_lightmapped_3d(
+			class _frame_tex_Allocator, class _light_tex_Allocator, class _frame_Allocator> inline void draw_ranged_lightmapped_3d(
 				GLsizei first_cluster,
 				GLsizei end_cluster,
 				const lnd::program& program,
@@ -9595,7 +9595,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_range_lines_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_lines_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9612,7 +9612,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_range_lines_indexed_3d(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_lines_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9659,7 +9659,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_range_tris_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_tris_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9723,7 +9723,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_range_quads_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_quads_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9740,7 +9740,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_range_quads_indexed_3d(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_quads_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9799,7 +9799,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_lines_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_lines_RGBA_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9821,7 +9821,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_lines_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_lines_RGBA_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9883,7 +9883,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_tris_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_tris_RGBA_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9905,7 +9905,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_tris_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_tris_RGBA_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9967,7 +9967,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_quads_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_quads_RGBA_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9989,7 +9989,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_quads_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_quads_RGBA_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -10267,7 +10267,7 @@ namespace lnd
 		}
 
 
-		inline void draw_range_line_strip(
+		inline void draw_ranged_line_strip(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program)
@@ -10280,7 +10280,7 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		inline void draw_range_line_strip_3d(
+		inline void draw_ranged_line_strip_3d(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program)
@@ -10399,7 +10399,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _color_dim, class _color_Allocator> inline void draw_range_line_strip_RGBA(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_line_strip_RGBA(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program,
@@ -10417,7 +10417,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <std::size_t _color_dim, class _color_Allocator> inline void draw_range_line_strip_RGBA_3d(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_line_strip_RGBA_3d(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program,
