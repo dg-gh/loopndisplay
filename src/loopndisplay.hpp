@@ -1,4 +1,4 @@
-// loopndisplay.hpp - last update : 11 / 01 / 2021
+// loopndisplay.hpp - last update : 12 / 01 / 2021
 // License <http://unlicense.org/> (statement below at the end of the file)
 
 // Needs GLFW and GLEW set up
@@ -355,15 +355,21 @@ namespace lnd
 
 	// INSTANCES
 
-	int padding0[8] = { 0 };
-	GLFWwindow* __window_ptr = nullptr;
-	int padding1[8] = { 0 };
-	lnd::user_key_input __user_key_input;
-	int padding2[8] = { 0 };
-	lnd::user_mouse_input __user_mouse_input;
-	int padding3[8] = { 0 };
-	GLbitfield __clear_window = GL_COLOR_BUFFER_BIT;
-	int padding4[8] = { 0 };
+	class _state_instance
+	{
+
+	public:
+
+		int padding0[16] = { 0 };
+		GLFWwindow* window_ptr = nullptr;
+		int padding1[16] = { 0 };
+		lnd::user_key_input user_key_input;
+		int padding2[16] = { 0 };
+		lnd::user_mouse_input user_mouse_input;
+		int padding3[16] = { 0 };
+		GLbitfield clear_window = GL_COLOR_BUFFER_BIT;
+		int padding4[16] = { 0 };
+	} __state_instance;
 
 
 	// ON CALLBACK
@@ -374,344 +380,344 @@ namespace lnd
 		{
 
 		case GLFW_KEY_SPACE:
-			lnd::__user_key_input.space_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.space_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.space_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.space_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_APOSTROPHE:
-			lnd::__user_key_input.apostrophe_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.apostrophe_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.apostrophe_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.apostrophe_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_COMMA:
-			lnd::__user_key_input.comma_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.comma_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.comma_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.comma_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_MINUS:
-			lnd::__user_key_input.minus_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.minus_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.minus_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.minus_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_PERIOD:
-			lnd::__user_key_input.period_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.period_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.period_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.period_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_SLASH:
-			lnd::__user_key_input.slash_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.slash_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.slash_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.slash_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_A:
-			lnd::__user_key_input.A_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.A_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.A_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.A_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_B:
-			lnd::__user_key_input.B_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.B_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.B_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.B_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_C:
-			lnd::__user_key_input.C_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.C_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.C_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.C_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_D:
-			lnd::__user_key_input.D_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.D_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.D_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.D_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_E:
-			lnd::__user_key_input.E_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.E_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.E_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.E_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F:
-			lnd::__user_key_input.F_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.F_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.F_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.F_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_G:
-			lnd::__user_key_input.G_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.G_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.G_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.G_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_H:
-			lnd::__user_key_input.H_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.H_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.H_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.H_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_I:
-			lnd::__user_key_input.I_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.I_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.I_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.I_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_J:
-			lnd::__user_key_input.J_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.J_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.J_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.J_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_K:
-			lnd::__user_key_input.K_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.K_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.K_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.K_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_L:
-			lnd::__user_key_input.L_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.L_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.L_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.L_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_M:
-			lnd::__user_key_input.M_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.M_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.M_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.M_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_N:
-			lnd::__user_key_input.N_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.N_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.N_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.N_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_O:
-			lnd::__user_key_input.O_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.O_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.O_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.O_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_P:
-			lnd::__user_key_input.P_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.P_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.P_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.P_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_Q:
-			lnd::__user_key_input.Q_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.Q_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.Q_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.Q_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_R:
-			lnd::__user_key_input.R_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.R_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.R_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.R_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_S:
-			lnd::__user_key_input.S_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.S_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.S_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.S_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_T:
-			lnd::__user_key_input.T_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.T_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.T_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.T_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_U:
-			lnd::__user_key_input.U_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.U_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.U_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.U_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_V:
-			lnd::__user_key_input.V_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.V_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.V_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.V_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_W:
-			lnd::__user_key_input.W_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.W_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.W_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.W_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_X:
-			lnd::__user_key_input.X_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.X_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.X_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.X_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_Y:
-			lnd::__user_key_input.Y_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.Y_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.Y_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.Y_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_Z:
-			lnd::__user_key_input.Z_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.Z_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.Z_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.Z_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_0:
-			lnd::__user_key_input.num0_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.num0_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.num0_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.num0_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_1:
-			lnd::__user_key_input.num1_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.num1_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.num1_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.num1_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_2:
-			lnd::__user_key_input.num2_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.num2_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.num2_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.num2_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_3:
-			lnd::__user_key_input.num3_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.num3_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.num3_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.num3_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_4:
-			lnd::__user_key_input.num4_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.num4_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.num4_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.num4_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_5:
-			lnd::__user_key_input.num5_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.num5_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.num5_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.num5_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_6:
-			lnd::__user_key_input.num6_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.num6_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.num6_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.num6_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_7:
-			lnd::__user_key_input.num7_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.num7_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.num7_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.num7_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_8:
-			lnd::__user_key_input.num8_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.num8_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.num8_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.num8_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_9:
-			lnd::__user_key_input.num9_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.num9_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.num9_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.num9_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_0:
-			lnd::__user_key_input.numpad0_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.numpad0_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.numpad0_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.numpad0_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_1:
-			lnd::__user_key_input.numpad1_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.numpad1_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.numpad1_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.numpad1_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_2:
-			lnd::__user_key_input.numpad2_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.numpad2_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.numpad2_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.numpad2_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_3:
-			lnd::__user_key_input.numpad3_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.numpad3_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.numpad3_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.numpad3_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_4:
-			lnd::__user_key_input.numpad4_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.numpad4_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.numpad4_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.numpad4_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_5:
-			lnd::__user_key_input.numpad5_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.numpad5_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.numpad5_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.numpad5_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_6:
-			lnd::__user_key_input.numpad6_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.numpad6_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.numpad6_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.numpad6_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_7:
-			lnd::__user_key_input.numpad7_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.numpad7_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.numpad7_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.numpad7_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_8:
-			lnd::__user_key_input.numpad8_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.numpad8_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.numpad8_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.numpad8_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_9:
-			lnd::__user_key_input.numpad9_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.numpad9_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.numpad9_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.numpad9_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_ADD:
-			lnd::__user_key_input.add_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.add_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.add_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.add_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_SUBTRACT:
-			lnd::__user_key_input.sub_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.sub_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.sub_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.sub_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_MULTIPLY:
-			lnd::__user_key_input.mul_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.mul_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.mul_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.mul_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_DIVIDE:
-			lnd::__user_key_input.div_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.div_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.div_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.div_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_KP_ENTER:
-			lnd::__user_key_input.enter_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.enter_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.enter_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.enter_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F1:
-			lnd::__user_key_input.f1_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f1_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f1_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f1_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F2:
-			lnd::__user_key_input.f2_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f2_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f2_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f2_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F3:
-			lnd::__user_key_input.f3_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f3_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f3_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f3_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F4:
-			lnd::__user_key_input.f4_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f4_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f4_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f4_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F5:
-			lnd::__user_key_input.f5_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f5_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f5_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f5_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F6:
-			lnd::__user_key_input.f6_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f6_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f6_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f6_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F7:
-			lnd::__user_key_input.f7_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f7_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f7_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f7_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F8:
-			lnd::__user_key_input.f8_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f8_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f8_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f8_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F9:
-			lnd::__user_key_input.f9_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f9_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f9_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f9_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F10:
-			lnd::__user_key_input.f10_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f10_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f10_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f10_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F11:
-			lnd::__user_key_input.f11_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f11_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f11_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f11_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_F12:
-			lnd::__user_key_input.f12_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.f12_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.f12_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.f12_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_ESCAPE:
-			lnd::__user_key_input.escape_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.escape_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.escape_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.escape_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_ENTER:
-			lnd::__user_key_input.enter_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.enter_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.enter_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.enter_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_TAB:
-			lnd::__user_key_input.tab_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.tab_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.tab_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.tab_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_BACKSPACE:
-			lnd::__user_key_input.backspace_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.backspace_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.backspace_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.backspace_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_INSERT:
-			lnd::__user_key_input.insert_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.insert_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.insert_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.insert_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_DELETE:
-			lnd::__user_key_input.delete__press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.delete__release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.delete__press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.delete__release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_RIGHT:
-			lnd::__user_key_input.right_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.right_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.right_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.right_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_LEFT:
-			lnd::__user_key_input.left_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.left_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.left_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.left_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_DOWN:
-			lnd::__user_key_input.down_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.down_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.down_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.down_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_UP:
-			lnd::__user_key_input.up_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.up_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.up_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.up_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_LEFT_ALT:
-			lnd::__user_key_input.alt_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.alt_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.alt_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.alt_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_RIGHT_ALT:
-			lnd::__user_key_input.alt_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.alt_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.alt_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.alt_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_LEFT_SHIFT:
-			lnd::__user_key_input.shift_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.shift_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.shift_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.shift_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_RIGHT_SHIFT:
-			lnd::__user_key_input.shift_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.shift_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.shift_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.shift_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_LEFT_CONTROL:
-			lnd::__user_key_input.ctrl_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.ctrl_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.ctrl_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.ctrl_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_KEY_RIGHT_CONTROL:
-			lnd::__user_key_input.ctrl_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.ctrl_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.ctrl_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.ctrl_release.store(action == GLFW_RELEASE);
 			break;
 
 		default:
@@ -724,36 +730,36 @@ namespace lnd
 		{
 
 		case GLFW_MOUSE_BUTTON_1:
-			lnd::__user_key_input.mouse_1_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.mouse_1_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.mouse_1_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.mouse_1_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_MOUSE_BUTTON_2:
-			lnd::__user_key_input.mouse_2_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.mouse_2_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.mouse_2_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.mouse_2_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_MOUSE_BUTTON_3:
-			lnd::__user_key_input.mouse_3_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.mouse_3_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.mouse_3_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.mouse_3_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_MOUSE_BUTTON_4:
-			lnd::__user_key_input.mouse_4_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.mouse_4_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.mouse_4_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.mouse_4_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_MOUSE_BUTTON_5:
-			lnd::__user_key_input.mouse_5_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.mouse_5_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.mouse_5_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.mouse_5_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_MOUSE_BUTTON_6:
-			lnd::__user_key_input.mouse_6_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.mouse_6_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.mouse_6_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.mouse_6_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_MOUSE_BUTTON_7:
-			lnd::__user_key_input.mouse_7_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.mouse_7_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.mouse_7_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.mouse_7_release.store(action == GLFW_RELEASE);
 			break;
 		case GLFW_MOUSE_BUTTON_8:
-			lnd::__user_key_input.mouse_8_press.store(action == GLFW_PRESS);
-			lnd::__user_key_input.mouse_8_release.store(action == GLFW_RELEASE);
+			lnd::__state_instance.user_key_input.mouse_8_press.store(action == GLFW_PRESS);
+			lnd::__state_instance.user_key_input.mouse_8_release.store(action == GLFW_RELEASE);
 			break;
 
 		default:
@@ -762,8 +768,8 @@ namespace lnd
 	}
 	void mouse_position_callback(GLFWwindow*, double input_mouse_X, double input_mouse_Y)
 	{
-		lnd::__user_mouse_input.mouse_X.store(static_cast<float>(lnd::__user_mouse_input.X_scale * (input_mouse_X - lnd::__user_mouse_input.X_shift)));
-		lnd::__user_mouse_input.mouse_Y.store(static_cast<float>(lnd::__user_mouse_input.Y_scale * (lnd::__user_mouse_input.Y_shift - input_mouse_Y)));
+		lnd::__state_instance.user_mouse_input.mouse_X.store(static_cast<float>(lnd::__state_instance.user_mouse_input.X_scale * (input_mouse_X - lnd::__state_instance.user_mouse_input.X_shift)));
+		lnd::__state_instance.user_mouse_input.mouse_Y.store(static_cast<float>(lnd::__state_instance.user_mouse_input.Y_scale * (lnd::__state_instance.user_mouse_input.Y_shift - input_mouse_Y)));
 	}
 }
 
@@ -4206,12 +4212,12 @@ namespace lnd
 	{
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
-		lnd::__clear_window = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+		lnd::__state_instance.clear_window = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 	}
 	inline void disable_3d()
 	{
 		glDisable(GL_DEPTH_TEST);
-		lnd::__clear_window = GL_COLOR_BUFFER_BIT;
+		lnd::__state_instance.clear_window = GL_COLOR_BUFFER_BIT;
 	}
 
 	// depth mask and buffer
@@ -4277,7 +4283,7 @@ namespace lnd
 		}
 		inline void clear_window()
 		{
-			glClear(lnd::__clear_window);
+			glClear(lnd::__state_instance.clear_window);
 		}
 
 		// subwindow
@@ -4308,24 +4314,24 @@ namespace lnd
 
 		inline GLFWwindow* window_ptr() const noexcept
 		{
-			return lnd::__window_ptr;
+			return lnd::__state_instance.window_ptr;
 		}
 
 		// INPUTS
 
-		inline float mouse_X() const noexcept { return lnd::__user_mouse_input.mouse_X; }
-		inline float mouse_Y() const noexcept { return lnd::__user_mouse_input.mouse_Y; }
+		inline float mouse_X() const noexcept { return lnd::__state_instance.user_mouse_input.mouse_X; }
+		inline float mouse_Y() const noexcept { return lnd::__state_instance.user_mouse_input.mouse_Y; }
 		inline bool mouse_in_box(float X_min, float Y_min, float X_max, float Y_max) const noexcept
 		{
-			return (((X_min < lnd::__user_mouse_input.mouse_X) && (lnd::__user_mouse_input.mouse_X < X_max))
-				&& ((Y_min < lnd::__user_mouse_input.mouse_Y) && (lnd::__user_mouse_input.mouse_Y < Y_max)));
+			return (((X_min < lnd::__state_instance.user_mouse_input.mouse_X) && (lnd::__state_instance.user_mouse_input.mouse_X < X_max))
+				&& ((Y_min < lnd::__state_instance.user_mouse_input.mouse_Y) && (lnd::__state_instance.user_mouse_input.mouse_Y < Y_max)));
 		}
 		inline bool mouse_in_tri(float X0, float Y0, float X1, float Y1, float X2, float Y2) const noexcept
 		{
-			float s = Y0 * X2 - X0 * Y2 + (Y2 - Y0) * lnd::__user_mouse_input.mouse_X
-				+ (X0 - X2) * lnd::__user_mouse_input.mouse_Y;
-			float t = X0 * Y1 - Y0 * X1 + (Y0 - Y1) * lnd::__user_mouse_input.mouse_X
-				+ (X1 - X0) * lnd::__user_mouse_input.mouse_Y;
+			float s = Y0 * X2 - X0 * Y2 + (Y2 - Y0) * lnd::__state_instance.user_mouse_input.mouse_X
+				+ (X0 - X2) * lnd::__state_instance.user_mouse_input.mouse_Y;
+			float t = X0 * Y1 - Y0 * X1 + (Y0 - Y1) * lnd::__state_instance.user_mouse_input.mouse_X
+				+ (X1 - X0) * lnd::__state_instance.user_mouse_input.mouse_Y;
 
 			if ((s < 0) != (t < 0)) { return false; }
 			else
@@ -4337,11 +4343,11 @@ namespace lnd
 		inline bool mouse_in_tri(const float* const tri_ptr) const noexcept
 		{
 			float s = *(tri_ptr + 1) * *(tri_ptr + 4) - *tri_ptr * *(tri_ptr + 5)
-				+ (*(tri_ptr + 5) - *(tri_ptr + 1)) * lnd::__user_mouse_input.mouse_X
-				+ (*tri_ptr - *(tri_ptr + 4)) * lnd::__user_mouse_input.mouse_Y;
+				+ (*(tri_ptr + 5) - *(tri_ptr + 1)) * lnd::__state_instance.user_mouse_input.mouse_X
+				+ (*tri_ptr - *(tri_ptr + 4)) * lnd::__state_instance.user_mouse_input.mouse_Y;
 			float t = *tri_ptr * *(tri_ptr + 3) - *(tri_ptr + 1) * *(tri_ptr + 2)
-				+ (*(tri_ptr + 1) - *(tri_ptr + 3)) * lnd::__user_mouse_input.mouse_X
-				+ (*(tri_ptr + 2) - *tri_ptr) * lnd::__user_mouse_input.mouse_Y;
+				+ (*(tri_ptr + 1) - *(tri_ptr + 3)) * lnd::__state_instance.user_mouse_input.mouse_X
+				+ (*(tri_ptr + 2) - *tri_ptr) * lnd::__state_instance.user_mouse_input.mouse_Y;
 
 			if ((s < 0) != (t < 0)) { return false; }
 			else
@@ -4353,319 +4359,319 @@ namespace lnd
 		}
 		inline bool mouse_in_circle(float X_orig, float Y_orig, float radius) const
 		{
-			float dx = lnd::__user_mouse_input.mouse_X - X_orig;
-			float dy = lnd::__user_mouse_input.mouse_Y - Y_orig;
+			float dx = lnd::__state_instance.user_mouse_input.mouse_X - X_orig;
+			float dy = lnd::__state_instance.user_mouse_input.mouse_Y - Y_orig;
 			return (dx * dx + dy * dy < radius* radius);
 		}
 
 
-		inline bool mouse_1() const noexcept { return glfwGetMouseButton(lnd::__window_ptr, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS; }
-		inline bool mouse_2() const noexcept { return glfwGetMouseButton(lnd::__window_ptr, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS; }
-		inline bool mouse_3() const noexcept { return glfwGetMouseButton(lnd::__window_ptr, GLFW_MOUSE_BUTTON_3) == GLFW_PRESS; }
-		inline bool mouse_4() const noexcept { return glfwGetMouseButton(lnd::__window_ptr, GLFW_MOUSE_BUTTON_4) == GLFW_PRESS; }
-		inline bool mouse_5() const noexcept { return glfwGetMouseButton(lnd::__window_ptr, GLFW_MOUSE_BUTTON_5) == GLFW_PRESS; }
-		inline bool mouse_6() const noexcept { return glfwGetMouseButton(lnd::__window_ptr, GLFW_MOUSE_BUTTON_6) == GLFW_PRESS; }
-		inline bool mouse_7() const noexcept { return glfwGetMouseButton(lnd::__window_ptr, GLFW_MOUSE_BUTTON_7) == GLFW_PRESS; }
-		inline bool mouse_8() const noexcept { return glfwGetMouseButton(lnd::__window_ptr, GLFW_MOUSE_BUTTON_8) == GLFW_PRESS; }
+		inline bool mouse_1() const noexcept { return glfwGetMouseButton(lnd::__state_instance.window_ptr, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS; }
+		inline bool mouse_2() const noexcept { return glfwGetMouseButton(lnd::__state_instance.window_ptr, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS; }
+		inline bool mouse_3() const noexcept { return glfwGetMouseButton(lnd::__state_instance.window_ptr, GLFW_MOUSE_BUTTON_3) == GLFW_PRESS; }
+		inline bool mouse_4() const noexcept { return glfwGetMouseButton(lnd::__state_instance.window_ptr, GLFW_MOUSE_BUTTON_4) == GLFW_PRESS; }
+		inline bool mouse_5() const noexcept { return glfwGetMouseButton(lnd::__state_instance.window_ptr, GLFW_MOUSE_BUTTON_5) == GLFW_PRESS; }
+		inline bool mouse_6() const noexcept { return glfwGetMouseButton(lnd::__state_instance.window_ptr, GLFW_MOUSE_BUTTON_6) == GLFW_PRESS; }
+		inline bool mouse_7() const noexcept { return glfwGetMouseButton(lnd::__state_instance.window_ptr, GLFW_MOUSE_BUTTON_7) == GLFW_PRESS; }
+		inline bool mouse_8() const noexcept { return glfwGetMouseButton(lnd::__state_instance.window_ptr, GLFW_MOUSE_BUTTON_8) == GLFW_PRESS; }
 
-		inline bool key_space() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_SPACE) == GLFW_PRESS; }
-		inline bool key_apostrophe() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_APOSTROPHE) == GLFW_PRESS; }
-		inline bool key_comma() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_COMMA) == GLFW_PRESS; }
-		inline bool key_minus() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_MINUS) == GLFW_PRESS; }
-		inline bool key_period() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_PERIOD) == GLFW_PRESS; }
-		inline bool key_slash() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_SLASH) == GLFW_PRESS; }
+		inline bool key_space() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_SPACE) == GLFW_PRESS; }
+		inline bool key_apostrophe() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_APOSTROPHE) == GLFW_PRESS; }
+		inline bool key_comma() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_COMMA) == GLFW_PRESS; }
+		inline bool key_minus() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_MINUS) == GLFW_PRESS; }
+		inline bool key_period() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_PERIOD) == GLFW_PRESS; }
+		inline bool key_slash() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_SLASH) == GLFW_PRESS; }
 
-		inline bool key_A() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_A) == GLFW_PRESS; }
-		inline bool key_B() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_B) == GLFW_PRESS; }
-		inline bool key_C() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_C) == GLFW_PRESS; }
-		inline bool key_D() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_D) == GLFW_PRESS; }
-		inline bool key_E() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_E) == GLFW_PRESS; }
-		inline bool key_F() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F) == GLFW_PRESS; }
-		inline bool key_G() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_G) == GLFW_PRESS; }
-		inline bool key_H() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_H) == GLFW_PRESS; }
-		inline bool key_I() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_I) == GLFW_PRESS; }
-		inline bool key_J() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_J) == GLFW_PRESS; }
-		inline bool key_K() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_K) == GLFW_PRESS; }
-		inline bool key_L() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_L) == GLFW_PRESS; }
-		inline bool key_M() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_M) == GLFW_PRESS; }
-		inline bool key_N() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_N) == GLFW_PRESS; }
-		inline bool key_O() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_O) == GLFW_PRESS; }
-		inline bool key_P() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_P) == GLFW_PRESS; }
-		inline bool key_Q() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_Q) == GLFW_PRESS; }
-		inline bool key_R() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_R) == GLFW_PRESS; }
-		inline bool key_S() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_S) == GLFW_PRESS; }
-		inline bool key_T() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_T) == GLFW_PRESS; }
-		inline bool key_U() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_U) == GLFW_PRESS; }
-		inline bool key_V() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_V) == GLFW_PRESS; }
-		inline bool key_W() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_W) == GLFW_PRESS; }
-		inline bool key_X() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_X) == GLFW_PRESS; }
-		inline bool key_Y() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_Y) == GLFW_PRESS; }
-		inline bool key_Z() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_Z) == GLFW_PRESS; }
+		inline bool key_A() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_A) == GLFW_PRESS; }
+		inline bool key_B() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_B) == GLFW_PRESS; }
+		inline bool key_C() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_C) == GLFW_PRESS; }
+		inline bool key_D() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_D) == GLFW_PRESS; }
+		inline bool key_E() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_E) == GLFW_PRESS; }
+		inline bool key_F() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F) == GLFW_PRESS; }
+		inline bool key_G() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_G) == GLFW_PRESS; }
+		inline bool key_H() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_H) == GLFW_PRESS; }
+		inline bool key_I() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_I) == GLFW_PRESS; }
+		inline bool key_J() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_J) == GLFW_PRESS; }
+		inline bool key_K() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_K) == GLFW_PRESS; }
+		inline bool key_L() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_L) == GLFW_PRESS; }
+		inline bool key_M() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_M) == GLFW_PRESS; }
+		inline bool key_N() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_N) == GLFW_PRESS; }
+		inline bool key_O() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_O) == GLFW_PRESS; }
+		inline bool key_P() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_P) == GLFW_PRESS; }
+		inline bool key_Q() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_Q) == GLFW_PRESS; }
+		inline bool key_R() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_R) == GLFW_PRESS; }
+		inline bool key_S() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_S) == GLFW_PRESS; }
+		inline bool key_T() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_T) == GLFW_PRESS; }
+		inline bool key_U() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_U) == GLFW_PRESS; }
+		inline bool key_V() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_V) == GLFW_PRESS; }
+		inline bool key_W() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_W) == GLFW_PRESS; }
+		inline bool key_X() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_X) == GLFW_PRESS; }
+		inline bool key_Y() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_Y) == GLFW_PRESS; }
+		inline bool key_Z() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_Z) == GLFW_PRESS; }
 
-		inline bool key_0() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_0) == GLFW_PRESS; }
-		inline bool key_1() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_1) == GLFW_PRESS; }
-		inline bool key_2() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_2) == GLFW_PRESS; }
-		inline bool key_3() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_3) == GLFW_PRESS; }
-		inline bool key_4() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_4) == GLFW_PRESS; }
-		inline bool key_5() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_5) == GLFW_PRESS; }
-		inline bool key_6() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_6) == GLFW_PRESS; }
-		inline bool key_7() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_7) == GLFW_PRESS; }
-		inline bool key_8() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_8) == GLFW_PRESS; }
-		inline bool key_9() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_9) == GLFW_PRESS; }
+		inline bool key_0() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_0) == GLFW_PRESS; }
+		inline bool key_1() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_1) == GLFW_PRESS; }
+		inline bool key_2() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_2) == GLFW_PRESS; }
+		inline bool key_3() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_3) == GLFW_PRESS; }
+		inline bool key_4() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_4) == GLFW_PRESS; }
+		inline bool key_5() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_5) == GLFW_PRESS; }
+		inline bool key_6() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_6) == GLFW_PRESS; }
+		inline bool key_7() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_7) == GLFW_PRESS; }
+		inline bool key_8() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_8) == GLFW_PRESS; }
+		inline bool key_9() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_9) == GLFW_PRESS; }
 
-		inline bool key_pad0() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_0) == GLFW_PRESS; }
-		inline bool key_pad1() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_1) == GLFW_PRESS; }
-		inline bool key_pad2() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_2) == GLFW_PRESS; }
-		inline bool key_pad3() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_3) == GLFW_PRESS; }
-		inline bool key_pad4() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_4) == GLFW_PRESS; }
-		inline bool key_pad5() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_5) == GLFW_PRESS; }
-		inline bool key_pad6() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_6) == GLFW_PRESS; }
-		inline bool key_pad7() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_7) == GLFW_PRESS; }
-		inline bool key_pad8() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_8) == GLFW_PRESS; }
-		inline bool key_pad9() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_9) == GLFW_PRESS; }
+		inline bool key_pad0() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_0) == GLFW_PRESS; }
+		inline bool key_pad1() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_1) == GLFW_PRESS; }
+		inline bool key_pad2() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_2) == GLFW_PRESS; }
+		inline bool key_pad3() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_3) == GLFW_PRESS; }
+		inline bool key_pad4() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_4) == GLFW_PRESS; }
+		inline bool key_pad5() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_5) == GLFW_PRESS; }
+		inline bool key_pad6() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_6) == GLFW_PRESS; }
+		inline bool key_pad7() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_7) == GLFW_PRESS; }
+		inline bool key_pad8() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_8) == GLFW_PRESS; }
+		inline bool key_pad9() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_9) == GLFW_PRESS; }
 
-		inline bool key_add() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_ADD) == GLFW_PRESS; }
-		inline bool key_sub() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS; }
-		inline bool key_mul() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_MULTIPLY) == GLFW_PRESS; }
-		inline bool key_div() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_DIVIDE) == GLFW_PRESS; }
+		inline bool key_add() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_ADD) == GLFW_PRESS; }
+		inline bool key_sub() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS; }
+		inline bool key_mul() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_MULTIPLY) == GLFW_PRESS; }
+		inline bool key_div() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_DIVIDE) == GLFW_PRESS; }
 
-		inline bool key_F1() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F1) == GLFW_PRESS; }
-		inline bool key_F2() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F2) == GLFW_PRESS; }
-		inline bool key_F3() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F3) == GLFW_PRESS; }
-		inline bool key_F4() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F4) == GLFW_PRESS; }
-		inline bool key_F5() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F5) == GLFW_PRESS; }
-		inline bool key_F6() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F6) == GLFW_PRESS; }
-		inline bool key_F7() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F7) == GLFW_PRESS; }
-		inline bool key_F8() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F8) == GLFW_PRESS; }
-		inline bool key_F9() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F9) == GLFW_PRESS; }
-		inline bool key_F10() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F10) == GLFW_PRESS; }
-		inline bool key_F11() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F11) == GLFW_PRESS; }
-		inline bool key_F12() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_F12) == GLFW_PRESS; }
+		inline bool key_F1() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F1) == GLFW_PRESS; }
+		inline bool key_F2() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F2) == GLFW_PRESS; }
+		inline bool key_F3() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F3) == GLFW_PRESS; }
+		inline bool key_F4() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F4) == GLFW_PRESS; }
+		inline bool key_F5() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F5) == GLFW_PRESS; }
+		inline bool key_F6() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F6) == GLFW_PRESS; }
+		inline bool key_F7() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F7) == GLFW_PRESS; }
+		inline bool key_F8() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F8) == GLFW_PRESS; }
+		inline bool key_F9() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F9) == GLFW_PRESS; }
+		inline bool key_F10() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F10) == GLFW_PRESS; }
+		inline bool key_F11() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F11) == GLFW_PRESS; }
+		inline bool key_F12() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_F12) == GLFW_PRESS; }
 
-		inline bool key_escape() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_ESCAPE) == GLFW_PRESS; }
+		inline bool key_escape() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_ESCAPE) == GLFW_PRESS; }
 		inline bool key_enter() const noexcept {
-			return (glfwGetKey(lnd::__window_ptr, GLFW_KEY_ENTER) == GLFW_PRESS)
-				|| (glfwGetKey(lnd::__window_ptr, GLFW_KEY_KP_ENTER) == GLFW_PRESS);
+			return (glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_ENTER) == GLFW_PRESS)
+				|| (glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_KP_ENTER) == GLFW_PRESS);
 		}
-		inline bool key_tab() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_TAB) == GLFW_PRESS; }
-		inline bool key_backspace() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_BACKSPACE) == GLFW_PRESS; }
-		inline bool key_insert() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_INSERT) == GLFW_PRESS; }
-		inline bool key_delete() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_DELETE) == GLFW_PRESS; }
-		inline bool key_right() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_RIGHT) == GLFW_PRESS; }
-		inline bool key_left() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_LEFT) == GLFW_PRESS; }
-		inline bool key_down() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_DOWN) == GLFW_PRESS; }
-		inline bool key_up() const noexcept { return glfwGetKey(lnd::__window_ptr, GLFW_KEY_UP) == GLFW_PRESS; }
+		inline bool key_tab() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_TAB) == GLFW_PRESS; }
+		inline bool key_backspace() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_BACKSPACE) == GLFW_PRESS; }
+		inline bool key_insert() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_INSERT) == GLFW_PRESS; }
+		inline bool key_delete() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_DELETE) == GLFW_PRESS; }
+		inline bool key_right() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_RIGHT) == GLFW_PRESS; }
+		inline bool key_left() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_LEFT) == GLFW_PRESS; }
+		inline bool key_down() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_DOWN) == GLFW_PRESS; }
+		inline bool key_up() const noexcept { return glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_UP) == GLFW_PRESS; }
 		inline bool key_alt() const noexcept {
-			return (glfwGetKey(lnd::__window_ptr, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
-				|| (glfwGetKey(lnd::__window_ptr, GLFW_KEY_RIGHT_ALT) == GLFW_PRESS);
+			return (glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
+				|| (glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_RIGHT_ALT) == GLFW_PRESS);
 		}
 		inline bool key_shift() const noexcept {
-			return (glfwGetKey(lnd::__window_ptr, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-				|| (glfwGetKey(lnd::__window_ptr, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS);
+			return (glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+				|| (glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS);
 		}
 		inline bool key_ctrl() const noexcept {
-			return (glfwGetKey(lnd::__window_ptr, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-				|| (glfwGetKey(lnd::__window_ptr, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS);
+			return (glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+				|| (glfwGetKey(lnd::__state_instance.window_ptr, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS);
 		}
 
 
-		inline bool mouse_1_press() const noexcept { return lnd::__user_key_input.mouse_1_press.load(); }
-		inline bool mouse_2_press() const noexcept { return lnd::__user_key_input.mouse_2_press.load(); }
-		inline bool mouse_3_press() const noexcept { return lnd::__user_key_input.mouse_3_press.load(); }
-		inline bool mouse_4_press() const noexcept { return lnd::__user_key_input.mouse_4_press.load(); }
-		inline bool mouse_5_press() const noexcept { return lnd::__user_key_input.mouse_5_press.load(); }
-		inline bool mouse_6_press() const noexcept { return lnd::__user_key_input.mouse_6_press.load(); }
-		inline bool mouse_7_press() const noexcept { return lnd::__user_key_input.mouse_7_press.load(); }
-		inline bool mouse_8_press() const noexcept { return lnd::__user_key_input.mouse_8_press.load(); }
+		inline bool mouse_1_press() const noexcept { return lnd::__state_instance.user_key_input.mouse_1_press.load(); }
+		inline bool mouse_2_press() const noexcept { return lnd::__state_instance.user_key_input.mouse_2_press.load(); }
+		inline bool mouse_3_press() const noexcept { return lnd::__state_instance.user_key_input.mouse_3_press.load(); }
+		inline bool mouse_4_press() const noexcept { return lnd::__state_instance.user_key_input.mouse_4_press.load(); }
+		inline bool mouse_5_press() const noexcept { return lnd::__state_instance.user_key_input.mouse_5_press.load(); }
+		inline bool mouse_6_press() const noexcept { return lnd::__state_instance.user_key_input.mouse_6_press.load(); }
+		inline bool mouse_7_press() const noexcept { return lnd::__state_instance.user_key_input.mouse_7_press.load(); }
+		inline bool mouse_8_press() const noexcept { return lnd::__state_instance.user_key_input.mouse_8_press.load(); }
 
-		inline bool key_space_press() const noexcept { return lnd::__user_key_input.space_press.load(); }
-		inline bool key_apostrophe_press() const noexcept { return lnd::__user_key_input.apostrophe_press.load(); }
-		inline bool key_comma_press() const noexcept { return lnd::__user_key_input.comma_press.load(); }
-		inline bool key_minus_press() const noexcept { return lnd::__user_key_input.minus_press.load(); }
-		inline bool key_period_press() const noexcept { return lnd::__user_key_input.period_press.load(); }
-		inline bool key_slash_press() const noexcept { return lnd::__user_key_input.slash_press.load(); }
+		inline bool key_space_press() const noexcept { return lnd::__state_instance.user_key_input.space_press.load(); }
+		inline bool key_apostrophe_press() const noexcept { return lnd::__state_instance.user_key_input.apostrophe_press.load(); }
+		inline bool key_comma_press() const noexcept { return lnd::__state_instance.user_key_input.comma_press.load(); }
+		inline bool key_minus_press() const noexcept { return lnd::__state_instance.user_key_input.minus_press.load(); }
+		inline bool key_period_press() const noexcept { return lnd::__state_instance.user_key_input.period_press.load(); }
+		inline bool key_slash_press() const noexcept { return lnd::__state_instance.user_key_input.slash_press.load(); }
 
-		inline bool key_A_press() const noexcept { return lnd::__user_key_input.A_press.load(); }
-		inline bool key_B_press() const noexcept { return lnd::__user_key_input.B_press.load(); }
-		inline bool key_C_press() const noexcept { return lnd::__user_key_input.C_press.load(); }
-		inline bool key_D_press() const noexcept { return lnd::__user_key_input.D_press.load(); }
-		inline bool key_E_press() const noexcept { return lnd::__user_key_input.E_press.load(); }
-		inline bool key_F_press() const noexcept { return lnd::__user_key_input.F_press.load(); }
-		inline bool key_G_press() const noexcept { return lnd::__user_key_input.G_press.load(); }
-		inline bool key_H_press() const noexcept { return lnd::__user_key_input.H_press.load(); }
-		inline bool key_I_press() const noexcept { return lnd::__user_key_input.I_press.load(); }
-		inline bool key_J_press() const noexcept { return lnd::__user_key_input.J_press.load(); }
-		inline bool key_K_press() const noexcept { return lnd::__user_key_input.K_press.load(); }
-		inline bool key_L_press() const noexcept { return lnd::__user_key_input.L_press.load(); }
-		inline bool key_M_press() const noexcept { return lnd::__user_key_input.M_press.load(); }
-		inline bool key_N_press() const noexcept { return lnd::__user_key_input.N_press.load(); }
-		inline bool key_O_press() const noexcept { return lnd::__user_key_input.O_press.load(); }
-		inline bool key_P_press() const noexcept { return lnd::__user_key_input.P_press.load(); }
-		inline bool key_Q_press() const noexcept { return lnd::__user_key_input.Q_press.load(); }
-		inline bool key_R_press() const noexcept { return lnd::__user_key_input.R_press.load(); }
-		inline bool key_S_press() const noexcept { return lnd::__user_key_input.S_press.load(); }
-		inline bool key_T_press() const noexcept { return lnd::__user_key_input.T_press.load(); }
-		inline bool key_U_press() const noexcept { return lnd::__user_key_input.U_press.load(); }
-		inline bool key_V_press() const noexcept { return lnd::__user_key_input.V_press.load(); }
-		inline bool key_W_press() const noexcept { return lnd::__user_key_input.W_press.load(); }
-		inline bool key_X_press() const noexcept { return lnd::__user_key_input.X_press.load(); }
-		inline bool key_Y_press() const noexcept { return lnd::__user_key_input.Y_press.load(); }
-		inline bool key_Z_press() const noexcept { return lnd::__user_key_input.Z_press.load(); }
+		inline bool key_A_press() const noexcept { return lnd::__state_instance.user_key_input.A_press.load(); }
+		inline bool key_B_press() const noexcept { return lnd::__state_instance.user_key_input.B_press.load(); }
+		inline bool key_C_press() const noexcept { return lnd::__state_instance.user_key_input.C_press.load(); }
+		inline bool key_D_press() const noexcept { return lnd::__state_instance.user_key_input.D_press.load(); }
+		inline bool key_E_press() const noexcept { return lnd::__state_instance.user_key_input.E_press.load(); }
+		inline bool key_F_press() const noexcept { return lnd::__state_instance.user_key_input.F_press.load(); }
+		inline bool key_G_press() const noexcept { return lnd::__state_instance.user_key_input.G_press.load(); }
+		inline bool key_H_press() const noexcept { return lnd::__state_instance.user_key_input.H_press.load(); }
+		inline bool key_I_press() const noexcept { return lnd::__state_instance.user_key_input.I_press.load(); }
+		inline bool key_J_press() const noexcept { return lnd::__state_instance.user_key_input.J_press.load(); }
+		inline bool key_K_press() const noexcept { return lnd::__state_instance.user_key_input.K_press.load(); }
+		inline bool key_L_press() const noexcept { return lnd::__state_instance.user_key_input.L_press.load(); }
+		inline bool key_M_press() const noexcept { return lnd::__state_instance.user_key_input.M_press.load(); }
+		inline bool key_N_press() const noexcept { return lnd::__state_instance.user_key_input.N_press.load(); }
+		inline bool key_O_press() const noexcept { return lnd::__state_instance.user_key_input.O_press.load(); }
+		inline bool key_P_press() const noexcept { return lnd::__state_instance.user_key_input.P_press.load(); }
+		inline bool key_Q_press() const noexcept { return lnd::__state_instance.user_key_input.Q_press.load(); }
+		inline bool key_R_press() const noexcept { return lnd::__state_instance.user_key_input.R_press.load(); }
+		inline bool key_S_press() const noexcept { return lnd::__state_instance.user_key_input.S_press.load(); }
+		inline bool key_T_press() const noexcept { return lnd::__state_instance.user_key_input.T_press.load(); }
+		inline bool key_U_press() const noexcept { return lnd::__state_instance.user_key_input.U_press.load(); }
+		inline bool key_V_press() const noexcept { return lnd::__state_instance.user_key_input.V_press.load(); }
+		inline bool key_W_press() const noexcept { return lnd::__state_instance.user_key_input.W_press.load(); }
+		inline bool key_X_press() const noexcept { return lnd::__state_instance.user_key_input.X_press.load(); }
+		inline bool key_Y_press() const noexcept { return lnd::__state_instance.user_key_input.Y_press.load(); }
+		inline bool key_Z_press() const noexcept { return lnd::__state_instance.user_key_input.Z_press.load(); }
 
-		inline bool key_0_press() const noexcept { return __user_key_input.num0_press.load(); }
-		inline bool key_1_press() const noexcept { return __user_key_input.num1_press.load(); }
-		inline bool key_2_press() const noexcept { return __user_key_input.num2_press.load(); }
-		inline bool key_3_press() const noexcept { return __user_key_input.num3_press.load(); }
-		inline bool key_4_press() const noexcept { return __user_key_input.num4_press.load(); }
-		inline bool key_5_press() const noexcept { return __user_key_input.num5_press.load(); }
-		inline bool key_6_press() const noexcept { return __user_key_input.num6_press.load(); }
-		inline bool key_7_press() const noexcept { return __user_key_input.num7_press.load(); }
-		inline bool key_8_press() const noexcept { return __user_key_input.num8_press.load(); }
-		inline bool key_9_press() const noexcept { return __user_key_input.num9_press.load(); }
+		inline bool key_0_press() const noexcept { return lnd::__state_instance.user_key_input.num0_press.load(); }
+		inline bool key_1_press() const noexcept { return lnd::__state_instance.user_key_input.num1_press.load(); }
+		inline bool key_2_press() const noexcept { return lnd::__state_instance.user_key_input.num2_press.load(); }
+		inline bool key_3_press() const noexcept { return lnd::__state_instance.user_key_input.num3_press.load(); }
+		inline bool key_4_press() const noexcept { return lnd::__state_instance.user_key_input.num4_press.load(); }
+		inline bool key_5_press() const noexcept { return lnd::__state_instance.user_key_input.num5_press.load(); }
+		inline bool key_6_press() const noexcept { return lnd::__state_instance.user_key_input.num6_press.load(); }
+		inline bool key_7_press() const noexcept { return lnd::__state_instance.user_key_input.num7_press.load(); }
+		inline bool key_8_press() const noexcept { return lnd::__state_instance.user_key_input.num8_press.load(); }
+		inline bool key_9_press() const noexcept { return lnd::__state_instance.user_key_input.num9_press.load(); }
 
-		inline bool key_pad0_press() const noexcept { return __user_key_input.numpad0_press.load(); }
-		inline bool key_pad1_press() const noexcept { return __user_key_input.numpad1_press.load(); }
-		inline bool key_pad2_press() const noexcept { return __user_key_input.numpad2_press.load(); }
-		inline bool key_pad3_press() const noexcept { return __user_key_input.numpad3_press.load(); }
-		inline bool key_pad4_press() const noexcept { return __user_key_input.numpad4_press.load(); }
-		inline bool key_pad5_press() const noexcept { return __user_key_input.numpad5_press.load(); }
-		inline bool key_pad6_press() const noexcept { return __user_key_input.numpad6_press.load(); }
-		inline bool key_pad7_press() const noexcept { return __user_key_input.numpad7_press.load(); }
-		inline bool key_pad8_press() const noexcept { return __user_key_input.numpad8_press.load(); }
-		inline bool key_pad9_press() const noexcept { return __user_key_input.numpad9_press.load(); }
+		inline bool key_pad0_press() const noexcept { return lnd::__state_instance.user_key_input.numpad0_press.load(); }
+		inline bool key_pad1_press() const noexcept { return lnd::__state_instance.user_key_input.numpad1_press.load(); }
+		inline bool key_pad2_press() const noexcept { return lnd::__state_instance.user_key_input.numpad2_press.load(); }
+		inline bool key_pad3_press() const noexcept { return lnd::__state_instance.user_key_input.numpad3_press.load(); }
+		inline bool key_pad4_press() const noexcept { return lnd::__state_instance.user_key_input.numpad4_press.load(); }
+		inline bool key_pad5_press() const noexcept { return lnd::__state_instance.user_key_input.numpad5_press.load(); }
+		inline bool key_pad6_press() const noexcept { return lnd::__state_instance.user_key_input.numpad6_press.load(); }
+		inline bool key_pad7_press() const noexcept { return lnd::__state_instance.user_key_input.numpad7_press.load(); }
+		inline bool key_pad8_press() const noexcept { return lnd::__state_instance.user_key_input.numpad8_press.load(); }
+		inline bool key_pad9_press() const noexcept { return lnd::__state_instance.user_key_input.numpad9_press.load(); }
 
-		inline bool key_add_press() const noexcept { return __user_key_input.add_press.load(); }
-		inline bool key_sub_press() const noexcept { return __user_key_input.sub_press.load(); }
-		inline bool key_mul_press() const noexcept { return __user_key_input.mul_press.load(); }
-		inline bool key_div_press() const noexcept { return __user_key_input.div_press.load(); }
+		inline bool key_add_press() const noexcept { return lnd::__state_instance.user_key_input.add_press.load(); }
+		inline bool key_sub_press() const noexcept { return lnd::__state_instance.user_key_input.sub_press.load(); }
+		inline bool key_mul_press() const noexcept { return lnd::__state_instance.user_key_input.mul_press.load(); }
+		inline bool key_div_press() const noexcept { return lnd::__state_instance.user_key_input.div_press.load(); }
 
-		inline bool key_F1_press() const noexcept { return __user_key_input.f1_press.load(); }
-		inline bool key_F2_press() const noexcept { return __user_key_input.f2_press.load(); }
-		inline bool key_F3_press() const noexcept { return __user_key_input.f3_press.load(); }
-		inline bool key_F4_press() const noexcept { return __user_key_input.f4_press.load(); }
-		inline bool key_F5_press() const noexcept { return __user_key_input.f5_press.load(); }
-		inline bool key_F6_press() const noexcept { return __user_key_input.f6_press.load(); }
-		inline bool key_F7_press() const noexcept { return __user_key_input.f7_press.load(); }
-		inline bool key_F8_press() const noexcept { return __user_key_input.f8_press.load(); }
-		inline bool key_F9_press() const noexcept { return __user_key_input.f9_press.load(); }
-		inline bool key_F10_press() const noexcept { return __user_key_input.f10_press.load(); }
-		inline bool key_F11_press() const noexcept { return __user_key_input.f11_press.load(); }
-		inline bool key_F12_press() const noexcept { return __user_key_input.f12_press.load(); }
+		inline bool key_F1_press() const noexcept { return lnd::__state_instance.user_key_input.f1_press.load(); }
+		inline bool key_F2_press() const noexcept { return lnd::__state_instance.user_key_input.f2_press.load(); }
+		inline bool key_F3_press() const noexcept { return lnd::__state_instance.user_key_input.f3_press.load(); }
+		inline bool key_F4_press() const noexcept { return lnd::__state_instance.user_key_input.f4_press.load(); }
+		inline bool key_F5_press() const noexcept { return lnd::__state_instance.user_key_input.f5_press.load(); }
+		inline bool key_F6_press() const noexcept { return lnd::__state_instance.user_key_input.f6_press.load(); }
+		inline bool key_F7_press() const noexcept { return lnd::__state_instance.user_key_input.f7_press.load(); }
+		inline bool key_F8_press() const noexcept { return lnd::__state_instance.user_key_input.f8_press.load(); }
+		inline bool key_F9_press() const noexcept { return lnd::__state_instance.user_key_input.f9_press.load(); }
+		inline bool key_F10_press() const noexcept { return lnd::__state_instance.user_key_input.f10_press.load(); }
+		inline bool key_F11_press() const noexcept { return lnd::__state_instance.user_key_input.f11_press.load(); }
+		inline bool key_F12_press() const noexcept { return lnd::__state_instance.user_key_input.f12_press.load(); }
 
-		inline bool key_escape_press() const noexcept { return __user_key_input.escape_press.load(); }
-		inline bool key_enter_press() const noexcept { return __user_key_input.enter_press.load(); }
-		inline bool key_tab_press() const noexcept { return __user_key_input.tab_press.load(); }
-		inline bool key_backspace_press() const noexcept { return __user_key_input.backspace_press.load(); }
-		inline bool key_insert_press() const noexcept { return __user_key_input.insert_press.load(); }
-		inline bool key_delete_press() const noexcept { return __user_key_input.delete__press.load(); }
-		inline bool key_right_press() const noexcept { return __user_key_input.right_press.load(); }
-		inline bool key_left_press() const noexcept { return __user_key_input.left_press.load(); }
-		inline bool key_down_press() const noexcept { return __user_key_input.down_press.load(); }
-		inline bool key_up_press() const noexcept { return __user_key_input.up_press.load(); }
-		inline bool key_alt_press() const noexcept { return __user_key_input.alt_press.load(); }
-		inline bool key_shift_press() const noexcept { return __user_key_input.shift_press.load(); }
-		inline bool key_ctrl_press() const noexcept { return __user_key_input.ctrl_press.load(); }
-
-
-		inline bool mouse_1_release() const noexcept { return lnd::__user_key_input.mouse_1_release.load(); }
-		inline bool mouse_2_release() const noexcept { return lnd::__user_key_input.mouse_2_release.load(); }
-		inline bool mouse_3_release() const noexcept { return lnd::__user_key_input.mouse_3_release.load(); }
-		inline bool mouse_4_release() const noexcept { return lnd::__user_key_input.mouse_4_release.load(); }
-		inline bool mouse_5_release() const noexcept { return lnd::__user_key_input.mouse_5_release.load(); }
-		inline bool mouse_6_release() const noexcept { return lnd::__user_key_input.mouse_6_release.load(); }
-		inline bool mouse_7_release() const noexcept { return lnd::__user_key_input.mouse_7_release.load(); }
-		inline bool mouse_8_release() const noexcept { return lnd::__user_key_input.mouse_8_release.load(); }
-
-		inline bool key_space_release() const noexcept { return lnd::__user_key_input.space_release.load(); }
-		inline bool key_apostrophe_release() const noexcept { return lnd::__user_key_input.apostrophe_release.load(); }
-		inline bool key_comma_release() const noexcept { return lnd::__user_key_input.comma_release.load(); }
-		inline bool key_minus_release() const noexcept { return lnd::__user_key_input.minus_release.load(); }
-		inline bool key_period_release() const noexcept { return lnd::__user_key_input.period_release.load(); }
-		inline bool key_slash_release() const noexcept { return lnd::__user_key_input.slash_release.load(); }
-
-		inline bool key_A_release() const noexcept { return lnd::__user_key_input.A_release.load(); }
-		inline bool key_B_release() const noexcept { return lnd::__user_key_input.B_release.load(); }
-		inline bool key_C_release() const noexcept { return lnd::__user_key_input.C_release.load(); }
-		inline bool key_D_release() const noexcept { return lnd::__user_key_input.D_release.load(); }
-		inline bool key_E_release() const noexcept { return lnd::__user_key_input.E_release.load(); }
-		inline bool key_F_release() const noexcept { return lnd::__user_key_input.F_release.load(); }
-		inline bool key_G_release() const noexcept { return lnd::__user_key_input.G_release.load(); }
-		inline bool key_H_release() const noexcept { return lnd::__user_key_input.H_release.load(); }
-		inline bool key_I_release() const noexcept { return lnd::__user_key_input.I_release.load(); }
-		inline bool key_J_release() const noexcept { return lnd::__user_key_input.J_release.load(); }
-		inline bool key_K_release() const noexcept { return lnd::__user_key_input.K_release.load(); }
-		inline bool key_L_release() const noexcept { return lnd::__user_key_input.L_release.load(); }
-		inline bool key_M_release() const noexcept { return lnd::__user_key_input.M_release.load(); }
-		inline bool key_N_release() const noexcept { return lnd::__user_key_input.N_release.load(); }
-		inline bool key_O_release() const noexcept { return lnd::__user_key_input.O_release.load(); }
-		inline bool key_P_release() const noexcept { return lnd::__user_key_input.P_release.load(); }
-		inline bool key_Q_release() const noexcept { return lnd::__user_key_input.Q_release.load(); }
-		inline bool key_R_release() const noexcept { return lnd::__user_key_input.R_release.load(); }
-		inline bool key_S_release() const noexcept { return lnd::__user_key_input.S_release.load(); }
-		inline bool key_T_release() const noexcept { return lnd::__user_key_input.T_release.load(); }
-		inline bool key_U_release() const noexcept { return lnd::__user_key_input.U_release.load(); }
-		inline bool key_V_release() const noexcept { return lnd::__user_key_input.V_release.load(); }
-		inline bool key_W_release() const noexcept { return lnd::__user_key_input.W_release.load(); }
-		inline bool key_X_release() const noexcept { return lnd::__user_key_input.X_release.load(); }
-		inline bool key_Y_release() const noexcept { return lnd::__user_key_input.Y_release.load(); }
-		inline bool key_Z_release() const noexcept { return lnd::__user_key_input.Z_release.load(); }
-
-		inline bool key_0_release() const noexcept { return __user_key_input.num0_release.load(); }
-		inline bool key_1_release() const noexcept { return __user_key_input.num1_release.load(); }
-		inline bool key_2_release() const noexcept { return __user_key_input.num2_release.load(); }
-		inline bool key_3_release() const noexcept { return __user_key_input.num3_release.load(); }
-		inline bool key_4_release() const noexcept { return __user_key_input.num4_release.load(); }
-		inline bool key_5_release() const noexcept { return __user_key_input.num5_release.load(); }
-		inline bool key_6_release() const noexcept { return __user_key_input.num6_release.load(); }
-		inline bool key_7_release() const noexcept { return __user_key_input.num7_release.load(); }
-		inline bool key_8_release() const noexcept { return __user_key_input.num8_release.load(); }
-		inline bool key_9_release() const noexcept { return __user_key_input.num9_release.load(); }
-
-		inline bool key_pad0_release() const noexcept { return __user_key_input.numpad0_release.load(); }
-		inline bool key_pad1_release() const noexcept { return __user_key_input.numpad1_release.load(); }
-		inline bool key_pad2_release() const noexcept { return __user_key_input.numpad2_release.load(); }
-		inline bool key_pad3_release() const noexcept { return __user_key_input.numpad3_release.load(); }
-		inline bool key_pad4_release() const noexcept { return __user_key_input.numpad4_release.load(); }
-		inline bool key_pad5_release() const noexcept { return __user_key_input.numpad5_release.load(); }
-		inline bool key_pad6_release() const noexcept { return __user_key_input.numpad6_release.load(); }
-		inline bool key_pad7_release() const noexcept { return __user_key_input.numpad7_release.load(); }
-		inline bool key_pad8_release() const noexcept { return __user_key_input.numpad8_release.load(); }
-		inline bool key_pad9_release() const noexcept { return __user_key_input.numpad9_release.load(); }
-
-		inline bool key_add_release() const noexcept { return __user_key_input.add_release.load(); }
-		inline bool key_sub_release() const noexcept { return __user_key_input.sub_release.load(); }
-		inline bool key_mul_release() const noexcept { return __user_key_input.mul_release.load(); }
-		inline bool key_div_release() const noexcept { return __user_key_input.div_release.load(); }
-
-		inline bool key_F1_release() const noexcept { return __user_key_input.f1_release.load(); }
-		inline bool key_F2_release() const noexcept { return __user_key_input.f2_release.load(); }
-		inline bool key_F3_release() const noexcept { return __user_key_input.f3_release.load(); }
-		inline bool key_F4_release() const noexcept { return __user_key_input.f4_release.load(); }
-		inline bool key_F5_release() const noexcept { return __user_key_input.f5_release.load(); }
-		inline bool key_F6_release() const noexcept { return __user_key_input.f6_release.load(); }
-		inline bool key_F7_release() const noexcept { return __user_key_input.f7_release.load(); }
-		inline bool key_F8_release() const noexcept { return __user_key_input.f8_release.load(); }
-		inline bool key_F9_release() const noexcept { return __user_key_input.f9_release.load(); }
-		inline bool key_F10_release() const noexcept { return __user_key_input.f10_release.load(); }
-		inline bool key_F11_release() const noexcept { return __user_key_input.f11_release.load(); }
-		inline bool key_F12_release() const noexcept { return __user_key_input.f12_release.load(); }
-
-		inline bool key_escape_release() const noexcept { return __user_key_input.escape_release.load(); }
-		inline bool key_enter_release() const noexcept { return __user_key_input.enter_release.load(); }
-		inline bool key_tab_release() const noexcept { return __user_key_input.tab_release.load(); }
-		inline bool key_backspace_release() const noexcept { return __user_key_input.backspace_release.load(); }
-		inline bool key_insert_release() const noexcept { return __user_key_input.insert_release.load(); }
-		inline bool key_delete_release() const noexcept { return __user_key_input.delete__release.load(); }
-		inline bool key_right_release() const noexcept { return __user_key_input.right_release.load(); }
-		inline bool key_left_release() const noexcept { return __user_key_input.left_release.load(); }
-		inline bool key_down_release() const noexcept { return __user_key_input.down_release.load(); }
-		inline bool key_up_release() const noexcept { return __user_key_input.up_release.load(); }
-		inline bool key_alt_release() const noexcept { return __user_key_input.alt_release.load(); }
-		inline bool key_shift_release() const noexcept { return __user_key_input.shift_release.load(); }
-		inline bool key_ctrl_release() const noexcept { return __user_key_input.ctrl_release.load(); }
+		inline bool key_escape_press() const noexcept { return lnd::__state_instance.user_key_input.escape_press.load(); }
+		inline bool key_enter_press() const noexcept { return lnd::__state_instance.user_key_input.enter_press.load(); }
+		inline bool key_tab_press() const noexcept { return lnd::__state_instance.user_key_input.tab_press.load(); }
+		inline bool key_backspace_press() const noexcept { return lnd::__state_instance.user_key_input.backspace_press.load(); }
+		inline bool key_insert_press() const noexcept { return lnd::__state_instance.user_key_input.insert_press.load(); }
+		inline bool key_delete_press() const noexcept { return lnd::__state_instance.user_key_input.delete__press.load(); }
+		inline bool key_right_press() const noexcept { return lnd::__state_instance.user_key_input.right_press.load(); }
+		inline bool key_left_press() const noexcept { return lnd::__state_instance.user_key_input.left_press.load(); }
+		inline bool key_down_press() const noexcept { return lnd::__state_instance.user_key_input.down_press.load(); }
+		inline bool key_up_press() const noexcept { return lnd::__state_instance.user_key_input.up_press.load(); }
+		inline bool key_alt_press() const noexcept { return lnd::__state_instance.user_key_input.alt_press.load(); }
+		inline bool key_shift_press() const noexcept { return lnd::__state_instance.user_key_input.shift_press.load(); }
+		inline bool key_ctrl_press() const noexcept { return lnd::__state_instance.user_key_input.ctrl_press.load(); }
 
 
-		inline void reset_key_events() const noexcept { lnd::__user_key_input.reset_key_events(); }
+		inline bool mouse_1_release() const noexcept { return lnd::__state_instance.user_key_input.mouse_1_release.load(); }
+		inline bool mouse_2_release() const noexcept { return lnd::__state_instance.user_key_input.mouse_2_release.load(); }
+		inline bool mouse_3_release() const noexcept { return lnd::__state_instance.user_key_input.mouse_3_release.load(); }
+		inline bool mouse_4_release() const noexcept { return lnd::__state_instance.user_key_input.mouse_4_release.load(); }
+		inline bool mouse_5_release() const noexcept { return lnd::__state_instance.user_key_input.mouse_5_release.load(); }
+		inline bool mouse_6_release() const noexcept { return lnd::__state_instance.user_key_input.mouse_6_release.load(); }
+		inline bool mouse_7_release() const noexcept { return lnd::__state_instance.user_key_input.mouse_7_release.load(); }
+		inline bool mouse_8_release() const noexcept { return lnd::__state_instance.user_key_input.mouse_8_release.load(); }
+
+		inline bool key_space_release() const noexcept { return lnd::__state_instance.user_key_input.space_release.load(); }
+		inline bool key_apostrophe_release() const noexcept { return lnd::__state_instance.user_key_input.apostrophe_release.load(); }
+		inline bool key_comma_release() const noexcept { return lnd::__state_instance.user_key_input.comma_release.load(); }
+		inline bool key_minus_release() const noexcept { return lnd::__state_instance.user_key_input.minus_release.load(); }
+		inline bool key_period_release() const noexcept { return lnd::__state_instance.user_key_input.period_release.load(); }
+		inline bool key_slash_release() const noexcept { return lnd::__state_instance.user_key_input.slash_release.load(); }
+
+		inline bool key_A_release() const noexcept { return lnd::__state_instance.user_key_input.A_release.load(); }
+		inline bool key_B_release() const noexcept { return lnd::__state_instance.user_key_input.B_release.load(); }
+		inline bool key_C_release() const noexcept { return lnd::__state_instance.user_key_input.C_release.load(); }
+		inline bool key_D_release() const noexcept { return lnd::__state_instance.user_key_input.D_release.load(); }
+		inline bool key_E_release() const noexcept { return lnd::__state_instance.user_key_input.E_release.load(); }
+		inline bool key_F_release() const noexcept { return lnd::__state_instance.user_key_input.F_release.load(); }
+		inline bool key_G_release() const noexcept { return lnd::__state_instance.user_key_input.G_release.load(); }
+		inline bool key_H_release() const noexcept { return lnd::__state_instance.user_key_input.H_release.load(); }
+		inline bool key_I_release() const noexcept { return lnd::__state_instance.user_key_input.I_release.load(); }
+		inline bool key_J_release() const noexcept { return lnd::__state_instance.user_key_input.J_release.load(); }
+		inline bool key_K_release() const noexcept { return lnd::__state_instance.user_key_input.K_release.load(); }
+		inline bool key_L_release() const noexcept { return lnd::__state_instance.user_key_input.L_release.load(); }
+		inline bool key_M_release() const noexcept { return lnd::__state_instance.user_key_input.M_release.load(); }
+		inline bool key_N_release() const noexcept { return lnd::__state_instance.user_key_input.N_release.load(); }
+		inline bool key_O_release() const noexcept { return lnd::__state_instance.user_key_input.O_release.load(); }
+		inline bool key_P_release() const noexcept { return lnd::__state_instance.user_key_input.P_release.load(); }
+		inline bool key_Q_release() const noexcept { return lnd::__state_instance.user_key_input.Q_release.load(); }
+		inline bool key_R_release() const noexcept { return lnd::__state_instance.user_key_input.R_release.load(); }
+		inline bool key_S_release() const noexcept { return lnd::__state_instance.user_key_input.S_release.load(); }
+		inline bool key_T_release() const noexcept { return lnd::__state_instance.user_key_input.T_release.load(); }
+		inline bool key_U_release() const noexcept { return lnd::__state_instance.user_key_input.U_release.load(); }
+		inline bool key_V_release() const noexcept { return lnd::__state_instance.user_key_input.V_release.load(); }
+		inline bool key_W_release() const noexcept { return lnd::__state_instance.user_key_input.W_release.load(); }
+		inline bool key_X_release() const noexcept { return lnd::__state_instance.user_key_input.X_release.load(); }
+		inline bool key_Y_release() const noexcept { return lnd::__state_instance.user_key_input.Y_release.load(); }
+		inline bool key_Z_release() const noexcept { return lnd::__state_instance.user_key_input.Z_release.load(); }
+
+		inline bool key_0_release() const noexcept { return lnd::__state_instance.user_key_input.num0_release.load(); }
+		inline bool key_1_release() const noexcept { return lnd::__state_instance.user_key_input.num1_release.load(); }
+		inline bool key_2_release() const noexcept { return lnd::__state_instance.user_key_input.num2_release.load(); }
+		inline bool key_3_release() const noexcept { return lnd::__state_instance.user_key_input.num3_release.load(); }
+		inline bool key_4_release() const noexcept { return lnd::__state_instance.user_key_input.num4_release.load(); }
+		inline bool key_5_release() const noexcept { return lnd::__state_instance.user_key_input.num5_release.load(); }
+		inline bool key_6_release() const noexcept { return lnd::__state_instance.user_key_input.num6_release.load(); }
+		inline bool key_7_release() const noexcept { return lnd::__state_instance.user_key_input.num7_release.load(); }
+		inline bool key_8_release() const noexcept { return lnd::__state_instance.user_key_input.num8_release.load(); }
+		inline bool key_9_release() const noexcept { return lnd::__state_instance.user_key_input.num9_release.load(); }
+
+		inline bool key_pad0_release() const noexcept { return lnd::__state_instance.user_key_input.numpad0_release.load(); }
+		inline bool key_pad1_release() const noexcept { return lnd::__state_instance.user_key_input.numpad1_release.load(); }
+		inline bool key_pad2_release() const noexcept { return lnd::__state_instance.user_key_input.numpad2_release.load(); }
+		inline bool key_pad3_release() const noexcept { return lnd::__state_instance.user_key_input.numpad3_release.load(); }
+		inline bool key_pad4_release() const noexcept { return lnd::__state_instance.user_key_input.numpad4_release.load(); }
+		inline bool key_pad5_release() const noexcept { return lnd::__state_instance.user_key_input.numpad5_release.load(); }
+		inline bool key_pad6_release() const noexcept { return lnd::__state_instance.user_key_input.numpad6_release.load(); }
+		inline bool key_pad7_release() const noexcept { return lnd::__state_instance.user_key_input.numpad7_release.load(); }
+		inline bool key_pad8_release() const noexcept { return lnd::__state_instance.user_key_input.numpad8_release.load(); }
+		inline bool key_pad9_release() const noexcept { return lnd::__state_instance.user_key_input.numpad9_release.load(); }
+
+		inline bool key_add_release() const noexcept { return lnd::__state_instance.user_key_input.add_release.load(); }
+		inline bool key_sub_release() const noexcept { return lnd::__state_instance.user_key_input.sub_release.load(); }
+		inline bool key_mul_release() const noexcept { return lnd::__state_instance.user_key_input.mul_release.load(); }
+		inline bool key_div_release() const noexcept { return lnd::__state_instance.user_key_input.div_release.load(); }
+
+		inline bool key_F1_release() const noexcept { return lnd::__state_instance.user_key_input.f1_release.load(); }
+		inline bool key_F2_release() const noexcept { return lnd::__state_instance.user_key_input.f2_release.load(); }
+		inline bool key_F3_release() const noexcept { return lnd::__state_instance.user_key_input.f3_release.load(); }
+		inline bool key_F4_release() const noexcept { return lnd::__state_instance.user_key_input.f4_release.load(); }
+		inline bool key_F5_release() const noexcept { return lnd::__state_instance.user_key_input.f5_release.load(); }
+		inline bool key_F6_release() const noexcept { return lnd::__state_instance.user_key_input.f6_release.load(); }
+		inline bool key_F7_release() const noexcept { return lnd::__state_instance.user_key_input.f7_release.load(); }
+		inline bool key_F8_release() const noexcept { return lnd::__state_instance.user_key_input.f8_release.load(); }
+		inline bool key_F9_release() const noexcept { return lnd::__state_instance.user_key_input.f9_release.load(); }
+		inline bool key_F10_release() const noexcept { return lnd::__state_instance.user_key_input.f10_release.load(); }
+		inline bool key_F11_release() const noexcept { return lnd::__state_instance.user_key_input.f11_release.load(); }
+		inline bool key_F12_release() const noexcept { return lnd::__state_instance.user_key_input.f12_release.load(); }
+
+		inline bool key_escape_release() const noexcept { return lnd::__state_instance.user_key_input.escape_release.load(); }
+		inline bool key_enter_release() const noexcept { return lnd::__state_instance.user_key_input.enter_release.load(); }
+		inline bool key_tab_release() const noexcept { return lnd::__state_instance.user_key_input.tab_release.load(); }
+		inline bool key_backspace_release() const noexcept { return lnd::__state_instance.user_key_input.backspace_release.load(); }
+		inline bool key_insert_release() const noexcept { return lnd::__state_instance.user_key_input.insert_release.load(); }
+		inline bool key_delete_release() const noexcept { return lnd::__state_instance.user_key_input.delete__release.load(); }
+		inline bool key_right_release() const noexcept { return lnd::__state_instance.user_key_input.right_release.load(); }
+		inline bool key_left_release() const noexcept { return lnd::__state_instance.user_key_input.left_release.load(); }
+		inline bool key_down_release() const noexcept { return lnd::__state_instance.user_key_input.down_release.load(); }
+		inline bool key_up_release() const noexcept { return lnd::__state_instance.user_key_input.up_release.load(); }
+		inline bool key_alt_release() const noexcept { return lnd::__state_instance.user_key_input.alt_release.load(); }
+		inline bool key_shift_release() const noexcept { return lnd::__state_instance.user_key_input.shift_release.load(); }
+		inline bool key_ctrl_release() const noexcept { return lnd::__state_instance.user_key_input.ctrl_release.load(); }
+
+
+		inline void reset_key_events() const noexcept { lnd::__state_instance.user_key_input.reset_key_events(); }
 
 
 		// WINDOW INFOS
@@ -5932,25 +5938,25 @@ namespace lnd
 			{
 				if (new_screen_width >= new_screen_height)
 				{
-					lnd::__user_mouse_input.X_shift = 0.5 * static_cast<double>(new_screen_width);
-					lnd::__user_mouse_input.Y_shift = 0.5 * static_cast<double>(new_screen_height);
-					lnd::__user_mouse_input.X_scale = 1.0 / lnd::__user_mouse_input.Y_shift;
-					lnd::__user_mouse_input.Y_scale = 1.0 / lnd::__user_mouse_input.Y_shift;
+					lnd::__state_instance.user_mouse_input.X_shift = 0.5 * static_cast<double>(new_screen_width);
+					lnd::__state_instance.user_mouse_input.Y_shift = 0.5 * static_cast<double>(new_screen_height);
+					lnd::__state_instance.user_mouse_input.X_scale = 1.0 / lnd::__state_instance.user_mouse_input.Y_shift;
+					lnd::__state_instance.user_mouse_input.Y_scale = 1.0 / lnd::__state_instance.user_mouse_input.Y_shift;
 				}
 				else
 				{
-					lnd::__user_mouse_input.X_shift = 0.5 * static_cast<double>(new_screen_width);
-					lnd::__user_mouse_input.Y_shift = 0.5 * static_cast<double>(new_screen_height);
-					lnd::__user_mouse_input.X_scale = 1.0 / lnd::__user_mouse_input.X_shift;
-					lnd::__user_mouse_input.Y_scale = 1.0 / lnd::__user_mouse_input.X_shift;
+					lnd::__state_instance.user_mouse_input.X_shift = 0.5 * static_cast<double>(new_screen_width);
+					lnd::__state_instance.user_mouse_input.Y_shift = 0.5 * static_cast<double>(new_screen_height);
+					lnd::__state_instance.user_mouse_input.X_scale = 1.0 / lnd::__state_instance.user_mouse_input.X_shift;
+					lnd::__state_instance.user_mouse_input.Y_scale = 1.0 / lnd::__state_instance.user_mouse_input.X_shift;
 				}
 			}
 			else
 			{
-				lnd::__user_mouse_input.X_shift = 0.5 * static_cast<double>(new_screen_width);
-				lnd::__user_mouse_input.Y_shift = 0.5 * static_cast<double>(new_screen_height);
-				lnd::__user_mouse_input.X_scale = 1.0 / lnd::__user_mouse_input.X_shift;
-				lnd::__user_mouse_input.Y_scale = 1.0 / lnd::__user_mouse_input.Y_shift;
+				lnd::__state_instance.user_mouse_input.X_shift = 0.5 * static_cast<double>(new_screen_width);
+				lnd::__state_instance.user_mouse_input.Y_shift = 0.5 * static_cast<double>(new_screen_height);
+				lnd::__state_instance.user_mouse_input.X_scale = 1.0 / lnd::__state_instance.user_mouse_input.X_shift;
+				lnd::__state_instance.user_mouse_input.Y_scale = 1.0 / lnd::__state_instance.user_mouse_input.Y_shift;
 			}
 
 			if (!display_thread.joinable())
@@ -5974,7 +5980,7 @@ namespace lnd
 
 			while (!display_running.load()) {}
 
-			lnd::__user_key_input.reset_key_events();
+			lnd::__state_instance.user_key_input.reset_key_events();
 
 			if (new_timeframe > 0.0)
 			{
@@ -5991,7 +5997,7 @@ namespace lnd
 					// loop content
 					this->loop(time_elapsed);
 
-					if (this->exit_condition() || glfwWindowShouldClose(lnd::__window_ptr))
+					if (this->exit_condition() || glfwWindowShouldClose(lnd::__state_instance.window_ptr))
 					{
 						// exit
 						display_running.store(false);
@@ -6012,7 +6018,7 @@ namespace lnd
 					// loop content
 					this->loop(time_elapsed);
 
-					if (this->exit_condition() || glfwWindowShouldClose(lnd::__window_ptr))
+					if (this->exit_condition() || glfwWindowShouldClose(lnd::__state_instance.window_ptr))
 					{
 						// exit
 						display_running.store(false);
@@ -6024,7 +6030,7 @@ namespace lnd
 
 			// exit
 			display_thread.join();
-			lnd::__user_key_input.reset_key_events();
+			lnd::__state_instance.user_key_input.reset_key_events();
 			return true;
 		}
 
@@ -6045,8 +6051,8 @@ namespace lnd
 		~window()
 		{
 			glfwInit();
-			lnd::__window_ptr = glfwCreateWindow(1, 1, "", nullptr, nullptr);
-			glfwDestroyWindow(lnd::__window_ptr);
+			lnd::__state_instance.window_ptr = glfwCreateWindow(1, 1, "", nullptr, nullptr);
+			glfwDestroyWindow(lnd::__state_instance.window_ptr);
 			glfwTerminate();
 			static_cast<_looper*>(static_cast<void*>(this))->~_looper();
 		}
@@ -6076,23 +6082,23 @@ namespace lnd
 
 			if (window_fullscreen)
 			{
-				lnd::__window_ptr = glfwCreateWindow(new_screen_width, new_screen_height,
+				lnd::__state_instance.window_ptr = glfwCreateWindow(new_screen_width, new_screen_height,
 					new_title, glfwGetPrimaryMonitor(), nullptr);
 			}
 			else
 			{
-				lnd::__window_ptr = glfwCreateWindow(new_screen_width, new_screen_height,
+				lnd::__state_instance.window_ptr = glfwCreateWindow(new_screen_width, new_screen_height,
 					new_title, nullptr, nullptr);
 			}
 
-			if (lnd::__window_ptr == nullptr)
+			if (lnd::__state_instance.window_ptr == nullptr)
 			{
 				glfwTerminate();
 				display_init_failed.store(true);
 				display_init_finished.store(true);
 				return;
 			}
-			glfwMakeContextCurrent(lnd::__window_ptr);
+			glfwMakeContextCurrent(lnd::__state_instance.window_ptr);
 			if (glewInit() != GLEW_OK)
 			{
 				glfwTerminate();
@@ -6105,11 +6111,11 @@ namespace lnd
 
 			// inputs
 
-			glfwSetInputMode(lnd::__window_ptr, GLFW_STICKY_KEYS, GLFW_TRUE);
-			glfwSetInputMode(lnd::__window_ptr, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
-			glfwSetKeyCallback(lnd::__window_ptr, &lnd::key_callback);
-			glfwSetMouseButtonCallback(lnd::__window_ptr, &lnd::mouse_button_callback);
-			glfwSetCursorPosCallback(lnd::__window_ptr, &lnd::mouse_position_callback);
+			glfwSetInputMode(lnd::__state_instance.window_ptr, GLFW_STICKY_KEYS, GLFW_TRUE);
+			glfwSetInputMode(lnd::__state_instance.window_ptr, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
+			glfwSetKeyCallback(lnd::__state_instance.window_ptr, &lnd::key_callback);
+			glfwSetMouseButtonCallback(lnd::__state_instance.window_ptr, &lnd::mouse_button_callback);
+			glfwSetCursorPosCallback(lnd::__state_instance.window_ptr, &lnd::mouse_position_callback);
 
 			// display
 
@@ -6121,7 +6127,7 @@ namespace lnd
 			this->setup();
 			display_running.store(true);
 
-			lnd::__user_key_input.reset_key_events();
+			lnd::__state_instance.user_key_input.reset_key_events();
 
 			while (true)
 			{
@@ -6130,24 +6136,24 @@ namespace lnd
 					this->_display_condition_var.wait(lock);
 				}
 
-				lnd::__user_key_input.reset_key_events();
+				lnd::__state_instance.user_key_input.reset_key_events();
 				glfwPollEvents();
 
 				this->display();
 
-				glfwSwapBuffers(lnd::__window_ptr);
+				glfwSwapBuffers(lnd::__state_instance.window_ptr);
 
 				if (!display_running.load())
 				{
 					this->exit();
 					this->_delete_basic_shaders_and_buffers();
-					glfwDestroyWindow(lnd::__window_ptr);
+					glfwDestroyWindow(lnd::__state_instance.window_ptr);
 					glfwTerminate();
 					break;
 				}
 			}
 
-			lnd::__user_key_input.reset_key_events();
+			lnd::__state_instance.user_key_input.reset_key_events();
 		}
 
 		// window
@@ -8310,7 +8316,7 @@ namespace lnd
 		}
 
 
-		inline void draw_ranged(
+		inline void draw_range(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program)
@@ -8359,7 +8365,7 @@ namespace lnd
 			}
 		}
 
-		inline void draw_ranged_3d(
+		inline void draw_range_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program)
@@ -8408,7 +8414,7 @@ namespace lnd
 			}
 		}
 
-		template <class _normal_Allocator> inline void draw_ranged_normals_3d(
+		template <class _normal_Allocator> inline void draw_range_normals_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8627,7 +8633,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_RGBA(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_range_RGBA(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8697,7 +8703,7 @@ namespace lnd
 			}
 		}
 
-		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_RGBA_3d(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_range_RGBA_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -8767,7 +8773,7 @@ namespace lnd
 			}
 		}
 
-		template <std::size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_ranged_RGBA_normals_3d(
+		template <std::size_t _color_dim, class _color_Allocator, class _normal_Allocator> inline void draw_range_RGBA_normals_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9180,7 +9186,7 @@ namespace lnd
 		}
 
 
-		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_ranged_tex(
+		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_range_tex(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9227,7 +9233,73 @@ namespace lnd
 			}
 		}
 
-		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_ranged_tex_3d(
+		template <std::size_t _pixel_dim, std::size_t _frame_pixel_dim, std::size_t _vertex_count_pc2,
+			class _vertex_Allocator, class _texture_Allocator, class _frame_tex_Allocator, class _frame_Allocator> inline void draw_range_mapped(
+				GLsizei first_cluster,
+				GLsizei end_cluster,
+				const lnd::program& program,
+				const lnd::group_cluster_vertex<_vertex_count_pc, 2, _vertex_Allocator>& texture_coord,
+				const lnd::texture<_pixel_dim, _texture_Allocator>& texture_image,
+				const lnd::texture<_frame_pixel_dim, _frame_tex_Allocator>& frame_texture_image,
+				const lnd::group_cluster_vertex<_vertex_count_pc2, _dim, _frame_Allocator>& frames)
+		{
+			switch (_vertex_count_pc)
+			{
+
+			case 3:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
+				texture_coord.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
+				frames.buffer_bind();
+				glEnableVertexAttribArray(2);
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr);
+				glEnableVertexAttribArray(3);
+				glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<void*>(2 * sizeof(GLfloat)));
+				texture_image.buffer_bind(0);
+				frame_texture_image.buffer_bind(1);
+				program.use();
+				glDrawArrays(GL_TRIANGLES, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+				buffer.unbind();
+				texture_coord.buffer_unbind();
+				texture_image.buffer_unbind(0);
+				frame_texture_image.buffer_unbind(1);
+				frames.buffer_unbind();
+				break;
+
+			case 4:
+				buffer.bind();
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, _dim * sizeof(GLfloat), nullptr);
+				texture_coord.buffer_bind();
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
+				frames.buffer_bind();
+				glEnableVertexAttribArray(2);
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr);
+				glEnableVertexAttribArray(3);
+				glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<void*>(2 * sizeof(GLfloat)));
+				texture_image.buffer_bind(0);
+				frame_texture_image.buffer_bind(1);
+				program.use();
+				glDrawArrays(GL_QUADS, static_cast<GLsizei>(_vertex_count_pc) * first_cluster,
+					static_cast<GLsizei>(_vertex_count_pc) * (end_cluster - first_cluster));
+				buffer.unbind();
+				texture_coord.buffer_unbind();
+				texture_image.buffer_unbind(0);
+				frame_texture_image.buffer_unbind(1);
+				frames.buffer_unbind();
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		template <class _vertex_Allocator, std::size_t _pixel_dim, class _texture_Allocator> inline void draw_range_tex_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9274,7 +9346,7 @@ namespace lnd
 			}
 		}
 
-		template <std::size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_ranged_tex_normals_3d(
+		template <std::size_t _pixel_dim, class _vertex_Allocator, class _texture_Allocator, class _normals_Allocator> inline void draw_range_tex_normals_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9331,7 +9403,7 @@ namespace lnd
 
 		template <std::size_t _pixel_dim, std::size_t _spec_pixel_dim, std::size_t _frame_pixel_dim, std::size_t _vertex_count_pc2,
 			class _vertex_Allocator, class _texture_Allocator, class _spec_tex_Allocator,
-			class _frame_tex_Allocator, class _frame_Allocator> inline void draw_ranged_mapped_3d(
+			class _frame_tex_Allocator, class _frame_Allocator> inline void draw_range_mapped_3d(
 				GLsizei first_cluster,
 				GLsizei end_cluster,
 				const lnd::program& program,
@@ -9405,7 +9477,7 @@ namespace lnd
 
 		template <std::size_t _pixel_dim, std::size_t _spec_pixel_dim, std::size_t _frame_pixel_dim, std::size_t _light_pixel_dim, std::size_t _vertex_count_pc2,
 			class _vertex_Allocator, class _light_vertex_Allocator, class _texture_Allocator, class _spec_tex_Allocator,
-			class _frame_tex_Allocator, class _light_tex_Allocator, class _frame_Allocator> inline void draw_ranged_lightmapped_3d(
+			class _frame_tex_Allocator, class _light_tex_Allocator, class _frame_Allocator> inline void draw_range_lightmapped_3d(
 				GLsizei first_cluster,
 				GLsizei end_cluster,
 				const lnd::program& program,
@@ -9523,7 +9595,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_lines_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_range_lines_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9540,7 +9612,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_lines_indexed_3d(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_range_lines_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9587,7 +9659,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_tris_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_range_tris_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9651,7 +9723,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_quads_indexed(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_range_quads_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9668,7 +9740,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_ranged_quads_indexed_3d(
+		template <std::size_t _index_count_pc, class _index_Allocator> inline void draw_range_quads_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9727,7 +9799,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_lines_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_lines_RGBA_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9749,7 +9821,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_lines_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_lines_RGBA_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9811,7 +9883,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_tris_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_tris_RGBA_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9833,7 +9905,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_tris_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_tris_RGBA_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9895,7 +9967,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_quads_RGBA_indexed(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_quads_RGBA_indexed(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -9917,7 +9989,7 @@ namespace lnd
 			indexing.buffer_unbind();
 		}
 
-		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_ranged_quads_RGBA_indexed_3d(
+		template <std::size_t _color_dim, std::size_t _index_count_pc, class _color_Allocator, class _index_Allocator> inline void draw_range_quads_RGBA_indexed_3d(
 			GLsizei first_cluster,
 			GLsizei end_cluster,
 			const lnd::program& program,
@@ -10195,7 +10267,7 @@ namespace lnd
 		}
 
 
-		inline void draw_ranged_line_strip(
+		inline void draw_range_line_strip(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program)
@@ -10208,7 +10280,7 @@ namespace lnd
 			buffer.unbind();
 		}
 
-		inline void draw_ranged_line_strip_3d(
+		inline void draw_range_line_strip_3d(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program)
@@ -10327,7 +10399,7 @@ namespace lnd
 		}
 
 
-		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_line_strip_RGBA(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_range_line_strip_RGBA(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program,
@@ -10345,7 +10417,7 @@ namespace lnd
 			coloring.buffer_unbind();
 		}
 
-		template <std::size_t _color_dim, class _color_Allocator> inline void draw_ranged_line_strip_RGBA_3d(
+		template <std::size_t _color_dim, class _color_Allocator> inline void draw_range_line_strip_RGBA_3d(
 			GLsizei first_vertex,
 			GLsizei last_vertex,
 			const lnd::program& program,
