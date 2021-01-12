@@ -331,7 +331,6 @@ namespace lnd
 		std::atomic<bool> shift_release{ false };
 		std::atomic<bool> ctrl_release{ false };
 
-
 		inline void reset_key_events()
 		{
 			memset(this, 0, sizeof(lnd::user_key_input));
